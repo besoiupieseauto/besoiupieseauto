@@ -1,0 +1,21 @@
+{
+    "job_id": "job_20260618_105321_dff357ba",
+    "status": "starting",
+    "phase": "Pregătesc lotul pentru analiză…",
+    "batch_path": "E:\\laragon\\www\\besoiupieseauto.ro/admin/storage/image_audit/batches/batch_20260618_105321.json",
+    "batch_name": "batch_20260618_105321.json",
+    "ids": [
+        "4d9e8186b2ddda29"
+    ],
+    "products": [
+        {
+            "randomn_id": "4d9e8186b2ddda29",
+            "title": "Cap Bara TRW 5034724",
+            "code": "5034724"
+        }
+    ],
+    "total": 1,
+    "done": 0,
+    "started_at": 1781780001,
+    "updated_at": 1781780001
+}

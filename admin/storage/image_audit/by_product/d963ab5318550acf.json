@@ -1,0 +1,52 @@
+{
+    "randomn_id": "d963ab5318550acf",
+    "title": "Aditiv Ulei Motor 2671",
+    "code": "2671",
+    "category": "Uleiuri și lubrifianți auto",
+    "image_url": "/uploads/products/tecdoc/2671.jpg",
+    "analyzed_at": "2026-06-18T09:16:59+03:00",
+    "verdict": "match",
+    "match_score": 90,
+    "image_shows": "Flacon metalic și cutie Liqui Moly Cera Tec 300 ml — aditiv ceramic high-tech de protecție la uzură pentru motor și transmisie.",
+    "issues": [
+        "Marca Liqui Moly și denumirea comercială Cera Tec nu apar în titlu, doar codul intern 2671.",
+        "Codul 2671 nu este vizibil pe eticheta din imagine.",
+        "Volumul 300 ml nu este menționat în titlu sau descriere."
+    ],
+    "recommendation": "keep",
+    "summary_ro": "Imagine înlocuită și salvată local din autodoc_scraper.",
+    "model": "composer-2.5",
+    "engine": "cursor-composer-2.5",
+    "batch": "batch_20260618_061406.json",
+    "pipeline_retry": {
+        "at": "2026-06-18T07:32:30+00:00",
+        "new_image": "/uploads/products/tecdoc/2671.jpg",
+        "remote_url": "https://cdn.autodoc.de/thumb?id=21473623&m=0&n=0&lng=ro&rev=94078037",
+        "source": "autodoc_scraper",
+        "plans_tried": [
+            {
+                "tier": 1,
+                "source_id": "epiesa",
+                "label": "Plan 1 — Caiet comenzi / TTC_ART_ID",
+                "status": "miss",
+                "message": "ePiesa: fără potrivire"
+            },
+            {
+                "tier": 2,
+                "source_id": "epiesa",
+                "label": "Plan 2 — TecDoc CSV (import local)",
+                "status": "miss",
+                "message": "ePiesa: fără potrivire"
+            },
+            {
+                "tier": 3,
+                "source_id": "autodoc",
+                "label": "Plan 3 — autodoc.ro",
+                "status": "ok",
+                "message": "Imagine găsită"
+            }
+        ],
+        "note_ro": "Imagine salvată în produs (Plan 1→2→3)."
+    },
+    "pipeline_replaced": true
+}

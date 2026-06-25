@@ -1,0 +1,5 @@
+# API JSON — fără pagini HTML de eroare PHP în răspuns
+php_flag display_errors off
+php_flag display_startup_errors off
+php_value max_execution_time 900
+php_value memory_limit 1024M

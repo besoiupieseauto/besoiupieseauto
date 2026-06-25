@@ -1,0 +1,81 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Sep 21, 2016, 1:43:23 PM
+    Author     : Delis
+*/
+
+ .table tbody>tr>td.vert-align-center{
+    text-align: center; 
+    vertical-align: middle;
+}
+ .table tbody>tr>td.vert-align-center-fl{
+    text-align: center; 
+    vertical-align: middle;
+    border-bottom-style: none;
+}
+ .table tbody>tr>td.vert-align-left{
+    text-align: left; 
+    vertical-align: middle;}
+.table tbody>tr>td.vert-align-right{
+    text-align: right; 
+    vertical-align: middle;
+}
+.btn.btn-maine.btn-block {
+    color: #333333;
+    background-color: #7CFC00;
+    background-image: linear-gradient(to bottom, #7CFC00, #7CFC00);
+    border-color: #7CFC00 #7CFC00 #7CFC00;
+}
+.btn.btn-maine.btn-block:hover {
+    color: #333333;
+    background-color: #7CFC00;
+    background-image: linear-gradient(to bottom, #7CFC00, #7CFC00);
+    border-color: #7CFC00 #7CFC00 #7CFC00;
+}
+.btn.btn-poimaine.btn-block {
+    color: #333333;
+    background-color: #ADD8E6;
+    background-image: linear-gradient(to bottom, #ADD8E6, #ADD8E6);
+    border-color: #ADD8E6 #ADD8E6 #ADD8E6;
+}
+.btn.btn-poimaine.btn-block:hover {
+    color: #333333;
+    background-color: #ADD8E6;
+    background-image: linear-gradient(to bottom, #ADD8E6, #ADD8E6);
+    border-color: #ADD8E6 #ADD8E6 #ADD8E6;
+}
+.btn.btn-more3.btn-block {
+    color: #333333;
+    background-color: #FF0000;
+    background-image: linear-gradient(to bottom, #FF0000, #FF0000);
+    border-color: #FF0000 #FF0000 #FF0000;
+}
+.btn.btn-more3.btn-block:hover {
+    color: #333333;
+    background-color: #FF0000;
+    background-image: linear-gradient(to bottom, #FF0000, #FF0000);
+    border-color: #FF0000 #FF0000 #FF0000;
+}
+
+.table {
+  border: 1px solid #dddddd;
+}
+.table-light > thead > tr > th,
+.table-light > tbody > tr > th,
+.table-light > tfoot > tr > th,
+.table-light > thead > tr > td,
+.table-light > tbody > tr > td,
+.table-light > tfoot > tr > td {
+  border: 2px solid #031f24;
+  border-right-width:0px;
+  border-left-width:0px;
+  overflow-x: auto;
+}
+
+.label-as-badge {
+    border-radius: 1em;
+}

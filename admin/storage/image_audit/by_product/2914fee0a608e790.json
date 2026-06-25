@@ -1,0 +1,53 @@
+{
+    "randomn_id": "2914fee0a608e790",
+    "title": "Vas Ulei Servo 770018",
+    "code": "770018",
+    "category": "Uleiuri și lubrifianți auto",
+    "image_url": "/uploads/products/tecdoc/770018.jpg",
+    "analyzed_at": "2026-06-18T09:18:50+03:00",
+    "verdict": "match",
+    "match_score": 90,
+    "image_shows": "Capac plastic verde (material PA 6.6) cu suprafață striată + garnitură O-ring neagră — componentă de etanșare, nu rezervor de ulei servo.",
+    "issues": [
+        "Descrierea indică «REZERVOR, ULEI HIDRAULIC SERVO-DIRECTIE», iar imaginea arată doar capacul cu garnitură.",
+        "Nu este vizibil vasul/rezervorul de lichid de direcție asistată.",
+        "Codul 770018 nu este vizibil pe piesă.",
+        "Categoria «Uleiuri și lubrifianți auto» descrie un produs mecanic (capac), nu ulei sau lubrifiant."
+    ],
+    "recommendation": "keep",
+    "summary_ro": "Imagine înlocuită și salvată local din autodoc_scraper.",
+    "model": "composer-2.5",
+    "engine": "cursor-composer-2.5",
+    "batch": "batch_20260618_061406.json",
+    "pipeline_retry": {
+        "at": "2026-06-18T08:33:54+00:00",
+        "new_image": "/uploads/products/tecdoc/770018.jpg",
+        "remote_url": "https://cdn.autodoc.de/thumb?id=10199518&m=0&n=0&lng=ro&rev=94078038",
+        "source": "autodoc_scraper",
+        "plans_tried": [
+            {
+                "tier": 1,
+                "source_id": "epiesa",
+                "label": "Plan 1 — Caiet comenzi / TTC_ART_ID",
+                "status": "miss",
+                "message": "ePiesa: fără potrivire pentru «770018»"
+            },
+            {
+                "tier": 2,
+                "source_id": "epiesa",
+                "label": "Plan 2 — TecDoc CSV (import local)",
+                "status": "miss",
+                "message": "ePiesa: fără potrivire pentru «770018»"
+            },
+            {
+                "tier": 3,
+                "source_id": "autodoc",
+                "label": "Plan 3 — autodoc.ro",
+                "status": "ok",
+                "message": "Imagine găsită — «Vas Ulei Servo 770018»"
+            }
+        ],
+        "note_ro": "Imagine salvată în produs (Plan 1→2→3)."
+    },
+    "pipeline_replaced": true
+}

@@ -1,0 +1,2974 @@
+{{-- resources/views/comenzi/partials/modals.blade.php --}}
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+<!-- Modal edit status ext -->
+<div class="modal fade" id="modal_status" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><i class="glyphicon glyphicon-edit"></i> Editare status comanda</h4>
+            </div>
+            <form class="form-horizontal" method="post" id="form_status" action="{{ route('comenzi.update-status') }}">
+                @csrf
+                <div class="modal-body">
+                    <div id="status_result"></div>
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <input type="hidden" class="form-control" name="mod_id_cmd" id="mod_id_cmd">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="funkyradio">
+                            <div class="funkyradio-default">
+                                <label class="btn btn-warning">
+                                    <input type="radio" name="stare" id="mod_stare1" value="1">
+                                    Comandat
+                                </label>
+                                <!--<label class="btn btn-info">
+                                    <input type="radio" name="stare" id="mod_stare2" value="2">
+                                    Sosit
+                                </label>-->
+                                <label class="btn btn-shipped">
+                                    <input type="radio" name="stare" id="mod_stare3" value="3">
+                                    Expediat
+                                </label>
+                                <label class="btn btn-paid">
+                                    <input type="radio" name="stare" id="mod_stare4" value="4">
+                                    Achitat
+                                </label>
+                                <label class="btn btn-danger">
+                                    <input type="radio" name="stare" id="mod_stare5" value="5">
+                                    Avans
+                                </label>
+                                <label class="btn btn-success">
+                                    <input type="radio" name="stare" id="mod_stare6" value="6">
+                                    Retur
+                                </label>
+								<label class="btn btn-danger">
+                                    <input type="radio" name="stare" id="mod_stare7" value="7">
+                                    Anulat
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" id="actualizare_status">Actualizare date</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal edit color -->
+<div class="modal fade" id="mod_culoare" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><i class="glyphicon glyphicon-edit"></i> Editare status piesa</h4>
+            </div>
+            <form class="form-horizontal" method="post" id="frmeditare_culoare" action="{{ route('comenzi.update-color') }}">
+                @csrf
+                <input type="hidden" class="form-control" name="mod_id_cmd_fur" id="mod_id_cmd_culoare">
+                <input type="hidden" class="form-control" name="mod_id_prod_fur" id="mod_id_prod_culoare">
+                <div class="modal-body">
+                    <div id="rezultat_ajax_culoare"></div>
+                    <div class="form-group">
+                        <div class="funkyradio">
+                            <div class="funkyradio-default">
+                                <label class="btn btn-maine btn-lg btn-block">
+                                    <input type="radio" name="xcul" id="mod_cul1" value="7CFC00">
+                                    Azi
+                                </label>
+                            </div>
+                            <div class="funkyradio-default">
+                                <label class="btn btn-poimaine btn-lg btn-block">
+                                    <input type="radio" name="xcul" id="mod_cul2" value="ADD8E6">
+                                    Maine
+                                </label>
+                            </div>
+                            <div class="funkyradio-default">
+                                <label class="btn btn-more5 btn-lg btn-block">
+                                    <input type="radio" name="xcul" id="mod_cul5" value="F5A000">
+                                    2 zile
+                                </label>
+                            </div>
+                            <div class="funkyradio-default">
+                                <label class="btn btn-more3 btn-lg btn-block">
+                                    <input type="radio" name="xcul" id="mod_cul3" value="FF0000">
+                                    +3 zile
+                                </label>
+                            </div>
+                            <div class="funkyradio-default">
+                                <label class="btn btn-default btn-lg btn-block">
+                                    <input type="radio" name="xcul" id="mod_cul4" value="FFFFFF">
+                                    Sosit
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="modal-footer">
+                    <button type="submit" class="btn btn-success" id="actualizare_culoare">Actualizare date</button>
+                </div>-->
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal edit total -->
+<div class="modal fade" id="mod_total" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><i class="glyphicon glyphicon-edit"></i> Editare total comanda</h4>
+            </div>
+            <form class="form-horizontal" method="post" id="frmeditare_total" action="{{ route('comenzi.update-total') }}">
+                @csrf
+                <div class="modal-body">
+                    <div id="rezultat_ajax_total"></div>
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <input type="hidden" class="form-control" name="mod_id_cmd" id="mod_id_cmd_total">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="total" class="col-sm-3 control-label">Total actual</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="mod_total_cmd" name="mod_total_cmd" placeholder="Total comanda" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="transport" class="col-sm-3 control-label">Transport</label>
+                        <div class="col-sm-8">
+                            <input type="number" step="any" class="form-control" id="mod_total_nou_cmd" name="mod_total_nou_cmd" placeholder="Transport" value="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" id="actualizare_total">Actualizare date</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal AWB -->
+<div class="modal fade" id="modal_awb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><i class="glyphicon glyphicon-edit"></i> AWB comanda</h4>
+            </div>
+            <div id="rezultat_ajax_awb"></div>
+            <form class="form-horizontal" method="post" id="form_awb" action="{{ route('comenzi.update-awb') }}">
+                @csrf
+                <input type="hidden" class="form-control" name="mod_id_awb" id="mod_id_awb">
+				<input type="hidden" id="courier_pickup_date_hidden" name="courier_pickup_date_hidden">
+				<input type="hidden" id="courier_pickup_slot_hidden" name="courier_pickup_slot_hidden">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <label for="mod_awb_cmd" class="form-label">Nr. AWB</label>
+                            <input type="text" class="form-control" id="mod_awb_cmd" name="mod_awb_cmd" placeholder="AWB comanda">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top:10px;">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="flexCheckChecked" name="flexCheckChecked">
+                                <label for="flexCheckChecked">Fan Courier</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="flexCheckSame" name="flexCheckSame">
+                                <label for="flexCheckSame">Sameday</label>
+                            </div>
+                        </div>
+                    </div>
+					
+					<div class="form-group courier-order-opt">
+                        <div class="col-md-12">
+                            <!--<label style="margin-top:10px;" for="courier_type">PLASEAZĂ O COMANDĂ DE CURIER</label>
+                            <select class="form-select form-select-sm form-control" id="courier_type" name="courier_type" aria-label="Cont Fan">
+								<option value="awb_only" selected>Doar AWB</option>
+								<option value="courier">Curier</option>
+                            </select>-->
+							<button type="button" class="btn btn-success" style="margin-top: 10px;" id="openCourierModal">Curier</button>
+                        </div>
+						<!--<div class="col-md-12 courier_type_date">
+							<label style="margin-top:10px;" for="courier_pickup_date">Data Ridicării</label>
+							<input type="date" id="courier_pickup_date" name="courier_pickup_date" class="form-control form-control-sm" required>
+						</div>-->
+					</div>
+                    
+                    <div class="form-group fanc-options">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <label for="tipserviciu" style="margin-top:10px;">Tip serviciu Fan</label>
+                                <div id="serviciufan">
+                                    <select class="custom-select col-md-12 form-control" id="tipserviciu" name="tipserviciu" aria-label="Tip serviciu">
+                                        <option value="Cont Colector" selected>Cont Colector</option>
+                                        <option value="Standard">Standard</option>
+                                        <option value="CollectPoint">CollectPoint Standard</option>
+                                        <option value="CollectPoint Cont Colector">CollectPoint Cont Colector</option>
+                                        <option value="FANbox">Fanbox Standard</option>
+                                        <option value="FANbox Cont Colector">FANbox Cont Colector</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+						
+                        <div class="col-md-6">
+                            <label style="margin-top:10px;" for="contfan">Ridicare Fan</label>
+                            <select class="form-select form-select-sm form-control" id="contfan" name="contfan" aria-label="Cont Fan">
+                                <option value="Utvin" selected>Utvin</option>
+                                <option value="Timisoara">Timisoara</option>
+                                <option value="Test">Test</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group samdayc-options">
+                        <div class="col-md-6">
+                            <label style="margin-top:10px;" for="tipserviciusame">Tip serviciu Sameday</label>
+                            <select class="form-select form-select-sm form-control" id="tipserviciusame" name="tipserviciusame" aria-label="Tip serviciu">
+                                <option value="7" selected>24H</option>
+                                <option value="10">Retur Standard</option>
+                            </select>
+                        </div>
+						
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <div id="rezultat_serviciu">
+                                    <label style="margin-top:10px;" for="tipridicare">Ridicare Sameday</label>
+                                    <select class="custom-select col-md-12 form-control" id="tipridicare" name="tipridicare" aria-label="Locatie ridicare colet">
+                                        <option value="84024">Punct Lucru TM Timisoara Str Gen Ioan Dragalina Nr23</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-success hide" style="margin-top: 10px;" id="openPickupPointMap">Alege punctul</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <input type="hidden" class="form-control" name="tel_awb_cmd" id="tel_awb_cmd">
+                            <label for="comp_awb_cmd" class="form-label">Destinatar</label>
+                            <input type="text" class="form-control" id="comp_awb_cmd" name="comp_awb_cmd" placeholder="Destinatar AWB">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="nume_awb_cmd" class="form-label">Persoana contact</label>
+                            <input type="text" class="form-control" id="nume_awb_cmd" name="nume_awb_cmd" placeholder="Persoana Contact">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <input type="hidden" class="form-control" name="cod_awb_cmd" id="cod_awb_cmd">
+                            <label for="judet_awb_cmd" class="form-label">Judet</label>
+                            <input type="text" class="form-control" id="judet_awb_cmd" name="judet_awb_cmd" placeholder="Judet">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="local_awb_cmd" class="form-label">Localitate</label>
+                            <input type="text" class="form-control" id="local_awb_cmd" name="local_awb_cmd" placeholder="Localitate">
+                        </div>
+                    </div>
+                        
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label for="adresa_awb_cmd" class="form-label">Adresa</label>
+                            <input type="text" class="form-control" id="adresa_awb_cmd" name="adresa_awb_cmd" placeholder="Adresa">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3 row">
+                                <label for="km_awb_cmd" class="col-sm-12 col-form-label">Km. exteriori</label>
+                                <div class="col-xs-12">
+                                    <input type="text" class="form-control" id="km_awb_cmd" name="km_awb_cmd" placeholder="Km exteriori" aria-label="Km exteriori" value="51">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label for="optiuni">Optiuni</label>
+                            <div class="sameday-options">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="deschidere_colet" id="deschidereColet" value="1">
+                                    <label class="form-check-label" for="deschidereColet">Deschidere colet</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="colet_schimb" id="coletSchimb" value="1">
+                                    <label class="form-check-label" for="coletSchimb">Colet la schimb</label>
+                                </div>
+                            </div>
+
+                            <div class="fancouerier-options">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="opt1" id="Optiune1" value="2">
+                                    <label class="form-check-label" for="opt1">Deschidere la livrare</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="opt2" id="Optiune2" value="8">
+                                    <label class="form-check-label" for="opt2">Livrare sambata</label>
+                                </div>
+                                <div class="form-check hide">
+                                    <input class="form-check-input" type="checkbox" name="opt3" id="Optiune3" value="4">
+                                    <label class="form-check-label" for="opt3">Livrare din sediul FAN Courier</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+							<label for="optiuni">Observatii</label>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="checkbox" name="obs1" id="Obs1" value="Atentie-Fragil" checked>
+								<label class="form-check-label" for="Obs1">Atentie-Fragil</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="checkbox" name="obs2" id="Obs2" value="Livrare urgenta" checked>
+								<label class="form-check-label" for="Obs2">Livrare urgenta</label>
+							</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6 hide">
+                            <label for="agentie_awb_cmd" class="form-label">Agentie</label>
+                            <input type="text" class="form-control" id="agentie_awb_cmd" name="agentie_awb_cmd" placeholder="Agentie Fan" aria-label="Agentie Fan">
+                        </div>
+                        <div class="col-md-6 hide">
+                            <label for="plic_awb_cmd" class="form-label ">Nr. plicuri</label>
+                            <input type="text" class="form-control" id="plic_awb_cmd" name="plic_awb_cmd" placeholder="Nr. plicuri" aria-label="Nr. plicuri" value="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label for="colet_awb_cmd" class="form-label">Nr. colete</label>
+                            <input type="text" class="form-control" id="colet_awb_cmd" name="colet_awb_cmd" placeholder="Nr. colete" aria-label="Nr. colete" value="1">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="greutate_awb_cmd" class="form-label">Greutate</label>
+                            <input type="text" class="form-control" id="greutate_awb_cmd" name="greutate_awb_cmd" placeholder="Greutate" aria-label="Greutate" value="1">
+                        </div>
+                    </div>
+					<div class="form-group sizes-fields">
+						<label for="fanbox_size">Dimensiune FANbox</label>
+						<select id="fanbox_size" name="fanbox_size" class="form-control">
+							<option value="L">L (40.4 × 44.3 × 45 cm)</option>
+							<option value="M">M (19.6 × 44.3 × 45 cm)</option>
+							<option value="S">S (9.2 × 44.3 × 45 cm)</option>
+						</select>
+					</div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <label class="form-label" for="plataexpeditie">Plata expeditiei la</label>
+                                <select class="form-select form-select-sm form-control" id="plataexpeditie" name="plataexpeditie" aria-label="Plata expeditiei">
+                                    <option value="expeditor" selected>Expeditor</option>
+                                    <option value="destinatar">Destinatar</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="ramburs_awb_cmd" class="form-label">Ramburs</label>
+                                <input type="text" class="form-control" id="ramburs_awb_cmd" name="ramburs_awb_cmd" placeholder="Ramburs" aria-label="Ramburs" value="0">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label for="tarif_awb_cmd" class="form-label">Tarif Fan</label>
+                            <input type="text" class="form-control" id="tarif_awb_cmd" name="tarif_awb_cmd" placeholder="Tarif" aria-label="Tarif" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="tarif_sameawb_cmd" class="form-label">Tarif Same</label>
+                            <input type="text" class="form-control" id="tarif_sameawb_cmd" name="tarif_sameawb_cmd" placeholder="Tarif Sameday" aria-label="Tarif Sameday" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group restituire-ele">
+                        <div class="col-xs-12">
+                            <label for="restit_awb_cmd" class="form-label">Restituire</label>
+                            <input type="text" class="form-control" id="restit_awb_cmd" name="restit_awb_cmd" placeholder="Restituire" aria-label="Restituire">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="actualizare_awb">Actualizare date</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Pickup Date -->
+<div class="modal fade" id="modal_courier_pickup" tabindex="-1" role="dialog" aria-labelledby="pickupModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pickupModalLabel">Plasează comanda de curier</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Pickup Date -->
+                <div class="form-group">
+                    <label for="courier_pickup_date">Data Ridicării</label>
+                    <input type="date" id="courier_pickup_date" name="courier_pickup_date" class="form-control form-control-sm" required>
+                </div>
+
+                <!-- Pickup Time Slot -->
+                <div class="form-group">
+                    <label for="courier_pickup_slot">Interval Ridicare</label>
+                    <select id="courier_pickup_slot" name="courier_pickup_slot" class="form-control form-control-sm" required>
+                        <option value="1" selected>Mon - Fri - 15:00 - 17:00</option>
+                        <option value="2">Sat - 12:00 - 14:00</option>
+                    </select>
+                </div>
+				
+				<div class="form-group">
+					<label for="courier_contfan">Ridicare Fan</label>
+					<select class="form-select form-select-sm form-control" id="courier_contfan" name="courier_contfan" aria-label="Cont Fan">
+						<option value="Utvin" selected>Utvin</option>
+						<option value="Timisoara">Timisoara</option>
+						<option value="Test">Test</option>
+					</select>
+				</div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Închide</button>
+                <button type="button" class="btn btn-success" id="saveCourierDate">Salvează</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal SMS -->
+<div class="modal fade" id="mod_sms" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><i class="glyphicon glyphicon-edit"></i> Trimite SMS</h4>
+            </div>
+            <form class="form-horizontal" method="post" id="frmeditare_sms" action="{{ route('comenzi.send-sms') }}">
+                @csrf
+                <div class="modal-body">
+                    <div id="rezultat_ajax_sms"></div>
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <input type="hidden" class="form-control" name="mod_id_sms" id="mod_id_sms">
+                            <input type="hidden" class="form-control" name="mod_awb_sms" id="mod_awb_sms">
+                            <input type="hidden" class="form-control" name="mod_total_sms" id="mod_total_sms">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nume" class="col-sm-3 control-label">Nume client</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="mod_nume_sms" name="mod_nume_sms" placeholder="Nume client" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefon" class="col-sm-3 control-label">Telefon</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="mod_tel_sms" name="mod_tel_sms" placeholder="Telefon">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="mesaj" class="col-sm-3 control-label">Mesaj</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" id="mod_mesaj" name="mod_mesaj" placeholder="Mesaj" required rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" id="actualizare_sms">Trimite SMS</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal edit supplier -->
+<div class="modal fade" id="mod_furnizor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><i class="glyphicon glyphicon-edit"></i> Furnizor piesa</h4>
+            </div>
+            <form class="form-horizontal" method="post" id="frmeditare_furnizor" action="{{ route('comenzi.update-supplier') }}">
+                @csrf
+                <div class="modal-body">
+                    <div id="rezultat_ajax_fur"></div>
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <input type="hidden" class="form-control" name="mod_id_cmd_fur" id="mod_id_cmd_fur">
+                            <input type="hidden" class="form-control" name="mod_id_prod_fur" id="mod_id_prod_fur">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="funkyradio">
+                            @php
+                                $suppliers = ['ET', 'MA', 'IC', 'AN', 'AT', 'BA', 'AB', 'SZ', 'AP', 'AD', 'Stoc'];
+                            @endphp
+
+                            @foreach($suppliers as $index => $supplier)
+                                <div class="funkyradio-default">
+                                    <label class="btn btn-default btn-sm btn-block">
+                                        <input type="radio" name="xfur" id="mod_fur{{ $index }}" value="{{ $supplier }}">
+                                        {{ $supplier }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="modal-footer">
+                    <button type="submit" class="btn btn-success" id="actualizare_fur">Actualizare date</button>
+                </div>-->
+            </form>
+        </div>
+    </div>
+</div>
+<div id="pickupPointMapDiv"></div>
+<div id="sameday-locker-plugin"></div>
+
+<div class="modal fade" id="fanCourierModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">FanCourier Pickup Points</h4>
+      </div>
+      <div class="modal-body" style="height: 500px; display:flex; position:relative;">
+        <div id="fanCourierModalLoader" style="position:absolute; top:0; left:0; right:0; margin:auto; width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#fff; z-index:9999; font-size:18px; font-weight:bold;">
+            Loading pickup points...
+        </div>
+        
+        <div id="fanCourierListContainer" style="width:30%; height:100%; overflow-y:auto; border-right:1px solid #ddd; padding:10px;">
+            <div style="position: relative; margin-bottom: 15px;">
+                <label for="fanCourierSearchJudet" style="display: block; margin-bottom: 5px; font-weight: 500; color: #333;">Judet*</label>
+                <input type="text" id="fanCourierSearchJudet" placeholder="Search Judet..." style="width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; background: #fff; transition: border-color 0.2s; outline: none;" onfocus="this.style.borderColor='#007bff'; this.style.boxShadow='0 0 0 2px rgba(0,123,255,0.25)'" onblur="this.style.borderColor='#ddd'; this.style.boxShadow='none'">
+                <div id="judetSuggestions" style="position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ddd; border-top: none; border-radius: 0 0 4px 4px; max-height: 200px; overflow-y: auto; z-index: 1000; display: none; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"></div>
+            </div>
+            <div style="position: relative; margin-bottom: 15px;">
+                <label for="fanCourierSearchLocalitate" style="display: block; margin-bottom: 5px; font-weight: 500; color: #333;">Localitate*</label>
+                <input type="text" id="fanCourierSearchLocalitate" placeholder="Search Localitate..." style="width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; background: #fff; transition: border-color 0.2s; outline: none;" onfocus="this.style.borderColor='#007bff'; this.style.boxShadow='0 0 0 2px rgba(0,123,255,0.25)'" onblur="this.style.borderColor='#ddd'; this.style.boxShadow='none'">
+                <div id="localitateSuggestions" style="position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ddd; border-top: none; border-radius: 0 0 4px 4px; max-height: 200px; overflow-y: auto; z-index: 1000; display: none; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"></div>
+            </div>
+            <div class="form-group">
+              <label>Tipuri Puncte de ridicare:</label>
+              <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="typeFilterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Vezi toate
+                </button>
+                <div class="dropdown-menu p-3" aria-labelledby="typeFilterDropdown">
+                  <div class="form-check">
+                    <input class="form-check-input fanc-type-filter" type="checkbox" value="paypoint" id="filterPaypoint" checked>
+                    <label class="form-check-label" for="filterPaypoint">Paypoint</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input fanc-type-filter" type="checkbox" value="office" id="filterSediu" checked>
+                    <label class="form-check-label" for="filterSediu">Sediu</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input fanc-type-filter" type="checkbox" value="fanbox" id="filterFanbox" checked>
+                    <label class="form-check-label" for="filterFanbox">Fanbox</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <input type="text" id="fanCourierSearch" placeholder="Search..." style="width:100%; margin-bottom:10px; padding:5px;">
+            
+            <div id="fanCourierList" style="flex:1; overflow-y:auto;"></div>
+        </div>
+        
+        <div id="fanCourierMap" style="height:100%; width:70%;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+/**
+ * Document ready handler - initialize all handlers
+ */
+$(document).ready(function() {
+    // Initialize all form handlers
+    setupStatusFormHandler();
+    setupColorFormHandler();
+    setupTotalFormHandler();
+    setupAwbFormHandler();
+    setupSmsFormHandler();
+    setupSupplierFormHandler();
+    
+    // Setup AWB modal checkbox handlers
+    setupAwbCheckboxHandlers();
+	
+	
+	
+    $('#openCourierModal').click(function() {
+        // Open the second modal
+        $('#modal_courier_pickup').modal('show');
+    });
+
+    // Optional: if you want to go back to the first modal after saving
+    $('#saveCourierDate').click(function() {
+		const date = $('#courier_pickup_date').val();
+		const slot = $('#courier_pickup_slot').val();
+
+		// Set hidden values inside AWB form
+		$('#courier_pickup_date_hidden').val(date);
+		$('#courier_pickup_slot_hidden').val(slot);
+
+        // Close the second modal
+        $('#modal_courier_pickup').modal('hide');
+    });
+	
+	$('#contfan, #courier_contfan').on('change', function() {
+		const selectedValue = $(this).val();
+
+		// Update both dropdowns to have the same value
+		$('#contfan').val(selectedValue);
+		$('#courier_contfan').val(selectedValue);
+	});
+	
+	
+	document.getElementById('form_awb').addEventListener('change', function (event) {
+		calculateShippingPrice($('#mod_id_awb').val());
+	});
+	
+	$('#courier_type').change(function(){
+		if($('#courier_type').val() == "courier"){
+			$('.courier_type_date').show();
+		}else{
+			$('.courier_type_date').hide();
+		}
+	});
+    
+    // Initialize AWB modal
+    $('#modal_awb').on('show.bs.modal', function() {
+        console.log('AWB modal is opening');
+        // Load both Sameday and Fan Courier services
+        fetchSamedayServices();
+        fetchSamedayPickupPoints();
+        fetchFanCourierServices();
+    });
+
+    // check at the time of initital setup
+    if ($('#tipserviciu').val() === 'Cont Colector') {
+        var rambursValue = parseFloat($('#ramburs_awb_cmd').val()) || 0;
+        if (rambursValue <= 0) {
+            $('#ramburs_awb_cmd').val(1);
+        }
+    }
+    
+    if ($('#tipserviciu').is(':visible')) {
+        $('#openPickupPointMap').toggleClass(
+          'hide',
+          !['FANbox', 'FANbox Cont Colector', 'CollectPoint Cont Colector', 'CollectPoint', 'Standard', 'Cont Colector'].includes($('#tipserviciu').val())
+        );
+    }
+    
+    if ($('#tipserviciusame').is(':visible')) {
+        $('#openPickupPointMap').toggleClass(
+          'hide',
+          !['15', '28', '57'].includes($('#tipserviciusame').val())
+        );
+    }
+
+    // check ramburs value on Cont  Colector change
+    $('#tipserviciu').on('change', function() {
+        var selectedService = $(this).val();
+        
+        if (selectedService === 'Standard') {
+			$('#ramburs_awb_cmd').val('');
+			$('#ramburs_awb_cmd').prop('readonly', true);
+		}else{
+			$('#ramburs_awb_cmd').prop('readonly', false);
+		}
+		
+        if (selectedService === 'Cont Colector' || selectedService === 'CollectPoint Cont Colector') {
+            // यदि Cont Colector सेलेक्ट है और रैंबर्स 0 है या खाली है
+            var rambursValue = parseFloat($('#ramburs_awb_cmd').val()) || 0;
+            if (rambursValue <= 0) {
+                $('#ramburs_awb_cmd').val(1);
+                // वैकल्पिक: यूजर को बताएं कि क्यों वैल्यू सेट की गई
+                $('#rezultat_ajax_awb').html('<div class="alert alert-warning">Cont Colector सर्विस के लिए रैंबर्स कम से कम 1 होना चाहिए। ऑटोमेटिक रूप से 1 RON सेट किया गया।</div>');
+            }
+        }
+        
+        // Handle FANbox service - automatically set payment to "Ramburs" (destinatar)
+        if (selectedService === 'FANbox' || selectedService === 'FANbox Cont Colector') {
+            // Set payment option to "destinatar" (Ramburs) for FANbox
+            //$('#plataexpeditie').val('destinatar');
+            console.log('FANbox selected - Payment option set to Ramburs (destinatar)');
+            
+            // Also ensure ramburs value is set if it's 0
+            var rambursValue = parseFloat($('#ramburs_awb_cmd').val()) || 0;
+            if (rambursValue <= 0) {
+                $('#ramburs_awb_cmd').val(1);
+                console.log('FANbox - Rambars value set to 1 for service');
+            }
+        }
+		
+		if (selectedService === 'FANbox' || selectedService === 'CollectPoint' || selectedService === 'FANbox Cont Colector' || selectedService === 'CollectPoint Cont Colector') {
+			$('.sizes-fields').show();
+			$('.restituire-ele').hide();
+			$('#openPickupPointMap').text('Alege punctul');
+		}else{
+			$('.restituire-ele').show();
+			$('.sizes-fields').hide();
+			$('#openPickupPointMap').text('Ridicare din sediu');
+		}
+        
+        if ($('#tipserviciu').is(':visible')) {
+            $('#openPickupPointMap').toggleClass(
+              'hide',
+              !['FANbox', 'FANbox Cont Colector', 'CollectPoint Cont Colector', 'CollectPoint', 'Standard', 'Cont Colector'].includes($('#tipserviciu').val())
+            );
+        }
+    });
+    
+    $('#tipserviciusame').on('change', function() {
+		var selectedService = $(this).val();
+        if ($('#tipserviciusame').is(':visible')) {
+            $('#openPickupPointMap').toggleClass(
+              'hide',
+              !['15', '28', '57'].includes($('#tipserviciusame').val())
+            );
+        }
+		
+		if (selectedService === '15' || selectedService === '28' || selectedService === '57') {
+			$('#openPickupPointMap').text('Alege punctul');
+		}else{
+			$('#openPickupPointMap').text('Alege punctul');
+		}
+    });
+
+    // handle awb generation button click
+    $('#actualizare_awb').on('click', function(e) {
+        e.preventDefault();
+
+        var mod_awb_cmd  = $('#mod_awb_cmd').val().trim() == '___' ? '' : $('#mod_awb_cmd').val().trim();
+
+        // if awb number is not empty
+        if (mod_awb_cmd != '') {
+            // show loading message
+            $('#rezultat_ajax_awb').html('<div class="alert alert-info">AWB number is updating...</div>');
+
+            var orderId = $('#mod_id_awb').val();
+            var awbNumber = mod_awb_cmd;
+
+            // if sameday checkbox is checked
+            if($('#flexCheckSame').is(':checked')) {
+                var contAwb = 'same';
+
+                // submit form with sameday data
+                submitAwbForm(orderId, awbNumber, contAwb, null);
+            }
+            else {
+                var contAwb = $('#contfan').val();
+
+                // submit form with fancourier data
+                submitAwbForm(orderId, awbNumber, contAwb, null);
+            }
+        }
+        else if ($('#flexCheckSame').is(':checked')) {// if sameday checkbox is checked
+            console.log('sameday checkbox is checked');
+
+            // generate AWB for sameday courier
+            generateSamedayAwb();
+            return false; // Pause normal process
+        }
+        else  {
+            console.log('fancourier checkbox is checked');
+
+            // generate AWB for fancourier
+            generateFanCourierAwb()
+            return false; // Pause normal process
+        }
+    });
+});
+
+
+/**
+ * Status form handler setup
+ */
+function setupStatusFormHandler() {
+    $('#form_status').on('submit', function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    if(response.invoice_url){
+                        window.open(response.invoice_url, '_blank');
+                        //console.log(response);return false;
+/*                         var form = $('<form>', {
+                            action: '/comenzi/generate-invoice-pdf/' + response.order_id,
+                            method: 'POST',
+                            target: '_blank' // open in new tab
+                        });
+
+                        // CSRF token
+                        form.append($('<input>', {
+                            type: 'hidden',
+                            name: '_token',
+                            value: $('meta[name="csrf-token"]').attr('content')
+                        }));
+
+                        // Extra fields
+                        form.append($('<input>', {
+                            type: 'hidden',
+                            name: 'id_client',
+                            value: response.data.id_client // must come from your Laravel response
+                        }));
+
+                        form.append($('<input>', {
+                            type: 'hidden',
+                            name: 'id_incasare',
+                            value: response.data.id_incasare
+                        }));
+
+                        form.append($('<input>', {
+                            type: 'hidden',
+                            name: 'vanzator_nou',
+                            value: response.data.vanzator_nou
+                        }));
+
+                        form.append($('<input>', {
+                            type: 'hidden',
+                            name: 'data',
+                            value: response.data.data // must come from Laravel response
+                        }));
+
+                        form.append($('<input>', {
+                            type: 'hidden',
+                            name: 'datascadenta',
+                            value: response.data.datascadenta // must come from Laravel response
+                        }));
+
+                        // Append & submit
+                        $('body').append(form);
+                        form.submit();
+                        form.remove();
+
+                        return; */
+                    }
+                    $('#status_result').html('<div class="alert alert-success">Status actualizat cu succes!</div>');
+                    setTimeout(function() {
+                        $('#modal_status').modal('hide');
+
+                        // Reload the page to reflect the changes with same date, dont use location.reload() here
+                        load(1)
+                    }, 1500);
+                } else {
+                    $('#status_result').html('<div class="alert alert-danger">Eroare: ' + response.message + '</div>');
+                }
+            },
+            error: function(xhr) {
+                $('#status_result').html('<div class="alert alert-danger">Eroare la actualizarea statusului!</div>');
+            }
+        });
+    });
+}
+
+/**
+ * Color form handler setup
+ */
+function setupColorFormHandler() {
+    //$('#frmeditare_culoare').on('submit', function(e) {
+	$(document).on('change', 'input[name="xcul"]', function (e) {
+        e.preventDefault();
+        var formData = $('#frmeditare_culoare').serialize();
+        
+        $.ajax({
+            url: '/comenzi/update-color',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    $('#rezultat_ajax_culoare').html('<div class="alert alert-success">Culoare actualizată cu succes!</div>');
+                    setTimeout(function() {
+                        $('#mod_culoare').modal('hide');
+                        // Reload the page to reflect the changes with same date, dont use location.reload() here
+                        load(1)
+                    }, 1500);
+                } else {
+                    $('#rezultat_ajax_culoare').html('<div class="alert alert-danger">Eroare: ' + response.message + '</div>');
+                }
+            },
+            error: function(xhr) {
+                $('#rezultat_ajax_culoare').html('<div class="alert alert-danger">Eroare la actualizarea culorii!</div>');
+            }
+        });
+    });
+}
+
+/**
+ * Total form handler setup
+ */
+function setupTotalFormHandler() {
+    $('#frmeditare_total').on('submit', function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    $('#rezultat_ajax_total').html('<div class="alert alert-success">Total actualizat cu succes!</div>');
+                    setTimeout(function() {
+                        $('#mod_total').modal('hide');
+                        // Reload the page to reflect the changes with same date, dont use location.reload() here
+                        load(1)
+                    }, 1500);
+                } else {
+                    $('#rezultat_ajax_total').html('<div class="alert alert-danger">Eroare: ' + response.message + '</div>');
+                }
+            },
+            error: function(xhr) {
+                $('#rezultat_ajax_total').html('<div class="alert alert-danger">Eroare la actualizarea totalului!</div>');
+            }
+        });
+    });
+}
+
+/**
+ * AWB form handler setup
+ */
+function setupAwbFormHandler() {
+    // ऑटो-पॉपुलेशन फंक्शन जोड़ें - नाम फील्ड के लिए
+    $('#nume_awb_cmd').on('input', function() {
+        // कॉन्टैक्ट पर्सन से डेस्टीनेटर फील्ड ऑटो-फिल करें
+        if ($(this).val()) {
+            $('#comp_awb_cmd').val($(this).val());
+        }
+    });
+
+    // या कंपनी नाम से ऑटो-पॉपुलेट
+    $('#comp_awb_cmd').on('input', function() {
+        // डेस्टीनेटर से कॉन्टैक्ट पर्सन फील्ड ऑटो-फिल करें
+        if ($(this).val() && !$('#nume_awb_cmd').val()) {
+            $('#nume_awb_cmd').val($(this).val());
+        }
+    });
+}
+
+function submitAwbForm(orderId, awbNumber, contAwb, swapAwbNumber) {
+    $.ajax({
+        url: $('#form_awb').attr('action'),
+        type: 'POST',
+        data: {mod_id_awb: orderId, mod_awb_cmd: awbNumber, cont_awb: contAwb, swapAwbNumber: swapAwbNumber},
+        success: function(response) {
+            if (response.success) {
+                $('#rezultat_ajax_awb').html('<div class="alert alert-success">AWB successfully updated!!!</div>');
+
+                // If AWB number exists, display it in the page
+                if (awbNumber) {
+                    // Update AWB numbers in the table
+                    updateAwbInTable(orderId, awbNumber);
+                }
+
+                setTimeout(function() {
+                    $('#modal_awb').modal('hide');
+
+                    // Reload the page to reflect the changes with same date, don't use location.reload() here
+                    load(1);
+
+                    // opwn a new window/tab with  the AWB print page
+                    // Use the AWB number and cont_awb to generate the URL
+                    const url = "/awb-print/" + awbNumber + "?cont_awb=" + contAwb;
+                    window.open(url, '_blank'); // '_blank' opens in a new tab/window
+                }, 1500);
+            }
+            else {
+                $('#rezultat_ajax_awb').html('<div class="alert alert-danger">error: ' + response.message + '</div>');
+            }
+        },
+        error: function(xhr) {
+            $('#rezultat_ajax_awb').html('<div class="alert alert-danger">error: not able to submit form!!!</div>');
+        }
+    });
+}
+
+// टेबल में AWB अपडेट करें - रीलोड के बिना दिखाने के लिए
+function updateAwbInTable(orderId, awbNumber) {
+    // पेज में ऑर्डर की AWB सेल ढूंढें
+    var awbCell = $('tr[data-order-id="' + orderId + '"] td.awb-cell');
+    
+    if (awbCell.length) {
+        // AWB सेल मिला, उसे अपडेट करें
+        awbCell.text(awbNumber);
+    } else {
+        // यदि सेल नहीं मिला तो सभी पंक्तियों की जांच करें
+        $('table tr').each(function() {
+            var $row = $(this);
+            var firstCell = $row.find('td:first');
+            
+            // यदि पहला सेल ऑर्डर ID से मेल खाता है
+            if (firstCell.text().trim() === orderId.toString().trim()) {
+                // AWB कॉलम ढूंढें (आमतौर पर 8वां या 9वां)
+                $row.find('td:nth-child(9), td:nth-child(8)').each(function() {
+                    var cellText = $(this).text().trim();
+                    if (cellText === '___' || cellText === '' || cellText === '—') {
+                        $(this).text(awbNumber);
+                    }
+                });
+            }
+        });
+    }
+}
+
+function obtine_awb(id) {
+    console.log('obtine_awb called with id:', id);
+    
+    // Clear result container
+    $('#rezultat_ajax_awb').html('');
+    
+    // Set order ID
+    $('#mod_id_awb').val(id);
+
+    // Set total value for ramburs
+    const total_awb = $("#total_cmd" + id).val();
+    $("#ramburs_awb_cmd").val(total_awb);
+
+    // Get client data via AJAX
+    $.ajax({
+        url: '/comenzi/get-client-for-awb/' + id,
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            console.log('Client data received:', response);
+            
+            if (response.success) {
+                var clientData = response.client_data;
+                var orderData = response.order;
+                console.log(clientData);
+                
+                // Fill client data into form
+                $('#comp_awb_cmd').val(clientData.company || clientData.name || '');
+                $('#nume_awb_cmd').val(clientData.contact_person || clientData.name || '');
+                $('#judet_awb_cmd').val(clientData.county || '');
+                $('#local_awb_cmd').val(clientData.city || '');
+                $('#adresa_awb_cmd').val(clientData.address || '');
+                $('#tel_awb_cmd').val(clientData.phone || '');
+                
+                // Set default values
+                $('#plic_awb_cmd').val('0');
+                $('#colet_awb_cmd').val('1');
+                $('#greutate_awb_cmd').val('1');
+                $('#restit_awb_cmd').val('');
+                $('#km_awb_cmd').val(clientData.km_loc);
+                $('#agentie_awb_cmd').val(clientData.agentie_loc);
+                
+                // Additional fields
+                $('#cod_awb_cmd').val('700');
+                
+                // Observation checkboxes
+                $('#Obs1').prop('checked', true);   // Atentie-Fragil
+                $('#Obs2').prop('checked', true);   // Livrare urgenta
+                
+                // Options checkboxes
+                $('#Optiune1').prop('checked', false);  // Deschidere la livrare
+                $('#Optiune2').prop('checked', false);  // Livrare sambata
+                $('#Optiune3').prop('checked', false);  // Livrare din sediul FAN Courier
+                
+                // Set AWB and courier type
+                $('#mod_awb_cmd').val(orderData.awb || '');
+                
+                // Set checkbox based on courier type
+                if (orderData.courier_type === 'same') {
+                    $('#flexCheckSame').prop('checked', true);
+                    $('#flexCheckChecked').prop('checked', false);
+                    
+                    // Show Sameday options
+                    /* $('#serviciufan').hide();
+                    $('#tipserviciusame').closest('.form-floating').show();
+                    $('#tipridicare').closest('.form-floating').show(); */
+                    $('.fanc-options').hide();
+                    $('.samdayc-options').show();
+                    
+                    $('.courier-order-opt').hide();
+                    $('.sameday-options').show();
+                    $('.fancouerier-options').hide();
+					
+					$('.restituire-ele').hide();
+                }
+                else {
+                    $('#flexCheckChecked').prop('checked', true);
+                    $('#flexCheckSame').prop('checked', false);
+                    
+                    // Show Fan options
+                    /* $('#serviciufan').show();
+                    $('#tipserviciusame').closest('.form-floating').hide();
+                    $('#tipridicare').closest('.form-floating').hide();
+                    
+                    $('#tipserviciusame').hide();
+                    $('label[for="tipserviciusame"]').hide(); */
+					if($('#courier_type').val() == "courier"){
+						$('.courier_type_date').show();
+					}else{
+						$('.courier_type_date').hide();
+					}
+					
+					if($('#tipserviciu').val() == "FANbox" || $('#tipserviciu').val() == "CollectPoint" || $('#tipserviciu').val() == "FANbox Cont Colector" || $('#tipserviciu').val() == "CollectPoint Cont Colector"){
+						$('.sizes-fields').show();
+						$('#openPickupPointMap').text('Alege punctul');
+					}else{
+						$('.sizes-fields').hide();
+						$('#openPickupPointMap').text('Ridicare din sediu');
+					}
+                    
+                    $('.courier-order-opt').show();
+                    $('.fanc-options').show();
+                    $('.samdayc-options').hide();
+                    
+                    $('.sameday-options').hide();
+                    $('.fancouerier-options').show();
+					$('.restituire-ele').show();
+                }
+                
+                // Calculate shipping price
+                calculateShippingPrice(id);
+            }
+            else {
+                console.error('Failed to fetch client data:', response.message);
+                $('#rezultat_ajax_awb').html('<div class="alert alert-danger">Failed to load client data: ' + response.message + '</div>');
+                
+                // Set default values anyway
+                $('#plic_awb_cmd').val('0');
+                $('#colet_awb_cmd').val('1');
+                $('#greutate_awb_cmd').val('1');
+                $('#km_awb_cmd').val(0);
+                $('#agentie_awb_cmd').val('');
+            }
+            
+            // Show modal
+            $('#modal_awb').modal('show');
+        },
+        error: function(xhr) {
+            console.error('AJAX Error:', xhr);
+            $('#rezultat_ajax_awb').html('<div class="alert alert-danger">Error loading client data. Please try again.</div>');
+            
+            // Set default values
+            $('#plic_awb_cmd').val('0');
+            $('#colet_awb_cmd').val('1');
+            $('#greutate_awb_cmd').val('1');
+            $('#km_awb_cmd').val(0);
+            $('#agentie_awb_cmd').val('');
+            
+            // Show modal (even if API call fails)
+            $('#modal_awb').modal('show');
+        }
+    });
+}
+ 
+
+function generateSamedayAwb() {
+    var contAwb = 'same';
+
+    console.log('Sameday AWB generation starting...');
+    
+    // show loading message
+    $('#rezultat_ajax_awb').html('<div class="alert alert-info">Sameday AWB is being generated...</div>');
+    
+    // CSRF Get Token
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    
+    // Recipient Name - Make sure both the destination and contact person are same
+    var recipientName = $('#nume_awb_cmd').val() || $('#comp_awb_cmd').val();
+    
+    // Make sure both fields are filled in
+    $('#nume_awb_cmd').val(recipientName);
+    $('#comp_awb_cmd').val(recipientName);
+    
+    // Check all the required fields
+    var error = false;
+    var errorHTML = '';
+    if (!recipientName) {
+        error = true;
+        errorHTML = 'Recipient\'s name is required!';
+    }
+    
+    if (!$('#tel_awb_cmd').val()) {
+        error = true;
+        errorHTML = 'Phone number required!';
+    }
+    
+    if (!$('#local_awb_cmd').val()) {
+        error = true;
+        errorHTML = 'The city is essential!';
+    }
+    
+    if (!$('#judet_awb_cmd').val()) {
+        error = true;
+        errorHTML = 'County Required!';
+    }
+    
+    if (!$('#adresa_awb_cmd').val()) {
+        error = true;
+        errorHTML = 'Address is required!';
+    }
+
+    if(error) {
+        var html = '<div class="alert alert-danger">' + errorHTML + '</div>'
+        $('#rezultat_ajax_awb').html(html);
+        return;
+    }
+
+    // get rumbers value
+    var rambursValue = parseFloat($('#ramburs_awb_cmd').val()) || 0;
+    console.log('ramblers value:', rambursValue);
+
+    // get order ID
+    var orderId = $('#mod_id_awb').val();
+     
+    // Prepare the request data
+    var requestData = {
+        _token: csrfToken,
+        serviceId: $('#tipserviciusame').val() || 7,
+        pickupPointId: $('#tipridicare').val() || 84024,
+        recipientName: recipientName,
+        recipientPhone: $('#tel_awb_cmd').val(),
+        recipientCity: $('#local_awb_cmd').val(),
+        recipientCounty: $('#judet_awb_cmd').val(),
+        recipientAddress: $('#adresa_awb_cmd').val(),
+        packageWeight: $('#greutate_awb_cmd').val() || 1,
+        colet_awb_cmd: $('#colet_awb_cmd').val() || 1,
+        packageNumber: 1,
+        cashOnDelivery: rambursValue, // pass ramburs value
+        mod_id_awb: orderId,
+        plataexpeditie: $('#plataexpeditie').val() || 'expeditor', // Add payment type field
+        pickup_point_id: $('#pickup_point_id').val(),
+    };
+    
+    // Checkboxes
+    if ($('#deschidereColet').is(':checked')) requestData.opt1 = $('#deschidereColet').val();
+    if ($('#coletSchimb').is(':checked')) requestData.opt2 = $('#coletSchimb').val();
+    
+    // Add comments/observations
+    var observation = '';
+    if ($('#Obs1').is(':checked')) observation += 'Atentie-Fragil';
+    if ($('#Obs2').is(':checked')) {
+        if (observation) observation += ', ';
+        observation += 'Livrare urgenta';
+    }
+    requestData.observation = observation || 'Atentie-Fragil, Livrare urgenta';
+    
+    console.log('AWB request data:', requestData);
+    
+    // Disable the button
+    //$('#actualizare_awb').prop('disabled', true).text('AWB generating...'); commented temorarily 14_05_2025_13_18
+    $("#actualizare_awb").attr("disabled", true);
+
+    // send AJAX request to generate Sameday AWB
+    $.ajax({
+        url: '/comenzi/create-sameday-awb',
+        type: 'POST',
+        data: requestData,
+        dataType: 'json',
+        success: function(response) {
+            console.log('Sameday AWB प्रतिक्रिया:', response);
+                        
+            if (response.success) {
+                var awbNumber = response.awb_number;
+                var swapAwbNumber = response.swap_awb ?? null;
+                console.log('AWB number: ', awbNumber);
+
+                let successMessage = '<div class="alert alert-success">AWB successfully generated: ' + awbNumber + '</div>';
+                
+                $('#rezultat_ajax_awb').html(successMessage);
+                $('#mod_awb_cmd').val(response.awb_number);
+                
+                // set Sameday checkbox as checked
+                $('#flexCheckSame').prop('checked', true);
+                $('#flexCheckChecked').prop('checked', false);
+                
+                // submit form with sameday data
+                submitAwbForm(orderId, awbNumber, contAwb, swapAwbNumber);
+            }
+            else {
+                let errorMessage = '<div class="alert alert-danger">Error: ' + (response.message || 'unknown erro!!!') + '</div>';
+                $('#rezultat_ajax_awb').html(errorMessage);
+            }
+        },
+        error: function(xhr) {
+            console.error('AJAX error: ', xhr);
+            
+            // enable the button
+            $('#actualizare_awb').attr("disabled", false);
+            
+            var errorMessage = 'Error in AWB generation';
+            try {
+                var response = JSON.parse(xhr.responseText);
+                errorMessage += ': ' + (response.message || 'unknown error');
+            }
+            catch(e) {
+                errorMessage += ': unknown error';
+            }
+            
+            $('#rezultat_ajax_awb').html(
+                '<div class="alert alert-danger">' + errorMessage + '</div>'
+            );
+        }
+    });
+}
+
+
+
+// FanCourier AWB Generation Function
+function generateFanCourierAwb() {
+    console.log('Fan Courier AWB generation start...');
+    
+    // Check the service type
+    var serviceType = $('#tipserviciu').val();
+    
+    // CSRF Get Token
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    
+    // Get and set rnumber values
+    var rambursValue = parseFloat($('#ramburs_awb_cmd').val()) || 0;
+    
+    // Important: If ContCollector is Service and rnumbers is zero, set default to 1
+    if ((serviceType === 'Cont Colector' || serviceType === 'CollectPoint Cont Colector') && rambursValue <= 0) {
+        rambursValue = 1; // set minimum value
+        $('#ramburs_awb_cmd').val(rambursValue); // update the input field
+        console.log('Cont Colector Rambars value set to 1 for service');
+    }
+    
+    var contfan = $('#contfan').val() || 'Utvin';
+
+    // get order ID
+    var orderId = $('#mod_id_awb').val();
+
+    // Extract data from all fields of a form
+    var formData = {
+        _token: csrfToken,
+        mod_id_awb: orderId,
+        tipserviciu: serviceType || 'Standard',
+        contfan: contfan,
+        comp_awb_cmd: $('#comp_awb_cmd').val() || 'Destinatar',
+        nume_awb_cmd: $('#nume_awb_cmd').val() || $('#comp_awb_cmd').val() || 'Contact',
+        tel_awb_cmd: $('#tel_awb_cmd').val(),
+        judet_awb_cmd: $('#judet_awb_cmd').val(),
+        local_awb_cmd: $('#local_awb_cmd').val(),
+        adresa_awb_cmd: $('#adresa_awb_cmd').val(),
+        plic_awb_cmd: $('#plic_awb_cmd').val() || 0,
+        colet_awb_cmd: $('#colet_awb_cmd').val() || 1,
+        greutate_awb_cmd: $('#greutate_awb_cmd').val() || 1,
+		
+		fanbox_size: $('#fanbox_size').val(),
+		courier_type: $('#courier_type').val() || 'awb_only',
+		
+		courier_pickup_date: $('#courier_pickup_date_hidden').val() || '',
+		courier_pickup_slot: $('#courier_pickup_slot_hidden').val() || '',
+		courier_pickup_location: $('#courier_pickup_location_hidden').val() || '',
+	
+        plataexpeditie: $('#plataexpeditie').val() || 'expeditor',
+        ramburs_awb_cmd: rambursValue, // update ramburs value
+        restit_awb_cmd: $('#restit_awb_cmd').val(),
+        pickup_point_id: $('#pickup_point_id').val()
+    };
+    
+    // Checkboxes
+    if ($('#Optiune1').is(':checked')) formData.opt1 = $('#Optiune1').val();
+    if ($('#Optiune2').is(':checked')) formData.opt2 = $('#Optiune2').val();
+    if ($('#Optiune3').is(':checked')) formData.opt3 = $('#Optiune3').val();
+    
+    if ($('#Obs1').is(':checked')) formData.obs1 = $('#Obs1').val();
+    if ($('#Obs2').is(':checked')) formData.obs2 = $('#Obs2').val();
+    
+    // Check if agency is provided
+    if ($('#agentie_awb_cmd').val()) {
+        formData.agentie_awb_cmd = $('#agentie_awb_cmd').val();
+    }
+    
+    // log form data
+    console.log('FanCourier AWB Request Data:', formData);
+    
+    // clear result DIV and show loading message
+    $('#rezultat_ajax_awb').html('<div class="alert alert-info">FanCourier AWB generating...</div>');
+    
+    // AJAX call to generate FanCourier AWB
+    $.ajax({
+        url: '/comenzi/create-fancourier-awb',
+        type: 'POST',
+        data: formData,
+        dataType: 'json',
+        success: function(response) {
+            var awbNumber = response.awb_number;
+            
+            if (response.success) {
+                $('#rezultat_ajax_awb').html('<div class="alert alert-success">FanCourier AWB generated: ' + awbNumber + '</div>');
+                $('#mod_awb_cmd').val(awbNumber);
+                
+                // Set FanCourier checkbox as checked
+                $('#flexCheckChecked').prop('checked', true);
+                $('#flexCheckSame').prop('checked', false);
+                
+                // submit form with fan courier data
+                submitAwbForm(orderId, awbNumber, contfan, null);
+            }
+            else {
+                $('#rezultat_ajax_awb').html('<div class="alert alert-danger">Error: ' + (response.message || 'Unknown error!!!') + '</div>');
+            }
+        },
+        error: function(xhr) {
+            console.error('AJAX Error:', xhr);
+            
+            var errorMessage = 'FanCourier AWB generation error';
+            try {
+                var response = JSON.parse(xhr.responseText);
+                errorMessage += ': ' + (response.message || 'Unknown error');
+                
+                if (response.errors) {
+                    console.error('Validation errors:', response.errors);
+
+                    // Show specific validation errors
+                    var errorDetails = '';
+                    for (var field in response.errors) {
+                        errorDetails += field + ': ' + response.errors[field].join(', ') + '<br>';
+                    }
+                    if (errorDetails) {
+                        errorMessage += '<br>' + errorDetails;
+                    }
+                }
+                
+                // details for debugging
+                console.error('Error Details:', response);
+            } catch(e) {
+                errorMessage += ': Unknown error';
+            }
+            
+            $('#rezultat_ajax_awb').html(
+                '<div class="alert alert-danger">' + errorMessage + '</div>'
+            );
+        }
+    });
+};
+
+
+
+/* SMS form handler setup
+ */
+function setupSmsFormHandler() {
+    $('#frmeditare_sms').on('submit', function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        
+        // Show loading indicator
+        $('#rezultat_ajax_sms').html('<div class="alert alert-info">Se trimite SMS-ul...</div>');
+        
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    $('#rezultat_ajax_sms').html('<div class="alert alert-success">SMS trimis cu succes!</div>');
+                    setTimeout(function() {
+                        $('#mod_sms').modal('hide');
+                        // Reload the page to reflect the changes with same date, dont use location.reload() here
+                        load(1)
+                    }, 1500);
+                } else {
+                    $('#rezultat_ajax_sms').html('<div class="alert alert-danger">Eroare: ' + response.message + '</div>');
+                }
+            },
+            error: function(xhr) {
+                var errorMessage = 'Eroare la trimiterea SMS-ului!';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage += ' ' + xhr.responseJSON.message;
+                }
+                $('#rezultat_ajax_sms').html('<div class="alert alert-danger">' + errorMessage + '</div>');
+            }
+        });
+    });
+}
+
+/**
+ * Supplier form handler setup
+ */
+function setupSupplierFormHandler() {
+    //$('#frmeditare_furnizor').on('submit', function(e) {
+	$(document).on('change', 'input[name="xfur"]', function (e) {
+        e.preventDefault();
+        var formData = $('#frmeditare_furnizor').serialize();
+        
+        $.ajax({
+            url: '/comenzi/update-supplier',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    $('#rezultat_ajax_fur').html('<div class="alert alert-success">Furnizor actualizat cu succes!</div>');
+                    setTimeout(function() {
+                        $('#mod_furnizor').modal('hide');
+                        // Reload the page to reflect the changes with same date, dont use location.reload() here
+                        load(1)
+                    }, 1500);
+                } else {
+                    $('#rezultat_ajax_fur').html('<div class="alert alert-danger">Eroare: ' + response.message + '</div>');
+                }
+            },
+            error: function(xhr) {
+                $('#rezultat_ajax_fur').html('<div class="alert alert-danger">Eroare la actualizarea furnizorului!</div>');
+            }
+        });
+    });
+}
+
+
+/**
+ * Setup AWB modal checkbox handlers
+ */
+function setupAwbCheckboxHandlers() {
+    // Fan Courier checkbox handler
+    $('#flexCheckChecked').on('change', function() {
+        if ($(this).is(':checked')) {
+            // Uncheck Sameday checkbox
+            $('#flexCheckSame').prop('checked', false);
+			
+			if ($('#tipserviciu').val() === 'Standard') {
+				$('#ramburs_awb_cmd').val('');
+				$('#ramburs_awb_cmd').prop('readonly', true);
+			}else{
+				$('#ramburs_awb_cmd').prop('readonly', false);
+			}
+            
+            // Show Fan options and hide Sameday options
+            /* $('#serviciufan').show();
+            $('label[for="tipserviciu"]').show();
+            $('#contfan').show();
+            $('#tipserviciusame').closest('.form-floating').hide();
+            $('#tipserviciusame').hide();
+            $('label[for="tipserviciusame"]').hide();
+            $('#tipridicare').closest('.form-floating').hide(); */
+            
+			$('.courier-order-opt').show();
+            $('.fanc-options').show();
+            $('.samdayc-options').hide();
+			$('.restituire-ele').show();
+			
+			if($('#courier_type').val() == "courier"){
+				$('.courier_type_date').show();
+			}else{
+				$('.courier_type_date').hide();
+			}
+            
+            // Calculate shipping price for fan courier
+            calculateShippingPrice($('#mod_id_awb').val());
+            
+            console.log('Fan Courier selected');
+            
+            $('#openPickupPointMap').toggleClass(
+              'hide',
+              !['FANbox', 'FANbox Cont Colector', 'CollectPoint Cont Colector', 'CollectPoint', 'Standard', 'Cont Colector'].includes($('#tipserviciu').val())
+            );
+			
+			if($('#tipserviciu').val() == "FANbox" || $('#tipserviciu').val() == "CollectPoint" || $('#tipserviciu').val() == "FANbox Cont Colector" || $('#tipserviciu').val() == "CollectPoint Cont Colector"){
+				$('.sizes-fields').show();
+			}else{
+				$('.sizes-fields').hide();
+			}
+            
+            $('.sameday-options').hide();
+            $('.fancouerier-options').show();
+        }
+    });
+    
+    // Sameday checkbox handler
+    $('#flexCheckSame').on('change', function() {
+        if ($(this).is(':checked')) {
+            // Uncheck Fan checkbox
+            $('#flexCheckChecked').prop('checked', false);
+			
+			$('#ramburs_awb_cmd').prop('readonly', false);
+            
+            // Hide Fan options and show Sameday options
+            /* $('#serviciufan').hide();
+            $('label[for="tipserviciu"]').hide();
+            $('#contfan').hide();
+            $('#tipserviciusame').closest('.form-floating').show();
+            $('#tipridicare').closest('.form-floating').show();
+            
+            $('#tipserviciusame').show();
+            $('label[for="tipserviciusame"]').show(); */
+            $('.courier-order-opt').hide();
+			
+            $('.fanc-options').hide();
+            $('.samdayc-options').show();
+            $('.restituire-ele').hide();
+			$('.courier_type_date').hide();
+            
+            // Calculate shipping price for sameday
+            calculateShippingPrice($('#mod_id_awb').val());
+            
+            console.log('Sameday selected');
+            
+            $('#openPickupPointMap').removeClass('hide');
+            
+            if ($('#tipserviciusame').is(':visible')) {
+                $('#openPickupPointMap').toggleClass(
+                  'hide',
+                  !['15', '28', '57'].includes($('#tipserviciusame').val())
+                );
+            }
+			
+			if ($('#tipserviciusame').val() === '15' || $('#tipserviciusame').val() === '28' || $('#tipserviciusame').val() === '57') {
+				$('#openPickupPointMap').text('Alege punctul');
+			}else{
+				$('#openPickupPointMap').text('Alege punctul');
+			}
+            
+            $('.sameday-options').show();
+            $('.fancouerier-options').hide();
+        }
+    });
+}
+
+
+/**
+ * Fetch Fan Courier services
+ */
+function fetchFanCourierServices() {
+    console.log('Fetching Fan Courier services...');
+    
+    $.ajax({
+        url: '/api/fancourier/services',
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            console.log('Services response:', response);
+            var $select = $('#tipserviciu');
+            $select.empty();
+            
+            // Add services from API
+            if (response.success && response.data && response.data.data && response.data.data.length > 0) {
+                const allowedIds = [1, 4, 19, 20, 27, 28];
+                response.data.data.forEach(function(service) {
+                    if (allowedIds.includes(service.id)) {
+						let displayName = service.name;
+
+						// Adjust display names for specific services
+						if (displayName === 'CollectPoint') {
+							displayName = 'CollectPoint Standard';
+						} else if (displayName === 'FANbox') {
+							displayName = 'FANbox Standard';
+						}
+					
+                        $select.append(
+                            $('<option>', {
+                                value: service.name,
+                                text: displayName
+                            })
+                        );
+                    }
+                });
+                console.log('Added ' + response.data.length + ' services');
+            }
+            else {
+                // Add default services
+                $select.append(`
+                    <option value="Cont Colector" selected>Cont Colector</option>
+                    <option value="Standard">Standard</option>
+                    <option value="CollectPoint">CollectPoint</option>
+                    <option value="CollectPoint Cont Colector">CollectPoint Cont Colector</option>
+                    <option value="FANbox">FANbox</option>
+                    <option value="FANbox Cont Colector">FANbox Cont Colector</option>
+                `);
+                console.log('Added default services (API returned no data)');
+            }
+            
+            // Select first service
+            $select.val('Cont Colector');
+            $select.trigger('change');
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching FanCourier services:', error);
+        }
+    });
+    
+/*     var fanServices = [
+        { value: 'Cont Colector', text: 'Cont Colector' },
+        { value: 'Standard', text: 'Standard' }
+    ];
+    
+    var $select = $('#tipserviciu');
+    $select.empty();
+    
+    fanServices.forEach(function(service) {
+        $select.append(
+            $('<option>', {
+                value: service.value,
+                text: service.text
+            })
+        );
+    });
+    
+    // Select first option
+    $select.val('Cont Colector');
+    $select.trigger('change'); */
+}
+
+
+function fetchSamedayServices() {
+    console.log('Fetching Sameday services...');
+    
+    $.ajax({
+        url: '/api/sameday/services',
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            console.log('Services response:', response);
+            var $select = $('#tipserviciusame');
+            $select.empty();
+
+            // Add services from API
+            if (response.success && response.data && response.data.length > 0) {
+                const allowedIds = [7, 15, 28, 57];
+                response.data.forEach(function(service) {
+                    if (allowedIds.includes(service.id)) {
+                        $select.append(
+                            $('<option>', {
+                                value: service.id,
+                                text: service.name
+                            })
+                        );
+                    }
+                });
+                console.log('Added ' + response.data.length + ' services');
+            }
+            else {
+                // Add default services
+                $select.append(`
+                    <option value="7">24H</option>
+                    <option value="15">Locker NextDay</option>
+                    <option value="28">Crossborder HD 24H</option>
+                `);
+                console.log('Added default services (API returned no data)');
+            }
+            
+            // Select first service
+            $select.val('7');
+           // $select.trigger('change');
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching Sameday services:', error);
+            
+            // Add default services in case of error
+            var $select = $('#tipserviciusame');
+            $select.empty().append(`
+                <option value="7" selected>24H Rapid</option>
+                <option value="10">Retur Standard</option>
+            `);
+            
+            console.log('Added default services (API error)');
+            $select.val('7');
+            //$select.trigger('change');
+        }
+    });
+}
+
+
+function fetchSamedayPickupPoints() {
+    console.log('Fetching Sameday pickup points...');
+    
+    $.ajax({
+        url: '/api/sameday/pickup-points',
+        type: 'GET',
+        dataType: 'json',
+        data: { city: 'Timisoara' },
+        success: function(response) {
+            console.log('Pickup points response:', response);
+            var $select = $('#tipridicare');
+            $select.empty();
+
+            // Add pickup points from API
+            if (response.success && response.data && response.data.length > 0) {
+                response.data.forEach(function(point) {
+                    var text = point.name || '';
+                    if (point.city) text += ' ' + point.city;
+                    if (point.address) text += ' ' + point.address;
+                    
+                    $select.append(
+                        $('<option>', {
+                            value: point.id,
+                            text: text
+                        })
+                    );
+                });
+                console.log('Added ' + response.data.length + ' pickup points');
+            } else {
+                // Add default pickup point
+                $select.append(`
+                    <option value="84024" selected>Punct Lucru TM Timisoara Str Gen Ioan Dragalina Nr23</option>
+                `);
+                console.log('Added default pickup point (API returned no data)');
+            }
+            
+            // Select the first pickup point
+            $select.val('311014');
+            $select.trigger('change');
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching Sameday pickup points:', error);
+            
+            // Add default pickup point in case of error
+            var $select = $('#tipridicare');
+            $select.empty().append(`
+                <option value="84024" selected>Punct Lucru TM Timisoara Str Gen Ioan Dragalina Nr23</option>
+            `);
+            
+            console.log('Added default pickup point (API error)');
+            $select.val('84024');
+            $select.trigger('change');
+        }
+    });
+}
+
+
+function calculateShippingPrice(orderId) {
+    console.log('Starting to calculate courier shipping price...');
+    
+    //get coureir type
+    var isSameday = $('#flexCheckSame').is(':checked');
+    var isFanCourier = $('#flexCheckChecked').is(':checked');
+    
+    // set defalt courier type
+    if (!isSameday && !isFanCourier) {
+        isFanCourier = true;
+        $('#flexCheckChecked').prop('checked', true);
+    }
+    
+    // Selected Courier Type
+    var courier = isSameday ? 'sameday' : 'fancourier';
+
+    //tipridicare
+
+    // Service Type - As per Courier
+    var serviceType = isSameday ?
+         ($('#tipserviciusame').val() || '7') :
+         ($('#tipserviciu').val() || 'Standard');
+    
+    // other parameters
+    var weight = $('#greutate_awb_cmd').val() || '1';
+    var county = $('#judet_awb_cmd').val();
+    var city = $('#local_awb_cmd').val();
+    var rambursValue = parseFloat($('#ramburs_awb_cmd').val()) || 0;
+    var pPId = $("#tipridicare").val();
+
+    // check ramburs Value for Cont Colector
+    if (!isSameday && (serviceType === 'Cont Colector' || serviceType === 'CollectPoint Cont Colector') && rambursValue <= 0) {
+        rambursValue = 1;
+        $('#ramburs_awb_cmd').val(1);
+        console.log('Cont Colector सर्विस के लिए रैंबर्स वैल्यू 1 सेट की गई');
+    }
+    
+    // CSRF टोकन
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    
+    // सही एंडपॉइंट उपयोग करें
+    var apiEndpoint = '/api/' + courier + '/calculate-price';
+    
+    // कॉल डेटा (लॉगिंग के लिए)
+    var callData = {
+        courier: courier,
+        service: serviceType,
+        weight: weight,
+        county: county,
+        city: city,
+        ramburs: rambursValue,
+        endpoint: apiEndpoint
+    };
+    console.log('Price calculation request:', callData);
+    
+    // set AJAX empty data
+    var ajaxData = {};
+    
+    if (courier === 'fancourier') {
+        // कैलकुलेशन स्टार्ट मैसेज
+        $('#tarif_awb_cmd').val('calculating...');
+
+        //correct parameters for FanCourier
+        ajaxData = {
+            _token: csrfToken,
+            courier: courier,
+            service: serviceType,
+            // required parameters according to FanCourier API
+            localitate_dest: city,
+            judet_dest: county,
+            plicuri: 0, // envelope
+            colete: 1,  // parcel
+            greutate: weight,
+            lungime: 10, // default length
+            latime: 10,  // deafult width
+            inaltime: 10, // default height
+            val_decl: rambursValue, // declared value
+            plata_ramburs: 'expeditor', // ramburs payment
+            account: $('#contfan').val() || 'Utvin'
+        };
+        
+        // set ramburs value if it's greater than 0
+        if (rambursValue > 0) {
+            ajaxData.val_ram = rambursValue; // cashe on delivery value
+        }
+    }
+    else {
+        $('#tarif_sameawb_cmd').val('calculating...');
+
+        //parameters for Sameday
+        ajaxData = {
+            _token: csrfToken,
+            courier: courier,
+            service: serviceType,
+            weight: weight,
+            county: county,
+            city: city,
+            order_id: orderId,
+            ramburs: rambursValue,
+            pickupPointId: pPId,
+            account: $('#contfan').val() || 'Utvin'
+        };
+    }
+    
+    // send AJAX request
+    $.ajax({
+        url: apiEndpoint,
+        type: 'POST',
+        data: ajaxData,
+        success: function(response) {
+            console.log('Price calculation response:', response);
+            if (response.success) {
+                if (isSameday) {
+                    let ftva = 0.0;
+
+                    // Sameday tariff processing
+                    if (response.data && response.data.samedayService) {
+                        ftva = response.data.samedayService.price;
+                    }
+                    else {
+                        ftva = 19.8299;
+                    }
+                    
+                    let cutva = Number.parseFloat(ftva * 1.19).toFixed(3);
+                    
+                    $('#tarif_sameawb_cmd').val(cutva);
+                    //$('#tarif_awb_cmd').val('');
+                    
+                    console.log('Sameday tariff:', cutva);
+                }
+                else {
+                    // FanCourier tariff processing
+                    var fanPrice = '';
+                    
+                    if (response.data && response.data.fanService) {
+                        fanPrice = response.data.fanService.price;
+                    }
+                    else {
+                        fanPrice = 18.81;
+                    }
+
+                    let ftva = Number.parseFloat(fanPrice);
+                    //let cutva = Number.parseFloat(ftva * 1.19).toFixed(3);
+                    let cutva = Number.parseFloat(ftva).toFixed(3);
+
+                    $('#tarif_awb_cmd').val(cutva);
+                    //$('#tarif_sameawb_cmd').val('');
+                    
+                    console.log('FanCourier tariff:', fanPrice);
+                }
+            }
+            else {
+                console.error('error in tariff calculation:', response.message);
+                
+                // show error message
+                if (isSameday) {
+                    $('#tarif_sameawb_cmd').val('Error');
+                    $('#tarif_awb_cmd').val('');
+                }
+                else {
+                    $('#tarif_awb_cmd').val('Error');
+                    $('#tarif_sameawb_cmd').val('');
+                }
+            }
+        },
+        error: function(xhr) {
+            console.error('Error in price calculation:', xhr);
+ 
+            // Display error message
+            if (isSameday) {
+                $('#tarif_sameawb_cmd').val('Error');
+                $('#tarif_awb_cmd').val('');
+            }
+            else {
+                $('#tarif_awb_cmd').val('Error');
+                $('#tarif_sameawb_cmd').val('');
+            }
+        }
+    });
+    
+    return true;
+}
+
+
+// AWB को डायरेक्ट अपडेट करने का नया फंक्शन
+function updateAwbDirectly(orderId, awbNumber, courierType) {
+    if (!orderId || !awbNumber) {
+        console.error('डायरेक्ट अपडेट में त्रुटि: आवश्यक मान गायब हैं', {
+            orderId: orderId,
+            awbNumber: awbNumber
+        });
+        return;
+    }
+    
+    // CSRF टोकन प्राप्त करें
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    
+    // AJAX रिक्वेस्ट डेटा तैयार करें
+    var updateData = {
+        _token: csrfToken,
+        mod_id_awb: orderId,
+        mod_awb_cmd: awbNumber,
+    };
+    
+    // कूरियर टाइप के आधार पर फील्ड सेट करें
+    if (courierType === 'same') {
+        updateData.flexCheckSame = true;
+        updateData.cont_awb = 'same';
+    } else {
+        updateData.flexCheckChecked = true;
+        updateData.cont_awb = $('#contfan').val() || 'Utvin';
+    }
+    
+    // बैकग्राउंड में AWB अपडेट करें
+    $.ajax({
+        url: '/comenzi/update-awb',
+        type: 'POST',
+        data: updateData,
+        success: function(response) {
+            console.log('AWB डायरेक्ट अपडेट सफल:', response);
+            
+            // इस समय पेज रीलोड न करें - यूजर को फॉर्म सबमिट करने दें
+        },
+        error: function(xhr) {
+            console.error('AWB डायरेक्ट अपडेट में त्रुटि:', xhr);
+        }
+    });
+}//
+
+/**
+ * Open status modal
+ * @param {number} id - Order ID
+ */
+function obtine_stare(id) {
+    // Reset form
+    $('#form_status')[0].reset();
+    $('#status_result').html('');
+    
+    // Set order ID
+    $('#mod_id_cmd').val(id);
+    
+    // Get current status
+    var currentStatus = $('#stare_cmd' + id).val();
+
+	if (currentStatus && (currentStatus == 1 || currentStatus == 7)) {
+		$("#mod_stare7").closest("label").show();
+	}else{
+		$("#mod_stare7").closest("label").hide();
+	}
+	
+	if (currentStatus && currentStatus == 1) {
+		$("#mod_stare6").closest("label").hide(); // hide Retur option
+		$("#mod_stare4").closest("label").hide(); // hide Retur option
+	} else {
+		$("#mod_stare6").closest("label").show(); // show Retur again
+		$("#mod_stare4").closest("label").show();
+	}
+    
+    // Select radio button according to status
+    $('#mod_stare' + currentStatus).prop('checked', true);
+    
+    // Show modal
+    $('#modal_status').modal('show');
+}
+
+/**
+ * Open total modal
+ * @param {number} id - Order ID
+ */
+function obtine_total(id) {
+    console.log('obtine_total called with id:', id);
+    
+    // Prevent event propagation
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    
+    // Set order ID
+    $('#mod_id_cmd_total').val(id);
+    
+    // Get current total
+    var currentTotal = $('#total_cmd' + id).val();
+    console.log('Current total:', currentTotal);
+    
+    // Set total
+    $('#mod_total_cmd').val(currentTotal);
+    
+    // Reset result
+    $('#rezultat_ajax_total').html('');
+    
+    // Show modal
+    $('#mod_total').modal({
+        backdrop: 'static',
+        keyboard: false,
+        show: true
+    });
+    
+    return false; // Prevent default event
+}
+
+/**
+ * Open color modal
+ * @param {number} idCmd - Order ID
+ * @param {number} idProd - Product ID
+ */
+function obtine_culoare(idCmd, idProd, currentColor) {
+    // Reset form
+    $('#frmeditare_culoare')[0].reset();
+    $('#rezultat_ajax_culoare').html('');
+    
+    // Set order and product ID
+    $('#mod_id_cmd_culoare').val(idCmd);
+    $('#mod_id_prod_culoare').val(idProd);
+    
+    if (currentColor === "7CFC00") {
+        $("#mod_cul1").prop("checked", "checked");
+    }
+    else if (currentColor === "ADD8E6") {
+        $("#mod_cul2").prop("checked", "checked");
+    }
+    else if (currentColor === "FF0000") {
+        $("#mod_cul3").prop("checked", "checked");
+    }
+	else if (currentColor === "F5A000") {
+		$("#mod_cul5").prop("checked", "checked");
+	}
+    else if (currentColor === "FFFFFF") {
+        $("#mod_cul4").prop("checked", "checked");
+    }
+    
+    // Show modal
+    $('#mod_culoare').modal('show');
+}
+
+/**
+ * Open SMS modal
+ * @param {number} id - Order ID
+ */
+function obtine_sms(id) {
+    // Reset form
+    $('#frmeditare_sms')[0].reset();
+    $('#rezultat_ajax_sms').html('');
+    
+    // Show loading message
+    $('#rezultat_ajax_sms').html('<div class="alert alert-info">Se încarcă datele...</div>');
+    
+    // Set order ID
+    $('#mod_id_sms').val(id);
+    
+    // Get client data via AJAX
+    $.ajax({
+        url: '/comenzi/get-client-for-sms/' + id,
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            // Remove loading message
+            $('#rezultat_ajax_sms').html('');
+            
+            if (response.success) {
+                // Fill client data into form
+                $('#mod_nume_sms').val(response.client_name);
+                $('#mod_tel_sms').val(response.client_phone);
+                $('#mod_awb_sms').val(response.awb);
+                $('#mod_total_sms').val(response.total);
+                
+                // Use template message from backend if available, otherwise fallback to old logic
+                var message = response.default_message || '';
+                
+                // Fallback to old logic if template message is not provided
+                if (!message) {
+                    var awb = response.awb || '';
+                    if(response.cont_awb && response.cont_awb == "same"){
+                        message = 'Buna ziua, comanda a fost trimisa prin Sameday. Total: ' + response.total + ' RON. Track: https://sameday.ro/#awb=' + awb;
+                    }else{
+                        message = 'Buna ziua, comanda a fost trimisa prin FanCourier. Total: ' + response.total + ' RON. Track: http://www.fancourier.ro/awb-tracking/?tracking=' + awb;
+                    }
+                }
+                
+                // Set message in textarea
+                $('#mod_mesaj').val(message);
+            } else {
+                $('#rezultat_ajax_sms').html('<div class="alert alert-danger">' + response.message + '</div>');
+            }
+        },
+        error: function(xhr) {
+            console.error('AJAX Error:', xhr);
+            $('#rezultat_ajax_sms').html('<div class="alert alert-danger">Error loading client data</div>');
+        }
+    });
+    
+    // Show modal
+    $('#mod_sms').modal('show');
+}
+
+/**
+ * Open supplier modal
+ * @param {number} idCmd - Order ID
+ * @param {number} idProd - Product ID
+ * @param {string} currentSupplier - Current supplier
+ */
+function obtine_furnizor(idCmd, idProd, currentSupplier) {
+    // Reset all radio buttons
+    $('input[name="xfur"]').prop('checked', false);
+    
+    // Set order and product ID
+    $('#mod_id_cmd_fur').val(idCmd);
+    $('#mod_id_prod_fur').val(idProd);
+    
+    // Select radio button according to current supplier
+    var supplierIndex = -1;
+    var suppliers = ['ET', 'MA', 'IC', 'AN', 'AT', 'BA', 'AB', 'SZ', 'AP', 'AD'];
+    
+    for (var i = 0; i < suppliers.length; i++) {
+        if (suppliers[i] === currentSupplier) {
+            supplierIndex = i;
+            break;
+        }
+    }
+    
+    if (supplierIndex >= 0) {
+        $('#mod_fur' + supplierIndex).prop('checked', true);
+    }
+    
+    // Reset result
+    $('#rezultat_ajax_fur').html('');
+    
+    // Show modal
+    $('#mod_furnizor').modal('show');
+}
+
+/**
+ * Delete order
+ * @param {number} id - Order ID
+ */
+function sterge(id) {
+    if (confirm('Ești sigur că vrei să ștergi această comandă?')) {
+        // Get CSRF token
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        
+        // Delete order via AJAX
+        $.ajax({
+            url: '/comenzi/delete/' + id,
+            type: 'POST',
+            data: {
+                _token: csrfToken,
+                id: id
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert('Comanda a fost ștearsă cu succes!');
+                    // Reload the page to reflect the changes with same date, dont use location.reload() here
+                    load(1)
+                } else {
+                    alert('Eroare la ștergerea comenzii: ' + response.message);
+                }
+            },
+            error: function(xhr) {
+                alert('Eroare la ștergerea comenzii!');
+            }
+        });
+    }
+}
+
+//
+// ============ Utility Functions ============
+//
+
+/**
+ * Debounce function - only calls function after certain time
+ * @param {Function} func - Function to call
+ * @param {number} wait - Wait time in milliseconds
+ * @return {Function} Debounced function
+ */
+function debounce(func, wait) {
+    var timeout;
+    return function() {
+        var context = this, args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(function() {
+            func.apply(context, args);
+        }, wait);
+    };
+}
+
+/**
+ * Throttle function - only calls function at certain intervals
+ * @param {Function} func - Function to call
+ * @param {number} limit - Minimum time interval in milliseconds
+ * @return {Function} Throttled function
+ */
+function throttle(func, limit) {
+    var inThrottle;
+    return function() {
+        var context = this, args = arguments;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(function() {
+                inThrottle = false;
+            }, limit);
+        }
+    };
+}
+
+// Expose functions in global scope
+window.obtine_awb = obtine_awb;
+window.fetchSamedayServices = fetchSamedayServices;
+window.fetchSamedayPickupPoints = fetchSamedayPickupPoints;
+window.calculateShippingPrice = calculateShippingPrice;
+window.obtine_stare = obtine_stare;
+window.obtine_total = obtine_total;
+window.obtine_culoare = obtine_culoare;
+window.obtine_sms = obtine_sms;
+window.obtine_furnizor = obtine_furnizor;
+window.sterge = sterge;
+</script>
+
+<script type="module">
+    let fancourierMap = null;
+    let markers = [];
+    function initializeFanCourierMap(points){
+        if (fancourierMap) {
+            fancourierMap.remove();
+            fancourierMap = null;
+            markers = [];
+        }
+        
+        var selectedService = $('#tipserviciu').val();
+        var filteredPoints = points;
+        
+        if (selectedService === 'FANbox' || selectedService === 'FANbox Cont Colector') {
+            filteredPoints = points.filter(point => point.type === 'fanbox');
+            
+            $('.form-group:has(#typeFilterDropdown)').hide();
+			$('#openPickupPointMap').text('Alege punctul');
+        } else if (selectedService === 'CollectPoint' || selectedService === 'CollectPoint Cont Colector') {
+            filteredPoints = points.filter(point => point.type === 'paypoint');
+            
+            // Hide the type filter dropdown for CollectPoint
+            $('.form-group:has(#typeFilterDropdown)').hide();
+			$('#openPickupPointMap').text('Alege punctul');
+        } else {
+            filteredPoints = points.filter(point => point.type === 'office');
+			
+            $('.form-group:has(#typeFilterDropdown)').hide();
+			$('#openPickupPointMap').text('Ridicare din sediu');
+        }
+    
+        fancourierMap = L.map('fanCourierMap').setView([44.4268, 26.1025], 15);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(fancourierMap);
+        
+        let icons = {
+            office: L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            }),
+            fanbox: L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            }),
+            paypoint: L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            })
+        };
+        
+        let listContainer = $('#fanCourierList');
+        listContainer.empty();
+
+        filteredPoints.forEach(point => {
+            let lat = parseFloat(point.latitude);
+            let lng = parseFloat(point.longitude);
+            
+            // Add to list
+            let item = $(`<div class="fanc-pickup-item"
+                data-county="${point.address.county}"
+                data-locality="${point.address.locality}"
+                data-typeis="${point.type}"
+                style="margin-bottom:5px; cursor:pointer;">
+                <b>${point.name}</b><br>
+                ${point.address.locality}, ${point.address.street}<br>
+                <small>Type: ${point.type}</small>
+                <button
+                        class="choose-location-btn btn btn-sm btn-primary"
+                        data-lat="${lat}"
+                        data-lng="${lng}"
+                        data-name="${point.name}"
+                        data-id="${point.id}"
+                        data-address="${point.address.street}"
+                        data-county="${point.address.county}"
+                        data-locality="${point.address.locality}"
+                        data-type="${point.type}"
+                    >Choose Location</button>
+              </div>`);
+              
+            item.on('click', function() {
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    fancourierMap.setView([lat, lng], 14);
+                }
+            });
+            listContainer.append(item);
+            
+            if (!isNaN(lat) && !isNaN(lng)) {
+                let marker = L.marker([lat, lng], { icon: icons[point.type] || undefined }).addTo(fancourierMap);
+
+                marker.bindPopup(`
+                    <b>${point.name}</b><br>
+                    ${point.address.locality}, ${point.address.street}<br>
+                    <small>Type: ${point.type}</small>
+                `);
+
+                //bounds.push([lat, lng]);
+                marker.pointData = {
+                    county: point.address.county.toLowerCase(),
+                    locality: point.address.locality.toLowerCase(),
+                    text: (point.name + ' ' + point.address.locality + ' ' + point.address.street).toLowerCase(),
+                    type: point.type
+                };
+
+                markers.push(marker);
+            }
+        });
+        
+        if (markers.length) {
+            let bounds = L.latLngBounds(markers.map(m => m.getLatLng()));
+            fancourierMap.fitBounds(bounds);
+			setTimeout(() => {
+				$('#fanCourierModalLoader').hide();
+			}, 250);
+        }
+        
+        function applyFilters(){
+            let searchJudet = $('#fanCourierSearchJudet').val().toLowerCase();
+            let searchLocalitate = $('#fanCourierSearchLocalitate').val().toLowerCase();
+            let searchGeneral = $('#fanCourierSearch').val().toLowerCase();
+            
+            let checkedTypes = [];
+            $('.fanc-type-filter:checked').each(function() {
+                checkedTypes.push($(this).val());
+            });
+
+            $('.fanc-pickup-item').each(function() {
+                let $item = $(this);
+                let county = $item.data('county').toLowerCase();     // Judet
+                let locality = $item.data('locality').toLowerCase(); // Localitate
+                let text = $item.text().toLowerCase();               // General text
+                let type = $item.find('.choose-location-btn').data('type');
+
+                let matchJudet = !searchJudet || county.indexOf(searchJudet) > -1;
+                let matchLocalitate = !searchLocalitate || locality.indexOf(searchLocalitate) > -1;
+                let matchGeneral = !searchGeneral || text.indexOf(searchGeneral) > -1;
+                let matchType = checkedTypes.includes(type);
+
+                $item.toggle(matchJudet && matchLocalitate && matchGeneral && matchType);
+            });
+            
+            markers.forEach(marker => {
+                let matchJudet = !searchJudet || marker.pointData.county.indexOf(searchJudet) > -1;
+                let matchLocalitate = !searchLocalitate || marker.pointData.locality.indexOf(searchLocalitate) > -1;
+                let matchGeneral = !searchGeneral || marker.pointData.text.indexOf(searchGeneral) > -1;
+                let matchType = checkedTypes.includes(marker.pointData.type);
+
+                if (matchJudet && matchLocalitate && matchGeneral && matchType) {
+                    if (!fancourierMap.hasLayer(marker)) marker.addTo(fancourierMap);
+                } else {
+                    if (fancourierMap.hasLayer(marker)) fancourierMap.removeLayer(marker);
+                }
+            });
+            
+            let visibleMarkers = markers.filter(m => fancourierMap.hasLayer(m));
+            if (visibleMarkers.length) {
+                let bounds = L.latLngBounds(visibleMarkers.map(m => m.getLatLng()));
+                fancourierMap.fitBounds(bounds);
+            }
+        }
+        
+        $('#fanCourierSearchJudet, #fanCourierSearchLocalitate, #fanCourierSearch').off('input').on('input', applyFilters);
+        $('.fanc-type-filter').off('change').on('change', applyFilters);
+        
+        initializeAutocomplete();
+        
+        $(document).off('click', '.choose-location-btn').on('click', '.choose-location-btn', function() {
+            let lat = $(this).data('lat');
+            let lng = $(this).data('lng');
+            let name = $(this).data('name');
+            let id = $(this).data('id');
+            let address = $(this).data('address');
+            let county = $(this).data('county');
+            let locality = $(this).data('locality');
+
+            $('#fanCourierModal').modal('hide');
+            
+            const event = new CustomEvent("map:select-point", {
+                detail: {
+                    item: {
+                        id: id,
+                        name: name,
+                        latitude: lat,
+                        longitude: lng,
+                        address: address,
+                        county: county,
+                        locality: locality
+                    }
+                }
+            });
+            window.dispatchEvent(event);
+        });
+    }
+    
+    // Autocomplete functionality
+    function initializeAutocomplete() {
+        let judetData = [];
+        let localitateData = [];
+        let judetTimeout;
+        let localitateTimeout;
+        
+        // Load counties data
+        function loadCounties() {
+            if (judetData.length > 0) return; // Already loaded
+            
+            $.ajax({
+                url: '/comenzi/fancourier/get-counties',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success && response.data) {
+                        // Ensure we always have an array
+                        judetData = Array.isArray(response.data) ? response.data : [];
+                        console.log('Counties loaded:', judetData.length);
+                        console.log('Counties data structure:', response.data);
+                    } else {
+                        console.error('Invalid response structure:', response);
+                        judetData = [];
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading counties:', error);
+                    judetData = [];
+                }
+            });
+        }
+        
+        // Load localities data
+        function loadLocalities() {
+            if (localitateData.length > 0) return; // Already loaded
+            
+            $.ajax({
+                url: '/comenzi/fancourier/get-localities',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success && response.data) {
+                        // Ensure we always have an array
+                        localitateData = Array.isArray(response.data) ? response.data : [];
+                        console.log('Localities loaded:', localitateData.length);
+                        console.log('Localities data structure:', response.data);
+                    } else {
+                        console.error('Invalid response structure:', response);
+                        localitateData = [];
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading localities:', error);
+                    localitateData = [];
+                }
+            });
+        }
+        
+        // Judet autocomplete
+        $('#fanCourierSearchJudet').on('input', function() {
+            const query = $(this).val().toLowerCase();
+            const suggestionsDiv = $('#judetSuggestions');
+            
+            clearTimeout(judetTimeout);
+            judetTimeout = setTimeout(() => {
+                if (query.length < 2) {
+                    suggestionsDiv.hide();
+                    return;
+                }
+                
+                loadCounties();
+                
+                // Ensure judetData is an array before filtering
+                if (!Array.isArray(judetData)) {
+                    console.error('judetData is not an array:', judetData);
+                    return;
+                }
+                
+                const filtered = judetData.filter(item => 
+                    item && item.name && item.name.toLowerCase().includes(query)
+                ).slice(0, 10); // Limit to 10 suggestions
+                
+                if (filtered.length > 0) {
+                    suggestionsDiv.empty();
+                    filtered.forEach(item => {
+                        const suggestion = $(`<div class="suggestion-item" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f0f0f0; font-size: 14px; color: #333; transition: background-color 0.2s; background: #fff;">${item.name}</div>`);
+                        suggestion.on('click', function() {
+                            $('#fanCourierSearchJudet').val(item.name);
+                            suggestionsDiv.hide();
+                            applyFilters(); // Trigger filter update
+                        });
+                        suggestion.on('mouseenter', function() {
+                            $(this).css('background-color', '#f8f9fa');
+                        });
+                        suggestion.on('mouseleave', function() {
+                            $(this).css('background-color', '#fff');
+                        });
+                        suggestionsDiv.append(suggestion);
+                    });
+                    suggestionsDiv.show();
+                } else {
+                    suggestionsDiv.hide();
+                }
+            }, 300);
+        });
+        
+        // Localitate autocomplete
+        $('#fanCourierSearchLocalitate').on('input', function() {
+            const query = $(this).val().toLowerCase();
+            const suggestionsDiv = $('#localitateSuggestions');
+            
+            clearTimeout(localitateTimeout);
+            localitateTimeout = setTimeout(() => {
+                if (query.length < 2) {
+                    suggestionsDiv.hide();
+                    return;
+                }
+                
+                loadLocalities();
+                
+                // Ensure localitateData is an array before filtering
+                if (!Array.isArray(localitateData)) {
+                    console.error('localitateData is not an array:', localitateData);
+                    return;
+                }
+                
+                const filtered = localitateData.filter(item => 
+                    item && item.name && item.name.toLowerCase().includes(query)
+                ).slice(0, 10); // Limit to 10 suggestions
+                
+                if (filtered.length > 0) {
+                    suggestionsDiv.empty();
+                    filtered.forEach(item => {
+                        const suggestion = $(`<div class="suggestion-item" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f0f0f0; font-size: 14px; color: #333; transition: background-color 0.2s; background: #fff;">${item.name}</div>`);
+                        suggestion.on('click', function() {
+                            $('#fanCourierSearchLocalitate').val(item.name);
+                            suggestionsDiv.hide();
+                            applyFilters(); // Trigger filter update
+                        });
+                        suggestion.on('mouseenter', function() {
+                            $(this).css('background-color', '#f8f9fa');
+                        });
+                        suggestion.on('mouseleave', function() {
+                            $(this).css('background-color', '#fff');
+                        });
+                        suggestionsDiv.append(suggestion);
+                    });
+                    suggestionsDiv.show();
+                } else {
+                    suggestionsDiv.hide();
+                }
+            }, 300);
+        });
+        
+        // Hide suggestions when clicking outside
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('#fanCourierSearchJudet, #judetSuggestions').length) {
+                $('#judetSuggestions').hide();
+            }
+            if (!$(e.target).closest('#fanCourierSearchLocalitate, #localitateSuggestions').length) {
+                $('#localitateSuggestions').hide();
+            }
+        });
+        
+        // Add hover effects for suggestions
+        $(document).on('mouseenter', '.suggestion-item', function() {
+            $(this).css('background-color', '#f0f0f0');
+        }).on('mouseleave', '.suggestion-item', function() {
+            $(this).css('background-color', 'white');
+        });
+    }
+    
+    let fancourierPickupPoints = null;
+    let fancourierLoaded = false;
+    let modalOpen = false;
+    window.addEventListener('load', function() {
+        var isSameday = $('#flexCheckSame').is(':checked');
+        var isFanCourier = $('#flexCheckChecked').is(':checked');
+        
+        $.ajax({
+            url: '/comenzi/fancourier/get-pickup-points', // backend endpoint
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                if (response.success && response.data) {
+                    // Store response in the variable
+                    fancourierPickupPoints = response.data;
+                    fancourierLoaded = true;
+                    
+                    //$('#fanCourierModalLoader').hide();
+                    if (modalOpen) {
+                        initializeFanCourierMap(fancourierPickupPoints);
+                    }
+                } else {
+                    $('#fanCourierModalLoader').text('Error: ' + (response.message || 'No data returned'));
+                }
+            },
+            error: function(err) {
+                console.error('AJAX error:', err);
+                $('#fanCourierModalLoader').text('AJAX call failed');
+            }
+        });
+        
+        if(isFanCourier){
+            $('#tipserviciusame').hide();
+            $('label[for="tipserviciusame"]').hide();
+        }
+    });
+
+    $('#fanCourierModal').on('shown.bs.modal', function() {
+        modalOpen = true;
+        $('#fanCourierModalLoader').show();
+        
+        // Check service type and hide/show type filter accordingly
+        var selectedService = $('#tipserviciu').val();
+        if (selectedService === 'FANbox' || selectedService === 'FANbox Cont Colector') {
+            $('.form-group:has(#typeFilterDropdown)').hide();
+        } else if (selectedService === 'CollectPoint' || selectedService === 'CollectPoint Cont Colector') {
+            $('.form-group:has(#typeFilterDropdown)').hide();
+        } else {
+            $('.form-group:has(#typeFilterDropdown)').show();
+        }
+        
+        if (fancourierLoaded && fancourierPickupPoints) {
+            initializeFanCourierMap(fancourierPickupPoints);
+        }
+    });
+    
+    $('#fanCourierModal').on('hidden.bs.modal', function () {
+        modalOpen = false;
+		$('#fanCourierModalLoader').show();
+    });
+  
+    const defaultCounty = "Bucuresti";
+    const defaultLocality = "Bucuresti";
+    let selectedPickUpPoint = null;
+
+    // Listen for selected point event
+    window.addEventListener("map:select-point", event => {
+        const point = event.detail.item;
+
+        // Fill form fields
+        //document.getElementById("comp_awb_cmd").value = point.name;
+
+        const parts = point.address.split(",").map(p => p.trim());
+        document.getElementById("judet_awb_cmd").value = point.county || "";
+        document.getElementById("local_awb_cmd").value = point.locality || "";
+        document.getElementById("adresa_awb_cmd").value = point.address || "";
+
+        // Hidden input for pickup point ID
+        let hidden = document.getElementById("pickup_point_id");
+        if (!hidden) {
+            hidden = document.createElement("input");
+            hidden.type = "hidden";
+            hidden.id = "pickup_point_id";
+            hidden.name = "pickup_point_id";
+            document.getElementById("form_awb").appendChild(hidden);
+        }
+        hidden.value = point.id;
+		
+		$('.modal-open .modal').css({
+			'overflow-x': 'hidden',
+			'overflow-y': 'auto'
+		});
+    });
+
+/*     window.LockerPlugin.init({
+      clientId: '435d89e2-aa77-4949-859f-f3cc6ca7947c',
+      countryCode: 'RO',
+      langCode: 'ro',
+      city: $('#judet_awb_cmd').val() ?? 'Craiova',
+      county: $('#local_awb_cmd').val() ?? 'Dolj',
+      //favLockerId: favLockerId,
+      //favType: favType,
+      theme: 'light',
+      apiUsername: 'besoiupieseautoAPI',
+      filters: [{"showLockers": true},{"showPudos": true}],
+      //initialMapCenter: initialMapCenter
+    });
+    var pluginInstance = window.LockerPlugin.getInstance();
+    pluginInstance.subscribe(samedayCourierPointSelected); */
+	
+	let pluginInstance;
+	function initLockerPlugin() {
+		// Get the select value
+		const serviceType = $('#tipserviciusame').val();
+		
+		// Define filters based on service type
+		let filters;
+		if (serviceType === "57") {
+			// Pudo Nextday
+			filters = [
+				{ showLockers: false },
+				{ showPudos: true }
+			];
+		} else {
+			// All other services
+			filters = [
+				{ showLockers: true },
+				{ showPudos: false }
+			];
+		}
+		
+		if (!pluginInstance) {
+			// Initialize LockerPlugin
+			window.LockerPlugin.init({
+				clientId: '435d89e2-aa77-4949-859f-f3cc6ca7947c',
+				countryCode: 'RO',
+				langCode: 'ro',
+				city: $('#judet_awb_cmd').val() ?? 'Craiova',
+				county: $('#local_awb_cmd').val() ?? 'Dolj',
+				theme: 'light',
+				apiUsername: 'besoiupieseautoAPI',
+				filters: filters
+				//favLockerId, favType, initialMapCenter can stay commented
+			});
+			
+			pluginInstance = window.LockerPlugin.getInstance();
+			pluginInstance.subscribe(samedayCourierPointSelected);
+		} else {
+			// Reinitialize with new filters
+			pluginInstance.reinitializePlugin({
+				clientId: '435d89e2-aa77-4949-859f-f3cc6ca7947c',
+				countryCode: 'RO',
+				langCode: 'ro',
+				city: $('#judet_awb_cmd').val() || 'Craiova',
+				county: $('#local_awb_cmd').val() || 'Dolj',
+				theme: 'light',
+				apiUsername: 'besoiupieseautoAPI',
+				filters: filters
+			});
+		}
+		
+		pluginInstance.open();
+	}
+
+    function samedayCourierPointSelected(msg){
+        //console.log("I received this msg from locker plugin:", msg);
+
+        // Fill form fields
+        //document.getElementById("comp_awb_cmd").value = msg.address;
+
+        const parts = msg.address.split(",").map(p => p.trim());
+        document.getElementById("judet_awb_cmd").value = msg.county || "";
+        document.getElementById("local_awb_cmd").value = msg.city || "";
+        document.getElementById("adresa_awb_cmd").value = msg.address;
+
+        // Hidden input for pickup point ID
+        let hidden = document.getElementById("pickup_point_id");
+        if (!hidden) {
+            hidden = document.createElement("input");
+            hidden.type = "hidden";
+            hidden.id = "pickup_point_id";
+            hidden.name = "pickup_point_id";
+            document.getElementById("form_awb").appendChild(hidden);
+        }
+        hidden.value = msg.lockerId;
+
+        //close the modal iframe window
+        pluginInstance.close();
+		
+		$('.modal-open .modal').css({
+			'overflow-x': 'hidden',
+			'overflow-y': 'auto'
+		});
+    }
+
+    const rootNode = document.getElementById("pickupPointMapDiv");
+    const btn = document.getElementById("openPickupPointMap");
+    btn.addEventListener("click", () => {
+        var isSameday = $('#flexCheckSame').is(':checked');
+        var isFanCourier = $('#flexCheckChecked').is(':checked');
+        if(isSameday){
+            initLockerPlugin();
+        }
+        if(isFanCourier){
+            $('#fanCourierModal').modal('show');
+        }
+    });
+</script>
+<style>
+.modal-header {
+    padding: 3px 13px 1px !important;
+}
+.modal-content label {
+    
+    margin-bottom: 0px !important;
+    
+}
+</style>

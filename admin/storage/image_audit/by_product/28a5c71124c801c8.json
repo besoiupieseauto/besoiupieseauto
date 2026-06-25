@@ -1,0 +1,20 @@
+{
+  "randomn_id": "28a5c71124c801c8",
+  "title": "Disc Frana Bosch 0 986 479 107",
+  "code": "0986479107",
+  "category": "Frâne",
+  "image_url": "",
+  "verdict": "no_image",
+  "match_score": 0,
+  "image_shows": "Nicio imagine disponibilă — câmpurile image_url și local_image_path sunt goale, image_source=missing.",
+  "issues": [
+    "Produsul nu are imagine încărcată în catalog.",
+    "Nu se poate efectua comparația vizuală cu titlul «Disc Frana Bosch 0 986 479 107».",
+    "Nu se poate confirma discul de frână Bosch cod 0986479107 din categoria Frâne."
+  ],
+  "recommendation": "replace",
+  "summary_ro": "Produs fără imagine. Audit vizual imposibil; se recomandă găsirea și încărcarea unei fotografii corecte pentru disc de frână Bosch 0986479107 din categoria Frâne.",
+  "analyzed_at": "2026-06-19T12:58:05.903258+00:00",
+  "engine": "cursor-composer-2.5",
+  "model": "composer-2.5"
+}

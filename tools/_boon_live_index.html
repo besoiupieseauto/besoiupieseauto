@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Besoiu Piese Auto</title>
+        <meta name="description" content="Magazin online de piese auto — compatibilitate verificată, livrare rapidă 24-48h.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap"></noscript>
+    <link rel="preload" as="image" href="img/logo.png" fetchpriority="high">
+<link rel="stylesheet" href="assets/css/home-critical.css?v=20260612-vitrina-badge-pad">
+<script src="assets/js/site-icons.js?v=20260612-vitrina-badge-pad" defer></script>
+<link rel="preload" href="assets/css/site-mobile.css?v=20260612-vitrina-badge-pad" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="assets/css/site-mobile.css?v=20260612-vitrina-badge-pad"></noscript>
+<link rel="stylesheet" href="assets/css/product-cards.css?v=20260612-vitrina-badge-pad">
+<link rel="stylesheet" href="assets/css/home-scraper-products.css?v=20260612-vitrina-badge-pad">
+</head>
+<body>
+<div class="page">
+
+
+<div class="topbar">
+    <div class="container">
+        <div class="top-left">
+                        <div class="top-item"><img src="img/icons/09_livrare_rapida.svg" alt="" class="hdr-icon" role="presentation"> Livrare rapidă 24–48h</div>
+                        <div class="top-item"><img src="img/icons/10_retur_simplu.svg" alt="" class="hdr-icon" role="presentation"> Retur simplu 14 zile</div>
+                        <div class="top-item"><img src="img/icons/11_verificare_compatibilitate.svg" alt="" class="hdr-icon" role="presentation"> Verificare compatibilitate</div>
+                    </div>
+        <nav class="top-nav" aria-label="Navigare secundară">
+                        <a href="/catalog" class="">Magazin</a>
+                        <a href="/despre" class="">Despre noi</a>
+                        <a href="/contact" class="">Contact</a>
+                    </nav>
+    </div>
+</div>
+
+<header class="header">
+    <div class="container header-inner">
+        <button type="button" class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Deschide meniul" aria-expanded="false" aria-controls="mobile-nav">
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+        </button>
+
+        <a class="logo" href="/">
+            <img src="img/logo.png" alt="Besoiu Piese Auto" class="logo-img">
+        </a>
+
+        <form class="search-main" id="_home-search-form" role="search" onsubmit="return false;">
+            <input type="search" id="_home-product-name" placeholder="Caută după cod piesă, OEM, VIN..." aria-label="Caută piese" />
+            <button type="button" id="_home-search-btn">CAUTĂ</button>
+        </form>
+
+        <a href="tel:+40726498573" class="phone" aria-label="Sună la 0726 498 573">
+            <div class="ico"><img src="img/icons/12_telefon.svg" alt="" class="hdr-icon-lg" role="presentation"></div>
+            <div><strong>0726 498 573</strong><span>Sună acum</span></div>
+        </a>
+
+        <a href="/cont?view=login" class="account">
+            <div class="big"><img src="img/icons/13_cont_utilizator.svg" alt="Cont" class="hdr-icon-lg"></div>
+            <div>
+                <strong>Contul meu</strong>
+                <span>Autentificare</span>
+            </div>
+        </a>
+
+        <a href="/cart" class="cart" aria-label="Coș de cumpărături">
+            <span class="cart-icon-wrap">
+                <img src="img/icons/14_cos_cumparaturi.svg" alt="" class="cart-icon" width="26" height="26" role="presentation">
+                <em class="badge-count cart-count" data-cart-count style="display:none">0</em>
+            </span>
+            <span class="cart-text">
+                <strong>Coș</strong>
+            </span>
+        </a>
+    </div>
+</header>
+
+<div class="mobile-nav-overlay" id="mobile-nav-overlay" hidden></div>
+<nav class="mobile-nav" id="mobile-nav" aria-label="Navigare principală" aria-hidden="true">
+    <div class="mobile-nav-head">
+        <strong>Meniu</strong>
+        <button type="button" class="mobile-nav-close" id="mobile-nav-close" aria-label="Închide meniul">✕</button>
+    </div>
+    <ul class="mobile-nav-links">
+                <li>
+            <a href="/" class="">Acasă</a>
+        </li>
+                <li>
+            <a href="/catalog" class="">Magazin</a>
+        </li>
+                <li>
+            <a href="/despre" class="">Despre noi</a>
+        </li>
+                <li>
+            <a href="/contact" class="">Contact</a>
+        </li>
+                <li>
+            <a href="/cart" class="">Coș cumpărături</a>
+        </li>
+                <li>
+            <a href="/cont" class="">Contul meu</a>
+        </li>
+            </ul>
+    <div class="mobile-nav-divider"></div>
+    <ul class="mobile-nav-links mobile-nav-links--muted">
+                <li><a href="/cum-comand">Cum comand</a></li>
+                <li><a href="/livrare-plata">Livrare și plată</a></li>
+                <li><a href="/intrebari-frecvente">Întrebări frecvente</a></li>
+            </ul>
+    <a href="tel:+40726498573" class="mobile-nav-phone">
+        <img src="img/icons/12_telefon.svg" alt="" width="20" height="20" role="presentation">
+        <span><strong>0726 498 573</strong><small>Sună acum</small></span>
+    </a>
+</nav>
+
+<script src="assets/js/mobile-nav.js?v=20260612-vitrina-badge-pad" defer></script>
+
+<main id="main-content">
+
+<!-- ══ FILTERBAR — categorii + vehicul (marcă / model / motorizare) ══ -->
+<div class="filterbar">
+    <div class="container home-filter-panel">
+        <div class="cat-btn-wrap">
+            <button class="cat-btn" type="button" id="cat-toggle">
+                <img src="img/icons/16_meniu_categorii.svg" alt="" class="ui-icon-22 ui-icon--on-dark" role="presentation">
+                Categorii piese                <img src="img/icons/31_chevron_jos.svg" alt="" class="ui-icon-14 ui-icon--on-dark ui-icon--chevron-auto" role="presentation">
+            </button>
+            <div class="cat-badge" id="cat-badge">
+                <img src="" alt="" id="cat-badge-icon">
+                <span id="cat-badge-text"></span>
+                <button type="button" class="cat-badge-x" id="cat-badge-x">✕</button>
+            </div>
+            <div class="cat-popup" id="cat-popup">
+                <!-- Categoriile se încarcă dinamic din API -->
+            </div>
+            <div class="cat-popup-overlay" id="cat-popup-overlay"></div>
+        </div>
+        <div class="vehicle-box" id="vehicle-box">
+            <div class="vehicle-item">
+                <div class="vico"><img src="img/icons/17_marca_auto.svg" alt="" class="ui-icon-20" role="presentation"></div>
+                <div class="vehicle-item-field">
+                    <strong>Marcă</strong>
+                    <select class="_product-input" id="select_marca">
+                        <option value="0">Alege marca</option>
+                    </select>
+                </div>
+            </div>
+            <div class="vehicle-item">
+                <div class="vico"><img src="img/icons/18_model_auto.svg" alt="" class="ui-icon-20" role="presentation"></div>
+                <div class="vehicle-item-field">
+                    <strong>Model</strong>
+                    <select class="_product-input" id="model_marca" disabled>
+                        <option value="0">Alege modelul</option>
+                    </select>
+                </div>
+            </div>
+            <div class="vehicle-item">
+                <div class="vico"><img src="img/icons/20_motorizare_ceas.svg" alt="" class="ui-icon-20" role="presentation"></div>
+                <div class="vehicle-item-field">
+                    <strong>Motorizare</strong>
+                    <select class="_product-input" id="motorizari" disabled>
+                        <option value="0">Alege motorizarea</option>
+                    </select>
+                </div>
+            </div>
+            <div class="vehicle-item" id="subcat-slot" style="display:none">
+                <div class="vico"><img src="img/icons/16_meniu_categorii.svg" alt="" class="ui-icon-20" role="presentation"></div>
+                <div class="vehicle-item-field">
+                    <strong>Subcategorie</strong>
+                    <select class="_product-input" id="select_categorie">
+                        <option value="0">Alege subcategoria</option>
+                    </select>
+                </div>
+            </div>
+            <button class="vehicle-search" type="button" id="btnSearch" disabled>CAUTĂ PIESĂ</button>
+        </div>
+        <input type="hidden" id="_filter-category" value="">
+        <input type="hidden" id="_filter-name" value="">
+        <input type="hidden" id="_filter-oem" value="">
+        <span id="_categorii-row" class="is-hidden"></span>
+        <div id="_subcategory-panel" class="is-hidden">
+            <div id="_subcategory-list" class="is-hidden"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+    <div class="container">
+        <div>
+            <div class="eyebrow">Găsește rapid</div>
+            <h1>Piesa potrivită<br>pentru <span>mașina</span> ta</h1>
+            <p>Caută după VIN, cod OEM sau selectează marca și modelul. Verificăm compatibilitatea înainte de comandă.</p>
+
+            <form class="quick-check" onsubmit="return false;">
+                <input type="text" id="_filter-vin" placeholder="Introdu VIN, OEM sau cod piesă..." />
+                <button type="button" id="_product-apply-filters">VERIFICĂ COMPATIBILITATEA</button>
+            </form>
+
+            <div class="hero-benefits">
+                                <div><span class="bico"><img src="img/icons/21_scut_compatibilitate.svg" alt="" class="ui-icon-28" role="presentation"></span><b>Compatibilitate verificată</b></div>
+                                <div><span class="bico"><img src="img/icons/09_livrare_rapida.svg" alt="" class="ui-icon-28" role="presentation"></span><b>Livrare rapidă 24–48h</b></div>
+                                <div><span class="bico"><img src="img/icons/12_telefon.svg" alt="" class="ui-icon-28" role="presentation"></span><b>Suport telefonic dedicat</b></div>
+                                <div><span class="bico"><img src="img/icons/22_cutie_produse.svg" alt="" class="ui-icon-28" role="presentation"></span><b>Peste 10k produse</b></div>
+                            </div>
+        </div>
+        <div class="hero-art hero-art--promo-only">
+            
+        <div class="hero-promo-banner"
+             id="hero-promo-carousel"
+             data-interval="5000"
+             role="region"
+             aria-label="Promoții produse speciale"
+             aria-live="polite">
+            <div class="hero-promo-banner-top">
+                <span class="hero-promo-banner-label">Produse speciale</span>
+                                <span class="hero-promo-counter">01 / 08</span>
+                            </div>
+            <div class="hero-promo-track">
+                                        <a class="hero-promo-slide is-active"
+               href="/produs?id=epiesa_140992"
+               data-slide-index="0"
+                              tabindex="0">
+                <div class="hero-promo-slide-media">
+                                        <img src="/assets/scraper/epiesa/epiesa_140992.png" alt="Pasta de montaj KROON OIL Copper + Plus 33105, pentru temperaturi inalte, 20 grame" loading="eager" decoding="async" fetchpriority="high">
+                                    </div>
+                <div class="hero-promo-slide-copy">
+                    <span class="hero-promo-badge">● Ofertă ePiesa</span>
+                    <h3 class="hero-promo-title">Pasta de montaj KROON OIL Copper + Plus 33105, pentru temperaturi inalte, 20 grame</h3>
+                    <p class="hero-promo-price">7.00 RON</p>
+                    <span class="hero-promo-cta">Vezi oferta</span>
+                </div>
+            </a>
+                                        <a class="hero-promo-slide"
+               href="/produs?id=epiesa_120285"
+               data-slide-index="1"
+                              tabindex="-1" aria-hidden="true">
+                <div class="hero-promo-slide-media">
+                                        <img src="/assets/scraper/epiesa/epiesa_120285.jpg" alt="Solutie pentru fixarea suruburilor ZOLLEX Thread-Locker BFU-5, 10 g, semipermanenta, albastra" loading="lazy" decoding="async" fetchpriority="auto">
+                                    </div>
+                <div class="hero-promo-slide-copy">
+                    <span class="hero-promo-badge">● Ofertă ePiesa</span>
+                    <h3 class="hero-promo-title">Solutie pentru fixarea suruburilor ZOLLEX Thread-Locker BFU-5, 10 g, semipermanenta, albastra</h3>
+                    <p class="hero-promo-price">11.00 RON</p>
+                    <span class="hero-promo-cta">Vezi oferta</span>
+                </div>
+            </a>
+                                        <a class="hero-promo-slide"
+               href="/produs?id=epiesa_120284"
+               data-slide-index="2"
+                              tabindex="-1" aria-hidden="true">
+                <div class="hero-promo-slide-media">
+                                        <img src="/assets/scraper/epiesa/epiesa_120284.jpg" alt="Solutie pentru fixarea suruburilor ZOLLEX Thread-Locker BFS-6, 10 g, permanenta, rosu" loading="lazy" decoding="async" fetchpriority="auto">
+                                    </div>
+                <div class="hero-promo-slide-copy">
+                    <span class="hero-promo-badge">● Ofertă ePiesa</span>
+                    <h3 class="hero-promo-title">Solutie pentru fixarea suruburilor ZOLLEX Thread-Locker BFS-6, 10 g, permanenta, rosu</h3>
+                    <p class="hero-promo-price">12.00 RON</p>
+                    <span class="hero-promo-cta">Vezi oferta</span>
+                </div>
+            </a>
+                                        <a class="hero-promo-slide"
+               href="/produs?id=epiesa_141223"
+               data-slide-index="3"
+                              tabindex="-1" aria-hidden="true">
+                <div class="hero-promo-slide-media">
+                                        <img src="/assets/scraper/epiesa/epiesa_141223.png" alt="Ulei multifunctional pentru lubrifiere KROON OIL Handy-Oil 22012, volum 100 ml, mineral" loading="lazy" decoding="async" fetchpriority="auto">
+                                    </div>
+                <div class="hero-promo-slide-copy">
+                    <span class="hero-promo-badge">● Ofertă ePiesa</span>
+                    <h3 class="hero-promo-title">Ulei multifunctional pentru lubrifiere KROON OIL Handy-Oil 22012, volum 100 ml, mineral</h3>
+                    <p class="hero-promo-price">9.00 RON</p>
+                    <span class="hero-promo-cta">Vezi oferta</span>
+                </div>
+            </a>
+                                        <a class="hero-promo-slide"
+               href="/produs?id=epiesa_141887"
+               data-slide-index="4"
+                              tabindex="-1" aria-hidden="true">
+                <div class="hero-promo-slide-media">
+                                        <img src="/assets/scraper/epiesa/epiesa_141887.png" alt="Ulei transmisie scutere KROON OIL Scoogear 75W90 22016, volum 100 ml, sintetic" loading="lazy" decoding="async" fetchpriority="auto">
+                                    </div>
+                <div class="hero-promo-slide-copy">
+                    <span class="hero-promo-badge">● Ofertă ePiesa</span>
+                    <h3 class="hero-promo-title">Ulei transmisie scutere KROON OIL Scoogear 75W90 22016, volum 100 ml, sintetic</h3>
+                    <p class="hero-promo-price">10.00 RON</p>
+                    <span class="hero-promo-cta">Vezi oferta</span>
+                </div>
+            </a>
+                                        <a class="hero-promo-slide"
+               href="/produs?id=epiesa_140266"
+               data-slide-index="5"
+                              tabindex="-1" aria-hidden="true">
+                <div class="hero-promo-slide-media">
+                                        <img src="/assets/scraper/epiesa/epiesa_140266.png" alt="Ulei transmisie automata moped KROON OIL ATF Universal Puch/Tomos 01004, 250 ml, semi sintetic" loading="lazy" decoding="async" fetchpriority="auto">
+                                    </div>
+                <div class="hero-promo-slide-copy">
+                    <span class="hero-promo-badge">● Ofertă ePiesa</span>
+                    <h3 class="hero-promo-title">Ulei transmisie automata moped KROON OIL ATF Universal Puch/Tomos 01004, 250 ml, semi sintetic</h3>
+                    <p class="hero-promo-price">12.00 RON</p>
+                    <span class="hero-promo-cta">Vezi oferta</span>
+                </div>
+            </a>
+                                        <a class="hero-promo-slide"
+               href="/produs?id=epiesa_120344"
+               data-slide-index="6"
+                              tabindex="-1" aria-hidden="true">
+                <div class="hero-promo-slide-media">
+                                        <img src="/assets/scraper/epiesa/epiesa_120344.jpg" alt="Lubrifiant multifunctional ZOLLEX Chain Lube DX-88 EM-278P, 277 ml" loading="lazy" decoding="async" fetchpriority="auto">
+                                    </div>
+                <div class="hero-promo-slide-copy">
+                    <span class="hero-promo-badge">● Ofertă ePiesa</span>
+                    <h3 class="hero-promo-title">Lubrifiant multifunctional ZOLLEX Chain Lube DX-88 EM-278P, 277 ml</h3>
+                    <p class="hero-promo-price">20.00 RON</p>
+                    <span class="hero-promo-cta">Vezi oferta</span>
+                </div>
+            </a>
+                                        <a class="hero-promo-slide"
+               href="/produs?id=epiesa_141990"
+               data-slide-index="7"
+                              tabindex="-1" aria-hidden="true">
+                <div class="hero-promo-slide-media">
+                                        <img src="/assets/scraper/epiesa/epiesa_141990.png" alt="Lubrifiant pentru lant KROON OIL TefTec AS 22002, volum 100 ml" loading="lazy" decoding="async" fetchpriority="auto">
+                                    </div>
+                <div class="hero-promo-slide-copy">
+                    <span class="hero-promo-badge">● Ofertă ePiesa</span>
+                    <h3 class="hero-promo-title">Lubrifiant pentru lant KROON OIL TefTec AS 22002, volum 100 ml</h3>
+                    <p class="hero-promo-price">17.00 RON</p>
+                    <span class="hero-promo-cta">Vezi oferta</span>
+                </div>
+            </a>
+                        </div>
+                        <div class="hero-promo-dots" aria-hidden="true">
+                                <button type="button" class="hero-promo-dot is-active" data-slide-dot="0" aria-label="Slide 1"></button>
+                                <button type="button" class="hero-promo-dot" data-slide-dot="1" aria-label="Slide 2"></button>
+                                <button type="button" class="hero-promo-dot" data-slide-dot="2" aria-label="Slide 3"></button>
+                                <button type="button" class="hero-promo-dot" data-slide-dot="3" aria-label="Slide 4"></button>
+                                <button type="button" class="hero-promo-dot" data-slide-dot="4" aria-label="Slide 5"></button>
+                                <button type="button" class="hero-promo-dot" data-slide-dot="5" aria-label="Slide 6"></button>
+                                <button type="button" class="hero-promo-dot" data-slide-dot="6" aria-label="Slide 7"></button>
+                                <button type="button" class="hero-promo-dot" data-slide-dot="7" aria-label="Slide 8"></button>
+                            </div>
+                    </div>
+
+                </div>
+    </div>
+</section>
+
+<!-- ══ PRODUSE SPECIALE (scanate ePiesa) — înainte de Categorii populare ══ -->
+<section class="section home-special-products-panel" id="home-scraper-products" aria-labelledby="home-scraper-title">
+    <div class="container">
+        <div class="home-special-head">
+            <h2 class="section-title" id="home-scraper-title">Produse <span>speciale</span></h2>
+                        <p class="home-special-subtitle">Uleiuri, lichide și consumabile esențiale pentru mașina ta.</p>
+                    </div>
+                <div class="home-scraper-toolbar">
+            <span><strong id="home-scraper-count">10</strong> produse afișate</span>
+        </div>
+        <div class="home-special-tabs" role="tablist" aria-label="Categorii produse speciale">
+                        <button type="button"
+                    class="outline-btn home-special-tab is-active"
+                    role="tab"
+                    data-scraper-tab="toate"
+                    aria-selected="true">
+                <img src="img/icons/16_meniu_categorii.svg" alt="" class="home-special-tab-icon" width="18" height="18" loading="lazy" decoding="async">
+                <span>Toate</span>
+                <span class="home-special-tab-count">10</span>
+            </button>
+                        <button type="button"
+                    class="outline-btn home-special-tab"
+                    role="tab"
+                    data-scraper-tab="uleiuri"
+                    aria-selected="false">
+                <img src="img/icons/03_ulei_lichide.svg" alt="" class="home-special-tab-icon" width="18" height="18" loading="lazy" decoding="async">
+                <span>Uleiuri</span>
+                <span class="home-special-tab-count">10</span>
+            </button>
+                    </div>
+        <div class="_product-grid home-special-grid" id="home-scraper-grid">
+                                    <article class="_product-card home-grid-card home-scraper-card"
+                 data-scraper-product="1"
+                 data-category="uleiuri"
+                 data-product-id="epiesa_140992"
+                 data-name="Pasta de montaj KROON OIL Copper + Plus 33105, pentru temperaturi inalte, 20 grame"
+                 data-oem="140992"
+                 data-vin=""
+                 data-category-label="Uleiuri"
+                 data-brand=""
+                 data-price="7"
+                 data-image="/assets/scraper/epiesa/epiesa_140992.png"
+                 data-external-url="https://www.epiesa.ro/pasta-de-montaj-kroon-oil-copper-plus-33105-pentru-temperaturi-inalte-20-grame-mstrnid-140992.htm">
+            <div class="_product-card-image _product-card-image--clickable">
+                                <img src="/assets/scraper/epiesa/epiesa_140992.png" alt="Pasta de montaj KROON OIL Copper + Plus 33105, pentru temperaturi inalte, 20 grame" loading="lazy" decoding="async">
+                            </div>
+            <div class="_product-card-head">
+                <h3 class="_product-card-name">Pasta de montaj KROON OIL Copper + Plus 33105, pentru temperaturi inalte, 20 grame</h3>
+            </div>
+            <div class="_product-price">7.00 RON</div>
+            <div class="_product-card-actions"><button class="_product-card-btn product_detal" type="button" data-product-id="epiesa_140992" title="Detalii produs"><img src="img/icons/22_cutie_produse.svg" alt="" class="_pca-btn-icon" width="18" height="18"><span>Detalii</span></button><button class="btn_addtoccard _pca-icon" type="button" title="Adaugă în coș"><img src="img/icons/14_cos_cumparaturi.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button><button class="btn_quickbuy _pca-icon" type="button" title="Cumpără cu 1 click"><img src="img/icons/26_plata_card.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button></div>        </article>
+                                            <article class="_product-card home-grid-card home-scraper-card"
+                 data-scraper-product="1"
+                 data-category="uleiuri"
+                 data-product-id="epiesa_120285"
+                 data-name="Solutie pentru fixarea suruburilor ZOLLEX Thread-Locker BFU-5, 10 g, semipermanenta, albastra"
+                 data-oem="120285"
+                 data-vin=""
+                 data-category-label="Uleiuri"
+                 data-brand=""
+                 data-price="11"
+                 data-image="/assets/scraper/epiesa/epiesa_120285.jpg"
+                 data-external-url="https://www.epiesa.ro/solutie-pentru-fixarea-suruburilor-zollex-thread-locker-bfu-5-10-g-semipermanenta-albastra-mstrnid-120285.htm">
+            <div class="_product-card-image _product-card-image--clickable">
+                                <img src="/assets/scraper/epiesa/epiesa_120285.jpg" alt="Solutie pentru fixarea suruburilor ZOLLEX Thread-Locker BFU-5, 10 g, semipermanenta, albastra" loading="lazy" decoding="async">
+                            </div>
+            <div class="_product-card-head">
+                <h3 class="_product-card-name">Solutie pentru fixarea suruburilor ZOLLEX Thread-Locker BFU-5, 10 g, semipermanenta, albastra</h3>
+            </div>
+            <div class="_product-price">11.00 RON</div>
+            <div class="_product-card-actions"><button class="_product-card-btn product_detal" type="button" data-product-id="epiesa_120285" title="Detalii produs"><img src="img/icons/22_cutie_produse.svg" alt="" class="_pca-btn-icon" width="18" height="18"><span>Detalii</span></button><button class="btn_addtoccard _pca-icon" type="button" title="Adaugă în coș"><img src="img/icons/14_cos_cumparaturi.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button><button class="btn_quickbuy _pca-icon" type="button" title="Cumpără cu 1 click"><img src="img/icons/26_plata_card.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button></div>        </article>
+                                            <article class="_product-card home-grid-card home-scraper-card"
+                 data-scraper-product="1"
+                 data-category="uleiuri"
+                 data-product-id="epiesa_120284"
+                 data-name="Solutie pentru fixarea suruburilor ZOLLEX Thread-Locker BFS-6, 10 g, permanenta, rosu"
+                 data-oem="120284"
+                 data-vin=""
+                 data-category-label="Uleiuri"
+                 data-brand=""
+                 data-price="12"
+                 data-image="/assets/scraper/epiesa/epiesa_120284.jpg"
+                 data-external-url="https://www.epiesa.ro/solutie-pentru-fixarea-suruburilor-zollex-thread-locker-bfs-6-10-g-permanenta-rosu-mstrnid-120284.htm">
+            <div class="_product-card-image _product-card-image--clickable">
+                                <img src="/assets/scraper/epiesa/epiesa_120284.jpg" alt="Solutie pentru fixarea suruburilor ZOLLEX Thread-Locker BFS-6, 10 g, permanenta, rosu" loading="lazy" decoding="async">
+                            </div>
+            <div class="_product-card-head">
+                <h3 class="_product-card-name">Solutie pentru fixarea suruburilor ZOLLEX Thread-Locker BFS-6, 10 g, permanenta, rosu</h3>
+            </div>
+            <div class="_product-price">12.00 RON</div>
+            <div class="_product-card-actions"><button class="_product-card-btn product_detal" type="button" data-product-id="epiesa_120284" title="Detalii produs"><img src="img/icons/22_cutie_produse.svg" alt="" class="_pca-btn-icon" width="18" height="18"><span>Detalii</span></button><button class="btn_addtoccard _pca-icon" type="button" title="Adaugă în coș"><img src="img/icons/14_cos_cumparaturi.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button><button class="btn_quickbuy _pca-icon" type="button" title="Cumpără cu 1 click"><img src="img/icons/26_plata_card.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button></div>        </article>
+                                            <article class="_product-card home-grid-card home-scraper-card"
+                 data-scraper-product="1"
+                 data-category="uleiuri"
+                 data-product-id="epiesa_141223"
+                 data-name="Ulei multifunctional pentru lubrifiere KROON OIL Handy-Oil 22012, volum 100 ml, mineral"
+                 data-oem="141223"
+                 data-vin=""
+                 data-category-label="Uleiuri"
+                 data-brand=""
+                 data-price="9"
+                 data-image="/assets/scraper/epiesa/epiesa_141223.png"
+                 data-external-url="https://www.epiesa.ro/ulei-multifunctional-pentru-lubrifiere-kroon-oil-handy-oil-22012-volum-100-ml-mineral-mstrnid-141223.htm">
+            <div class="_product-card-image _product-card-image--clickable">
+                                <img src="/assets/scraper/epiesa/epiesa_141223.png" alt="Ulei multifunctional pentru lubrifiere KROON OIL Handy-Oil 22012, volum 100 ml, mineral" loading="lazy" decoding="async">
+                            </div>
+            <div class="_product-card-head">
+                <h3 class="_product-card-name">Ulei multifunctional pentru lubrifiere KROON OIL Handy-Oil 22012, volum 100 ml, mineral</h3>
+            </div>
+            <div class="_product-price">9.00 RON</div>
+            <div class="_product-card-actions"><button class="_product-card-btn product_detal" type="button" data-product-id="epiesa_141223" title="Detalii produs"><img src="img/icons/22_cutie_produse.svg" alt="" class="_pca-btn-icon" width="18" height="18"><span>Detalii</span></button><button class="btn_addtoccard _pca-icon" type="button" title="Adaugă în coș"><img src="img/icons/14_cos_cumparaturi.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button><button class="btn_quickbuy _pca-icon" type="button" title="Cumpără cu 1 click"><img src="img/icons/26_plata_card.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button></div>        </article>
+                                            <article class="_product-card home-grid-card home-scraper-card"
+                 data-scraper-product="1"
+                 data-category="uleiuri"
+                 data-product-id="epiesa_141887"
+                 data-name="Ulei transmisie scutere KROON OIL Scoogear 75W90 22016, volum 100 ml, sintetic"
+                 data-oem="141887"
+                 data-vin=""
+                 data-category-label="Uleiuri"
+                 data-brand=""
+                 data-price="10"
+                 data-image="/assets/scraper/epiesa/epiesa_141887.png"
+                 data-external-url="https://www.epiesa.ro/ulei-transmisie-scutere-kroon-oil-scoogear-75w90-22016-volum-100-ml-sintetic-mstrnid-141887.htm">
+            <div class="_product-card-image _product-card-image--clickable">
+                                <img src="/assets/scraper/epiesa/epiesa_141887.png" alt="Ulei transmisie scutere KROON OIL Scoogear 75W90 22016, volum 100 ml, sintetic" loading="lazy" decoding="async">
+                            </div>
+            <div class="_product-card-head">
+                <h3 class="_product-card-name">Ulei transmisie scutere KROON OIL Scoogear 75W90 22016, volum 100 ml, sintetic</h3>
+            </div>
+            <div class="_product-price">10.00 RON</div>
+            <div class="_product-card-actions"><button class="_product-card-btn product_detal" type="button" data-product-id="epiesa_141887" title="Detalii produs"><img src="img/icons/22_cutie_produse.svg" alt="" class="_pca-btn-icon" width="18" height="18"><span>Detalii</span></button><button class="btn_addtoccard _pca-icon" type="button" title="Adaugă în coș"><img src="img/icons/14_cos_cumparaturi.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button><button class="btn_quickbuy _pca-icon" type="button" title="Cumpără cu 1 click"><img src="img/icons/26_plata_card.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button></div>        </article>
+                                            <article class="_product-card home-grid-card home-scraper-card"
+                 data-scraper-product="1"
+                 data-category="uleiuri"
+                 data-product-id="epiesa_140266"
+                 data-name="Ulei transmisie automata moped KROON OIL ATF Universal Puch/Tomos 01004, 250 ml, semi sintetic"
+                 data-oem="140266"
+                 data-vin=""
+                 data-category-label="Uleiuri"
+                 data-brand=""
+                 data-price="12"
+                 data-image="/assets/scraper/epiesa/epiesa_140266.png"
+                 data-external-url="https://www.epiesa.ro/ulei-transmisie-automata-moped-kroon-oil-atf-universal-puch-tomos-01004-250-ml-semi-sintetic-mstrnid-140266.htm">
+            <div class="_product-card-image _product-card-image--clickable">
+                                <img src="/assets/scraper/epiesa/epiesa_140266.png" alt="Ulei transmisie automata moped KROON OIL ATF Universal Puch/Tomos 01004, 250 ml, semi sintetic" loading="lazy" decoding="async">
+                            </div>
+            <div class="_product-card-head">
+                <h3 class="_product-card-name">Ulei transmisie automata moped KROON OIL ATF Universal Puch/Tomos 01004, 250 ml, semi sintetic</h3>
+            </div>
+            <div class="_product-price">12.00 RON</div>
+            <div class="_product-card-actions"><button class="_product-card-btn product_detal" type="button" data-product-id="epiesa_140266" title="Detalii produs"><img src="img/icons/22_cutie_produse.svg" alt="" class="_pca-btn-icon" width="18" height="18"><span>Detalii</span></button><button class="btn_addtoccard _pca-icon" type="button" title="Adaugă în coș"><img src="img/icons/14_cos_cumparaturi.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button><button class="btn_quickbuy _pca-icon" type="button" title="Cumpără cu 1 click"><img src="img/icons/26_plata_card.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button></div>        </article>
+                                            <article class="_product-card home-grid-card home-scraper-card"
+                 data-scraper-product="1"
+                 data-category="uleiuri"
+                 data-product-id="epiesa_120344"
+                 data-name="Lubrifiant multifunctional ZOLLEX Chain Lube DX-88 EM-278P, 277 ml"
+                 data-oem="120344"
+                 data-vin=""
+                 data-category-label="Uleiuri"
+                 data-brand=""
+                 data-price="20"
+                 data-image="/assets/scraper/epiesa/epiesa_120344.jpg"
+                 data-external-url="https://www.epiesa.ro/lubrifiant-multifunctional-zollex-chain-lube-dx-88-em-278p-277-ml-mstrnid-120344.htm">
+            <div class="_product-card-image _product-card-image--clickable">
+                                <img src="/assets/scraper/epiesa/epiesa_120344.jpg" alt="Lubrifiant multifunctional ZOLLEX Chain Lube DX-88 EM-278P, 277 ml" loading="lazy" decoding="async">
+                            </div>
+            <div class="_product-card-head">
+                <h3 class="_product-card-name">Lubrifiant multifunctional ZOLLEX Chain Lube DX-88 EM-278P, 277 ml</h3>
+            </div>
+            <div class="_product-price">20.00 RON</div>
+            <div class="_product-card-actions"><button class="_product-card-btn product_detal" type="button" data-product-id="epiesa_120344" title="Detalii produs"><img src="img/icons/22_cutie_produse.svg" alt="" class="_pca-btn-icon" width="18" height="18"><span>Detalii</span></button><button class="btn_addtoccard _pca-icon" type="button" title="Adaugă în coș"><img src="img/icons/14_cos_cumparaturi.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button><button class="btn_quickbuy _pca-icon" type="button" title="Cumpără cu 1 click"><img src="img/icons/26_plata_card.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button></div>        </article>
+                                            <article class="_product-card home-grid-card home-scraper-card"
+                 data-scraper-product="1"
+                 data-category="uleiuri"
+                 data-product-id="epiesa_141990"
+                 data-name="Lubrifiant pentru lant KROON OIL TefTec AS 22002, volum 100 ml"
+                 data-oem="141990"
+                 data-vin=""
+                 data-category-label="Uleiuri"
+                 data-brand=""
+                 data-price="17"
+                 data-image="/assets/scraper/epiesa/epiesa_141990.png"
+                 data-external-url="https://www.epiesa.ro/lubrifiant-pentru-lant-kroon-oil-teftec-as-22002-volum-100-ml-mstrnid-141990.htm">
+            <div class="_product-card-image _product-card-image--clickable">
+                                <img src="/assets/scraper/epiesa/epiesa_141990.png" alt="Lubrifiant pentru lant KROON OIL TefTec AS 22002, volum 100 ml" loading="lazy" decoding="async">
+                            </div>
+            <div class="_product-card-head">
+                <h3 class="_product-card-name">Lubrifiant pentru lant KROON OIL TefTec AS 22002, volum 100 ml</h3>
+            </div>
+            <div class="_product-price">17.00 RON</div>
+            <div class="_product-card-actions"><button class="_product-card-btn product_detal" type="button" data-product-id="epiesa_141990" title="Detalii produs"><img src="img/icons/22_cutie_produse.svg" alt="" class="_pca-btn-icon" width="18" height="18"><span>Detalii</span></button><button class="btn_addtoccard _pca-icon" type="button" title="Adaugă în coș"><img src="img/icons/14_cos_cumparaturi.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button><button class="btn_quickbuy _pca-icon" type="button" title="Cumpără cu 1 click"><img src="img/icons/26_plata_card.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button></div>        </article>
+                                            <article class="_product-card home-grid-card home-scraper-card"
+                 data-scraper-product="1"
+                 data-category="uleiuri"
+                 data-product-id="epiesa_141758"
+                 data-name="Solutie deblocare suruburi KROON OIL PTO MoS2 40007, spray 400 ml"
+                 data-oem="141758"
+                 data-vin=""
+                 data-category-label="Uleiuri"
+                 data-brand=""
+                 data-price="18"
+                 data-image="/assets/scraper/epiesa/epiesa_141758.png"
+                 data-external-url="https://www.epiesa.ro/solutie-deblocare-suruburi-kroon-oil-pto-mos2-40007-spray-400-ml-mstrnid-141758.htm">
+            <div class="_product-card-image _product-card-image--clickable">
+                                <img src="/assets/scraper/epiesa/epiesa_141758.png" alt="Solutie deblocare suruburi KROON OIL PTO MoS2 40007, spray 400 ml" loading="lazy" decoding="async">
+                            </div>
+            <div class="_product-card-head">
+                <h3 class="_product-card-name">Solutie deblocare suruburi KROON OIL PTO MoS2 40007, spray 400 ml</h3>
+            </div>
+            <div class="_product-price">18.00 RON</div>
+            <div class="_product-card-actions"><button class="_product-card-btn product_detal" type="button" data-product-id="epiesa_141758" title="Detalii produs"><img src="img/icons/22_cutie_produse.svg" alt="" class="_pca-btn-icon" width="18" height="18"><span>Detalii</span></button><button class="btn_addtoccard _pca-icon" type="button" title="Adaugă în coș"><img src="img/icons/14_cos_cumparaturi.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button><button class="btn_quickbuy _pca-icon" type="button" title="Cumpără cu 1 click"><img src="img/icons/26_plata_card.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button></div>        </article>
+                                            <article class="_product-card home-grid-card home-scraper-card"
+                 data-scraper-product="1"
+                 data-category="uleiuri"
+                 data-product-id="epiesa_142028"
+                 data-name="Spray vaselina universala KROON OIL White Vaseline Acid Free 38005, 400 ml"
+                 data-oem="142028"
+                 data-vin=""
+                 data-category-label="Uleiuri"
+                 data-brand=""
+                 data-price="18"
+                 data-image="/assets/scraper/epiesa/epiesa_142028.png"
+                 data-external-url="https://www.epiesa.ro/spray-vaselina-universala-kroon-oil-white-vaseline-acid-free-38005-400-ml-mstrnid-142028.htm">
+            <div class="_product-card-image _product-card-image--clickable">
+                                <img src="/assets/scraper/epiesa/epiesa_142028.png" alt="Spray vaselina universala KROON OIL White Vaseline Acid Free 38005, 400 ml" loading="lazy" decoding="async">
+                            </div>
+            <div class="_product-card-head">
+                <h3 class="_product-card-name">Spray vaselina universala KROON OIL White Vaseline Acid Free 38005, 400 ml</h3>
+            </div>
+            <div class="_product-price">18.00 RON</div>
+            <div class="_product-card-actions"><button class="_product-card-btn product_detal" type="button" data-product-id="epiesa_142028" title="Detalii produs"><img src="img/icons/22_cutie_produse.svg" alt="" class="_pca-btn-icon" width="18" height="18"><span>Detalii</span></button><button class="btn_addtoccard _pca-icon" type="button" title="Adaugă în coș"><img src="img/icons/14_cos_cumparaturi.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button><button class="btn_quickbuy _pca-icon" type="button" title="Cumpără cu 1 click"><img src="img/icons/26_plata_card.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button></div>        </article>
+                            </div>
+            </div>
+</section>
+
+<!-- ══ CATEGORII POPULARE ══ -->
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">Categorii <span>populare</span></h2>
+        <div class="category-grid" id="category-grid-dynamic">
+            <!-- Se încarcă dinamic din API -->
+        </div>
+        <div class="center-btn"><a class="outline-btn" href="/catalog">VEZI TOATE CATEGORIILE →</a></div>
+    </div>
+</section>
+
+<!-- ══ PRODUSE DIN BD ══ -->
+<section class="_product-section section home-products-panel home-products-panel--has-vitrina">
+    <div class="_product-container container">
+        <nav class="home-list-toolbar" aria-label="Acțiuni listă produse">
+            <div class="home-list-toolbar__meta">
+                <span class="home-list-toolbar__label">Pe vitrină:</span>
+                <span id="_product-results-count" class="product-results-count">8</span>
+                            </div>
+            <div class="home-list-toolbar__actions">
+                <a href="/catalog" class="home-list-catalog-link">Vezi toate produsele →</a>
+            </div>
+        </nav>
+
+        <div class="products-head products-head--vitrina">
+            <h2 class="section-title">Produse <span>recomandate</span></h2>
+        </div>
+
+        <div id="_loader-piese" class="loader-piese is-hidden">
+            <div class="loader-piese__spinner"></div>
+            <div class="loader-piese__text">Se încarcă piesele...</div>
+        </div>
+
+        <div class="_product-grid" id="_product-grid"
+             data-loc-page="index.php"
+             data-home-vitrina="1"
+             data-vitrina-limit="8"
+             data-card-image-selector="._product-card-image img"
+             data-card-desc-selector="._product-card-desc"
+             data-loc-modules="assets/js/home-tecdoc.js|assets/js/cart-admin.js|assets/css/product-cards.css|assets/css/home-critical.css|system/note-html.php|system/tecdoc_stock.php|system/home-vitrina-render.php">
+                                    <article class="_product-card home-grid-card home-vitrina-card"
+                 data-home-vitrina="1" data-recommended="1"                 data-product-id="epiesa_140992"
+                 data-name="Pasta de montaj KROON OIL Copper + Plus 33105, pentru temperaturi inalte, 20 grame"
+                 data-oem="140992"
+                 data-vin=""
+                 data-category="Uleiuri"
+                 data-subcategory=""
+                 data-marca=""
+                 data-brand=""
+                 data-price="7"
+                 data-image="/assets/scraper/epiesa/epiesa_140992.png"
+                 data-badge=""
+                 data-desc="Categorie Uleiuri Detaliu Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM. Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM."
+                 data-specs="[{&quot;label&quot;:&quot;Categorie&quot;,&quot;value&quot;:&quot;Uleiuri&quot;},{&quot;label&quot;:&quot;Detaliu&quot;,&quot;value&quot;:&quot;Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM.&quot;}]">
+                            <div class="_product-card-badge"><span class="_product-badge _product-badge--recomandat">RECOMANDAT</span></div>                        <div class="_product-card-image _product-card-image--clickable">
+                <img src="/assets/scraper/epiesa/epiesa_140992.png" alt="Pasta de montaj KROON OIL Copper + Plus 33105, pentru temperaturi inalte, 20 grame" loading="lazy" decoding="async">
+            </div>
+            <div class="_product-card-head">
+                <h3 class="_product-card-name">Pasta de montaj KROON OIL Copper + Plus 33105, pentru temperaturi inalte, 20 grame</h3>
+            </div>
+            <div class="_product-price">7.00 RON</div>
+            <div class="_product-card-actions"><button class="_product-card-btn product_detal" type="button" data-product-id="epiesa_140992" title="Detalii produs"><img src="img/icons/22_cutie_produse.svg" alt="" class="_pca-btn-icon" width="18" height="18"><span>Detalii</span></button><button class="btn_addtoccard _pca-icon" type="button" title="Adaugă în coș"><img src="img/icons/14_cos_cumparaturi.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button><button class="btn_quickbuy _pca-icon" type="button" title="Cumpără cu 1 click"><img src="img/icons/26_plata_card.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button></div>        </article>
+                                            <article class="_product-card home-grid-card home-vitrina-card"
+                 data-home-vitrina="1" data-recommended="1"                 data-product-id="epiesa_120285"
+                 data-name="Solutie pentru fixarea suruburilor ZOLLEX Thread-Locker BFU-5, 10 g, semipermanenta, albastra"
+                 data-oem="120285"
+                 data-vin=""
+                 data-category="Uleiuri"
+                 data-subcategory=""
+                 data-marca=""
+                 data-brand=""
+                 data-price="11"
+                 data-image="/assets/scraper/epiesa/epiesa_120285.jpg"
+                 data-badge=""
+                 data-desc="Categorie Uleiuri Detaliu Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM. Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM."
+                 data-specs="[{&quot;label&quot;:&quot;Categorie&quot;,&quot;value&quot;:&quot;Uleiuri&quot;},{&quot;label&quot;:&quot;Detaliu&quot;,&quot;value&quot;:&quot;Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM.&quot;}]">
+                            <div class="_product-card-badge"><span class="_product-badge _product-badge--recomandat">RECOMANDAT</span></div>                        <div class="_product-card-image _product-card-image--clickable">
+                <img src="/assets/scraper/epiesa/epiesa_120285.jpg" alt="Solutie pentru fixarea suruburilor ZOLLEX Thread-Locker BFU-5, 10 g, semipermanenta, albastra" loading="lazy" decoding="async">
+            </div>
+            <div class="_product-card-head">
+                <h3 class="_product-card-name">Solutie pentru fixarea suruburilor ZOLLEX Thread-Locker BFU-5, 10 g, semipermanenta, albastra</h3>
+            </div>
+            <div class="_product-price">11.00 RON</div>
+            <div class="_product-card-actions"><button class="_product-card-btn product_detal" type="button" data-product-id="epiesa_120285" title="Detalii produs"><img src="img/icons/22_cutie_produse.svg" alt="" class="_pca-btn-icon" width="18" height="18"><span>Detalii</span></button><button class="btn_addtoccard _pca-icon" type="button" title="Adaugă în coș"><img src="img/icons/14_cos_cumparaturi.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button><button class="btn_quickbuy _pca-icon" type="button" title="Cumpără cu 1 click"><img src="img/icons/26_plata_card.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button></div>        </article>
+                                            <article class="_product-card home-grid-card home-vitrina-card"
+                 data-home-vitrina="1" data-recommended="1"                 data-product-id="epiesa_120284"
+                 data-name="Solutie pentru fixarea suruburilor ZOLLEX Thread-Locker BFS-6, 10 g, permanenta, rosu"
+                 data-oem="120284"
+                 data-vin=""
+                 data-category="Uleiuri"
+                 data-subcategory=""
+                 data-marca=""
+                 data-brand=""
+                 data-price="12"
+                 data-image="/assets/scraper/epiesa/epiesa_120284.jpg"
+                 data-badge=""
+                 data-desc="Categorie Uleiuri Detaliu Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM. Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM."
+                 data-specs="[{&quot;label&quot;:&quot;Categorie&quot;,&quot;value&quot;:&quot;Uleiuri&quot;},{&quot;label&quot;:&quot;Detaliu&quot;,&quot;value&quot;:&quot;Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM.&quot;}]">
+                            <div class="_product-card-badge"><span class="_product-badge _product-badge--recomandat">RECOMANDAT</span></div>                        <div class="_product-card-image _product-card-image--clickable">
+                <img src="/assets/scraper/epiesa/epiesa_120284.jpg" alt="Solutie pentru fixarea suruburilor ZOLLEX Thread-Locker BFS-6, 10 g, permanenta, rosu" loading="lazy" decoding="async">
+            </div>
+            <div class="_product-card-head">
+                <h3 class="_product-card-name">Solutie pentru fixarea suruburilor ZOLLEX Thread-Locker BFS-6, 10 g, permanenta, rosu</h3>
+            </div>
+            <div class="_product-price">12.00 RON</div>
+            <div class="_product-card-actions"><button class="_product-card-btn product_detal" type="button" data-product-id="epiesa_120284" title="Detalii produs"><img src="img/icons/22_cutie_produse.svg" alt="" class="_pca-btn-icon" width="18" height="18"><span>Detalii</span></button><button class="btn_addtoccard _pca-icon" type="button" title="Adaugă în coș"><img src="img/icons/14_cos_cumparaturi.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button><button class="btn_quickbuy _pca-icon" type="button" title="Cumpără cu 1 click"><img src="img/icons/26_plata_card.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button></div>        </article>
+                                            <article class="_product-card home-grid-card home-vitrina-card"
+                 data-home-vitrina="1" data-recommended="1"                 data-product-id="epiesa_141223"
+                 data-name="Ulei multifunctional pentru lubrifiere KROON OIL Handy-Oil 22012, volum 100 ml, mineral"
+                 data-oem="141223"
+                 data-vin=""
+                 data-category="Uleiuri"
+                 data-subcategory=""
+                 data-marca=""
+                 data-brand=""
+                 data-price="9"
+                 data-image="/assets/scraper/epiesa/epiesa_141223.png"
+                 data-badge=""
+                 data-desc="Categorie Uleiuri Detaliu Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM. Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM."
+                 data-specs="[{&quot;label&quot;:&quot;Categorie&quot;,&quot;value&quot;:&quot;Uleiuri&quot;},{&quot;label&quot;:&quot;Detaliu&quot;,&quot;value&quot;:&quot;Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM.&quot;}]">
+                            <div class="_product-card-badge"><span class="_product-badge _product-badge--recomandat">RECOMANDAT</span></div>                        <div class="_product-card-image _product-card-image--clickable">
+                <img src="/assets/scraper/epiesa/epiesa_141223.png" alt="Ulei multifunctional pentru lubrifiere KROON OIL Handy-Oil 22012, volum 100 ml, mineral" loading="lazy" decoding="async">
+            </div>
+            <div class="_product-card-head">
+                <h3 class="_product-card-name">Ulei multifunctional pentru lubrifiere KROON OIL Handy-Oil 22012, volum 100 ml, mineral</h3>
+            </div>
+            <div class="_product-price">9.00 RON</div>
+            <div class="_product-card-actions"><button class="_product-card-btn product_detal" type="button" data-product-id="epiesa_141223" title="Detalii produs"><img src="img/icons/22_cutie_produse.svg" alt="" class="_pca-btn-icon" width="18" height="18"><span>Detalii</span></button><button class="btn_addtoccard _pca-icon" type="button" title="Adaugă în coș"><img src="img/icons/14_cos_cumparaturi.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button><button class="btn_quickbuy _pca-icon" type="button" title="Cumpără cu 1 click"><img src="img/icons/26_plata_card.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button></div>        </article>
+                                            <article class="_product-card home-grid-card home-vitrina-card"
+                 data-home-vitrina="1" data-recommended="1"                 data-product-id="epiesa_141887"
+                 data-name="Ulei transmisie scutere KROON OIL Scoogear 75W90 22016, volum 100 ml, sintetic"
+                 data-oem="141887"
+                 data-vin=""
+                 data-category="Uleiuri"
+                 data-subcategory=""
+                 data-marca=""
+                 data-brand=""
+                 data-price="10"
+                 data-image="/assets/scraper/epiesa/epiesa_141887.png"
+                 data-badge=""
+                 data-desc="Categorie Uleiuri Detaliu Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM. Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM."
+                 data-specs="[{&quot;label&quot;:&quot;Categorie&quot;,&quot;value&quot;:&quot;Uleiuri&quot;},{&quot;label&quot;:&quot;Detaliu&quot;,&quot;value&quot;:&quot;Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM.&quot;}]">
+                            <div class="_product-card-badge"><span class="_product-badge _product-badge--recomandat">RECOMANDAT</span></div>                        <div class="_product-card-image _product-card-image--clickable">
+                <img src="/assets/scraper/epiesa/epiesa_141887.png" alt="Ulei transmisie scutere KROON OIL Scoogear 75W90 22016, volum 100 ml, sintetic" loading="lazy" decoding="async">
+            </div>
+            <div class="_product-card-head">
+                <h3 class="_product-card-name">Ulei transmisie scutere KROON OIL Scoogear 75W90 22016, volum 100 ml, sintetic</h3>
+            </div>
+            <div class="_product-price">10.00 RON</div>
+            <div class="_product-card-actions"><button class="_product-card-btn product_detal" type="button" data-product-id="epiesa_141887" title="Detalii produs"><img src="img/icons/22_cutie_produse.svg" alt="" class="_pca-btn-icon" width="18" height="18"><span>Detalii</span></button><button class="btn_addtoccard _pca-icon" type="button" title="Adaugă în coș"><img src="img/icons/14_cos_cumparaturi.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button><button class="btn_quickbuy _pca-icon" type="button" title="Cumpără cu 1 click"><img src="img/icons/26_plata_card.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button></div>        </article>
+                                            <article class="_product-card home-grid-card home-vitrina-card"
+                 data-home-vitrina="1" data-recommended="1"                 data-product-id="epiesa_140266"
+                 data-name="Ulei transmisie automata moped KROON OIL ATF Universal Puch/Tomos 01004, 250 ml, semi sintetic"
+                 data-oem="140266"
+                 data-vin=""
+                 data-category="Uleiuri"
+                 data-subcategory=""
+                 data-marca=""
+                 data-brand=""
+                 data-price="12"
+                 data-image="/assets/scraper/epiesa/epiesa_140266.png"
+                 data-badge=""
+                 data-desc="Categorie Uleiuri Detaliu Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM. Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM."
+                 data-specs="[{&quot;label&quot;:&quot;Categorie&quot;,&quot;value&quot;:&quot;Uleiuri&quot;},{&quot;label&quot;:&quot;Detaliu&quot;,&quot;value&quot;:&quot;Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM.&quot;}]">
+                            <div class="_product-card-badge"><span class="_product-badge _product-badge--recomandat">RECOMANDAT</span></div>                        <div class="_product-card-image _product-card-image--clickable">
+                <img src="/assets/scraper/epiesa/epiesa_140266.png" alt="Ulei transmisie automata moped KROON OIL ATF Universal Puch/Tomos 01004, 250 ml, semi sintetic" loading="lazy" decoding="async">
+            </div>
+            <div class="_product-card-head">
+                <h3 class="_product-card-name">Ulei transmisie automata moped KROON OIL ATF Universal Puch/Tomos 01004, 250 ml, semi sintetic</h3>
+            </div>
+            <div class="_product-price">12.00 RON</div>
+            <div class="_product-card-actions"><button class="_product-card-btn product_detal" type="button" data-product-id="epiesa_140266" title="Detalii produs"><img src="img/icons/22_cutie_produse.svg" alt="" class="_pca-btn-icon" width="18" height="18"><span>Detalii</span></button><button class="btn_addtoccard _pca-icon" type="button" title="Adaugă în coș"><img src="img/icons/14_cos_cumparaturi.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button><button class="btn_quickbuy _pca-icon" type="button" title="Cumpără cu 1 click"><img src="img/icons/26_plata_card.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button></div>        </article>
+                                            <article class="_product-card home-grid-card home-vitrina-card"
+                 data-home-vitrina="1" data-recommended="1"                 data-product-id="epiesa_120344"
+                 data-name="Lubrifiant multifunctional ZOLLEX Chain Lube DX-88 EM-278P, 277 ml"
+                 data-oem="120344"
+                 data-vin=""
+                 data-category="Uleiuri"
+                 data-subcategory=""
+                 data-marca=""
+                 data-brand=""
+                 data-price="20"
+                 data-image="/assets/scraper/epiesa/epiesa_120344.jpg"
+                 data-badge=""
+                 data-desc="Categorie Uleiuri Detaliu Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM. Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM."
+                 data-specs="[{&quot;label&quot;:&quot;Categorie&quot;,&quot;value&quot;:&quot;Uleiuri&quot;},{&quot;label&quot;:&quot;Detaliu&quot;,&quot;value&quot;:&quot;Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM.&quot;}]">
+                            <div class="_product-card-badge"><span class="_product-badge _product-badge--recomandat">RECOMANDAT</span></div>                        <div class="_product-card-image _product-card-image--clickable">
+                <img src="/assets/scraper/epiesa/epiesa_120344.jpg" alt="Lubrifiant multifunctional ZOLLEX Chain Lube DX-88 EM-278P, 277 ml" loading="lazy" decoding="async">
+            </div>
+            <div class="_product-card-head">
+                <h3 class="_product-card-name">Lubrifiant multifunctional ZOLLEX Chain Lube DX-88 EM-278P, 277 ml</h3>
+            </div>
+            <div class="_product-price">20.00 RON</div>
+            <div class="_product-card-actions"><button class="_product-card-btn product_detal" type="button" data-product-id="epiesa_120344" title="Detalii produs"><img src="img/icons/22_cutie_produse.svg" alt="" class="_pca-btn-icon" width="18" height="18"><span>Detalii</span></button><button class="btn_addtoccard _pca-icon" type="button" title="Adaugă în coș"><img src="img/icons/14_cos_cumparaturi.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button><button class="btn_quickbuy _pca-icon" type="button" title="Cumpără cu 1 click"><img src="img/icons/26_plata_card.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button></div>        </article>
+                                            <article class="_product-card home-grid-card home-vitrina-card"
+                 data-home-vitrina="1" data-recommended="1"                 data-product-id="epiesa_141990"
+                 data-name="Lubrifiant pentru lant KROON OIL TefTec AS 22002, volum 100 ml"
+                 data-oem="141990"
+                 data-vin=""
+                 data-category="Uleiuri"
+                 data-subcategory=""
+                 data-marca=""
+                 data-brand=""
+                 data-price="17"
+                 data-image="/assets/scraper/epiesa/epiesa_141990.png"
+                 data-badge=""
+                 data-desc="Categorie Uleiuri Detaliu Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM. Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM."
+                 data-specs="[{&quot;label&quot;:&quot;Categorie&quot;,&quot;value&quot;:&quot;Uleiuri&quot;},{&quot;label&quot;:&quot;Detaliu&quot;,&quot;value&quot;:&quot;Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN sau cod OEM.&quot;}]">
+                            <div class="_product-card-badge"><span class="_product-badge _product-badge--recomandat">RECOMANDAT</span></div>                        <div class="_product-card-image _product-card-image--clickable">
+                <img src="/assets/scraper/epiesa/epiesa_141990.png" alt="Lubrifiant pentru lant KROON OIL TefTec AS 22002, volum 100 ml" loading="lazy" decoding="async">
+            </div>
+            <div class="_product-card-head">
+                <h3 class="_product-card-name">Lubrifiant pentru lant KROON OIL TefTec AS 22002, volum 100 ml</h3>
+            </div>
+            <div class="_product-price">17.00 RON</div>
+            <div class="_product-card-actions"><button class="_product-card-btn product_detal" type="button" data-product-id="epiesa_141990" title="Detalii produs"><img src="img/icons/22_cutie_produse.svg" alt="" class="_pca-btn-icon" width="18" height="18"><span>Detalii</span></button><button class="btn_addtoccard _pca-icon" type="button" title="Adaugă în coș"><img src="img/icons/14_cos_cumparaturi.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button><button class="btn_quickbuy _pca-icon" type="button" title="Cumpără cu 1 click"><img src="img/icons/26_plata_card.svg" alt="" class="_pca-btn-icon" width="20" height="20"></button></div>        </article>
+                            </div>
+
+        <div id="_product-debug-status" class="product-debug-status is-hidden" hidden aria-hidden="true"></div>
+
+        <div id="_product-empty-state" class="product-empty-state is-hidden" data-stock-policy="confirmed-only" data-browse-prompt="Selectează categoria, marca, modelul și motorizarea, apoi apasă CAUTĂ PIESĂ — sau caută după cod OEM / VIN. Produsele apar doar dacă sunt compatibile în TecDoc și au stoc confirmat în magazin (nu doar estimat din fișierele furnizorilor fără coloană de cantitate)." data-loc-page="index.php" data-loc-admin-modules="admin/src/Controllers/Produse/import_supplier_lib.php|admin/src/Controllers/Produse/importproduse.php|admin/src/Controllers/Furnizori/PriceFormationLogicService.php|admin/Templates/admin/pages/furnizori/price-logic-panel.php" data-loc-admin-urls="admin/public/importproduse|admin/public/furnizori#price-logic-stock" data-admin-module="admin/src/Controllers/Produse/import_supplier_lib.php,admin/src/Controllers/Furnizori/PriceFormationLogicService.php,admin/public/importproduse,admin/public/furnizori#price-logic-stock">
+            Selectează categoria, marca, modelul și motorizarea, apoi apasă <strong>CAUTĂ PIESĂ</strong> — sau caută după cod OEM / VIN. Produsele apar doar dacă sunt compatibile în TecDoc și au stoc confirmat în magazin (nu doar estimat din fișierele furnizorilor fără coloană de cantitate).
+        </div>
+        <details id="stock-loc-modules" class="stock-loc-modules sr-only" data-loc="pagini-module-descriere" data-task="product-desc-img" hidden>
+            <summary id="stock-loc-modules-summary">Locul exact: vezi paginile și modulele referite în descriere — imagini produse și decodare HTML</summary>
+            <dl id="stock-loc-modules-list">
+                <dt>Pagină homepage</dt>
+                <dd>index.php — #_product-grid · ._product-card-image · ._product-card-desc · assets/js/home-tecdoc.js (renderStockProductCards)</dd>
+                <dt>Decodare / text curat</dt>
+                <dd>assets/js/cart-admin.js (besoiuStripHtml) · system/note-html.php (besoiu_note_plain_text) · system/tecdoc_stock.php (note_plain)</dd>
+                <dt>CSS imagini card</dt>
+                <dd>assets/css/product-cards.css · assets/css/home-critical.css — object-fit:contain pe ._product-card-image img</dd>
+                <dt>Catalog</dt>
+                <dd>catalog.php — assets/js/catalog-page.js</dd>
+                <dt>Pagină produs</dt>
+                <dd>product.php — besoiu_note_render() · assets/css/product-page.css</dd>
+            </dl>
+        </details>
+
+        <!-- Trust bar -->
+        <div class="trust">
+                                    <div class="trust-item"><div class="ticon"><img src="img/icons/09_livrare_rapida.svg" alt="" class="ui-icon-28" role="presentation"></div><div><b>Livrare rapidă</b><span>24–48h în toată țara</span></div></div>
+                                    <div class="trust-item"><div class="ticon"><img src="img/icons/10_retur_simplu.svg" alt="" class="ui-icon-28" role="presentation"></div><div><b>Retur simplu</b><span>14 zile fără griji</span></div></div>
+                                    <div class="trust-item"><div class="ticon"><img src="img/icons/26_plata_card.svg" alt="" class="ui-icon-28" role="presentation"></div><div><b>Plată ramburs</b><span>la livrare</span></div></div>
+                                    <div class="trust-item"><div class="ticon"><img src="img/icons/11_verificare_compatibilitate.svg" alt="" class="ui-icon-28" role="presentation"></div><div><b>Verificare compatibilitate</b><span>înainte de comandă</span></div></div>
+                                    <div class="trust-item"><div class="ticon"><img src="img/icons/27_casti_suport.svg" alt="" class="ui-icon-28" role="presentation"></div><div><b>Suport telefonic</b><span><a href="tel:+40726498573" class="trust-phone-link">0726 498 573</a></span></div></div>
+                    </div>
+    </div>
+</section>
+
+<!-- ══ MĂRCI DISPONIBILE ══ -->
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">Mărci <span>disponibile</span></h2>
+        <div class="brand-grid">
+                        <div class="brand" style="color:#e11d48">BOSCH</div>
+                        <div class="brand" style="color:#65a30d">MANN</div>
+                        <div class="brand" style="color:#ef4444">febi</div>
+                        <div class="brand" style="color:#2563eb">SACHS</div>
+                        <div class="brand" style="color:#65a30d">Valeo</div>
+                        <div class="brand" style="color:#dc2626">TRW</div>
+                        <div class="brand" style="color:#1d4ed8">HELLA</div>
+                        <div class="brand" style="color:#1e3a8a">MAHLE</div>
+                    </div>
+        <div class="center-btn"><a class="outline-btn" href="/catalog">VEZI TOATE MĂRCILE →</a></div>
+    </div>
+</section>
+
+<!-- ══ DE CE NOI ══ -->
+<section class="why">
+    <div class="container">
+        <div class="why-box">
+            <div class="why-list">
+                <h3>DE CE SĂ ALEGI<br>BESOIU PIESE AUTO?</h3>
+                <ul>
+                                        <li>Piese originale și aftermarket de calitate</li>
+                                        <li>Verificare compatibilitate după VIN sau model</li>
+                                        <li>Livrare rapidă 24–48h în toată țara</li>
+                                        <li>Prețuri corecte și oferte avantajoase</li>
+                                        <li>Suport telefonic dedicat</li>
+                                    </ul>
+            </div>
+            <div class="road">
+                <img src="img/car1.png" alt="" width="560" height="320" loading="lazy" decoding="async">
+            </div>
+            <div class="help" id="help-consult-block">
+                <h3>AI NEVOIE DE AJUTOR?</h3>
+                <p>Consultă asistentul nostru AI pe WhatsApp — răspuns automat bazat pe catalog, stoc și istoricul comenzilor tale.</p>
+                <div class="help-actions">
+                                        <a class="whatsapp-btn" id="wa-consult-btn" href="https://wa.me/40726498573?text=Bun%C4%83%21%20Am%20nevoie%20de%20consultan%C8%9B%C4%83%20pentru%20piese%20auto." target="_blank" rel="noopener noreferrer" aria-label="Consultă pe WhatsApp" data-module="robot/webhook.php">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        Consultă pe WhatsApp                    </a>
+                                        <a class="call-btn" href="tel:+40726498573" aria-label="Sună la 0726 498 573">0726 498 573</a>
+                </div>
+                                <button type="button" class="help-ai-hint" id="help-ai-chat-trigger" data-target="#bpa-fab" data-module="robot/chat_widget_api.php">Sau deschide chat-ul AI din colțul dreapta-jos pentru răspuns instant.</button>
+                                <div class="faces">
+                    <div class="face"></div>
+                    <div class="face"></div>
+                    <div class="face"></div>
+                    <span class="plus">+97</span>
+                    <span class="clients">Peste 10.000+<br>clienți mulțumiți</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-main">
+            <div class="footer-block footer-brand">
+                <a class="logo" href="/">
+                    <img src="img/logo.png" alt="Besoiu Piese Auto" class="logo-img">
+                </a>
+                <p>Magazin online de piese auto pentru toate mărcile. Piese originale și aftermarket la prețuri corecte.</p>
+                <div class="social" id="footer-social-links">
+                                                                <a href="https://www.facebook.com/besoiupieseauto" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><img src="img/icons/32_facebook.svg" alt="" class="footer-social-icon" role="presentation"></a>
+                                                                <a href="https://www.instagram.com/besoiupieseauto" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><img src="img/icons/33_instagram.svg" alt="" class="footer-social-icon" role="presentation"></a>
+                                                                <a href="https://www.youtube.com/@besoiupieseauto" aria-label="YouTube" target="_blank" rel="noopener noreferrer"><img src="img/icons/34_youtube.svg" alt="" class="footer-social-icon" role="presentation"></a>
+                                                                <a href="https://www.tiktok.com/@besoiupieseauto" aria-label="TikTok" target="_blank" rel="noopener noreferrer"><img src="img/icons/35_tiktok.svg" alt="" class="footer-social-icon" role="presentation"></a>
+                                    </div>
+            </div>
+            <div class="footer-block">
+                <h4>Informații</h4>
+                <ul>
+                    <li><a href="/despre">Despre noi</a></li>
+                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="/cariere">Cariere</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/termeni-conditii">Termeni și condiții</a></li>
+                    <li><a href="/politica-confidentialitate">Confidențialitate</a></li>
+                    <li><a href="/politica-cookies">Cookies</a></li>
+                </ul>
+            </div>
+            <div class="footer-block">
+                <h4>Suport clienți</h4>
+                <ul>
+                    <li><a href="/cum-comand">Cum comand</a></li>
+                    <li><a href="/livrare-plata">Livrare și plată</a></li>
+                    <li><a href="/retur-garantie">Retur și garanție</a></li>
+                    <li><a href="/intrebari-frecvente">Întrebări frecvente</a></li>
+                </ul>
+            </div>
+            <div class="footer-block footer-contact">
+                <h4>Contact</h4>
+                <ul>
+                    <li><img src="img/icons/12_telefon.svg" alt="" class="footer-contact-icon" role="presentation"><a href="tel:+40726498573">0726 498 573</a></li>
+                    <li><img src="img/icons/29_email_plic.svg" alt="" class="footer-contact-icon" role="presentation"><a href="/cdn-cgi/l/email-protection#15767a7b61747661557770667a7c60657c7066707460617a3b677a"><span class="__cf_email__" data-cfemail="1d7e7273697c7e695d7f786e7274686d74786e787c686972336f72">[email&#160;protected]</span></a></li>
+                    <li><img src="img/icons/28_locatie_pin.svg" alt="" class="footer-contact-icon" role="presentation">Timișoara, Str. Stan Vidrighin nr. 14, jud. Timiș</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copy">
+            <span>© 2026 Besoiu Piese Auto. Toate drepturile rezervate.</span>
+            <span>Creat cu pasiune pentru mașina ta.</span>
+        </div>
+    </div>
+</footer>
+
+</div><!-- .page -->
+
+<!-- ══ DEBUG PANEL ══ -->
+<button id="_debug-toggle" type="button" title="Deschide panoul de debug">🐞</button>
+<div id="_debug-panel">
+    <header>
+        <span>🐞 Debug API</span>
+        <span>
+            <button type="button" id="_debug-clear">Curăță</button>
+            <button type="button" id="_debug-close" aria-label="Închide"><span aria-hidden="true">×</span></button>
+        </span>
+    </header>
+    <div id="_debug-log"></div>
+</div>
+
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/cart-admin.js?v=20260612-vitrina-badge-pad" defer></script>
+<script src="assets/js/home-tecdoc.js?v=20260612-vitrina-badge-pad" defer></script>
+<script src="home.js?v=20260612-vitrina-badge-pad" defer></script>
+<script src="assets/js/hero-promo-carousel.js?v=20260612-vitrina-badge-pad" defer></script>
+<script src="assets/js/home-scraper-tabs.js?v=20260612-vitrina-badge-pad" defer></script>
+<script>(function(){function w(){var s=document.createElement('script');s.src='/robot/widget.js.php?v=20260612-vitrina-badge-pad';s.defer=true;document.body.appendChild(s);}'requestIdleCallback'in window?requestIdleCallback(w,{timeout:5000}):window.addEventListener('load',function(){setTimeout(w,2e3)});})();</script>
+</body>
+</html>

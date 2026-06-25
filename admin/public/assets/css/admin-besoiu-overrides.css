@@ -1,0 +1,244 @@
+/**
+ * Besoiu Admin — override final anti-albastru (încărcat după stilurile inline din pagini).
+ */
+:root,
+body.besoiu-admin-2026 {
+  --color-primary: #059669;
+}
+
+/* ── Variabile module ── */
+body.besoiu-admin-2026 .furnizori-page {
+  --fz-primary: #059669 !important;
+  --fz-primary-dark: #047857 !important;
+}
+
+/* ── Butoane primare (verde plin, text alb) ── */
+body.besoiu-admin-2026 .furnizori-page .fz-btn-primary,
+body.besoiu-admin-2026 .furnizori-page button.fz-btn-primary,
+body.besoiu-admin-2026 .furnizori-page .fz-btn-primary:hover,
+body.besoiu-admin-2026 .furnizori-page button.fz-btn-primary:hover,
+body.besoiu-admin-2026 #furnizori-modal .fz-modal-btn-save,
+body.besoiu-admin-2026 #furnizori-modal button.fz-modal-btn-save,
+body.besoiu-admin-2026 #furnizori-modal .fz-modal-btn-save:hover,
+body.besoiu-admin-2026 .furnizori-page .fz-view-btn.active,
+body.besoiu-admin-2026 button[style*="background:#2563eb"],
+body.besoiu-admin-2026 button[style*="background: #2563eb"],
+body.besoiu-admin-2026 label[style*="background:#2563eb"],
+body.besoiu-admin-2026 label[style*="background: #2563eb"],
+body.besoiu-admin-2026 button[style*="#6366f1"],
+body.besoiu-admin-2026 button[style*="#4f46e5"],
+body.besoiu-admin-2026 #bots-open-create,
+body.besoiu-admin-2026 #td_load_btn {
+  background: linear-gradient(180deg, #10b981 0%, #059669 55%, #047857 100%) !important;
+  background-image: linear-gradient(180deg, #10b981 0%, #059669 55%, #047857 100%) !important;
+  border: 2px solid #047857 !important;
+  color: #fff !important;
+  box-shadow: 0 6px 18px rgba(5, 150, 105, 0.35) !important;
+}
+
+/* ── Butoane secundare (border verde, fundal deschis) ── */
+body.besoiu-admin-2026 .furnizori-page .fz-btn-outline,
+body.besoiu-admin-2026 .furnizori-page button.fz-btn-outline,
+body.besoiu-admin-2026 .furnizori-page .fz-btn-price,
+body.besoiu-admin-2026 .furnizori-page .fz-btn-outline:hover,
+body.besoiu-admin-2026 .furnizori-page button.fz-btn-outline:hover,
+body.besoiu-admin-2026 .furnizori-page .fz-btn-price:hover,
+body.besoiu-admin-2026 .furnizori-page .fz-card-foot .fz-btn-price:hover {
+  background: #fff !important;
+  border-color: #059669 !important;
+  color: #047857 !important;
+}
+
+/* ── Tab-uri / link-uri active ── */
+body.besoiu-admin-2026 .furnizori-page .fz-page-tab.active,
+body.besoiu-admin-2026 .scraper-nav-tab.is-active,
+body.besoiu-admin-2026 .settings-page .st-tab.is-active {
+body.besoiu-admin-2026 .scraper-card-cat,
+body.besoiu-admin-2026 .scraper-card-link,
+body.besoiu-admin-2026 .sys-err-level-info,
+body.besoiu-admin-2026 .searchlogs-type-vin,
+body.besoiu-admin-2026 .ai-tokens-badge-gemini,
+body.besoiu-admin-2026 a.cat-tab[style*="#2563eb"],
+body.besoiu-admin-2026 a[style*="color:#2563eb"],
+body.besoiu-admin-2026 a[style*="color: #2563eb"],
+body.besoiu-admin-2026 label[style*="color:#2563eb"],
+body.besoiu-admin-2026 label[style*="color: #2563eb"],
+body.besoiu-admin-2026 summary[style*="#1d4ed8"],
+body.besoiu-admin-2026 [style*="color:#2563eb"],
+body.besoiu-admin-2026 [style*="color: #2563eb"],
+body.besoiu-admin-2026 [style*="color:#1d4ed8"],
+body.besoiu-admin-2026 [style*="color: #1d4ed8"],
+body.besoiu-admin-2026 [style*="color:#6366f1"],
+body.besoiu-admin-2026 [style*="color: #6366f1"],
+body.besoiu-admin-2026 .products-action-hover:hover,
+body.besoiu-admin-2026 .products-page-hover:hover {
+  color: #047857 !important;
+}
+
+body.besoiu-admin-2026 [style*="border-bottom:3px solid #2563eb"],
+body.besoiu-admin-2026 [style*="border-bottom: 3px solid #2563eb"],
+body.besoiu-admin-2026 .scraper-nav-tab.is-active {
+  border-bottom-color: #059669 !important;
+}
+
+/* ── Fundaluri / badge-uri albastre → verde soft ── */
+body.besoiu-admin-2026 .furnizori-page .fz-empty-icon,
+body.besoiu-admin-2026 .furnizori-page .fz-card-conn,
+body.besoiu-admin-2026 .fz-modal-head-icon,
+body.besoiu-admin-2026 .chip-facebook,
+body.besoiu-admin-2026 .bot-btn-preview,
+body.besoiu-admin-2026 [style*="#eff6ff"],
+body.besoiu-admin-2026 [style*="#dbeafe"],
+body.besoiu-admin-2026 [style*="#eef2ff"],
+body.besoiu-admin-2026 [style*="background:#eff6ff"],
+body.besoiu-admin-2026 [style*="background: #eff6ff"],
+body.besoiu-admin-2026 [style*="background:#dbeafe"],
+body.besoiu-admin-2026 [style*="background: #dbeafe"],
+body.besoiu-admin-2026 .text-blue-600,
+body.besoiu-admin-2026 .text-blue-800,
+body.besoiu-admin-2026 .text-blue-900,
+body.besoiu-admin-2026 .bg-blue-50,
+body.besoiu-admin-2026 .border-blue-200,
+body.besoiu-admin-2026 .border-blue-500\/30,
+body.besoiu-admin-2026 .hover\:bg-blue-50:hover,
+body.besoiu-admin-2026 [class*="text-blue"],
+body.besoiu-admin-2026 [class*="bg-blue"],
+body.besoiu-admin-2026 [class*="border-blue"] {
+  background: #ecfdf5 !important;
+  background-color: #ecfdf5 !important;
+  border-color: #a7f3d0 !important;
+  color: #047857 !important;
+}
+
+body.besoiu-admin-2026 .searchlogs-type-vin,
+body.besoiu-admin-2026 .ai-tokens-badge-gemini {
+  background: rgba(5, 150, 105, 0.15) !important;
+}
+
+/* ── Roboți: icon header + focus ── */
+body.besoiu-admin-2026 div[style*="#6366f1"],
+body.besoiu-admin-2026 div[style*="#4f46e5"] {
+  background: linear-gradient(135deg, #10b981, #047857) !important;
+  background-image: linear-gradient(135deg, #10b981, #047857) !important;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35) !important;
+}
+
+body.besoiu-admin-2026 .bots-filter-bar select:focus {
+  border-color: #059669 !important;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.12) !important;
+}
+
+/* ── Produse hover ── */
+body.besoiu-admin-2026 .products-btn-hover:hover {
+  background: rgba(5, 150, 105, 0.12) !important;
+  border-color: rgba(5, 150, 105, 0.32) !important;
+}
+
+/* ── Progress bars import ── */
+body.besoiu-admin-2026 #progress-bar,
+body.besoiu-admin-2026 #job-progress-bar {
+  background: linear-gradient(90deg, #059669, #10b981) !important;
+  background-image: linear-gradient(90deg, #059669, #10b981) !important;
+}
+
+/* ── Gradient albastru rămas ── */
+body.besoiu-admin-2026 [style*="linear-gradient(135deg, #3b82f6"],
+body.besoiu-admin-2026 [style*="linear-gradient(135deg,#3b82f6"],
+body.besoiu-admin-2026 [style*="linear-gradient(135deg, #6366f1"],
+body.besoiu-admin-2026 [style*="linear-gradient(135deg,#6366f1"],
+body.besoiu-admin-2026 [style*="linear-gradient(90deg,#2563eb"],
+body.besoiu-admin-2026 [style*="linear-gradient(90deg, #2563eb"],
+body.besoiu-admin-2026 [style*="linear-gradient(90deg,#7c3aed,#2563eb"] {
+  background: linear-gradient(135deg, #10b981, #047857) !important;
+  background-image: linear-gradient(135deg, #10b981, #047857) !important;
+}
+
+body.besoiu-admin-2026 [style*="linear-gradient(90deg,#2563eb,#059669"],
+body.besoiu-admin-2026 [style*="linear-gradient(90deg, #2563eb, #059669"] {
+  background: linear-gradient(90deg, #059669, #10b981) !important;
+  background-image: linear-gradient(90deg, #059669, #10b981) !important;
+}
+
+/* ── Focus inputs furnizori ── */
+body.besoiu-admin-2026 .furnizori-page .fz-search:focus,
+body.besoiu-admin-2026 .furnizori-page .fz-modal-field input:focus,
+body.besoiu-admin-2026 .furnizori-page .fz-modal-field select:focus {
+  border-color: #059669 !important;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.12) !important;
+}
+
+/* ── tm_029: contururi vizibile — inputuri + panouri info (toate paginile admin) ── */
+body.besoiu-admin-2026 .admin-content input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="file"]):not([type="submit"]):not([type="button"]),
+body.besoiu-admin-2026 .admin-content select,
+body.besoiu-admin-2026 .admin-content textarea,
+body.besoiu-admin-2026 .admin-content .form-control,
+body.besoiu-admin-2026 [id*="modal"] input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="file"]),
+body.besoiu-admin-2026 [id*="modal"] select,
+body.besoiu-admin-2026 [id*="modal"] textarea,
+body.besoiu-admin-2026 .furnizori-page .fz-search,
+body.besoiu-admin-2026 .furnizori-page .fz-filter,
+body.besoiu-admin-2026 .furnizori-page .fz-modal-field input,
+body.besoiu-admin-2026 .furnizori-page .fz-modal-field select {
+  border: 2px solid #94a3b8 !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  color: #0f172a !important;
+}
+
+body.besoiu-admin-2026 .admin-content input[readonly],
+body.besoiu-admin-2026 .admin-content textarea[readonly],
+body.besoiu-admin-2026 .admin-content .bg-slate-50 input,
+body.besoiu-admin-2026 .admin-content [class*="bg-slate-50"] input[readonly] {
+  background: #f8fafc !important;
+  border-color: #94a3b8 !important;
+}
+
+body.besoiu-admin-2026 .admin-content input:focus,
+body.besoiu-admin-2026 .admin-content select:focus,
+body.besoiu-admin-2026 .admin-content textarea:focus,
+body.besoiu-admin-2026 [id*="modal"] input:focus,
+body.besoiu-admin-2026 [id*="modal"] select:focus,
+body.besoiu-admin-2026 [id*="modal"] textarea:focus {
+  border-color: #059669 !important;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15) !important;
+  outline: none !important;
+}
+
+/* Panouri informaționale — borduri clare, culori distincte */
+body.besoiu-admin-2026 .admin-content .alert,
+body.besoiu-admin-2026 .admin-content .rounded-lg.border,
+body.besoiu-admin-2026 .admin-content .rounded-xl.border,
+body.besoiu-admin-2026 .admin-content .rounded-md.border,
+body.besoiu-admin-2026 .admin-content [class*="bg-slate-50"][class*="border"],
+body.besoiu-admin-2026 .admin-content [class*="border-foreground"],
+body.besoiu-admin-2026 #cron-setup-hint,
+body.besoiu-admin-2026 #scan-sync-hint,
+body.besoiu-admin-2026 #cron-modules-map,
+body.besoiu-admin-2026 .conn-panel,
+body.besoiu-admin-2026 .besoiu-tecdoc-ip-widget__alert,
+body.besoiu-admin-2026 .besoiu-tecdoc-ip-widget__indicator,
+body.besoiu-admin-2026 .besoiu-red-flag__intro {
+  border: 2px solid #94a3b8 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06) !important;
+}
+
+body.besoiu-admin-2026 .admin-content [class*="bg-emerald-50"],
+body.besoiu-admin-2026 .admin-content .alert[class*="emerald"] {
+  border-color: #6ee7b7 !important;
+  background: #ecfdf5 !important;
+  color: #047857 !important;
+}
+
+body.besoiu-admin-2026 .admin-content [class*="bg-amber-50"],
+body.besoiu-admin-2026 .admin-content [class*="border-amber"] {
+  border-color: #fcd34d !important;
+  background: #fffbeb !important;
+  color: #92400e !important;
+}
+
+body.besoiu-admin-2026 .admin-content [class*="bg-slate-50"][class*="border"] {
+  border-color: #94a3b8 !important;
+  background: #f8fafc !important;
+  color: #334155 !important;
+}

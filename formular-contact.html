@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Besoiu Piese Auto</title>
+  <meta name="description" content="Lasă-ne datele de contact și revenim rapid cu un răspuns.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/formular-contact.css">
+</head>
+<body>
+  <div class="fc-page">
+
+    <header class="fc-header">
+      <a href="/" class="fc-logo">Besoiu <span>Piese Auto</span></a>
+      <a href="/contact.php" class="fc-back">← Pagina contact completă</a>
+    </header>
+
+    <main class="fc-main">
+      <div class="fc-wrap">
+        <div class="fc-badge">Contact rapid</div>
+        <h1 class="fc-title">Lasă-ne datele tale</h1>
+        <p class="fc-lead">
+          Completează formularul — nume, email, telefon și mesaj. Răspundem în maxim 2 ore în zilele lucrătoare.
+        </p>
+
+        <div class="fc-card">
+          <form class="fc-form" id="fc-form" novalidate
+                data-endpoint="/admin/public/api/messages_endpoint.php">
+
+            <div class="fc-field" data-field="name">
+              <label for="fc-name">Nume <span class="req">*</span></label>
+              <input type="text" id="fc-name" name="name" placeholder="Numele tău complet" autocomplete="name" required>
+              <div class="fc-field-error"></div>
+            </div>
+
+            <div class="fc-row">
+              <div class="fc-field" data-field="email">
+                <label for="fc-email">Email <span class="req">*</span></label>
+                <input type="email" id="fc-email" name="email" placeholder="adresa@exemplu.ro" autocomplete="email" required>
+                <div class="fc-field-error"></div>
+              </div>
+              <div class="fc-field" data-field="phone">
+                <label for="fc-phone">Telefon</label>
+                <input type="tel" id="fc-phone" name="phone" placeholder="07xx xxx xxx" autocomplete="tel">
+                <div class="fc-field-error"></div>
+              </div>
+            </div>
+
+            <div class="fc-field" data-field="subject">
+              <label for="fc-subject">Subiect</label>
+              <select id="fc-subject" name="subject">
+                <option value="general">Alege un subiect…</option>
+                <option value="compatibilitate">Verificare compatibilitate</option>
+                <option value="comanda">Comandă existentă</option>
+                <option value="oferta">Cerere de ofertă</option>
+                <option value="retur">Retur / Garanție</option>
+                <option value="altele">Altele</option>
+              </select>
+            </div>
+
+            <div class="fc-field" data-field="message_body">
+              <label for="fc-message">Mesaj <span class="req">*</span></label>
+              <textarea id="fc-message" name="message_body" placeholder="Scrie mesajul tău aici…" required></textarea>
+              <div class="fc-field-error"></div>
+            </div>
+
+            <button type="submit" class="fc-submit">Trimite mesajul</button>
+
+            <p class="fc-privacy">
+              Datele tale sunt folosite doar pentru a te contacta. Nu le vindem terților.
+            </p>
+
+            <div id="fc-status" class="fc-status" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+
+        <div class="fc-contacts">
+          <div class="fc-contact-item">
+            <strong>Telefon</strong>
+            <a href="tel:+40726498573">0726 498 573</a>
+          </div>
+          <div class="fc-contact-item">
+            <strong>Email</strong>
+            <a href="mailto:contact@besoiupieseauto.ro">contact@besoiupieseauto.ro</a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="fc-footer">
+      © Besoiu Piese Auto — formular contact (HTML/CSS/JS)
+    </footer>
+  </div>
+
+  <script src="assets/js/formular-contact.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+{
+    "randomn_id": "4e6f40cb0fa474c3",
+    "title": "Olej Gm Opel 10W40 2L Olg Opel GM116",
+    "code": "GM116",
+    "category": "Uleiuri și lubrifianți auto",
+    "image_url": "/uploads/products/tecdoc/GM116.jpg",
+    "analyzed_at": "2026-06-18T09:20:27+03:00",
+    "verdict": "match",
+    "match_score": 90,
+    "image_shows": "Bidon gri Liqui Moly MoS2 Leichtlauf 10W-40, 1 litru — ulei motor semisintetic german (Made in Germany).",
+    "issues": [
+        "Marca din imagine este Liqui Moly, nu OLG OPEL / GM Opel din titlu.",
+        "Volumul din imagine este 1 L, iar titlul și descrierea indică 2 L.",
+        "Linia de produs MoS2 Leichtlauf nu corespunde cu «Olej Gm Opel».",
+        "Codul GM116 nu este vizibil pe etichetă."
+    ],
+    "recommendation": "keep",
+    "summary_ro": "Imagine înlocuită și salvată local din autodoc_scraper.",
+    "model": "composer-2.5",
+    "engine": "cursor-composer-2.5",
+    "batch": "batch_20260618_061406.json",
+    "pipeline_retry": {
+        "at": "2026-06-18T07:41:16+00:00",
+        "new_image": "/uploads/products/tecdoc/GM116.jpg",
+        "remote_url": "https://cdn.autodoc.de/thumb?id=27391552&m=0&n=0&lng=ro&rev=94078037",
+        "source": "autodoc_scraper",
+        "plans_tried": [
+            {
+                "tier": 1,
+                "source_id": "epiesa",
+                "label": "Plan 1 — Caiet comenzi / TTC_ART_ID",
+                "status": "miss",
+                "message": "ePiesa: fără potrivire"
+            },
+            {
+                "tier": 2,
+                "source_id": "epiesa",
+                "label": "Plan 2 — TecDoc CSV (import local)",
+                "status": "miss",
+                "message": "ePiesa: fără potrivire"
+            },
+            {
+                "tier": 3,
+                "source_id": "autodoc",
+                "label": "Plan 3 — autodoc.ro",
+                "status": "ok",
+                "message": "Imagine găsită"
+            }
+        ],
+        "note_ro": "Imagine salvată în produs (Plan 1→2→3)."
+    },
+    "pipeline_replaced": true
+}

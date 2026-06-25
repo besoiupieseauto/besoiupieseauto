@@ -1,0 +1,22 @@
+{
+  "randomn_id": "4f6e013182428c67",
+  "title": "Olej Gm Opel 10W40 2L Olg Opel GM116",
+  "code": "GM116",
+  "category": "Uleiuri și lubrifianți auto",
+  "image_url": "https://cdn.autodoc.de/thumb?id=8793627&m=0&n=0&lng=ro&rev=94078041",
+  "verdict": "mismatch",
+  "match_score": 5,
+  "image_shows": "Tub alb Liqui Moly «Getriebeöl Additiv MoS2-Leichtlauf», Art.-Nr. 1040, 20g — aditiv pentru ulei de transmisie, nu bidon de ulei motor.",
+  "issues": [
+    "Marca din imagine este Liqui Moly, nu OLG OPEL / GM Opel.",
+    "Produsul din imagine este aditiv pentru ulei de transmisie (20g), nu ulei motor 10W40 2L.",
+    "Codul vizibil pe ambalaj este 1040, nu GM116.",
+    "Volumul și forma ambalajului (tub mic) nu corespund unui bidon de 2L.",
+    "Categoria Uleiuri și lubrifianți auto este parțial relevantă, dar tipul de produs este greșit."
+  ],
+  "recommendation": "replace",
+  "summary_ro": "Imaginea nu corespunde produsului: arată aditiv Liqui Moly 1040 (20g), nu ulei GM Opel 10W40 2L cod GM116. Se recomandă înlocuirea imaginii.",
+  "analyzed_at": "2026-06-19T12:59:08.058917+00:00",
+  "engine": "cursor-composer-2.5",
+  "model": "composer-2.5"
+}

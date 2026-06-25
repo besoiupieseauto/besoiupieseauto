@@ -1,0 +1,175 @@
+<?php
+
+use Evasystem\Core\AdminUrl;
+
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
+// Deja autentificat → portal departamente sau destinație explicită
+if (!empty($_SESSION['user_id'])) {
+    $next = trim((string) ($_GET['next'] ?? ''));
+    if ($next !== '' && str_starts_with($next, '/admin/') && !str_contains($next, '//')) {
+        header('Location: ' . $next, true, 302);
+        exit;
+    }
+    $dest = class_exists(\Evasystem\Core\Auth\AdminWorkspace::class)
+        ? \Evasystem\Core\Auth\AdminWorkspace::redirectAfterLogin()
+        : AdminUrl::path('dashboard');
+    header('Location: ' . $dest, true, 302);
+    exit;
+}
+
+$loginNext = trim((string) ($_GET['next'] ?? ''));
+if ($loginNext !== '' && (!str_starts_with($loginNext, '/admin/') || str_contains($loginNext, '//'))) {
+    $loginNext = '';
+}
+
+$assetPath = '/admin/Templates/admin';
+?>
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="utf-8">
+    <meta name="csrf-token" content="edjGgac9mtFsWPbrGHhItAsXhkBE8VClTqg62ZE4">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Autentificare — Besoiu Admin</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/admin/public/assets/css/admin-login.css?v=20260610-login-v1">
+</head>
+<body class="besoiu-login-page">
+
+<div id="admin-page-loader" class="page-loader" aria-hidden="true">
+    <div class="loader-spinner"></div>
+</div>
+
+<div class="besoiu-login">
+    <aside class="besoiu-login__brand" aria-hidden="true">
+        <div class="besoiu-login__brand-inner">
+            <a class="besoiu-login__logo" href="/admin/login">
+                <span class="besoiu-login__logo-mark" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                </span>
+                Besoiu <span>Piese Auto</span>
+            </a>
+
+            <div class="besoiu-login__hero">
+                <span class="besoiu-login__badge">Admin 2026</span>
+                <h2 class="besoiu-login__title">Panou de administrare pentru magazinul tău auto</h2>
+                <p class="besoiu-login__subtitle">
+                    Gestionează produsele, comenzile, furnizorii și automatizările — totul dintr-un singur loc securizat.
+                </p>
+
+                <ul class="besoiu-login__features">
+                    <li class="besoiu-login__feature">
+                        <span class="besoiu-login__feature-icon"><i data-lucide="package"></i></span>
+                        Catalog produse &amp; stoc TecDoc
+                    </li>
+                    <li class="besoiu-login__feature">
+                        <span class="besoiu-login__feature-icon"><i data-lucide="shopping-cart"></i></span>
+                        Comenzi &amp; fulfillment
+                    </li>
+                    <li class="besoiu-login__feature">
+                        <span class="besoiu-login__feature-icon"><i data-lucide="bot"></i></span>
+                        Boți &amp; automatizări AI
+                    </li>
+                </ul>
+            </div>
+
+            <p class="besoiu-login__brand-foot">&copy; <?= date('Y'); ?> Besoiu Piese Auto — acces restricționat</p>
+        </div>
+    </aside>
+
+    <main class="besoiu-login__panel">
+        <div class="besoiu-login__card">
+            <div class="besoiu-login__mobile-brand">
+                <span class="besoiu-login__logo-mark" style="width:2rem;height:2rem;border-radius:8px;background:#ecfdf5;display:flex;align-items:center;justify-content:center;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                </span>
+                Besoiu Admin
+            </div>
+
+            <header class="besoiu-login__card-head">
+                <h1>Bine ai revenit</h1>
+                <p>Introdu datele de autentificare pentru a accesa panoul.</p>
+            </header>
+
+            <form
+                id="admin-login-form"
+                class="besoiu-login__form"
+                data-endpoint="/admin/addusersadd"
+                data-method="POST"
+                data-next="<?= htmlspecialchars($loginNext, ENT_QUOTES, 'UTF-8') ?>"
+                novalidate
+            >
+                <div class="besoiu-login__field">
+                    <label for="admin-login-user">Utilizator sau email</label>
+                    <div class="besoiu-login__input-wrap">
+                        <span class="besoiu-login__input-icon" aria-hidden="true">
+                            <i data-lucide="user"></i>
+                        </span>
+                        <input
+                            id="admin-login-user"
+                            name="login"
+                            class="besoiu-login__input"
+                            type="text"
+                            placeholder="ex. admin@besoiupieseauto.ro"
+                            autocomplete="username"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="besoiu-login__field">
+                    <label for="admin-login-password">Parolă</label>
+                    <div class="besoiu-login__input-wrap">
+                        <span class="besoiu-login__input-icon" aria-hidden="true">
+                            <i data-lucide="lock-keyhole"></i>
+                        </span>
+                        <input
+                            id="admin-login-password"
+                            name="password"
+                            class="besoiu-login__input"
+                            type="password"
+                            placeholder="••••••••"
+                            autocomplete="current-password"
+                            required
+                        >
+                        <button type="button" id="admin-login-toggle-pass" class="besoiu-login__toggle-pass" data-action="toggle-password" aria-label="Arată parola" aria-pressed="false">
+                            <i data-lucide="eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div
+                    id="admin-login-status"
+                    class="besoiu-login__status besoiu-login__status--idle is-visible"
+                    role="status"
+                    aria-live="polite"
+                >
+                    Introdu datele pentru a te autentifica.
+                </div>
+
+                <button type="submit" id="admin-login-submit" class="besoiu-login__submit">
+                    <i data-lucide="log-in"></i>
+                    Intră în panou
+                </button>
+            </form>
+
+            <p class="besoiu-login__foot">
+                Acces permis doar utilizatorilor autorizați.<br>
+                Dacă ai uitat parola, contactează administratorul.
+            </p>
+        </div>
+    </main>
+</div>
+
+<script defer src="<?= $assetPath; ?>/dist/js/vendors/lucide.js"></script>
+<script defer src="<?= $assetPath; ?>/dist/js/components/base/lucide.js"></script>
+<script defer src="/admin/public/assets/js/admin-login.js?v=20260612-login-next"></script>
+</body>
+</html>

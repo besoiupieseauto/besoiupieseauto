@@ -1,0 +1,150 @@
+:root {
+  --box-color: #000000;           /* Black background for boxes */
+  --main-color: #ffffff;          /* White text for main content */
+  --btn-bg-color: #333333;        /* Dark gray button background */
+  --btn-text-color: #ffffff;      /* White button text */
+  --td-bg-color: #1a1a1a;         /* Dark table cell background */
+  --top-header-color: #333333;    /* Dark gray header */
+  --highlight-bg-color: #2a2a2a;  /* Dark gray highlight background */
+  --pagination-active-bg: #444444;
+  --orders-border-color: #555555;
+  --label-color: #ffffff;         /* White color for labels */
+  --table-header-color: #ffffff;  /* White color for table headers */
+  --text-color: #ffffff;          /* White color for all text */
+  --border-color: #555555;        /* Dark gray borders */
+  --input-bg-color: #1a1a1a;      /* Dark background for inputs */
+  --input-text-color: #ffffff;    /* White text for inputs */
+  --modal-bg-color: #1a1a1a;      /* Dark background for modals */
+  --modal-text-color: #ffffff;    /* White text for modals */
+}
+
+/* Night mode specific styles for better contrast and white text */
+body {
+  background-color: var(--box-color) !important;
+  color: var(--text-color) !important;
+}
+
+/* Ensure all text is white */
+p, span, div, h1, h2, h3, h4, h5, h6, label, a {
+  color: var(--text-color) !important;
+}
+
+/* Table headers and labels */
+th, .table th, #orders-table th, #produseTable th, #clientsTable th, #facturiTable th {
+  color: var(--table-header-color) !important;
+  background-color: var(--top-header-color) !important;
+}
+
+/* Table cells */
+td, .table td {
+  color: var(--text-color) !important;
+  background-color: var(--td-bg-color) !important;
+}
+
+/* Labels and form elements */
+label, .label, .form-label {
+  color: var(--label-color) !important;
+}
+
+/* Input fields */
+input, textarea, select, .form-control {
+  background-color: var(--input-bg-color) !important;
+  color: var(--input-text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Buttons */
+.btn {
+  background-color: var(--btn-bg-color) !important;
+  color: var(--btn-text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Modals */
+.modal-content {
+  background-color: var(--modal-bg-color) !important;
+  color: var(--modal-text-color) !important;
+}
+
+.modal-header, .modal-body, .modal-footer {
+  background-color: var(--modal-bg-color) !important;
+  color: var(--modal-text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Navigation */
+.navbar {
+  background-color: var(--box-color) !important;
+}
+
+.navbar-nav > li > a {
+  color: var(--btn-text-color) !important;
+}
+
+/* Panels and cards */
+.panel, .card {
+  background-color: var(--td-bg-color) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+.panel-heading, .card-header {
+  background-color: var(--top-header-color) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Dropdowns */
+.dropdown-menu {
+  background-color: var(--td-bg-color) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+.dropdown-menu > li > a {
+  color: var(--text-color) !important;
+}
+
+/* Pagination */
+.pagination > li > a, .pagination > li > span {
+  background-color: var(--td-bg-color) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Links */
+a {
+  color: var(--text-color) !important;
+}
+
+a:hover {
+  color: var(--highlight-bg-color) !important;
+}
+
+/* Jumbotron */
+.jumbotron {
+  background-color: var(--td-bg-color) !important;
+  color: var(--text-color) !important;
+}
+
+/* Status labels */
+.label-info, .label-success, .label-warning, .label-danger {
+  color: var(--text-color) !important;
+}
+
+/* Form groups */
+.form-group label {
+  color: var(--label-color) !important;
+}
+
+/* DataTables */
+.dataTables_wrapper {
+  color: var(--text-color) !important;
+}
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+  color: var(--text-color) !important;
+}

@@ -1,0 +1,138 @@
+# Besoiu Piese Auto — URL-uri curate (storefront + admin)
+RewriteEngine On
+RewriteBase /
+
+# ── Admin: assets & API (fără /public/ în URL) ──
+RewriteRule ^admin/assets/(.*)$ admin/public/assets/$1 [L]
+RewriteRule ^admin/api/(.*)$ admin/public/api/$1 [L]
+RewriteRule ^admin/logout/?$ admin/public/logout.php [L,QSA]
+
+# Admin: redirect vechi /admin/public/* → /admin/*
+RewriteCond %{THE_REQUEST} \s/admin/public/([^\s?]*) [NC]
+RewriteRule ^admin/public/(.*)$ /admin/%1 [R=301,L,QSA]
+
+# Cron Sync — prioritate față de folder fizic admin/cron/ (conflict DirectoryIndex)
+RewriteRule ^admin/cron/?$ admin/public/index.php [L,QSA]
+RewriteRule ^admin/cron/index\.php$ admin/public/index.php [L,QSA]
+
+# Admin: front controller (rute curate)
+RewriteCond %{REQUEST_URI} ^/admin/
+RewriteCond %{REQUEST_URI} !^/admin/public/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^admin/(.*)$ admin/public/index.php [L,QSA]
+
+# Admin root → login
+RewriteRule ^admin/?$ admin/public/index.php [L,QSA]
+
+# ── Storefront: redirect .php → URL curat (301) ──
+# Producție: Location explicit https://besoiupieseauto.ro/… (evită besoiupieseauto.ro.test din ServerName greșit)
+RewriteCond %{HTTP_HOST} ^(www\.)?besoiupieseauto\.ro$ [NC]
+RewriteCond %{THE_REQUEST} \s/+index\.php[\s?] [NC]
+RewriteRule ^index\.php$ https://besoiupieseauto.ro/ [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^(www\.)?besoiupieseauto\.ro$ [NC]
+RewriteCond %{THE_REQUEST} \s/+product\.php[\s?] [NC]
+RewriteRule ^product\.php$ https://besoiupieseauto.ro/produs [R=301,L,QSA]
+
+RewriteCond %{HTTP_HOST} ^(www\.)?besoiupieseauto\.ro$ [NC]
+RewriteCond %{THE_REQUEST} \s/+about\.php[\s?] [NC]
+RewriteRule ^about\.php$ https://besoiupieseauto.ro/despre [R=301,L,QSA]
+
+RewriteCond %{HTTP_HOST} ^(www\.)?besoiupieseauto\.ro$ [NC]
+RewriteCond %{THE_REQUEST} \s/+blog-articol\.php[\s?] [NC]
+RewriteRule ^blog-articol\.php$ https://besoiupieseauto.ro/articol [R=301,L,QSA]
+
+RewriteCond %{HTTP_HOST} ^(www\.)?besoiupieseauto\.ro$ [NC]
+RewriteCond %{THE_REQUEST} \s/+(catalog|cart|cont|contact|blog)\.php[\s?] [NC]
+RewriteRule ^(catalog|cart|cont|contact|blog)\.php$ https://besoiupieseauto.ro/$1 [R=301,L,QSA]
+
+RewriteCond %{HTTP_HOST} ^(www\.)?besoiupieseauto\.ro$ [NC]
+RewriteCond %{THE_REQUEST} \s/+([a-z0-9-]+)\.php[\s?] [NC]
+RewriteRule ^([a-z0-9-]+)\.php$ https://besoiupieseauto.ro/$1 [R=301,L,QSA]
+
+# Local / Laragon: redirect relativ
+RewriteCond %{HTTP_HOST} \.test$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^localhost$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^127\.0\.0\.1$ [NC]
+RewriteCond %{THE_REQUEST} \s/+index\.php[\s?] [NC]
+RewriteRule ^index\.php$ / [R=301,L]
+
+RewriteCond %{HTTP_HOST} \.test$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^localhost$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^127\.0\.0\.1$ [NC]
+RewriteCond %{THE_REQUEST} \s/+product\.php[\s?] [NC]
+RewriteRule ^product\.php$ /produs [R=301,L,QSA]
+
+RewriteCond %{HTTP_HOST} \.test$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^localhost$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^127\.0\.0\.1$ [NC]
+RewriteCond %{THE_REQUEST} \s/+about\.php[\s?] [NC]
+RewriteRule ^about\.php$ /despre [R=301,L,QSA]
+
+RewriteCond %{HTTP_HOST} \.test$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^localhost$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^127\.0\.0\.1$ [NC]
+RewriteCond %{THE_REQUEST} \s/+blog-articol\.php[\s?] [NC]
+RewriteRule ^blog-articol\.php$ /articol [R=301,L,QSA]
+
+RewriteCond %{HTTP_HOST} \.test$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^localhost$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^127\.0\.0\.1$ [NC]
+RewriteCond %{THE_REQUEST} \s/+(catalog|cart|cont|contact|blog)\.php[\s?] [NC]
+RewriteRule ^(catalog|cart|cont|contact|blog)\.php$ /$1 [R=301,L,QSA]
+
+RewriteCond %{HTTP_HOST} \.test$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^localhost$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^127\.0\.0\.1$ [NC]
+RewriteCond %{THE_REQUEST} \s/+([a-z0-9-]+)\.php[\s?] [NC]
+RewriteRule ^([a-z0-9-]+)\.php$ /$1 [R=301,L,QSA]
+
+# ── Storefront: rewrite intern (fără .php) ──
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^$ index.php [L,QSA]
+RewriteRule ^catalog/?$ catalog.php [L,QSA]
+RewriteRule ^cart/?$ cart.php [L,QSA]
+RewriteRule ^produs/?$ product.php [L,QSA]
+RewriteRule ^cont/?$ cont.php [L,QSA]
+RewriteRule ^contact/?$ contact.php [L,QSA]
+RewriteRule ^despre/?$ about.php [L,QSA]
+RewriteRule ^blog/?$ blog.php [L,QSA]
+RewriteRule ^articol/?$ blog-articol.php [L,QSA]
+RewriteRule ^cum-comand/?$ cum-comand.php [L,QSA]
+RewriteRule ^livrare-plata/?$ livrare-plata.php [L,QSA]
+RewriteRule ^retur-garantie/?$ retur-garantie.php [L,QSA]
+RewriteRule ^intrebari-frecvente/?$ intrebari-frecvente.php [L,QSA]
+RewriteRule ^termeni-conditii/?$ termeni-conditii.php [L,QSA]
+RewriteRule ^politica-confidentialitate/?$ politica-confidentialitate.php [L,QSA]
+RewriteRule ^politica-cookies/?$ politica-cookies.php [L,QSA]
+RewriteRule ^cariere/?$ cariere.php [L,QSA]
+
+# Pagini CMS create din admin (slug din site_pages, fără fișier PHP dedicat)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-z0-9-]+)/?$ cms-page.php?slug=$1 [L,QSA]
+
+# API storefront
+RewriteRule ^api/(.*)$ api/$1 [L,QSA]
+
+# Feed BaseLinker permanent (tm_108)
+RewriteRule ^feeds/baselinker\.xml$ api/baselinker-feed.php?format=xml [L,QSA]
+RewriteRule ^feeds/baselinker\.json$ api/baselinker-feed.php?format=json [L,QSA]
+
+# Fișier integrare magazin BaseLinker Shops API (tm_110)
+RewriteRule ^baselinker\.php$ api/baselinker-shop-integration.php [L,QSA]
+
+DirectoryIndex index.php index.html
+
+# ── Cache CSS/JS — TTL scurt la origin (Cloudflare respectă CDN-Cache-Control) ──
+# După job Zeus / edit local: max ~30 sec până la refresh automat, fără purge manual.
+<IfModule mod_headers.c>
+  SetEnvIf Request_URI "^/assets/.*\.(css|js)(\?|$)" besoiu_short_asset_cache=1
+  SetEnvIf Request_URI "^/home\.js(\?|$)" besoiu_short_asset_cache=1
+  SetEnvIf Request_URI "^/admin/assets/.*\.(css|js)(\?|$)" besoiu_short_asset_cache=1
+  Header set Cache-Control "public, max-age=30, must-revalidate" env=besoiu_short_asset_cache
+  Header set CDN-Cache-Control "max-age=30" env=besoiu_short_asset_cache
+</IfModule>

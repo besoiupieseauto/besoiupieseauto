@@ -1,0 +1,566 @@
+{{-- resources/views/comenzi/partials/results.blade.php --}}
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" id="orders-table">
+                <thead>
+                    <tr class="info">
+                        <th class="text-center">Data</th>
+                        <th class="text-center">Client</th>
+                        <th class="text-center">Telefon</th>
+                        <th class="text-center">Marca</th>
+                        <th class="text-center">Adresa</th>
+                        <th class="text-center">Produs</th>
+                        <th class="text-center">Cod</th>
+                        <th class="text-center">Furnizor</th>
+                        <th class="text-center">Cant.</th>
+                        <th class="text-center">Pret</th>
+                        <th class="text-center">Total</th>
+                        <th class="text-center">AWB</th>
+                        <th class="text-center">Status Curier</th>
+                        <th class="text-center">Status</th>
+						<th class="text-center">Notita</th>
+                        <th class="text-center">Actiune</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($orders ?? [] as $orderId => $orderData)
+                        @php
+                            $order = $orderData['order'];
+                            $products = $orderData['products'];
+                            $rowCount = count($products);
+                            $bgColor = 'var(--td-bg-color)';
+                            
+                            // Set background color based on status
+                            /*
+                            if ($order['stare'] == 2) { // Sosit
+                                $bgColor = '#9EA5AF';
+                            }
+                            elseif ($order['stare'] == 6) { // Retur
+                                $bgColor = '#6D7177';  // Darker Gray
+                            }
+                            */
+
+                            // Set background color based on status
+                            if ($order['stare'] == 0 || $order['stare'] == 1 || $order['stare'] == 5) {
+                                // Comandat // Expediat // Avans //
+                                $bgColor = "var(--td-bg-color)";
+                            }
+                            elseif ($order['stare'] == 2 || $order['stare'] == 3) {
+                                // Sosit
+                                $bgColor = "#9ea5af";
+                            }
+                            elseif ($order['stare'] == 4 || $order['stare'] == 6) {
+                                // Retur // Achitat
+                                $bgColor = "#6d7177";
+                            }
+
+                            // Set status button class
+                            $statusClasses = [
+                                1 => 'btn-warning',  // Comandat
+                                2 => 'btn-info',     // Sosit
+                                3 => 'btn-primary',  // Expediat
+                                4 => 'btn-success',  // Achitat
+                                5 => 'btn-danger',   // Avans
+                                6 => 'btn-success',  // Retur
+                            ];
+                            $statusLabel = $statusClasses[$order['stare']] ?? 'btn-default';
+                            
+                            // Set status text
+                            $statusText = [
+                                1 => 'Comandat',
+                                2 => 'Sosit',
+                                3 => 'Expediat',
+                                4 => 'Achitat',
+                                5 => 'Avans',
+                                6 => 'Retur',
+                            ][$order['stare']] ?? 'Necunoscut';
+                            
+                            // Calculate total from all products
+                            $orderTotal = $order['total'];
+                            /*foreach($products as $product) {
+                                $orderTotal += $product->cantitate * $product->pret;
+                            }*/
+                        @endphp
+                        
+                        <!-- Hidden inputs for JavaScript functionality -->
+                        <input type="hidden" value="{{ $orderId }}" id="id_cmd{{ $orderId }}">
+                        <input type="hidden" value="{{ $orderId }}" id="id_prod{{ $orderId }}">
+                        <input type="hidden" value="{{ $order['stare'] }}" id="stare_cmd{{ $orderId }}">
+                        <input type="hidden" value="{{ $statusText }}" id="stare_text_cmd{{ $orderId }}">
+                        <input type="hidden" value="{{ $statusLabel }}" id="label_cmd{{ $orderId }}">
+                        <input type="hidden" value="{{ $bgColor }}" id="cul_cmd{{ $orderId }}">
+                        <input type="hidden" value="{{ $orderTotal }}" id="total_cmd{{ $orderId }}">
+                        <input type="hidden" value="{{ $order['awb'] ?? '' }}" id="awb_cmd{{ $orderId }}">
+                        <input type="hidden" value="{{ $order['cont_awb'] ?? 'Utvin' }}" id="cont_awb_cmd{{ $orderId }}">
+
+                        @foreach($products as $index => $product)
+                            @php
+                                // Set product color based on status
+                                $productColor = $product->culoare ? '#' . $product->culoare : '#FFFFFF';
+                                
+                                if ($order['stare'] == 4 || $order['stare'] == 6) { // Achitat or Retur
+                                    $productColor = '#6d7177';
+                                }
+                                elseif ($order['stare'] == 2 || $order['stare'] == 3) { // Sosit
+                                    $productColor = '#9EA5AF';
+                                }
+                            @endphp
+                            @if($rowCount == 1)
+                            <tr id="{{ $orderId }}">
+                            @else
+                                @if($index != $rowCount -1)
+                            <tr id="{{ $orderId }}" class="products"> 
+                                @endif
+                            @endif
+                                @if($index === 0)
+                                    <td rowspan="{{ $rowCount }}" class="vert-align-center" style="background-color: {{ $bgColor }}">
+                                        {{ \Carbon\Carbon::parse($order['data'])->format('d/m/Y') }}
+                                    </td>
+                                    <td rowspan="{{ $rowCount }}" class="vert-align-center" style="background-color: {{ $bgColor }}">
+                                        {{ $order['client_name'] ?? 'Necunoscut' }}
+                                        {!! $order['companie'] ? '<br><small class="text-muted">'.$order['companie'].'</small>' : '' !!}
+                                    </td>
+                                    <td rowspan="{{ $rowCount }}" class="vert-align-center" style="background-color: {{ $bgColor }}">
+                                        {{ $order['telefon'] ?? '-' }}
+                                    </td>
+                                    <td rowspan="{{ $rowCount }}" class="vert-align-center" style="background-color: {{ $bgColor }}">
+                                        {{ $order['marca'] ?? '-' }}
+                                    </td>
+                                    <td rowspan="{{ $rowCount }}" class="vert-align-center" style="background-color: {{ $bgColor }}">
+                                        {{ $order['localitate'] ?? '-' }}
+                                    </td>
+                                @endif
+
+                                <td class="vert-align-center" style="background-color: {{ $bgColor }}">
+                                    {{ $product->denumire ?? 'Produs necunoscut' }}
+                                </td>
+                                <td class="vert-align-center" style="background-color: {{ $productColor }}">
+                                    <a href="#" class="product-code-link" title="cod produs" onclick="obtine_culoare('{{ $orderId }}', '{{ $product->idprodus }}', '{{ $product->culoare }}');">
+                                        <strong>{{ $product->cod_produs ?? '-' }}</strong>
+                                    </a>
+                                </td>
+                                <td class="vert-align-center" style="background-color: {{ $bgColor }}">
+                                    <a href="#" class="furnizor" title="furnizor" onclick="obtine_furnizor('{{ $orderId }}', '{{ $product->idprodus }}', '{{ $product->furnizor ?? '__' }}');">
+                                        <strong>{{ $product->furnizor ?? '__' }}</strong>
+                                    </a>
+                                </td>
+                                <td class="vert-align-center" style="background-color: {{ $bgColor }}">
+                                    {{ $product->cantitate ?? '0' }}
+                                </td>
+                                <td class="vert-align-center" style="background-color: {{ $bgColor }}">
+                                    {{ number_format($product->pret ?? 0, 2) }}
+                                </td>
+
+                                @if($index === 0)
+                                    <td rowspan="{{ $rowCount }}" class="vert-align-right" style="background-color: {{ $bgColor }}">
+                                        <a href="#" class="total-link" title="Total" onclick="obtine_total('{{ $orderId }}');" data-toggle="modal" data-target="#mod_total">
+                                            <strong>{{ number_format($orderTotal, 2) }}</strong>
+                                        </a>
+                                    </td>
+                                    <td rowspan="{{ $rowCount }}" class="vert-align-center" style="background-color: {{ $bgColor }}">
+                                        @if($order['awb'] == "___" || empty($order['awb']))
+                                            <a href="#" class="awb-link" title="AWB" onclick="obtine_awb('{{ $orderId }}');" data-toggle="modal" data-target="#mod_awb">
+                                                <strong>{{ $order['awb'] ?? '___' }}</strong>
+                                            </a>
+                                        @else
+											<a href="{{ route('awb.print', $order['awb']) }}?cont_awb={{ $order['cont_awb'] ?? 'Utvin' }}" class="awb-link" title="AWB" target="_new">
+												<strong>{{ $order['awb'] }}</strong>
+											</a>
+											@if(ctype_digit($order['awb']))
+												<a href="https://www.fancourier.ro/awb-tracking/?tracking={{ $order['awb'] }}" class="btn btn-sm btn-default action-button" title="Urmărește colet" target="_blank">
+													<i class="glyphicon glyphicon-new-window"></i>
+												</a>
+											@else
+												<a href="https://sameday.ro/#awb={{ $order['awb'] }}" class="btn btn-sm btn-default action-button" title="Urmărește colet" target="_blank">
+													<i class="glyphicon glyphicon-new-window"></i>
+												</a>
+											@endif
+                                        @endif
+                                    </td>
+                                    <td rowspan="{{ $rowCount }}" class="vert-align-center" style="background-color: {{ $bgColor }}">
+										<span>{{ $order['courier_status'] ?? '' }}</span>
+									</div>
+                                    <td rowspan="{{ $rowCount }}" class="vert-align-center" style="background-color: {{ $bgColor }}">
+                                        <button type="button" class="btn btn-sm {{ $statusLabel }}" title="Stare" onclick="obtine_stare('{{ $orderId }}');" data-toggle="modal" data-target="#mod_status">
+                                            {{ $statusText }}
+                                        </button>
+                                    </td>
+									<td rowspan="{{ $rowCount }}" class="vert-align-center" style="background-color: {{ $bgColor }}">
+										@if(!empty($order['observations']))
+											<a href="javascript:void(0)" class="btn btn-warning" title="{{$order['observations']}}"><i class="fa fa-info-circle" style="color: #fff;"></i></a>
+										@else
+											<b>__</b>
+										@endif
+                                    </td>
+									<td rowspan="{{ $rowCount }}" class="vert-align-center" style="background-color: {{ $bgColor }}">
+                                        <div class="action-buttons-container">
+                                            @if($order['stare'] == 3 || $order['stare'] == 5)
+                                                @if(empty($order['idcomanda_ext']))
+                                                    <button type="button" class="btn btn-sm btn-success action-button" title="SMS" onclick="obtine_sms('{{ $orderId }}');">
+                                                        <i class="glyphicon glyphicon-earphone"></i>
+                                                    </button>
+                                                @else
+                                                    <button type="button" class="btn btn-sm btn-danger action-button" title="SMS trimis" onclick="obtine_sms('{{ $orderId }}');">
+                                                        <i class="glyphicon glyphicon-earphone"></i>
+                                                    </button>
+                                                @endif
+                                            @endif
+                                            
+                                            <a href="{{ route('comenzi.edit', $orderId) }}" class="btn btn-sm btn-default action-button" title="Editare">
+                                                <i class="glyphicon glyphicon-edit"></i>
+                                            </a>
+                                            
+                                            @if($order['stare'] == 1)
+                                                <!-- Comandat -->
+                                                <button type="button" class="btn btn-sm btn-warning action-button" title="Sterge" onclick="sterge('{{ $orderId }}')">
+                                                    <i class="glyphicon glyphicon-trash"></i>
+                                                </button>
+                                            @endif
+                                            
+                                            @if(isset($order['id_factura']) && $order['id_factura'])
+                                                <a href="{{ route('print.invoice', $order['id_factura']) }}" class="btn btn-sm btn-info action-button" title="Tipareste factura" target="_blank">
+                                                    <i class="glyphicon glyphicon-print"></i>
+                                                </a>
+                                            @else
+                                                <a href="{{ route('comenzi.edit_extreme', $orderId) }}" class="btn btn-sm btn-default action-button" title="Factureaza" target="_blank">
+                                                    <i class="glyphicon glyphicon-share-alt"></i>
+                                                </a>
+                                            @endif
+											
+											@if(!empty($order['awb']) && $order['stare'] != 1)
+												<a href="{{route('comenzi.sendWhatsapp', $orderId)}}" class="btn {{($order['whatsapp_sent'] == 0 ? 'btn-success' : 'btn-danger')}}" title="Trimite WhatsApp" target="_blank"><i class="glyphicon glyphicon-comment" style="color: #fff;"></i></a>
+											@endif
+										</div>
+                                    </td>
+                                @endif
+                            </tr>
+                            
+                            <!-- Hidden input for product color -->
+                            <input type="hidden" value="{{ $productColor }}" id="cul1_cmd{{ $orderId }}">
+                        @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="14" class="text-center">Nu există comenzi pentru selecția curentă</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="panel-footer">
+        <div class="totals-row">
+            <!--<div class="total-badge">
+                <span class="label label-info label-as-badge">Total luna: {{ number_format($totalLuna ?? 0, 2) }}</span>
+            </div>-->
+            <div class="total-badge">
+                <span class="label label-success label-as-badge">Total: {{ number_format($totalZi ?? 0, 2) }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Panel styling */
+    .panel {
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .panel-heading {
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .panel-body {
+        padding: 0;
+    }
+
+    .panel-footer {
+        background-color: #f9f9f9;
+        border-top: 1px solid #ddd;
+        padding: 10px 15px;
+    }
+
+    /* Table styling */
+    #orders-table {
+        /*
+        border-collapse: separate;
+        border-spacing: 0 10px;*/
+        margin-bottom: 0;
+        border: 1px solid #ddd;
+    }
+
+    #orders-table th {
+        font-weight: bold;
+        text-align: center;
+        vertical-align: middle;
+        background-color: #d9edf7;
+        border: 1px solid #ddd;
+    }
+
+    #orders-table td {
+        border: 1px solid #ddd;
+    }
+
+    /* Target all rows except the first one */
+    table#orders-table > tbody > tr {
+        border-bottom: 5px solid #000;
+    }
+
+    table#orders-table > tbody > tr.products {
+        border-bottom: 1px solid #ddd;
+    }
+
+    .table-responsive {
+        border: none;
+        margin-bottom: 0;
+    }
+
+    /* Vertical alignment classes */
+    .vert-align-center {
+        vertical-align: middle !important;
+        text-align: center;
+    }
+
+    .vert-align-right {
+        vertical-align: middle !important;
+        text-align: right;
+        padding-right: 15px !important;
+    }
+
+    /* Button styling */
+    .btn {
+        border-radius: 3px;
+        font-weight: normal;
+    }
+
+    .btn-xs {
+        padding: 1px 5px;
+        font-size: 12px;
+        line-height: 1.5;
+        border-radius: 3px;
+    }
+
+    .btn-sm {
+        padding: 5px 10px;
+        font-size: 12px;
+        line-height: 1.5;
+        border-radius: 3px;
+    }
+
+    .btn-secondary {
+        color: #333;
+        background-color: #fff;
+        border-color: #ccc;
+    }
+
+    .btn-secondary:hover {
+        color: #333;
+        background-color: #e6e6e6;
+        border-color: #adadad;
+    }
+
+    /* Link styling */
+    .product-code-link,
+    .total-link,
+    .awb-link {
+        color: #333;
+        text-decoration: none;
+    }
+
+    .product-code-link:hover,
+    .total-link:hover,
+    .awb-link:hover {
+        color: #337ab7;
+        text-decoration: underline;
+    }
+
+    /* Label styles */
+    .label-as-badge {
+        border-radius: 0.25em;
+        padding: 0.3em 0.6em;
+        font-size: 1em;
+    }
+
+    /* Action buttons styling */
+    .action-buttons-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 5px;
+        justify-content: center;
+    }
+
+    /* Total badges */
+    .total-badge {
+        font-size: 16px;
+        display: inline-block;
+        margin-right: 15px;
+    }
+
+    .total-badge .label {
+        font-size: 16px;
+        padding: 5px 10px;
+    }
+
+    .totals-row {
+        display: flex;
+        align-items: center;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .action-buttons-container {
+            flex-direction: column;
+        }
+        
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+    }
+
+    /* Fix button styling */
+    .btn-primary {
+        background-color: #337ab7;
+        border-color: #2e6da4;
+    }
+
+    .btn-success {
+        background-color: #5cb85c;
+        border-color: #4cae4c;
+    }
+
+    .btn-info {
+        background-color: #5bc0de;
+        border-color: #46b8da;
+    }
+
+    .btn-warning {
+        background-color: #f0ad4e;
+        border-color: #eea236;
+    }
+
+    .btn-danger {
+        background-color: #d9534f;
+        border-color: #d43f3a;
+    }
+
+    /* Hover effects */
+    .table-hover tbody tr:hover {
+        background-color: #f9f9f9;
+    }
+
+    a.furnizor {
+        background-color: inherit !important;
+        color: #000000 !important;
+    }
+    a.furnizor:visited {
+        color: #000000 !important;
+    }
+    a.furnizor:hover {
+        text-decoration: underline !important;
+        color: #000000 !important;
+    }
+</style>
+
+<!-- Required JavaScript (place at the end of the file) -->
+<script>
+    $(document).ready(function() {
+        console.log('Document ready - checking for invoice updates');
+        
+        // Check for refresh_after_invoice flag in localStorage
+        if (localStorage.getItem('reload_after_invoice') === 'true') {
+            const orderId = localStorage.getItem('last_order_id');
+            console.log('Found reload flag for order:', orderId);
+            
+            // Clear localStorage flags
+            localStorage.removeItem('reload_after_invoice');
+            localStorage.removeItem('last_order_id');
+            
+            // Force reload with cache busting
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('cache_buster', new Date().getTime());
+            console.log('Reloading page with cache buster:', currentUrl.toString());
+            window.location.href = currentUrl.toString();
+        }
+        
+        // Function to update buttons based on invoice status
+        function updateOrderButtons() {
+            console.log('Checking for orders with invoices');
+            
+            // Find all order rows
+            $('.action-buttons-container').each(function() {
+                const container = $(this);
+                const row = container.closest('tr');
+                const orderId = row.attr('id');//row.find('input[id^="id_cmd"]').val();
+                
+                if (!orderId) {
+                    console.log('Order ID not found for row');
+                    return;
+                }
+                
+                console.log('Checking invoice status for order:', orderId);
+                
+                // Use AJAX to check invoice status from server
+                $.ajax({
+                    url: '/check-order-invoice/' + orderId,
+                    type: 'GET',
+                    success: function(response) {
+                        if (response.success && response.has_invoice) {
+                            console.log('Order has invoice:', response.invoice_id);
+                            
+                            // Find edit button and replace with print
+                            const editBtn = container.find('a[href*="edit_extreme"]');
+                            if (editBtn.length > 0) {
+                                editBtn.replaceWith(
+                                    '<a href="/comenzi/print-invoice/' + response.invoice_id + '"' +
+                                    ' class="btn btn-sm btn-info action-button"' +
+                                    ' title="Tipareste factura" target="_blank">' +
+                                    '<i class="glyphicon glyphicon-print"></i></a>'
+                                );
+                                console.log('Replaced edit button with print button');                        
+						   }
+			
+							 
+                        } else {
+                            console.log('Order does not have invoice');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error checking invoice status:', error);
+                    }
+                });
+            });
+        }
+        
+        // Run on page load
+        updateOrderButtons();
+		
+// Utility: escape regex special chars
+function escapeRegex(text) {
+    return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+// Highlight searched term in the table
+function highlightTable(tableSelector, searchTerm) {
+    if (!searchTerm || searchTerm.trim().length === 0) return;
+
+    let safeTerm = escapeRegex(searchTerm.trim());
+    let regex = new RegExp("(" + safeTerm + ")", "gi");
+
+    $(tableSelector).find("tbody td").each(function () {
+        let cellText = $(this).text();
+        let newText = cellText.replace(regex, '<span class="highlighted">$1</span>');
+        $(this).html(newText);
+    });
+}
+
+
+		
+    });
+</script>

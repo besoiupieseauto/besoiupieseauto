@@ -1,0 +1,979 @@
+/**
+ * Besoiu Admin — mobile complet (toate paginile, inputuri, tabele, formulare)
+ */
+
+/* ── Shell & sidebar mobil (restaurează Rubick off-canvas) ── */
+@media (max-width: 1279px) {
+  body.besoiu-admin-2026 .side-menu,
+  body.besoiu-admin-2026 .content,
+  body.besoiu-admin-2026 .rubick > .content {
+    transition: margin 0.2s ease, width 0.2s ease !important;
+  }
+
+  .rubick nav.side-menu {
+    margin-left: -275px !important;
+    width: 275px !important;
+    min-width: 275px !important;
+    max-width: 275px !important;
+  }
+
+  .rubick nav.side-menu.side-menu--mobile-menu-open {
+    margin-left: 0 !important;
+    z-index: 60 !important;
+  }
+
+  .rubick nav.side-menu.side-menu--mobile-menu-open::before {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    content: "" !important;
+  }
+
+  .rubick > .content,
+  .besoiu-admin-2026 .content,
+  .besoiu-admin-2026 .content.content--compact {
+    margin-left: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .besoiu-admin-2026 .content__scroll-area {
+    padding: 0 0 20px !important;
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  .besoiu-admin-2026 .admin-page-main {
+    padding: 0 !important;
+  }
+
+  .close-mobile-menu.close-mobile-menu--mobile-menu-open {
+    display: block !important;
+  }
+}
+
+@media (max-width: 639px) {
+  .rubick > .content,
+  .besoiu-admin-2026 .content {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    padding-bottom: 24px !important;
+  }
+}
+
+/* ── Inputuri & formulare — touch-friendly, fără zoom iOS ── */
+@media (max-width: 1279px) {
+  .admin-content input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="file"]),
+  .admin-content select,
+  .admin-content textarea,
+  .admin-content .form-control,
+  .admin-content [class*="h-10"],
+  .besoiu-filters input,
+  .besoiu-filters select,
+  .besoiu-filters textarea,
+  .besoiu-toolbar__search input,
+  .box input:not([type="checkbox"]):not([type="radio"]),
+  .box select,
+  .box textarea {
+    font-size: 16px !important;
+    min-height: 48px !important;
+    line-height: 1.35 !important;
+    border-radius: 12px !important;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .admin-content textarea,
+  .besoiu-filters textarea {
+    min-height: 120px !important;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+  }
+
+  .admin-content input[type="checkbox"],
+  .admin-content input[type="radio"] {
+    width: 20px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+  }
+
+  .admin-content label,
+  .besoiu-filters__label {
+    font-size: 11px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .admin-content button,
+  .admin-content .btn,
+  .besoiu-btn-primary,
+  .besoiu-btn-secondary,
+  .bg-primary,
+  a.bg-primary {
+    min-height: 48px !important;
+    padding: 12px 18px !important;
+    font-size: 13px !important;
+  }
+}
+
+/* ── Grid-uri & layout pagini ── */
+@media (max-width: 1279px) {
+  .admin-content .grid,
+  .besoiu-page .grid,
+  .admin-panel .grid {
+    gap: 12px !important;
+  }
+
+  .admin-content [class*="col-span-"],
+  .besoiu-page [class*="col-span-"],
+  .admin-panel [class*="col-span-"] {
+    grid-column: span 12 / span 12 !important;
+  }
+
+  .admin-content .grid-cols-10,
+  .admin-content .grid-cols-11,
+  .admin-content .grid-cols-12 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .admin-panel {
+    padding: 14px !important;
+  }
+
+  .admin-panel--flush {
+    padding: 0 !important;
+  }
+
+  .admin-panel__head {
+    padding: 14px 16px !important;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .besoiu-dash-hero {
+    padding: 16px !important;
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+
+  .besoiu-dash-hero h1 {
+    font-size: 1.25rem !important;
+  }
+
+  .besoiu-dash-hero__actions {
+    margin-left: 0 !important;
+    width: 100%;
+  }
+
+  .besoiu-dash-hero__actions a,
+  .besoiu-dash-hero__actions button {
+    flex: 1 1 auto;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .besoiu-dashboard-split {
+    grid-template-columns: 1fr !important;
+  }
+
+  .besoiu-dashboard-split .besoiu-subpanel--flush:first-child {
+    border-right: none !important;
+    border-bottom: 2px solid var(--b26-line) !important;
+  }
+
+  .besoiu-kpi-grid-full {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .besoiu-kpi-grid-full .besoiu-kpi {
+    padding: 16px !important;
+  }
+
+  .besoiu-kpi__value {
+    font-size: 1.75rem !important;
+  }
+
+  .besoiu-subpanel__body {
+    padding: 14px !important;
+  }
+
+  .besoiu-filters {
+    padding: 14px !important;
+  }
+
+  .besoiu-filters .grid {
+    gap: 10px !important;
+  }
+
+  .besoiu-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  .besoiu-toolbar__search {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  .besoiu-toolbar__actions {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .besoiu-toolbar__actions > * {
+    flex: 1 1 calc(50% - 4px);
+    min-width: 0;
+    justify-content: center;
+  }
+
+  .besoiu-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+
+  .besoiu-tabs__btn,
+  .comenzi-tab-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .besoiu-tile {
+    min-height: 88px;
+  }
+
+  .besoiu-produse-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 639px) {
+  .besoiu-kpi-grid-full {
+    grid-template-columns: 1fr !important;
+  }
+
+  .besoiu-kpi-grid-full .besoiu-kpi {
+    border-right: none !important;
+  }
+
+  .besoiu-kpi-grid-full .besoiu-kpi:not(:last-child) {
+    border-bottom: 2px solid var(--b26-line) !important;
+  }
+
+  .besoiu-kpi-grid-full .besoiu-kpi:last-child {
+    border-bottom: none !important;
+  }
+
+  .besoiu-status-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .besoiu-status-cell {
+    border-right: none !important;
+  }
+
+  .besoiu-topbar__inner {
+    padding: 0 10px !important;
+    border-radius: 12px !important;
+  }
+
+  .besoiu-topbar__user-name {
+    display: none !important;
+  }
+
+  .besoiu-toolbar__actions > * {
+    flex: 1 1 100%;
+  }
+}
+
+/* ── Tabele — scroll orizontal sigur ── */
+@media (max-width: 1279px) {
+  .admin-table-wrap,
+  .besoiu-table-wrap,
+  .overflow-x-auto,
+  .admin-content table {
+    max-width: 100%;
+  }
+
+  .admin-table-wrap,
+  .besoiu-table-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px !important;
+    max-height: none !important;
+  }
+
+  .admin-table-wrap table,
+  .besoiu-table-wrap table,
+  .besoiu-data-table {
+    min-width: 640px;
+    font-size: 13px !important;
+  }
+
+  .admin-table-wrap th,
+  .admin-table-wrap td,
+  .besoiu-data-table th,
+  .besoiu-data-table td {
+    padding: 10px 12px !important;
+    white-space: nowrap;
+  }
+}
+
+/* ── Modale & popup ── */
+@media (max-width: 639px) {
+  .besoiu-modal__dialog,
+  .besoiu-modal .box,
+  [role="dialog"] .box,
+  .fixed.inset-0 .box {
+    width: calc(100vw - 24px) !important;
+    max-width: calc(100vw - 24px) !important;
+    margin: 12px !important;
+    max-height: calc(100vh - 24px) !important;
+    overflow-y: auto !important;
+  }
+
+  .besoiu-account-popup {
+    left: 8px !important;
+    right: 8px !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+}
+
+/* ── Mesagerie & split views ── */
+@media (max-width: 1023px) {
+  .admin-content .h-\[80vh\],
+  .admin-content [class*="h-[80vh]"] {
+    height: auto !important;
+    min-height: 60vh;
+  }
+
+  .admin-content .lg\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── Pagini produse legacy ── */
+@media (max-width: 1279px) {
+  #produse-toolbar,
+  .produse-toolbar {
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+    gap: 8px !important;
+  }
+
+  #produse-toolbar > *,
+  .produse-toolbar > * {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .product-card .grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── Safe area (notch) ── */
+@supports (padding: max(0px)) {
+  @media (max-width: 1279px) {
+    .besoiu-admin-2026 .content {
+      padding-bottom: max(24px, env(safe-area-inset-bottom)) !important;
+    }
+
+    .side-menu__content {
+      padding-bottom: max(7.5rem, calc(7.5rem + env(safe-area-inset-bottom))) !important;
+    }
+  }
+}
+
+/* ── Categorii admin: modal terminal cascade (ULTIM — după admin-pages, display/z-index/pointer-events) ── */
+body.besoiu-admin-2026 #catModal.categorii-overlay-modal:not(.is-open),
+body.besoiu-admin-2026 #tecdocModal.categorii-overlay-modal:not(.is-open),
+body.besoiu-admin-2026 .categorii-overlay-modal[hidden],
+body.besoiu-admin-2026 .categorii-overlay-modal[aria-hidden="true"]:not(.is-open) {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
+body.besoiu-admin-2026 #catModal.categorii-overlay-modal.is-open:not([hidden]),
+body.besoiu-admin-2026 #tecdocModal.categorii-overlay-modal.is-open:not([hidden]) {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+}
+
+body.besoiu-admin-2026 .categorii-overlay-modal:not(.is-open) .categorii-overlay-modal__panel,
+body.besoiu-admin-2026 .categorii-overlay-modal[hidden] .categorii-overlay-modal__panel {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+body.besoiu-admin-2026 .categorii-overlay-modal.is-open:not([hidden]) > .categorii-overlay-modal__panel {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/* ── Importreview: dock progres scan imagini (ULTIM — după admin-pages, display/z-index/pointer-events) ── */
+body.besoiu-admin-2026 #imageScanStatus.import-image-scan-dock[hidden],
+body.besoiu-admin-2026 #imageScanStatus.import-image-scan-status[hidden],
+body.besoiu-admin-2026 #imageScanStatus[data-besoiu-block="image-scan-dock"][hidden] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+body.besoiu-admin-2026 #imageScanStatus.import-image-scan-dock:not([hidden]),
+body.besoiu-admin-2026.import-image-scan-active #imageScanStatus.import-image-scan-status,
+body.besoiu-admin-2026 #imageScanStatus[data-besoiu-block="image-scan-dock"]:not([hidden]) {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  position: fixed !important;
+  bottom: max(16px, env(safe-area-inset-bottom, 16px)) !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 9600 !important;
+  width: min(720px, calc(100vw - 24px)) !important;
+}
+
+body.besoiu-admin-2026.import-image-scan-active #imageScanProgress:not([hidden]),
+body.besoiu-admin-2026 #imageScanStatus.is-scanning #imageScanProgress,
+body.besoiu-admin-2026 [data-besoiu-block="image-scan-progress"],
+body.besoiu-admin-2026 [data-besoiu-block="image-scan-progress"][hidden] {
+  display: block !important;
+  visibility: visible !important;
+  min-height: 8px !important;
+}
+
+body.besoiu-admin-2026.import-image-scan-active #imageScanProgressBar.is-indeterminate {
+  width: 38% !important;
+  animation: imageScanIndeterminate 1.25s ease-in-out infinite;
+}
+
+body.besoiu-admin-2026.import-image-scan-active .page-loader {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+body.besoiu-admin-2026.import-image-scan-active .side-menu,
+body.besoiu-admin-2026.import-image-scan-active .side-menu a,
+body.besoiu-admin-2026.import-image-scan-active .admin-panel__head a,
+body.besoiu-admin-2026.import-image-scan-active .content a[href] {
+  pointer-events: auto !important;
+  cursor: pointer;
+}
+
+body.besoiu-admin-2026 #imageScanStatus.is-scanning #imageScanProgress,
+body.besoiu-admin-2026 #imageScanStatus.is-scanning #imageScanProgress[hidden],
+body.besoiu-admin-2026.import-image-scan-active #imageScanProgress:not([hidden]) {
+  display: block !important;
+  visibility: visible !important;
+  min-height: 8px !important;
+}
+
+/* Terminal mobil: progres 0% vizibil în timpul fetch-ului AJAX (override [hidden] / .hidden) */
+body.besoiu-admin-2026[data-image-scan-active="1"] #imageScanStatus #imageScanProgress,
+body.besoiu-admin-2026[data-image-scan-active="1"] #imageScanStatus #imageScanProgress[hidden],
+body.besoiu-admin-2026[data-image-scan-active="1"] #imageScanProgressPct,
+body.besoiu-admin-2026[data-image-scan-active="1"] [data-besoiu-block="image-scan-progress"],
+body.besoiu-admin-2026[data-image-scan-active="1"] [data-besoiu-block="image-scan-progress-pct"] {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: none !important;
+}
+
+body.besoiu-admin-2026[data-image-scan-active="1"] #imageScanProgressBar.is-indeterminate {
+  display: block !important;
+  width: 38% !important;
+  animation: imageScanIndeterminate 1.25s ease-in-out infinite;
+}
+
+@media (max-width: 767px) {
+  body.besoiu-admin-2026 #imageScanStatus.import-image-scan-dock:not([hidden]) {
+    width: calc(100vw - 16px) !important;
+    bottom: 12px !important;
+  }
+}
+
+/* ── Importreview: butoane hover + apasare (tm_importreview_button_fx v2) — terminal !important vs theme * { transition:none } ── */
+body.besoiu-admin-2026 .import-review-page button:not(:disabled),
+body.besoiu-admin-2026 .import-review-page a.inline-flex,
+body.besoiu-admin-2026 .import-review-page a.box,
+body.besoiu-admin-2026 .import-review-page a.import-price-formation-log-link,
+body.besoiu-admin-2026 #importQueueEditModal button:not(:disabled),
+body.besoiu-admin-2026 #importQueueEditModal a.inline-flex,
+body.besoiu-admin-2026 #imageScanStatus button:not(:disabled),
+body.besoiu-admin-2026 #refreshImagesStop:not(:disabled) {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate;
+  transition:
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.22s ease,
+    border-color 0.22s ease,
+    color 0.22s ease,
+    filter 0.22s ease !important;
+  transform: translate3d(0, 0, 0) scale(1) !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body.besoiu-admin-2026 .import-review-page button:not(:disabled):hover,
+body.besoiu-admin-2026 .import-review-page a.inline-flex:hover,
+body.besoiu-admin-2026 .import-review-page a.box:hover,
+body.besoiu-admin-2026 .import-review-page a.import-price-formation-log-link:hover,
+body.besoiu-admin-2026 #importQueueEditModal button:not(:disabled):hover,
+body.besoiu-admin-2026 #importQueueEditModal a.inline-flex:hover,
+body.besoiu-admin-2026 #imageScanStatus button:not(:disabled):hover,
+body.besoiu-admin-2026 #refreshImagesStop:not(:disabled):hover {
+  transform: translate3d(0, -2px, 0) scale(1.02) !important;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12) !important;
+}
+
+body.besoiu-admin-2026 .import-review-page button:not(:disabled):active,
+body.besoiu-admin-2026 .import-review-page button.besoiu-btn-is-pressed:not(:disabled),
+body.besoiu-admin-2026 .import-review-page a.inline-flex:active,
+body.besoiu-admin-2026 .import-review-page a.inline-flex.besoiu-btn-is-pressed,
+body.besoiu-admin-2026 .import-review-page a.box:active,
+body.besoiu-admin-2026 .import-review-page a.box.besoiu-btn-is-pressed,
+body.besoiu-admin-2026 .import-review-page a.import-price-formation-log-link:active,
+body.besoiu-admin-2026 .import-review-page a.import-price-formation-log-link.besoiu-btn-is-pressed,
+body.besoiu-admin-2026 #importQueueEditModal button:not(:disabled):active,
+body.besoiu-admin-2026 #importQueueEditModal button.besoiu-btn-is-pressed:not(:disabled),
+body.besoiu-admin-2026 #importQueueEditModal a.inline-flex:active,
+body.besoiu-admin-2026 #importQueueEditModal a.inline-flex.besoiu-btn-is-pressed,
+body.besoiu-admin-2026 #imageScanStatus button:not(:disabled):active,
+body.besoiu-admin-2026 #imageScanStatus button.besoiu-btn-is-pressed:not(:disabled),
+body.besoiu-admin-2026 #refreshImagesStop:not(:disabled):active,
+body.besoiu-admin-2026 #refreshImagesStop.besoiu-btn-is-pressed:not(:disabled) {
+  transform: translate3d(0, 1px, 0) scale(0.96) !important;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.16) !important;
+  transition-duration: 0.1s !important;
+}
+
+body.besoiu-admin-2026 .import-review-page button[type="submit"]:not([class*="bg-emerald"]):not([class*="bg-sky"]):not([class*="bg-red"]):not([class*="bg-orange"]):not([class*="bg-violet"]):not(:disabled):hover,
+body.besoiu-admin-2026 .import-review-page button[data-close-queue-edit]:not(:disabled):hover,
+body.besoiu-admin-2026 .import-review-page .admin-panel__head a.inline-flex:hover {
+  background-color: rgba(15, 23, 42, 0.06) !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+body.besoiu-admin-2026 .import-review-page [class*="bg-emerald-50"]:hover,
+body.besoiu-admin-2026 #importQueueEditModal [class*="bg-emerald-50"]:hover {
+  background-color: #a7f3d0 !important;
+  border-color: #34d399 !important;
+  color: #065f46 !important;
+}
+
+body.besoiu-admin-2026 .import-review-page [class*="bg-sky-50"]:hover,
+body.besoiu-admin-2026 #importQueueEditModal [class*="bg-sky-50"]:hover {
+  background-color: #bae6fd !important;
+  border-color: #38bdf8 !important;
+  color: #075985 !important;
+}
+
+body.besoiu-admin-2026 .import-review-page [class*="bg-red-50"]:hover,
+body.besoiu-admin-2026 #importQueueEditModal [class*="bg-red-50"]:hover {
+  background-color: #fecaca !important;
+  border-color: #f87171 !important;
+  color: #991b1b !important;
+}
+
+body.besoiu-admin-2026 .import-review-page [class*="bg-orange-50"]:hover,
+body.besoiu-admin-2026 #importQueueEditModal [class*="bg-orange-50"]:hover {
+  background-color: #fed7aa !important;
+  border-color: #fb923c !important;
+  color: #9a3412 !important;
+}
+
+body.besoiu-admin-2026 .import-review-page [class*="bg-violet-50"]:hover,
+body.besoiu-admin-2026 #importQueueEditModal [class*="bg-violet-50"]:hover {
+  background-color: #ddd6fe !important;
+  border-color: #a78bfa !important;
+  color: #5b21b6 !important;
+}
+
+body.besoiu-admin-2026 .import-review-page #addAll:not(:disabled):hover {
+  filter: brightness(1.15) !important;
+  box-shadow: 0 8px 20px rgba(5, 150, 105, 0.32) !important;
+}
+
+/* Butoane închise (primary) → hover mai deschis */
+body.besoiu-admin-2026 .import-review-page a.box[class*="bg-primary"]:hover,
+body.besoiu-admin-2026 .import-review-page a.box.text-white:hover {
+  filter: brightness(1.2) !important;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.28) !important;
+}
+
+/* Paginare neutră (fundal deschis) → hover ușor mai închis */
+body.besoiu-admin-2026 .import-review-page a.box:not([class*="bg-primary"]):hover {
+  background-color: rgba(15, 23, 42, 0.06) !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+body.besoiu-admin-2026 .import-image-scan-status__stop:not(:disabled):hover,
+body.besoiu-admin-2026 #refreshImagesStop:not(:disabled):hover {
+  background-color: #fee2e2 !important;
+  border-color: #f87171 !important;
+  color: #991b1b !important;
+}
+
+body.besoiu-admin-2026 .import-queue-edit-modal__close:hover {
+  background-color: #f1f5f9 !important;
+  border-color: #94a3b8 !important;
+  color: #0f172a !important;
+}
+
+body.besoiu-admin-2026 .import-review-page button:disabled,
+body.besoiu-admin-2026 #importQueueEditModal button:disabled {
+  transform: none !important;
+  box-shadow: none !important;
+  cursor: not-allowed !important;
+  filter: none !important;
+  pointer-events: none !important;
+}
+
+body.besoiu-admin-2026 .import-review-page button .besoiu-btn-ripple,
+body.besoiu-admin-2026 .import-review-page a.inline-flex .besoiu-btn-ripple,
+body.besoiu-admin-2026 .import-review-page a.box .besoiu-btn-ripple,
+body.besoiu-admin-2026 .import-review-page a.import-price-formation-log-link .besoiu-btn-ripple,
+body.besoiu-admin-2026 #importQueueEditModal button .besoiu-btn-ripple,
+body.besoiu-admin-2026 #importQueueEditModal a.inline-flex .besoiu-btn-ripple,
+body.besoiu-admin-2026 #imageScanStatus button .besoiu-btn-ripple,
+body.besoiu-admin-2026 #refreshImagesStop .besoiu-btn-ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  opacity: 0.32;
+  pointer-events: none !important;
+  z-index: 1;
+  animation: besoiuImportBtnRipple 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes besoiuImportBtnRipple {
+  to {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.besoiu-admin-2026 .import-review-page button,
+  body.besoiu-admin-2026 .import-review-page a.inline-flex,
+  body.besoiu-admin-2026 .import-review-page a.box,
+  body.besoiu-admin-2026 .import-review-page a.import-price-formation-log-link,
+  body.besoiu-admin-2026 #importQueueEditModal button,
+  body.besoiu-admin-2026 #importQueueEditModal a.inline-flex,
+  body.besoiu-admin-2026 #imageScanStatus button,
+  body.besoiu-admin-2026 #refreshImagesStop {
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease !important;
+    transform: none !important;
+  }
+
+  body.besoiu-admin-2026 .import-review-page button .besoiu-btn-ripple,
+  body.besoiu-admin-2026 .import-review-page a .besoiu-btn-ripple,
+  body.besoiu-admin-2026 #importQueueEditModal button .besoiu-btn-ripple,
+  body.besoiu-admin-2026 #imageScanStatus button .besoiu-btn-ripple,
+  body.besoiu-admin-2026 #refreshImagesStop .besoiu-btn-ripple {
+    display: none !important;
+  }
+}
+
+/* ── Comenzi admin: tab-uri legacy caiet (ULTIM — display/z-index/pointer-events mobil) ── */
+body.besoiu-admin-2026 .comenzi-admin-page .comenzi-tab-panel.hidden {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+body.besoiu-admin-2026 .comenzi-admin-page .comenzi-tab-panel:not(.hidden),
+body.besoiu-admin-2026 .comenzi-admin-page .comenzi-tab-panel.comenzi-tab-panel--active {
+  display: block !important;
+  pointer-events: auto !important;
+}
+
+body.besoiu-admin-2026 .comenzi-admin-page .comenzi-tab-btn {
+  pointer-events: auto !important;
+  touch-action: manipulation;
+}
+
+/* ── Adaos comercial: tab Log formare preț (ULTIM mobil — display/z-index/pointer-events) ── */
+body.besoiu-admin-2026 .adaos-comercial-page .adaos-page-pane:not(.active) {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page .adaos-page-pane.active {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  height: auto !important;
+  overflow: visible !important;
+  position: relative;
+  z-index: 2;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page .adaos-page-tab {
+  pointer-events: auto !important;
+  touch-action: manipulation;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 3;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel #pflResult:not(.pfl-is-hidden),
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel #pflEmpty:not(.pfl-is-hidden) {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel #pflResult.pfl-is-hidden,
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel #pflEmpty.pfl-is-hidden,
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel .pfl-search-row.pfl-is-hidden {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel .pfl-search-row:not(.pfl-is-hidden) {
+  display: flex !important;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel #pflSteps {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel button,
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel input {
+  pointer-events: auto !important;
+}
+
+body.besoiu-admin-2026 #legacy-comenzi-modal.comenzi-legacy-modal.is-open {
+  display: block !important;
+  pointer-events: auto !important;
+  z-index: 100000 !important;
+}
+
+/* ── Produse listă: modal badge + toolbar dropdown (ULTIM — cascade terminal) ── */
+body.besoiu-admin-2026 #badgeSelectModal:not(.is-open),
+body.besoiu-admin-2026 #markupSelectModal:not(.is-open),
+body.besoiu-admin-2026 #addProductModal:not(.is-open) {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
+body.besoiu-admin-2026 #badgeSelectModal.is-open,
+body.besoiu-admin-2026 #markupSelectModal.is-open,
+body.besoiu-admin-2026 #addProductModal.is-open,
+body.besoiu-admin-2026 #addProductModal.is-open[hidden] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  z-index: 100000 !important;
+}
+
+body.besoiu-admin-2026 #badgeSelectModal.is-open .markup-select-modal__callout,
+body.besoiu-admin-2026 #markupSelectModal.is-open .markup-select-modal__callout,
+body.besoiu-admin-2026 #badgeSelectModal.is-open #badgeModalHint,
+body.besoiu-admin-2026 #markupSelectModal.is-open #markupModalHint {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: #1e293b !important;
+}
+
+body.besoiu-admin-2026 .produse-list-page .products-menu__toggle {
+  pointer-events: auto !important;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease, border-color 0.16s ease !important;
+}
+
+body.besoiu-admin-2026 .produse-list-page .products-menu__toggle--hub:not(:disabled):hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.14) !important;
+}
+
+/* ── Produse listă: fragmente modal în flux + toolbar/filtre (ULTIM — cascade terminal) ── */
+body.besoiu-admin-2026 #badgeSelectModal:not(.is-open) .markup-select-modal__panel,
+body.besoiu-admin-2026 #markupSelectModal:not(.is-open) .markup-select-modal__panel,
+body.besoiu-admin-2026 #badgeSelectModal:not(.is-open) .markup-select-modal__callout,
+body.besoiu-admin-2026 #markupSelectModal:not(.is-open) .markup-select-modal__callout,
+body.besoiu-admin-2026 #badgeSelectModal:not(.is-open) #badgeModalHint,
+body.besoiu-admin-2026 #markupSelectModal:not(.is-open) #markupModalHint,
+body.besoiu-admin-2026 #addProductModal:not(.is-open) .products-overlay-modal__panel {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
+body.besoiu-admin-2026 #addProductModal.is-open > .products-overlay-modal__panel {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  position: relative !important;
+  inset: auto !important;
+  width: min(1200px, calc(100vw - 32px)) !important;
+  height: min(calc(100vh - 48px), 920px) !important;
+  max-height: calc(100vh - 48px) !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+  z-index: 1 !important;
+}
+
+body.besoiu-admin-2026 #addProductModal.is-open #addProductFrame {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  width: 100% !important;
+  height: calc(100% - 57px) !important;
+  min-height: 280px !important;
+  border: 0 !important;
+  background: #fff !important;
+}
+
+body.besoiu-admin-2026 .produse-list-page #openAddProduct,
+body.besoiu-admin-2026 .produse-list-page #openAddProductMini {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  position: relative !important;
+  z-index: 12 !important;
+}
+
+body.besoiu-admin-2026 #badgeSelectModal.is-open .markup-select-modal__callout-text,
+body.besoiu-admin-2026 #markupSelectModal.is-open .markup-select-modal__callout-text {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: #1e293b !important;
+  font-weight: 500 !important;
+  line-height: 1.5 !important;
+}
+
+body.besoiu-admin-2026 .produse-list-page .products-toolbar__primary,
+body.besoiu-admin-2026 .produse-list-page .products-toolbar__filters {
+  overflow: visible !important;
+}
+
+body.besoiu-admin-2026 .produse-list-page .products-toolbar__filters {
+  padding: 10px 12px;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 12px;
+  background: #fff;
+  gap: 8px;
+}
+
+body.besoiu-admin-2026 .produse-list-page .products-menu.is-open .products-menu__panel {
+  z-index: 500 !important;
+  pointer-events: auto !important;
+}
+
+body.besoiu-admin-2026 .produse-list-page .products-menu__panel--hub {
+  max-height: min(70vh, 520px);
+  overflow-y: auto;
+}
+
+body.besoiu-admin-2026 .produse-list-page .products-btn-hover:not(:disabled):hover,
+body.besoiu-admin-2026 .produse-list-page .products-menu__toggle:not(:disabled):hover,
+body.besoiu-admin-2026 .produse-list-page .products-menu__item:not(:disabled):hover {
+  transform: translateY(-1px) !important;
+  opacity: 1 !important;
+}
+
+@media (max-width: 767px) {
+  body.besoiu-admin-2026 .produse-list-page .products-bulk-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  body.besoiu-admin-2026 .produse-list-page .products-bulk-bar__actions {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  body.besoiu-admin-2026 .produse-list-page .products-menu--bulk .products-menu__panel {
+    left: 0;
+    right: 0;
+    width: 100%;
+    min-width: 0;
+  }
+
+  body.besoiu-admin-2026 .produse-list-page .products-toolbar__filters select,
+  body.besoiu-admin-2026 .produse-list-page .products-toolbar__filters .box {
+    flex: 1 1 calc(50% - 8px);
+    min-width: 0;
+  }
+}
+
+/* ── Adaos comercial: tab-uri + log formare preț (tm_084) — terminal !important vs app.css / Tailwind .hidden ── */
+body.besoiu-admin-2026 .adaos-comercial-page .adaos-page-pane:not(.active) {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page .adaos-page-pane.active,
+body.besoiu-admin-2026 .adaos-comercial-page #adaos-page-pane-price-log.active {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel,
+body.besoiu-admin-2026 .adaos-comercial-page .pfl-log-panel {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page .pfl-is-hidden {
+  display: none !important;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page #pflResult:not(.pfl-is-hidden) {
+  display: block !important;
+  visibility: visible !important;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page #pflEmpty:not(.pfl-is-hidden) {
+  display: block !important;
+  visibility: visible !important;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page .pfl-step {
+  display: grid !important;
+  visibility: visible !important;
+}

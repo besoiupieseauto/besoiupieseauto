@@ -1,0 +1,72 @@
+<?php
+
+declare(strict_types=1);
+
+use Evasystem\Core\AdminUrl;
+
+/**
+ * Slug-uri meniu admin — rute GET curate generate în routes_bootstrap.
+ *
+ * @return list<string>
+ */
+return [
+    'dashboard',
+    'suppliers',
+    'product',
+    'vitrina',
+    'scanned',
+    'caiet-produse',
+    'addproduse',
+    'categorii',
+    'adaoscomercial',
+    'import',
+    'importreview',
+    'searchlogs',
+    'orders',
+    'order-create',
+    'abandoned-carts',
+    'supplier-search',
+    'supplier-cart',
+    'facturi',
+    'livrare',
+    'clienti',
+    'bots',
+    'comunicare',
+    'reply-templates',
+    'comunicare-canale',
+    'comunicare-leads',
+    'comunicare-broadcast',
+    'comunicare-archive',
+    'messages',
+    'marketplace',
+    'export',
+    'scan',
+    'cron',
+    'search-logs',
+    'cross-reference',
+    'reports',
+    'website',
+    'blog',
+    'addblog',
+    'users',
+    'alerts',
+    'scraper',
+    'backup',
+    'settings',
+    'profileusers',
+    'addusers',
+    'reset-password',
+    'help',
+    'reg',
+    'ai-tokens',
+    'system-errors',
+    'order-edit',
+    'order-create',
+    'editproduse',
+    'supplier',
+    'customer',
+    'customers',
+    'invoices',
+    'invoice',
+    'products',
+];

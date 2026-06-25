@@ -1,0 +1,510 @@
+    /*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Sep 21, 2016, 1:43:23 PM
+    Author     : Delis
+*/
+
+ .table tbody>tr>td.vert-align-center{
+    text-align: center; 
+    vertical-align: middle;
+}
+ .table tbody>tr>td.vert-align-center-fl{
+    text-align: center; 
+    vertical-align: middle;
+    border-bottom-style: none;
+}
+ .table tbody>tr>td.vert-align-left{
+    text-align: left; 
+    vertical-align: middle;}
+.table tbody>tr>td.vert-align-right{
+    text-align: right; 
+    vertical-align: middle;
+}
+.panel{
+	border:0px !important;
+}
+.btn.btn-maine.btn-block {
+    color: #333333;
+    background-color: #7CFC00;
+    background-image: linear-gradient(to bottom, #7CFC00, #7CFC00);
+    border-color: #7CFC00 #7CFC00 #7CFC00;
+}
+.btn.btn-maine.btn-block:hover {
+    color: #333333;
+    background-color: #7CFC00;
+    background-image: linear-gradient(to bottom, #7CFC00, #7CFC00);
+    border-color: #7CFC00 #7CFC00 #7CFC00;
+}
+.btn.btn-poimaine.btn-block {
+    color: #333333;
+    background-color: #ADD8E6;
+    background-image: linear-gradient(to bottom, #ADD8E6, #ADD8E6);
+    border-color: #ADD8E6 #ADD8E6 #ADD8E6;
+}
+.btn.btn-poimaine.btn-block:hover {
+    color: #333333;
+    background-color: #ADD8E6;
+    background-image: linear-gradient(to bottom, #ADD8E6, #ADD8E6);
+    border-color: #ADD8E6 #ADD8E6 #ADD8E6;
+}
+.btn.btn-more3.btn-block {
+    color: #333333;
+    background-color: #FF0000;
+    background-image: linear-gradient(to bottom, #FF0000, #FF0000);
+    border-color: #FF0000 #FF0000 #FF0000;
+}
+.btn.btn-more3.btn-block:hover {
+    color: #333333;
+    background-color: #FF0000;
+    background-image: linear-gradient(to bottom, #FF0000, #FF0000);
+    border-color: #FF0000 #FF0000 #FF0000;
+}
+
+.btn.btn-more5.btn-block {
+    color: #333333;
+    background-color: #F5A000;
+    background-image: linear-gradient(to bottom, #F5A000, #F5A000);
+    border-color: #F5A000 #F5A000 #F5A000;
+}
+
+.table {
+  border: 1px solid #dddddd;
+}
+.table-light > thead > tr > th,
+.table-light > tbody > tr > th,
+.table-light > tfoot > tr > th,
+.table-light > thead > tr > td,
+.table-light > tbody > tr > td,
+.table-light > tfoot > tr > td {
+  border: 2px solid #031f24;
+  border-right-width:0px;
+  border-left-width:0px;
+  overflow-x: auto;
+}
+
+.label-as-badge {
+    border-radius: 1em;
+}
+
+#modal_awb .form-group {
+    margin: 5px !important;
+}
+#modal_awb .modal-body {
+    position: relative;
+     padding: 0px !important;
+}
+#modal_awb #tipserviciu {
+    width: 100% !important;
+    margin-right: 20px;
+}
+
+#fanCourierListContainer {
+    width: 35% !important;
+}
+#typeFilterDropdown {
+    width: 100% !important;
+}
+.form-check {
+    padding: 0px 8px !important;
+    
+}
+.modal-content .dropdown-menu.p-3 {
+    width: 100%;
+}
+.panel-primary>.panel-heading{
+	border-color:var(--top-header-color) !important;
+}
+.modal-header{
+	background-color:var(--top-header-color) !important;
+	color:var(--modal-text-color) !important;
+}
+.panel-info>.panel-heading, .panel-primary>.panel-heading{
+	background-color:var(--top-header-color) !important;
+	background-image:none !important;
+	}
+	
+	#importBtn{
+		color:#fff !important;
+		text-shadow:none !important;
+		opacity:1 !important;
+	}
+	.panel-heading .pull-right a.btn.btn-success, .panel-heading button.btn.btn-info, #importBtn{
+		background-color:var(--box-color) !important;
+		background-image:none !important;
+		border-color:var(--box-color) !important;
+	}
+	.btn-group.pull-right .btn, #newInvoiceBtn {
+/*     background-color: var(--box-color) !important;
+	background-image:none !important;
+    border-color: var(--box-color) !important; */
+    color: white!important;
+    background-image: none!important;
+    padding: 10px 15px!important;
+}
+	
+	
+	#incasari-table th, #incasari-table td{
+		text-align:center !important;
+	}
+	#orders-table>tbody>tr:nth-of-type(odd), #produseTable>tbody>tr:nth-of-type(odd),  #clientsTable>tbody>tr:nth-of-type(odd), #incasari-table>tbody>tr:nth-of-type(odd),
+	#facturiTable>tbody>tr:nth-of-type(odd), #utilizatoriTable>tbody>tr:nth-of-type(odd){
+		background-color: var(--td-bg-color) !important;
+	}
+	#orders-table th, #produseTable th, #clientsTable th, #facturiTable th, #incasari-table th, #utilizatoriTable th, #ordersTable th{
+	 border: 2px solid #ddd!important;
+    background: var(--main-color) !important;
+	color:#455649 !important;
+	}
+	.navbar-fixed-bottom, .navbar-fixed-top, .navbar-static-top{
+		background-color:var(--box-color) !important;
+		background-image:none !important;	
+		}
+		.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.open>a{
+			background-color:var(--highlight-bg-color) !important;
+				background-image:none !important;
+				color:var(--modal-text-color) !important;
+		}
+		.navbar-default .navbar-nav>li>a, .navbar-default .navbar-brand{
+			color:var(--btn-text-color) !important;
+		}
+		/* #orders-table > tbody > tr{
+    border-bottom: 4px solid var(--orders-border-color) !important;
+}
+#orders-table > tbody > tr,  #orders-table > tbody > tr{
+    border-bottom: 4px solid var(--orders-border-color) !important;
+}
+*/ 
+
+#incasari-table>tbody>tr.red-row-cs{
+	background-color: #ff6969 !important;
+}
+
+table#orders-table > tbody > tr {
+   
+  border-bottom: 4px solid var(--orders-border-color) !important;
+}
+.total-luna, .total-zi, .label-info, .label-success {
+    display: inline-block;
+    padding: 10px 15px !important;
+}
+.total-luna, .label-info{
+    background-color: #2b523f!important;
+}
+.total-wrapper .total-zi, .label-success{
+ background-color:var(--btn-bg-color) !important;
+ }
+ 
+.total-wrapper .total-cautare, .label-success{
+ background-color:var(--btn-bg-color) !important;
+ }
+ 
+ .status-comandat td, .status-avans td{
+    background-color: var(--td-bg-color) !important;
+}
+.navbar.navbar-inverse.navbar-fixed-bottom{
+	color:#ff !important;
+}
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover, .pagination span{
+	 background-color: var(--pagination-active-bg) !important;
+  border-color: var(--pagination-active-bg) !important;
+    color: white!important;
+}
+.navbar-inverse .navbar-text, .navbar-fixed-bottom a, .navbar-fixed-bottom i{
+	color:var(--btn-text-color) !important;
+}
+.dropdown-menu li label {
+  font-size: 14px;  
+margin-left:30px !important;  /* space between checkbox and text */
+}
+.dropdown-menu .checkbox{
+	margin-top:4px !important;
+	margin-bottom:4px !important;
+}.dropdown-header{
+	font-size:16px;
+	font-weight:700;
+}
+.dropdown-menu li input[type="checkbox"] {
+  transform: scale(1.2); /* increase checkbox size */
+  margin-right: 5px;     /* optional spacing */
+}
+.dropdown-menu li{
+	padding:0;
+}
+.dropdown-menu{
+	padding:10px !important;
+}
+button.btn.btn-default.dropdown-toggle{
+	box-shadow:none !important;
+	background-color:#eee !important;
+	color:#555555!important;
+	background-image:none !important;
+}
+.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus{
+	outline:0 !important;
+}
+.left-cal{
+	    display: flex;
+    align-items: center;
+    padding-right: 0;
+}
+.cal-text{
+	padding-left: 15px;
+    font-size: 16px;
+}
+.navbar-right li{
+	margin-right:15px!important;
+	margin-top:6px!important;
+}
+.navbar-right .form-control{
+	height:38px !important;
+	background-color:var(--highlight-bg-color) !important;
+	background-image:none !important;
+	border-color:var(--highlight-bg-color) !important;
+	box-shadow:none !important;
+}
+
+.navbar-right .form-controla select {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
+.navbar-right .form-controla select option {
+  background-color: #fff;
+  color: #000;
+}
+.modal-open .modal {
+    overflow-x: hidden !important;
+    overflow-y: auto!important;
+}
+  #form_awb .form-group.sizes-fields{
+		  margin:0 20px !important;
+	   }
+ul.nav.navbar-nav li a{
+	display:flex;
+	align-items:center;
+	flex-flow:column;
+	gap:0 !important;
+	min-width:85px;
+}
+ul.nav.navbar-nav a i{
+	margin-right:5px !important;
+}
+ .panel-info{
+	 margin-top:25px !important;
+ }
+
+.navbar-right{
+	height:40px !important;
+}
+.dataTables_length, .form-horizontal .length-dropdown{
+	float:right;
+}
+label.drop-label.control-label{
+	font-size:12px !important;
+}
+.form-horizontal .length-dropdown{
+	width:97px;
+	}
+.dataTables_length label{
+    display: block;
+    margin-top: -17px !important;
+	width:97px;
+	font-size:12px !important;
+	text-align:left;
+	}
+	.dataTables_length .form-control {
+		height:33.99px !important;
+	}
+#themeForm{
+	margin-bottom:0px !important;
+	margin-top:8px;
+}
+.navbar-brand{
+	margin-top:8px;
+	font-size:14px !important;
+}
+.navbar-fixed-bottom, .navbar-fixed-top, .navbar-static-top, #navbar{
+	height:64px !important;
+}
+#navbar{
+	background-color:transparent !important;
+}
+
+
+.custom-search{
+	margin-left:0 !important;
+}
+/*.form-horizontal .form-group{
+	margin:0 auto !important;
+}*/
+table td, table th, #orders-table th, #produseTable th, #clientsTable th, #facturiTable th, #incasari-table th, #utilizatoriTable th, #ordersTable th{
+	border:0px !important;
+}
+.status-avans, #orders-table>tbody>tr.status-anulat{
+	background-color:#6D717A !important;
+	color:#000 !important;
+}
+#orders-table{
+	width:100% !important;
+}
+table{
+	width:100% !important;
+}
+
+#navbar .navbar-right a{
+	flex-flow:row !important;
+	    margin-top: -5px;
+}
+.produs{
+	vertical-align:middle !important;
+}
+.cod div, .furnizor div, .cantitate div, .produs div, .pret div{
+ height: 100% !important;
+}
+.produs div {
+    min-height: 100% !important;
+}
+
+
+
+
+
+
+
+
+
+/* Style to make 'modal-body' content scrollable */
+#variantsModalBody {
+  overflow-x: auto;
+  overflow-y: auto; /* add this if you want vertical scrolling too */
+  /* Visual feedback */
+}
+
+
+#variantsModalBody table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+   max-height: 400px;
+   cursor: grab;     
+  overflow-x: auto;
+}
+#variantsModalBody, #variantsModalBody * {
+  user-select: text !important;
+}
+#variantsModalBody {
+  overflow-x: auto;
+}
+/* (Optional) set a max-width or max-height if needed */
+#orders-table, #orders-table td{
+	font-size:12px !important;
+}
+#orders-table td div, .produs div{
+	font-size:12px !important;
+	min-width:165px!important;
+}
+.outer_div td p{
+	font-size:15px !important;
+	margin:0px !important;
+	
+}
+table td{
+	font-size:15px !important;
+}
+.outer_div td p, .outer_div td{
+	vertical-align:middle !important;
+}
+
+.setting-ico{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+	}
+	.setting-ico a{
+    justify-content: end;
+    align-items: center;
+    display: flex;
+    margin-top: 0px !important;
+	}
+	.setting-ico i{
+		font-size:22px !important;
+		color:#fff !important;
+	}
+	nav.navbar.navbar-default.navbar-fixed-top li.active.setting-ico a{
+		background-color:transparent !important;
+		color:#fff !important;
+		box-shadow:none !important;
+	}
+	.api-crendential{
+		margin:50px 0 100px 0!important;
+	}
+	.api-crendential .btn{
+		margin-top:20px !important;
+	    background-color: #295444;
+    background-image: none !important;
+}
+.navbar-right .form-control{
+	padding:5px !important;
+	font-size:12px !important;
+}
+ .navbar-right .setting-ico{
+	 margin-right:5px !important;
+ }
+ .api-crendential .card-header{
+	 font-size: 25px;
+    font-weight: bold;
+    margin-top: 30px;
+	margin-bottom:5px;
+}
+.api-crendential  .mb-3{
+	margin-top:10px !important;
+}
+.api-crendential .card.mb-4{
+	background-color:#f5f5f5;
+	border-radius:10px;
+}
+.api-crendential .card-header {
+    padding: 20px 20px 18px 20px;
+}
+.api-crendential .card-body {
+    padding: 0px 20px 20px 20px;
+}
+
+@media (min-width:992px) and (max-width:1599px){
+	ul.nav.navbar-nav li a, .collapse ul.nav.navbar-nav li a{
+				font-size: 12px !important;
+			padding: 15px 5px !important;
+		min-width:75px !important;
+	}
+}
+
+.btn-warning {
+    background-color: #c4332f;
+    border-color: #d24844;
+    background-image: none !important;
+    font-size: 18px;
+}
+#productsContainer .price{
+    min-width: 75px;
+    text-align: center;
+
+}
+#productsContainer  .add-to-cart{
+    padding: 8px 12px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+    font-size: 16px;
+	}
+	
+	#productsContainer  .variant-row {
+    background: #29544414;
+    padding: 8px 10px;
+}
+#productsContainer .variant-info span{
+	font-size:16px;
+}

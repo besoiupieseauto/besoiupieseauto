@@ -1,0 +1,20 @@
+{
+  "randomn_id": "f0903dcc5fa21f93",
+  "title": "Filtru Aer Bosch 1 987 429 135",
+  "code": "1987429135",
+  "category": "Filtre",
+  "image_url": "",
+  "verdict": "no_image",
+  "match_score": 0,
+  "image_shows": "Nicio imagine disponibilă — câmpurile image_url și local_image_path sunt goale, image_source=missing.",
+  "issues": [
+    "Produsul nu are imagine încărcată în catalog.",
+    "Nu se poate efectua comparația vizuală cu titlul «Filtru Aer Bosch 1 987 429 135».",
+    "Nu se poate confirma piesa din categoria Filtre (filtru de aer) Bosch cod 1987429135."
+  ],
+  "recommendation": "replace",
+  "summary_ro": "Produs fără imagine. Audit vizual imposibil; se recomandă găsirea și încărcarea unei fotografii corecte pentru filtru de aer Bosch 1987429135 din categoria Filtre.",
+  "analyzed_at": "2026-06-19T13:26:23.758548+00:00",
+  "engine": "cursor-composer-2.5",
+  "model": "composer-2.5"
+}

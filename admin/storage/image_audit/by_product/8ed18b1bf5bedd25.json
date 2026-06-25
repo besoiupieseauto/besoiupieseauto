@@ -1,0 +1,20 @@
+{
+  "randomn_id": "8ed18b1bf5bedd25",
+  "title": "Lichid de Frana 360047",
+  "code": "360047",
+  "category": "Lichide auto",
+  "image_url": "",
+  "verdict": "no_image",
+  "match_score": 0,
+  "image_shows": "Nicio imagine disponibilă — câmpurile image_url și local_image_path sunt goale, image_source=missing.",
+  "issues": [
+    "Produsul nu are imagine încărcată în catalog.",
+    "Nu se poate efectua comparația vizuală cu titlul «Lichid de Frana 360047».",
+    "Nu se poate confirma lichidul de frână cod 360047 din categoria Lichide auto."
+  ],
+  "recommendation": "replace",
+  "summary_ro": "Produs fără imagine. Audit vizual imposibil; se recomandă găsirea și încărcarea unei fotografii corecte pentru lichid de frână 360047 din categoria Lichide auto.",
+  "analyzed_at": "2026-06-19T12:58:45.770835+00:00",
+  "engine": "cursor-composer-2.5",
+  "model": "composer-2.5"
+}

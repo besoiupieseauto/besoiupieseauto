@@ -1,0 +1,33 @@
+{
+    "schema": "product_image_audit_v1",
+    "created_at": "2026-06-18T06:41:26+00:00",
+    "project": "besoiupieseauto.ro",
+    "agent": "image-audit",
+    "composer_model": "composer-2.5",
+    "meta": {
+        "source": "admin_crud",
+        "ids": [
+            "7f0b35f05a7a2900"
+        ],
+        "engine": "cursor-composer-2.5",
+        "save_results_to": "admin/storage/image_audit/by_product/{randomn_id}.json"
+    },
+    "instructions": "Deschide fiecare local_image_path cu Read; compară vizual cu title și description_excerpt.",
+    "products": [
+        {
+            "id": 118,
+            "randomn_id": "7f0b35f05a7a2900",
+            "title": "Lubrificant Universal Bosch 5 000 000 163",
+            "code": "5000000163",
+            "brand": "BOSCH",
+            "category": "Uleiuri și lubrifianți auto",
+            "subcategory": "Lubrificant Universal",
+            "description_excerpt": "DescriereaDescrierea:lubrificant universalProducătorul:BOSCHNumăr articol:5000000163Condiție:Nou",
+            "image_url": "/uploads/products/tecdoc/5000000163.jpg",
+            "image_source": "emag_search",
+            "local_image_path": "E:\\laragon\\www\\besoiupieseauto.ro/uploads\\products\\tecdoc\\5000000163.jpg",
+            "image_readable_by_agent": true,
+            "vitrina": true
+        }
+    ]
+}

@@ -1,0 +1,549 @@
+/* BesoiuPieseAuto Admin — layout conform .cursor/rules layout-* */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --admin-color-text: #0f172a;
+  --admin-color-muted: #64748b;
+  --admin-color-border: #dbe3ec;
+  --admin-color-border-subtle: #e8ecf1;
+  --admin-color-bg: #ffffff;
+  --admin-color-surface: #f8fbfd;
+  --admin-shadow-sm: 0 10px 25px rgba(15, 23, 42, 0.06);
+  --admin-shadow-md: 0 18px 45px rgba(15, 23, 42, 0.08);
+  --admin-shadow-lg: 0 18px 45px rgba(15, 23, 42, 0.1);
+  --admin-space-xs: 0.25rem;
+  --admin-space-sm: 0.5rem;
+  --admin-space-md: 1rem;
+  --admin-space-lg: 1.5rem;
+  --admin-space-xl: 2rem;
+  --admin-radius-sm: 0.375rem;
+  --admin-radius-md: 0.5rem;
+  --admin-radius-lg: 0.75rem;
+  --admin-transition: 0.2s ease;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  text-decoration: none;
+}
+
+button,
+[role="button"],
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* Login — overlay nu interceptează click-uri (JS ascunde imediat #admin-page-loader) */
+#admin-page-loader {
+  pointer-events: none;
+}
+
+#admin-login-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+input,
+select,
+textarea {
+  border: 2px solid var(--admin-color-border, #94a3b8);
+  border-radius: var(--admin-radius-md, 10px);
+  background: var(--admin-color-bg, #fff);
+}
+
+.admin-content input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="file"]):not([type="submit"]):not([type="button"]),
+.admin-content select,
+.admin-content textarea,
+.admin-content .form-control,
+[id*="modal"] input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="file"]),
+[id*="modal"] select,
+[id*="modal"] textarea {
+  border: 2px solid #94a3b8 !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  color: var(--admin-color-text, #0f172a) !important;
+}
+
+.admin-content input[readonly],
+.admin-content textarea[readonly] {
+  background: #f8fafc !important;
+}
+
+.admin-content input:focus-visible,
+.admin-content select:focus-visible,
+.admin-content textarea:focus-visible,
+[id*="modal"] input:focus-visible,
+[id*="modal"] select:focus-visible,
+[id*="modal"] textarea:focus-visible {
+  border-color: #059669 !important;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15) !important;
+  outline: none;
+}
+
+/* Accesibilitate — un singur h1 per pagină în conținut; fallback în shell */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.brand-logo {
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.admin-page-main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Toast / modal — mutat din <style> inline (layout-01: CSS extern) */
+[id*="toast"] {
+  background: var(--admin-color-bg) !important;
+  color: var(--admin-color-text) !important;
+  border-color: var(--admin-color-border) !important;
+  box-shadow: var(--admin-shadow-md) !important;
+}
+
+.modal.show .box,
+[id*="modal"] > div {
+  background: var(--admin-color-bg) !important;
+  color: var(--admin-color-text) !important;
+}
+
+.modal.show input,
+.modal.show select,
+.modal.show textarea,
+.modal.show option,
+[id*="modal"] input,
+[id*="modal"] select,
+[id*="modal"] textarea,
+[id*="modal"] option {
+  background: var(--admin-color-bg) !important;
+  color: var(--admin-color-text) !important;
+  border-color: var(--admin-color-border) !important;
+}
+
+/* Responsive — coloană pe mobil pentru breadcrumb flex */
+@media (max-width: 1279px) {
+  .top-bar .open-mobile-menu {
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 639px) {
+  .admin-page-main {
+    padding-left: var(--admin-space-sm);
+    padding-right: var(--admin-space-sm);
+  }
+}
+
+/* Sidebar — mutat din nav.php inline */
+.side-menu,
+.side-menu > div {
+  overflow-x: hidden !important;
+}
+
+.side-menu ul.scrollable > li {
+  padding: 0 8px;
+}
+
+.side-menu__link {
+  border-radius: 10px;
+  margin: 2px 0;
+}
+
+.rubick .side-menu .side-menu__link--active {
+  background-color: #034f3d !important;
+  color: #ffffff !important;
+  box-shadow: inset 4px 0 0 #6ee7b7, inset 0 0 0 1px rgba(167, 243, 208, 0.5) !important;
+}
+
+.side-menu__link--active .side-menu__link__title,
+.side-menu__link--active .side-menu__link__icon {
+  color: #ffffff !important;
+}
+
+.side-menu.side-menu--collapsed {
+  overflow: hidden !important;
+}
+
+.side-menu.side-menu--collapsed.side-menu--on-hover {
+  overflow: hidden !important;
+  box-shadow: none !important;
+  z-index: 35;
+  width: 275px !important;
+}
+
+
+/* Panouri / tabele — contururi + umbre (UI/UX Admin Design) */
+.admin-panel {
+  border: 1px solid var(--admin-color-border);
+  border-radius: var(--admin-radius-md);
+  background: var(--admin-color-bg);
+  box-shadow: var(--admin-shadow-md);
+  padding: var(--admin-space-lg);
+}
+
+.admin-panel + .admin-panel {
+  margin-top: var(--admin-space-lg);
+}
+
+.admin-panel__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--admin-space-md);
+  margin-bottom: var(--admin-space-lg);
+  padding-bottom: var(--admin-space-md);
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-panel__head h2 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--admin-color-text);
+}
+
+.admin-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--admin-space-sm);
+  margin-bottom: var(--admin-space-lg);
+  padding: var(--admin-space-xs);
+  border: 1px solid #e5e7eb;
+  border-radius: calc(var(--admin-radius-md) + 2px);
+  background: #f8fafc;
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.admin-tab {
+  border: 1px solid transparent;
+  border-radius: var(--admin-radius-md);
+  background: transparent;
+  color: #475569;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.admin-tab--active {
+  background: #fff;
+  border-color: #059669;
+  color: #047857;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.12);
+}
+
+.admin-tab__count {
+  margin-left: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  opacity: 0.75;
+}
+
+.admin-table-wrap {
+  overflow: auto;
+  border: 1px solid var(--admin-color-border);
+  border-radius: var(--admin-radius-md);
+  background: var(--admin-color-bg);
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.08);
+  max-height: 72vh;
+}
+
+.admin-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.admin-table-wrap thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: linear-gradient(90deg, var(--b26-emerald-deep, #047857), var(--b26-navy, #0f172a));
+}
+
+.admin-table-wrap th,
+.admin-table-wrap td {
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0.65rem 0.75rem;
+  vertical-align: top;
+}
+
+.admin-table-wrap tbody tr:hover {
+  background: inherit;
+}
+
+/* Blocuri pagină — contur + umbră pe toate modulele din main */
+.admin-content > .box:not(.side-menu__link),
+.admin-content .grid > [class*="col-span"] > .box:not(.side-menu__link),
+.admin-content .box.rounded-xl.border,
+.admin-content .box.rounded-lg.border {
+  border: 2px solid var(--admin-color-border-subtle) !important;
+  border-radius: var(--admin-radius-lg) !important;
+  background: var(--admin-color-bg);
+  box-shadow: var(--admin-shadow-sm);
+}
+
+.admin-content .box .overflow-x-auto table,
+.admin-content .box table.w-full {
+  border-collapse: collapse;
+}
+
+.admin-content .box .overflow-x-auto thead,
+.admin-content .box table.w-full thead {
+  background: linear-gradient(90deg, var(--b26-emerald-deep, #047857), var(--b26-navy, #0f172a));
+}
+
+.admin-content .box .overflow-x-auto thead th,
+.admin-content .box table.w-full thead th {
+  color: #fff;
+}
+
+.admin-content .box .overflow-x-auto th,
+.admin-content .box .overflow-x-auto td,
+.admin-content .box table.w-full th,
+.admin-content .box table.w-full td {
+  border-bottom: 1px solid var(--admin-color-border-subtle);
+}
+
+.admin-content .box .overflow-x-auto tbody tr:hover,
+.admin-content .box table.w-full tbody tr:hover {
+  background: inherit;
+}
+
+.admin-content form.flex,
+.admin-content form.mt-5 {
+  padding: var(--admin-space-md);
+  border: 1px solid var(--admin-color-border-subtle);
+  border-radius: var(--admin-radius-md);
+  background: var(--admin-color-surface);
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.top-bar.group.scrolled > div {
+  border-color: var(--admin-color-border-subtle) !important;
+  box-shadow: var(--admin-shadow-md) !important;
+}
+
+/* Selectori stabili module admin (smoke Zeus / cron registry) */
+#cron-setup-hint,
+#cron-modules-map,
+#scan-sync-hint {
+  box-shadow: var(--admin-shadow-md);
+}
+
+#cron-modules-map .admin-table-wrap {
+  max-height: none;
+}
+
+#backup-run {
+  box-shadow: var(--admin-shadow-sm);
+}
+
+#backup-run:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Dashboard — panouri KPI / status (selectori Zeus) */
+#dashboard-kpi-panel .box,
+#dashboard-status-panel .box {
+  border: 1px solid var(--admin-color-border-subtle);
+  box-shadow: var(--admin-shadow-sm);
+}
+
+#dashboard-kpi-panel .admin-panel__head h2,
+#hub-list-panel .admin-panel__head h2 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+#hub-list-panel .admin-table-wrap {
+  margin-top: var(--admin-space-sm);
+}
+
+.product-card.hidden-by-filter,
+.product-card.hidden-by-tab {
+  display: none !important;
+}
+
+/* Login — page-loader și straturi decorative (strategie CSS: z-index / pointer-events) */
+.page-loader {
+  pointer-events: none;
+}
+
+.page-loader.opacity-0,
+.page-loader.hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.page-loader.hidden {
+  display: none !important;
+}
+
+body:has(#admin-login-form) #admin-login-form,
+body:has(#admin-login-form) #admin-login-form button[type="submit"],
+body:has(#admin-login-toggle-pass) #admin-login-toggle-pass {
+  position: relative;
+  z-index: 30;
+  pointer-events: auto;
+}
+
+body:has(#admin-login-form) main {
+  position: relative;
+  z-index: 20;
+}
+
+@media (max-width: 1279px) {
+  .admin-table-wrap {
+    max-height: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .admin-panel {
+    padding: 14px;
+  }
+
+  .admin-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 639px) {
+  .admin-panel {
+    padding: 10px;
+  }
+
+  .admin-panel__head {
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+  }
+}
+
+/* ── Layout stabil la refresh (tm_059) — fără salt meniu / taburi / inputuri ── */
+html.besoiu-layout-stable body.besoiu-admin-2026 > .page-loader {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+@media (min-width: 1280px) {
+  html.besoiu-layout-stable body.besoiu-admin-2026 .side-menu,
+  html.besoiu-layout-stable body.besoiu-admin-2026 .side-menu.side-menu--collapsed,
+  html.besoiu-layout-stable body.besoiu-admin-2026 .side-menu.side-menu--on-hover {
+    margin-left: 0 !important;
+    width: 280px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
+  }
+
+  html.besoiu-layout-stable body.besoiu-admin-2026 .content,
+  html.besoiu-layout-stable body.besoiu-admin-2026 .content.content--compact,
+  html.besoiu-layout-stable body.besoiu-admin-2026 .rubick > .content {
+    margin-left: 280px !important;
+    width: calc(100% - 280px) !important;
+    max-width: calc(100% - 280px) !important;
+  }
+
+  html.besoiu-layout-stable body.besoiu-admin-2026 .content__scroll-area,
+  html.besoiu-layout-stable body.besoiu-admin-2026 .content__scroll-area.-ml-\[165px\] {
+    margin-left: 0 !important;
+    transform: none !important;
+  }
+}
+
+body.besoiu-admin-2026 .side-menu li > ul:not(.scrollable):not([data-besoiu-open="1"]) {
+  display: none !important;
+}
+
+body.besoiu-admin-2026 .admin-content input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="file"]),
+body.besoiu-admin-2026 .admin-content select,
+body.besoiu-admin-2026 .admin-content textarea,
+body.besoiu-admin-2026 .admin-content .form-control {
+  min-height: 42px;
+  font-size: 14px;
+  line-height: 1.35;
+  box-sizing: border-box;
+}
+
+body.besoiu-admin-2026 .admin-content textarea {
+  min-height: 96px;
+}
+
+body.besoiu-admin-2026 .admin-tabs {
+  min-height: 48px;
+  align-items: center;
+}
+
+body.besoiu-admin-2026 .admin-tab,
+body.besoiu-admin-2026 .besoiu-tabs__btn,
+body.besoiu-admin-2026 .comenzi-tab-btn {
+  min-height: 40px;
+  box-sizing: border-box;
+}
+
+/* Shell guard — click-uri și linkuri neblocate de overlay-uri ascunse */
+body.besoiu-admin-2026 .rubick > .content,
+body.besoiu-admin-2026 .content__scroll-area,
+body.besoiu-admin-2026 .admin-page-main,
+body.besoiu-admin-2026 .side-menu a.side-menu__link[href],
+body.besoiu-admin-2026 .top-bar a[href],
+body.besoiu-admin-2026 button:not(:disabled),
+body.besoiu-admin-2026 input:not([disabled]),
+body.besoiu-admin-2026 select:not([disabled]),
+body.besoiu-admin-2026 .admin-page-main a[href] {
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
+body.besoiu-admin-2026 #addProductModal:not(.is-open),
+body.besoiu-admin-2026 #markupSelectModal:not(.is-open),
+body.besoiu-admin-2026 #badgeSelectModal:not(.is-open),
+body.besoiu-admin-2026 .products-overlay-modal:not(.is-open),
+body.besoiu-admin-2026 .categorii-overlay-modal:not(.is-open) {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
+body.besoiu-admin-2026 #besoiu-account-backdrop[hidden],
+body.besoiu-admin-2026 #besoiu-account-popup[hidden] {
+  display: none !important;
+  pointer-events: none !important;
+}

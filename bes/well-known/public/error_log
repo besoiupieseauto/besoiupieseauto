@@ -1,0 +1,326 @@
+[20-Apr-2026 10:27:30 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:30 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:30 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:34 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:34 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:34 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:36 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:36 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:36 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:37 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:37 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:37 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:38 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:38 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:38 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:38 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:38 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:38 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:38 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:38 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:38 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:39 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:39 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:39 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:41 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:41 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:41 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:41 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:41 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:41 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:42 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:42 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:42 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:43 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:43 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:43 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:45 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:45 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:45 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:47 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:47 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:47 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:48 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:48 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:48 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:49 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:49 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:49 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:50 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:50 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:50 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:50 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:50 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:50 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:50 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:50 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:50 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:52 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:52 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:52 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:56 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:56 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:56 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:59 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:59 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[20-Apr-2026 10:27:59 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:00:51 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:00:51 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:00:52 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:00:52 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:00:54 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:00:54 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:00:56 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:00:56 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:00:57 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:00:57 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:00:59 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:00:59 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:01:00 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:01:00 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:01:01 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:01:01 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:01:01 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:01:01 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:01:02 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:01:02 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:01:02 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:01:02 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:01:03 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:01:03 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:01:04 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:01:04 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:01:07 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:01:07 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:01:08 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:01:08 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:01:09 Europe/Bucharest] PHP Warning:  require(/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php): Failed to open stream: No such file or directory in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41
+[06-May-2026 11:01:09 Europe/Bucharest] PHP Fatal error:  Uncaught Error: Failed opening required '/home/caietcom/public_html/caietlv/vendor/composer/../../app/Helpers/RotatedPdf.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php(45): {closure}('b5d1daf3acb6f33...', '/home/caietcom/...')
+#1 /home/caietcom/public_html/caietlv/vendor/autoload.php(25): ComposerAutoloaderInit475f49b064def9847f097cd0b64a9673::getLoader()
+#2 /home/caietcom/public_html/caietlv/public/index.php(34): require('/home/caietcom/...')
+#3 {main}
+  thrown in /home/caietcom/public_html/caietlv/vendor/composer/autoload_real.php on line 41

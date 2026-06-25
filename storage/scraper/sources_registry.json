@@ -1,0 +1,56 @@
+{
+    "epiesa": {
+        "label": "ePiesa.ro",
+        "domain": "epiesa.ro",
+        "color": "#e11d48",
+        "icon": "EP",
+        "fetch_via": "scrape_do",
+        "env_required": [
+            "SCRAPE_DO_TOKEN"
+        ],
+        "parser_builtin": "EpiesaCategoryParser",
+        "roles": [
+            "image",
+            "title",
+            "price_hint",
+            "category"
+        ],
+        "description": "Căutare piese și liste categorii (uleiuri, consumabile)."
+    },
+    "tecdoc_api": {
+        "label": "TecDoc API",
+        "domain": "rapidapi.com",
+        "color": "#0d9488",
+        "icon": "TD",
+        "fetch_via": "rapidapi",
+        "env_required": [
+            "RAPIDAPI_AUTOPARTS_KEY"
+        ],
+        "parser_builtin": null,
+        "roles": [
+            "image",
+            "description",
+            "oem"
+        ],
+        "description": "JSON API — fără HTML, articol + imagine oficială.",
+        "no_html": true
+    },
+    "autodoc": {
+        "label": "Autodoc.ro",
+        "domain": "autodoc.ro",
+        "color": "#2563eb",
+        "icon": "AD",
+        "fetch_via": "scrape_do",
+        "env_required": [
+            "SCRAPE_DO_TOKEN"
+        ],
+        "parser_builtin": null,
+        "roles": [
+            "image",
+            "title",
+            "oem"
+        ],
+        "description": "Catalog piese — configurează selectori și testează.",
+        "stub": true
+    }
+}

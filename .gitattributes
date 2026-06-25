@@ -1,0 +1,2 @@
+SQL/caietcom_comenzilv.sql.gz filter=lfs diff=lfs merge=lfs -text
+SQL/*.sql -text

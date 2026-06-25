@@ -1,0 +1,11 @@
+{
+    "running": false,
+    "pct": 100,
+    "phase": "done",
+    "phase_label": "Finalizat",
+    "message": "Scan complet: 0 fisier(e) copiate local | Import dual finalizat: 28 produse (vitrină 8, catalog 20) — +0 noi, ~28 actualizate.",
+    "supplier": "",
+    "supplier_index": 1,
+    "supplier_total": 5,
+    "updated_at": "2026-06-18T10:52:15+00:00"
+}

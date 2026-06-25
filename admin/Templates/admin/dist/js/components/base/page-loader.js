@@ -1,0 +1,1 @@
+(()=>{(function(){"use strict";function hide(){document.querySelectorAll(".page-loader").forEach(function(el){el.classList.add("opacity-0","hidden");el.setAttribute("aria-hidden","true");el.style.pointerEvents="none"})}hide();window.setTimeout(hide,50)})();})();

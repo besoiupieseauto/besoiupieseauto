@@ -1,0 +1,20 @@
+{
+  "randomn_id": "5c2f33d3af15190e",
+  "title": "Cap de Bara TRW 5032506",
+  "code": "5032506",
+  "category": "Caroserie",
+  "image_url": "",
+  "verdict": "no_image",
+  "match_score": 0,
+  "image_shows": "Nicio imagine disponibilă — câmpurile image_url și local_image_path sunt goale, image_source=missing.",
+  "issues": [
+    "Produsul nu are imagine încărcată în catalog.",
+    "Nu se poate efectua comparația vizuală cu titlul «Cap de Bara TRW 5032506».",
+    "Nu se poate confirma capul de bară TRW cod 5032506 din categoria Caroserie."
+  ],
+  "recommendation": "replace",
+  "summary_ro": "Produs fără imagine. Audit vizual imposibil; se recomandă găsirea și încărcarea unei fotografii corecte pentru cap de bară TRW 5032506 din categoria Caroserie.",
+  "analyzed_at": "2026-06-19T12:57:52.405388+00:00",
+  "engine": "cursor-composer-2.5",
+  "model": "composer-2.5"
+}

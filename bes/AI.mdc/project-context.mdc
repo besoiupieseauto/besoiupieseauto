@@ -1,0 +1,197 @@
+---
+description: Context permanent al proiectului besoiupieseauto.ro - cine e clientul, ce e de livrat, scope, limite contractuale, deadline-uri și reguli de business. Rule activ mereu pentru a păstra contextul în orice conversație cu Cursor pe acest proiect.
+alwaysApply: true
+---
+
+# Context Proiect: besoiupieseauto.ro
+
+Acest proiect este dezvoltat în baza **Acordului Nr. 38 din 05.03.2026** între SRL „Galac-Web" (Prestator) și BESOIU PIESE AUTO SRL (Client). Orice modificare de cod, funcționalitate sau decizie de design trebuie să respecte contextul de mai jos.
+
+---
+
+## 🏢 PĂRȚI IMPLICATE
+
+### Prestator (Dezvoltator)
+- **Nume:** SRL „Galac-Web"
+- **IDNO:** 1021602002600
+- **Sediu:** or. Drochia, 27 August 32 ap 37, Republica Moldova
+
+### Client (Beneficiar)
+- **Nume:** BESOIU PIESE AUTO SRL
+- **CUI:** RO31298897
+- **Nr. înregistrare:** J2013000544351
+- **Sediu:** Loc. Utvin Nr. 489, Jud. Timiș, România
+- **Bancă:** RAIFFEISEN BANK
+- **IBAN:** RO32RZBR0000060021914930
+- **Reprezentant semnatar:** Florin-Cristian Besoiu
+
+---
+
+## 🎯 OBIECTUL CONTRACTULUI
+
+Dezvoltarea unei resurse informaționale tip **website e-commerce** pentru piese auto, care include:
+1. **Site e-commerce** funcțional (catalog produse, coș, checkout, comenzi)
+2. **Automatizări software** și roboți informativi pentru:
+   - Gestionarea mesajelor
+   - Transmiterea automată de răspunsuri pe baza datelor din DB
+3. **Optimizare SEO**
+
+**Domeniu de producție:** https://besoiupieseauto.ro
+
+---
+
+## 📌 SCOPE — CE INTRĂ ÎN CONTRACT
+
+Site-ul gestionează:
+- **Produse:** piese auto (ex: Motor BMW X1 2.0 Diesel)
+- **Coș de cumpărături:** funcțional cu adăugare/eliminare/modificare cantitate
+- **Checkout:** Finalizare comandă cu livrare în România
+- **Livrare:** Ridicare locală sau Tarif fix
+- **Plăți:** RON (lei românești)
+- **Cupoane de reducere:** sistem de aplicare cupon
+- **Limbă:** Română
+- **Țară principală:** România (cu opțiuni de orașe — București etc.)
+- **Pagini publice:** Acasă, Magazin, Despre Noi, Contact, Autentificare, Coș
+- **Admin:** `/admin/public/` cu secțiuni: comenzi, produse, utilizatori
+- **Roboți informativi:** răspunsuri automate pe baza datelor din DB (NU iau decizii comerciale)
+
+---
+
+## 🚫 OUT OF SCOPE — CE NU FACE PARTE
+
+Conform clauzei 2.6 din contract:
+- **Orice lucrare nouă** care nu e în Anexa nr. 1 necesită **Acord adițional și cost suplimentar**
+- Roboții **NU înlocuiesc decizii comerciale** ale clientului — doar automatizare informativă (clauza 3.1.4)
+- Cursor NU va sugera funcționalități noi majore fără să marcheze clar: *"Aceasta este în afara scope-ului contractual — necesită acord adițional"*
+
+---
+
+## 💰 CONDIȚII FINANCIARE
+
+- **Valoare totală:** 10.000 EUR
+- **Avans (60%):** 6.000 EUR — la semnare
+- **Final (40%):** 4.000 EUR — la predarea finală + Act predare-primire
+- **Plată în:** RON la cursul BNM/BNR din ziua plății
+- **Penalități:** 0,1%/zi întârziere (atât pentru Prestator cât și pentru Client)
+
+Aceste informații **nu se afișează în cod sau pe site** — sunt strict pentru context intern.
+
+---
+
+## ⏰ TERMENE ȘI ETAPE
+
+- **Începere lucrări:** după primirea avansului de 60%
+- **Materialele de la client:** 3 zile lucrătoare de la semnare
+- **Predare etape:** Act de predare-primire pentru fiecare etapă
+- **Suport tehnic gratuit:** 1 lună după implementare
+- **După 1 lună:** suport contra cost, contract separat
+- **Backup proiect:** păstrat 1 an de la livrare (clauza 3.1.8)
+- **Răspuns suport:** zile lucrătoare 09:00–18:00, în max 1 zi
+- **Testare client:** 5 zile lucrătoare după fiecare predare
+- **Aprobare tacită Act:** dacă în 5 zile lucrătoare nu primește obiecții scrise
+
+---
+
+## 🔐 CONFIDENȚIALITATE (Clauza 3.1.9)
+
+- Datele clientului, baza de date, codul sursă, structura proiectului = **CONFIDENȚIALE**
+- Nu se transferă/dezvăluie fără acord scris
+- Excepție: cereri legale de la autorități
+
+**Implicații pentru cod:**
+- Nu lăsa credențiale în cod public
+- Nu commiti `.env`, parole DB, chei API
+- Logurile nu trebuie să expună date personale clienți
+
+---
+
+## 🏗️ STACK TEHNIC
+
+- **Backend:** PHP
+- **Frontend:** JavaScript (vanilla + jQuery — vezi `jQuery Migrate` în bookmarks)
+- **DB:** MySQL/PostgreSQL
+- **Hosting în dezvoltare:** la Galac-Web (clauza 2.10)
+- **Hosting final:** la Client după plată completă (clauza 2.5)
+
+---
+
+## 📦 STRUCTURA RECUNOSCUTĂ A PROIECTULUI
+
+```
+besoiupieseauto.ro/
+├── index.php              # Acasă
+├── magazin.php / shop.php # Magazin
+├── despre.php             # Despre Noi
+├── contact.php            # Contact
+├── login.php              # Autentificare
+├── cart.php               # Coș de cumpărături
+├── checkout.php           # Finalizare comandă
+├── product.php            # Pagină produs
+├── img/                   # Imagini (ex: sopcart.png)
+├── api/                   # Endpoint-uri AJAX
+├── admin/
+│   └── public/
+│       ├── comenzi/       # Comenzi finalizate + coșuri active
+│       ├── produse/       # Management produse
+│       └── utilizatori/   # Management utilizatori
+├── config/
+│   └── database.php       # Conexiune DB
+└── assets/
+    ├── js/
+    └── css/
+```
+
+---
+
+## 🎨 IDENTITATE VIZUALĂ
+
+- **Brand:** BESOIU PIESE AUTO
+- **Culoare principală:** verde-turcoaz (#1abc9c sau similar) — vezi headerul "Coș de cumpărături"
+- **Logo:** hexagon stilizat + text "BESOIU PIESE AUTO"
+- **Iconițe:** `img/sopcart.png` pentru coș
+- **Tipografie:** sans-serif modernă
+
+---
+
+## ⚖️ REGULI DE LUCRU PENTRU CURSOR
+
+Când scrii cod sau iei decizii pe acest proiect:
+
+1. **Limba:** răspunde și comentează codul în **română**
+2. **Monedă:** afișează prețuri în **RON** (lei românești) cu 2 zecimale
+3. **Localizare:** texte UI în română, dar codul/variabilele în engleză
+4. **Format dată:** zz.ll.aaaa (ex: 06.05.2026) sau ISO pentru DB
+5. **Securitate prioritară:**
+   - PDO prepared statements obligatoriu
+   - htmlspecialchars la afișare
+   - Sesiune verificată în admin
+   - CSRF tokens la formulare admin
+6. **Compatibilitate:** păstrează compatibilitatea cu jQuery (proiectul îl folosește)
+7. **Performanță:** site de e-commerce → optimizează query-uri, lazy load imagini, cache unde se poate
+8. **SEO:** parte din contract → meta tags, schema.org pentru produse, URL-uri prietenoase
+9. **Backup mental:** orice modificare la DB sau structură majoră → menționează că trebuie backup
+10. **Modificări scope:** dacă clientul cere ceva nou major → spune clar că necesită acord adițional
+
+---
+
+## 🧠 CONTEXT BUSINESS — NU UITA
+
+- **Clientul vinde piese auto** (motoare, componente) — produse cu preț ridicat (mii de RON)
+- **Public țintă:** șoferi, mecanici, ateliere auto din România
+- **Tranzacții:** valori mari → checkout-ul trebuie să inspire încredere
+- **Stocuri:** probabil unicate sau în număr mic → atenție la concurența pe stoc
+- **Roboți informativi:** vor răspunde la întrebări de tip "Aveți motor X?", "Ce preț are?", "În stoc?"
+
+---
+
+## 📋 LA FIECARE INTERVENȚIE MAJORĂ ÎN COD
+
+Verifică:
+- [ ] Modificarea e în scope-ul contractului?
+- [ ] Respectă regulile de securitate?
+- [ ] Păstrez compatibilitatea cu structura existentă?
+- [ ] Documentez în română comentariile importante?
+- [ ] E nevoie de un Act de predare-primire pentru această etapă?
+- [ ] Backup-ul actual acoperă această modificare?
+
+Dacă ceva nu e clar, întreabă: *"Această cerință e în scope-ul Anexei 1 sau necesită acord adițional?"*

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalog piese auto - Besoiu Piese Auto</title>
+    <meta name="description" content="Catalog complet de piese auto.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/fontawesome.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/fontawesome.min.css"></noscript>
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/solid.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/solid.min.css"></noscript>
+<link rel="stylesheet" href="assets/css/site-shell.css?v=1782370885">
+<script>(function(){document.documentElement.classList.add("besoiu-public-storefront");})();</script>
+<link rel="stylesheet" href="assets/css/storefront-public.css?v=1782370930">
+<link rel="stylesheet" href="assets/css/site-layout.css?v=1781426775">
+<script src="assets/js/site-icons.js?v=1779467090" defer></script>
+<link rel="stylesheet" href="assets/css/site-mobile.css?v=1781426787">
+<script src="/assets/js/preview-gate.js?v=2" defer></script>
+<link rel="preload" href="assets/css/product-cards.css?v=1782370270" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="assets/css/product-cards.css?v=1782370270"></noscript>
+<link rel="stylesheet" href="assets/css/catalog-page.css?v=1781426791">
+</head>
+<body>
+<div class="page">
+    
+<div class="topbar">
+    <div class="container">
+        <div class="top-left">
+                        <div class="top-item"><img src="img/icons/09_livrare_rapida.svg" class="hdr-icon" alt="" role="presentation"> Livrare rapidă 24–48h</div>
+                        <div class="top-item"><img src="img/icons/10_retur_simplu.svg" class="hdr-icon" alt="" role="presentation"> Retur simplu 14 zile</div>
+                        <div class="top-item"><img src="img/icons/11_verificare_compatibilitate.svg" class="hdr-icon" alt="" role="presentation"> Verificare compatibilitate</div>
+                    </div>
+        <nav class="top-nav" aria-label="Navigare secundară">
+                        <a href="/catalog" class="">Magazin</a>
+                        <a href="/despre" class="">Despre noi</a>
+                        <a href="/contact" class="">Contact</a>
+                    </nav>
+    </div>
+</div>
+
+<header class="header">
+    <div class="container header-inner">
+        <button type="button" class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Deschide meniul" aria-expanded="false" aria-controls="mobile-nav">
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+        </button>
+
+        <a class="logo" href="/">
+                            <img src="img/logo.png" class="logo-img" alt="Besoiu Piese Auto">                    </a>
+
+        <form class="search-main" id="_home-search-form" role="search" onsubmit="return false;">
+            <input type="search" id="_home-product-name" placeholder="Caută după cod piesă, OEM, VIN..." aria-label="Caută piese" />
+            <button type="button" id="_home-search-btn">CAUTĂ</button>
+        </form>
+
+        <a href="tel:+40726498573" class="phone" aria-label="Sună la 0726 498 573">
+            <div class="ico"><img src="img/icons/12_telefon.svg" alt="" class="hdr-icon-lg" role="presentation"></div>
+            <div><strong>0726 498 573</strong><span>Sună acum</span></div>
+        </a>
+
+        <a href="/cont?view=login" class="account">
+            <div class="big"><img src="img/icons/13_cont_utilizator.svg" alt="Cont" class="hdr-icon-lg"></div>
+            <div>
+                <strong>Contul meu</strong>
+                <span>Autentificare</span>
+            </div>
+        </a>
+
+        <a href="/cart" class="cart" aria-label="Coș de cumpărături">
+            <span class="cart-icon-wrap">
+                <img src="img/icons/14_cos_cumparaturi.svg" alt="" class="cart-icon" width="26" height="26" role="presentation">
+                <em class="badge-count cart-count" data-cart-count style="display:none">0</em>
+            </span>
+            <span class="cart-text">
+                <strong>Coș</strong>
+            </span>
+        </a>
+    </div>
+</header>
+
+<div class="mobile-nav-overlay" id="mobile-nav-overlay" hidden></div>
+<nav class="mobile-nav" id="mobile-nav" aria-label="Navigare principală" aria-hidden="true">
+    <div class="mobile-nav-head">
+        <strong>Meniu</strong>
+        <button type="button" class="mobile-nav-close" id="mobile-nav-close" aria-label="Închide meniul">✕</button>
+    </div>
+    <ul class="mobile-nav-links">
+                <li>
+            <a href="/" class="">Acasă</a>
+        </li>
+                <li>
+            <a href="/catalog" class="">Magazin</a>
+        </li>
+                <li>
+            <a href="/despre" class="">Despre noi</a>
+        </li>
+                <li>
+            <a href="/contact" class="">Contact</a>
+        </li>
+                <li>
+            <a href="/cart" class="">Coș cumpărături</a>
+        </li>
+                <li>
+            <a href="/cont" class="">Contul meu</a>
+        </li>
+            </ul>
+    <div class="mobile-nav-divider"></div>
+    <ul class="mobile-nav-links mobile-nav-links--muted">
+                <li><a href="/cum-comand">Cum comand</a></li>
+                <li><a href="/livrare-plata">Livrare și plată</a></li>
+                <li><a href="/intrebari-frecvente">Întrebări frecvente</a></li>
+            </ul>
+    <a href="tel:+40726498573" class="mobile-nav-phone">
+        <img src="img/icons/12_telefon.svg" alt="" width="20" height="20" role="presentation">
+        <span><strong>0726 498 573</strong><small>Sună acum</small></span>
+    </a>
+</nav>
+
+<script src="assets/js/mobile-nav.js?v=1780231556" defer></script>
+
+    <!-- Hero Banner -->
+    <section class="cat-hero">
+        <div class="cat-hero-inner">
+            <h1>CATALOG PIESE AUTO</h1>            <p>Peste 10.000 de piese auto pentru toate mărcile. Caută după VIN, cod OEM sau filtrează după categorie.</p>        </div>
+    </section>
+
+    <div class="bpa-builder-zone" data-builder-zone="after_hero" data-builder-page="catalog" data-zone-label="După hero"></div>    <div class="bpa-builder-zone bpa-builder-zone--main" data-builder-zone="main" data-builder-page="catalog" data-zone-label="Conținut principal"></div>
+    <!-- Search Bar -->
+    <div class="cat-search-bar">
+        <input type="text" id="hero-search" placeholder="Caută piesa de care ai nevoie...">
+        <button type="button" id="hero-search-btn">CAUTĂ</button>
+    </div>
+
+    <main id="main-content" class="page-content">
+        <div class="container">
+            <nav class="breadcrumb-nav">
+                <a href="/">Acasă</a>
+                <span class="sep">›</span>
+                <span class="current">Catalog</span>
+            </nav>
+
+            <div class="catalog-grid">
+                <!-- Sidebar desktop -->
+                <aside class="sidebar">
+                    <div class="sidebar-card">
+                        <div class="filter-actions filter-actions--top">
+                            <button type="button" id="applyFilters" class="btn-apply">APLICĂ FILTRELE</button>
+                            <button type="button" id="resetFilters" class="btn-reset">RESETEAZĂ</button>
+                        </div>
+                        <div class="widget">
+                            <div class="widget-title" data-target="widget-vin">Caută după VIN</div>
+                            <div class="widget-body" id="widget-vin">
+                                <input type="text" class="s-input" id="vin-search" placeholder="VIN, cod OEM sau denumire produs">
+                            </div>
+                        </div>
+
+                        <div class="widget">
+                            <div class="widget-title" data-target="widget-categories">Categorii</div>
+                            <div class="widget-body" id="widget-categories">
+                                <input type="text" class="s-input s-input--spaced" id="category-search" placeholder="Caută categorie">
+                                <ul class="cat-list" id="category-list">
+                                    <li><a href="#" class="category-filter" data-category=""><span class="site-icon site-icon--sm"><i class="fa-solid fa-box-open"></i></span>Toate<span class="products-count"></span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="widget">
+                            <div class="widget-title" data-target="widget-subcategories">Subcategorii</div>
+                            <div class="widget-body" id="widget-subcategories">
+                                <ul class="cat-list" id="subcategory-list">
+                                    <li><a href="#" class="subcategory-filter active" data-subcategory=""><span class="site-icon site-icon--sm"><i class="fa-solid fa-folder-tree"></i></span>Toate</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="widget">
+                            <div class="widget-title" data-target="widget-marci">Marcă auto</div>
+                            <div class="widget-body" id="widget-marci">
+                                <ul class="cat-list" id="marca-list">
+                                    <li><a href="#" class="marca-filter active" data-marca=""><span class="site-icon site-icon--sm"><i class="fa-solid fa-car"></i></span>Toate</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="widget">
+                            <div class="widget-title" data-target="widget-brands">Brand produs</div>
+                            <div class="widget-body" id="widget-brands">
+                                <ul class="cat-list" id="brand-list">
+                                    <li><a href="#" class="brand-filter active" data-brand=""><span class="site-icon site-icon--sm"><i class="fa-solid fa-industry"></i></span>Toate</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="widget">
+                            <div class="widget-title" data-target="widget-price">Preț</div>
+                            <div class="widget-body" id="widget-price">
+                                <div class="price-slider">
+                                    <div class="price-slider-track"></div>
+                                    <div class="price-slider-fill" id="priceSliderFill"></div>
+                                    <input type="range" id="priceMin" class="price-slider-input price-slider-min" min="0" max="6000" step="10" value="0">
+                                    <input type="range" id="priceMax" class="price-slider-input price-slider-max" min="0" max="6000" step="10" value="6000">
+                                </div>
+                                <div class="price-range-text">Interval: <span id="filter-price-range">0 RON - 6000 RON</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Products area -->
+                <div class="products-area">
+                    <div id="catalog-notices" class="catalog-notices" aria-live="polite"></div>
+                    <nav class="toolbox">
+                        <button type="button" class="cat-mobile-filter-btn" id="openMobileFilter" aria-label="Deschide filtrele">
+                            <i class="fa-solid fa-filter"></i>
+                            <span>Filtrează produse</span>
+                        </button>
+                        <div class="toolbox-meta">
+                            <span id="pagination-info" class="toolbox-count"></span>
+                        </div>
+                        <div class="toolbox-controls">
+                            <div class="toolbox-field">
+                                <label for="orderby">Sortează</label>
+                                <select name="orderby" id="orderby">
+                                    <option value="default" selected>Implicit</option>
+                                    <option value="price-asc">Preț ↑</option>
+                                    <option value="price-desc">Preț ↓</option>
+                                    <option value="name-asc">A-Z</option>
+                                    <option value="name-desc">Z-A</option>
+                                    <option value="time-asc">Livrare rapidă</option>
+                                </select>
+                            </div>
+                            <div class="toolbox-field">
+                                <label for="count">Pe pagină</label>
+                                <select name="count" id="count">
+                                    <option value="6">6</option>
+                                    <option value="9">9</option>
+                                    <option value="12" selected>12</option>
+                                    <option value="24">24</option>
+                                </select>
+                            </div>
+                        </div>
+                    </nav>
+
+                    
+<div class="_product-grid" id="_product-grid">
+    </div>
+                    <div id="empty-state" class="_empty-state">
+                        <i class="fa-solid fa-box-open"></i>
+                        Nu au fost găsite produse pentru filtrele selectate.
+                    </div>
+
+                    <nav class="toolbox toolbox-pagination">
+                        <div class="toolbox-left">
+                            <label>Afișează:</label>
+                            <select name="count-bottom" id="count-bottom">
+                                <option value="6">6</option>
+                                <option value="9">9</option>
+                                <option value="12" selected>12</option>
+                                <option value="24">24</option>
+                            </select>
+                        </div>
+                        <div class="toolbox-right">
+                            <span id="pagination-info-bottom" class="pagination-info-muted"></span>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Mobile sidebar -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="mobile-sidebar" id="mobileSidebar">
+        <div class="mobile-filter-head">
+            <div class="mobile-filter-title">Filtrare produse</div>
+            <button type="button" class="mobile-filter-close" id="closeMobileFilter" aria-label="Închide filtrele"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="sidebar-wrapper">
+            <div class="widget">
+                <div class="widget-title" data-target="m-widget-vin">Caută după VIN</div>
+                <div class="widget-body" id="m-widget-vin">
+                    <input type="text" class="s-input" id="m-vin-search" placeholder="VIN, cod OEM sau denumire produs">
+                </div>
+            </div>
+
+            <div class="widget">
+                <div class="widget-title" data-target="m-widget-categories">Categorii</div>
+                <div class="widget-body" id="m-widget-categories">
+                    <input type="text" class="s-input s-input--spaced" id="m-category-search" placeholder="Caută categorie">
+                    <ul class="cat-list" id="m-category-list">
+                        <li><a href="#" class="category-filter" data-category=""><span class="site-icon site-icon--sm"><i class="fa-solid fa-box-open"></i></span>Toate<span class="products-count"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="widget">
+                <div class="widget-title" data-target="m-widget-subcategories">Subcategorii</div>
+                <div class="widget-body" id="m-widget-subcategories">
+                    <ul class="cat-list" id="m-subcategory-list">
+                        <li><a href="#" class="subcategory-filter active" data-subcategory=""><span class="site-icon site-icon--sm"><i class="fa-solid fa-folder-tree"></i></span>Toate</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="widget">
+                <div class="widget-title" data-target="m-widget-marci">Marcă auto</div>
+                <div class="widget-body" id="m-widget-marci">
+                    <ul class="cat-list" id="m-marca-list">
+                        <li><a href="#" class="marca-filter active" data-marca=""><span class="site-icon site-icon--sm"><i class="fa-solid fa-car"></i></span>Toate</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="widget">
+                <div class="widget-title" data-target="m-widget-brands">Brand produs</div>
+                <div class="widget-body" id="m-widget-brands">
+                    <ul class="cat-list" id="m-brand-list">
+                        <li><a href="#" class="brand-filter active" data-brand=""><span class="site-icon site-icon--sm"><i class="fa-solid fa-industry"></i></span>Toate</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="widget">
+                <div class="widget-title" data-target="m-widget-price">Preț</div>
+                <div class="widget-body" id="m-widget-price">
+                    <div class="price-slider">
+                        <div class="price-slider-track"></div>
+                        <div class="price-slider-fill" id="m-priceSliderFill"></div>
+                        <input type="range" id="m-priceMin" class="price-slider-input price-slider-min" min="0" max="6000" step="10" value="0">
+                        <input type="range" id="m-priceMax" class="price-slider-input price-slider-max" min="0" max="6000" step="10" value="6000">
+                    </div>
+                    <div class="price-range-text">Interval: <span id="m-filter-price-range">0 RON - 6000 RON</span></div>
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <button type="button" id="applyMobileFilters" class="btn-apply">APLICĂ FILTRELE</button>
+                <button type="button" id="resetMobileFilters" class="btn-reset">RESETEAZĂ</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="bpa-builder-zone" data-builder-zone="before_footer" data-builder-page="catalog" data-zone-label="Înainte de footer"></div>
+    <footer class="footer">
+    <div class="container">
+        <div class="footer-main">
+            <div class="footer-block footer-brand">
+                <a class="logo" href="/">
+                    <img src="img/logo.png" alt="Besoiu Piese Auto" class="logo-img">
+                </a>
+                <p>Magazin online de piese auto pentru toate mărcile. Piese originale și aftermarket la prețuri corecte.</p>
+                <div class="social" id="footer-social-links">
+                                                                <a href="https://www.facebook.com/besoiupieseauto" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><img src="img/icons/32_facebook.svg" class="footer-social-icon" alt="" role="presentation"></a>
+                                                                <a href="https://www.instagram.com/besoiupieseauto" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><img src="img/icons/33_instagram.svg" class="footer-social-icon" alt="" role="presentation"></a>
+                                                                <a href="https://www.youtube.com/@besoiupieseauto" aria-label="YouTube" target="_blank" rel="noopener noreferrer"><img src="img/icons/34_youtube.svg" class="footer-social-icon" alt="" role="presentation"></a>
+                                                                <a href="https://www.tiktok.com/@besoiupieseauto" aria-label="TikTok" target="_blank" rel="noopener noreferrer"><img src="img/icons/35_tiktok.svg" class="footer-social-icon" alt="" role="presentation"></a>
+                                    </div>
+            </div>
+            <div class="footer-block">
+                <h4>Informații</h4>
+                <ul>
+                    <li><a href="/despre">Despre noi</a></li>
+                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="/cariere">Cariere</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/termeni-conditii">Termeni și condiții</a></li>
+                    <li><a href="/politica-confidentialitate">Confidențialitate</a></li>
+                    <li><a href="/politica-cookies">Cookies</a></li>
+                </ul>
+            </div>
+            <div class="footer-block">
+                <h4>Suport clienți</h4>
+                <ul>
+                    <li><a href="/cum-comand">Cum comand</a></li>
+                    <li><a href="/livrare-plata">Livrare și plată</a></li>
+                    <li><a href="/retur-garantie">Retur și garanție</a></li>
+                    <li><a href="/intrebari-frecvente">Întrebări frecvente</a></li>
+                </ul>
+            </div>
+            <div class="footer-block footer-contact">
+                <h4>Contact</h4>
+                <ul>
+                    <li><img src="img/icons/12_telefon.svg" alt="" class="footer-contact-icon" role="presentation"><a href="tel:+40726498573">0726 498 573</a></li>
+                    <li><img src="img/icons/29_email_plic.svg" alt="" class="footer-contact-icon" role="presentation"><a href="mailto:contact@besoiupieseauto.ro">contact@besoiupieseauto.ro</a></li>
+                    <li><img src="img/icons/28_locatie_pin.svg" alt="" class="footer-contact-icon" role="presentation">Timișoara, Str. Stan Vidrighin nr. 14, jud. Timiș</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copy">
+            <span>© 2026 Besoiu Piese Auto. Toate drepturile rezervate.</span>
+            <span>Creat cu pasiune pentru mașina ta.</span>
+        </div>
+    </div>
+</footer>
+<script>window.BESOIU_ADMIN_CTX=false;</script>
+</div>
+
+<script src="assets/js/storefront-notice-gate.js?v=1782370927"></script>
+<script src="assets/js/cart-admin.js?v=1782370960" defer></script>
+<script src="assets/js/catalog-page.js?v=1782370935" defer></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+:root {
+	--box-color: #295444;
+  --main-color: #91bf81;
+  --btn-bg-color: #ebaf53 ;   
+  --btn-text-color: #fff; 
+    --td-bg-color: #f4f9ef;   
+--top-header-color: #8abb7b;
+--highlight-bg-color: #acde53;
+--pagination-active-bg: #2b523f;
+ --orders-border-color:#6ba960;
+}
+.btn.btn-info {
+    background-color: var(--box-color) !important;
+    background-image: none !important;
+    border-color: var(--box-color) !important;
+}
+#navbar {
+    background-color: var(--box-color) !important;
+    background-image: none !important;
+}
+
+.panel-heading {
+    background-color: var(--top-header-color) !important;
+    background-image: none !important;
+}

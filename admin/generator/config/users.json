@@ -1,0 +1,18 @@
+{
+    "table": "users_connect",
+    "fields": {
+        "nikname": "TEXT",
+        "fullname": "TEXT",
+        "login": "TEXT",
+        "password": "TEXT",
+        "contact": "TEXT",
+        "role": "TEXT",
+        "closs": "TEXT",
+        "status": "TEXT",
+        "id_users": "TEXT",
+        "connect_id": "TEXT",
+        "randomn_id": "TEXT",
+        "datainsert": "DATETIME",
+        "datareg": "TIMESTAMP"
+    }
+}

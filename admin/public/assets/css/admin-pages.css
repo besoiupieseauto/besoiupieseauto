@@ -1,0 +1,1892 @@
+/**
+ * Besoiu Admin — module pages (comenzi, liste, filtre, tabele)
+ */
+
+/* ── Topbar ── */
+.besoiu-topbar__inner {
+  background: #fff !important;
+  border: 2px solid var(--b26-line) !important;
+  border-bottom: 4px solid var(--b26-emerald-mid) !important;
+  border-radius: 16px !important;
+  padding: 0 18px !important;
+  box-shadow: var(--b26-shadow) !important;
+}
+
+.besoiu-breadcrumb__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.besoiu-breadcrumb__list li:not(:last-child)::after {
+  content: "›";
+  margin-left: 8px;
+  color: var(--b26-muted);
+  font-weight: 800;
+}
+
+.besoiu-breadcrumb__list a {
+  color: var(--b26-emerald-deep) !important;
+}
+
+.besoiu-breadcrumb__list strong {
+  color: var(--b26-navy);
+}
+
+.besoiu-topbar__icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: 2px solid var(--b26-emerald-soft);
+  background: var(--b26-emerald-panel);
+  color: var(--b26-emerald-deep) !important;
+}
+
+.besoiu-topbar__menu-btn {
+  border: 2px solid var(--b26-line) !important;
+  background: #fff !important;
+}
+
+.besoiu-topbar__user-name {
+  color: var(--b26-navy);
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Tab-uri modul ── */
+.besoiu-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px;
+  background: var(--b26-bg-accent);
+  border: 2px solid var(--b26-line);
+  border-radius: 14px;
+  margin-top: 20px;
+}
+
+.besoiu-tabs__btn,
+.comenzi-tab-btn {
+  border: 2px solid transparent !important;
+  border-radius: 10px !important;
+  padding: 10px 18px !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: transparent !important;
+  color: var(--b26-slate) !important;
+  cursor: pointer;
+}
+
+.besoiu-tabs__btn--active,
+.comenzi-tab-btn.bg-primary,
+.comenzi-tab-btn[data-active="1"] {
+  background: linear-gradient(180deg, #10b981, #047857) !important;
+  border-color: #047857 !important;
+  color: #fff !important;
+  box-shadow: 0 6px 18px rgba(5, 150, 105, 0.35) !important;
+}
+
+.comenzi-tab-btn:not(.bg-primary):not([data-active="1"]) {
+  background: #fff !important;
+  border-color: var(--b26-line) !important;
+}
+
+/* ── Filtre ── */
+.besoiu-filters {
+  padding: 20px !important;
+  border: 2px solid var(--b26-line) !important;
+  border-radius: var(--b26-radius-sm) !important;
+  background: linear-gradient(180deg, #fff 0%, var(--b26-emerald-panel) 100%) !important;
+  box-shadow: var(--b26-shadow) !important;
+}
+
+.besoiu-filters__label {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--b26-emerald-deep);
+  margin-bottom: 8px;
+}
+
+.besoiu-filters select,
+.besoiu-filters input[type="date"],
+.besoiu-filters input[type="text"] {
+  height: 44px !important;
+  border: 2px solid var(--b26-line) !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  color: var(--b26-navy) !important;
+  background: #fff !important;
+}
+
+/* ── Toolbar acțiuni ── */
+.besoiu-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.besoiu-toolbar__spacer {
+  flex: 1;
+}
+
+.besoiu-toolbar__search {
+  position: relative;
+  min-width: 260px;
+}
+
+.besoiu-toolbar__search input {
+  width: 100%;
+  height: 44px;
+  padding-right: 40px !important;
+  border: 2px solid var(--b26-line) !important;
+  border-radius: 12px !important;
+  font-weight: 600;
+}
+
+.besoiu-toolbar__search svg {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--b26-muted);
+}
+
+.besoiu-counter {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--b26-navy);
+  color: #fff !important;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ── Tabel date ── */
+.besoiu-table-wrap {
+  border: 2px solid var(--b26-line);
+  border-radius: var(--b26-radius-sm);
+  overflow: auto;
+  background: #fff;
+  box-shadow: var(--b26-shadow);
+}
+
+.besoiu-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.besoiu-data-table thead {
+  background: linear-gradient(90deg, var(--b26-emerald-deep) 0%, var(--b26-navy) 100%);
+}
+
+.besoiu-data-table thead th {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff !important;
+  white-space: nowrap;
+}
+
+.besoiu-data-table thead th.text-center {
+  text-align: center;
+}
+
+.besoiu-data-table tbody tr {
+  border-bottom: 2px solid var(--b26-line);
+}
+
+.besoiu-data-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.besoiu-data-table tbody td {
+  padding: 14px 16px;
+  vertical-align: top;
+  color: var(--b26-navy);
+  background: #fff;
+}
+
+.besoiu-data-table tbody tr:nth-child(even) td {
+  background: #f8fafc;
+}
+
+.besoiu-data-table .besoiu-empty {
+  padding: 48px 24px !important;
+  text-align: center;
+  font-weight: 700;
+  color: var(--b26-muted);
+}
+
+/* ── Badge-uri semantice ── */
+.besoiu-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 2px solid transparent;
+}
+
+.besoiu-badge--success {
+  background: var(--b26-emerald-soft);
+  color: var(--b26-emerald-deep);
+  border-color: #6ee7b7;
+}
+
+.besoiu-badge--warning {
+  background: var(--b26-amber-soft);
+  color: #b45309;
+  border-color: #fcd34d;
+}
+
+.besoiu-badge--danger {
+  background: var(--b26-coral-soft);
+  color: #b91c1c;
+  border-color: #fca5a5;
+}
+
+.besoiu-badge--info {
+  background: var(--b26-sky-soft);
+  color: var(--b26-emerald-deep);
+  border-color: #6ee7b7;
+}
+
+.besoiu-badge--payment {
+  background: var(--b26-violet-soft);
+  color: #6d28d9;
+  border-color: #c4b5fd;
+}
+
+/* ── Butoane acțiune rând ── */
+.besoiu-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.besoiu-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 2px solid var(--b26-line);
+  background: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--b26-emerald-deep) !important;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.besoiu-action-btn svg {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+.besoiu-action-btn--primary {
+  border-color: var(--b26-emerald-mid);
+  background: var(--b26-emerald-panel);
+}
+
+.besoiu-action-btn--success {
+  border-color: #6ee7b7;
+  background: var(--b26-emerald-soft);
+  color: var(--b26-emerald-deep) !important;
+}
+
+.besoiu-action-btn--danger {
+  border-color: #fca5a5;
+  background: var(--b26-coral-soft);
+  color: #b91c1c !important;
+}
+
+/* ── Toast / modal admin ── */
+.besoiu-toast {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  z-index: 99990;
+  padding: 14px 20px;
+  border-radius: 12px;
+  border: 2px solid var(--b26-line);
+  background: #fff;
+  color: var(--b26-navy);
+  font-weight: 700;
+  box-shadow: var(--b26-shadow-lg);
+}
+
+.besoiu-toast--error {
+  border-color: #fca5a5;
+  background: var(--b26-coral-soft);
+  color: #b91c1c;
+}
+
+.besoiu-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99980;
+  background: rgba(11, 31, 51, 0.55);
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.besoiu-modal {
+  margin: 0 auto;
+  max-width: 48rem;
+  width: 100%;
+  border-radius: var(--b26-radius);
+  border: 2px solid var(--b26-line);
+  background: #fff;
+  box-shadow: var(--b26-shadow-lg);
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+}
+
+.besoiu-modal__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 22px;
+  border-bottom: 2px solid var(--b26-line);
+  background: linear-gradient(90deg, var(--b26-emerald-mid), var(--b26-emerald-deep));
+}
+
+.besoiu-modal__head h3 {
+  margin: 0;
+  color: #fff !important;
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.besoiu-modal__body {
+  padding: 22px;
+}
+
+/* ── KPI strip modul ── */
+.besoiu-kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 20px;
+}
+
+@media (max-width: 1024px) {
+  .besoiu-kpi-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .besoiu-kpi-strip {
+    grid-template-columns: 1fr;
+  }
+}
+
+.besoiu-kpi-mini {
+  padding: 16px 18px;
+  border-radius: var(--b26-radius-sm);
+  border: 2px solid var(--b26-line);
+  background: #fff;
+  box-shadow: var(--b26-shadow);
+}
+
+.besoiu-kpi-mini__label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--b26-muted);
+}
+
+.besoiu-kpi-mini__value {
+  margin-top: 6px;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--b26-navy);
+  line-height: 1;
+}
+
+.besoiu-kpi-mini--green {
+  border-color: #6ee7b7;
+  background: linear-gradient(160deg, #fff, var(--b26-emerald-soft));
+}
+
+.besoiu-kpi-mini--amber {
+  border-color: #fcd34d;
+  background: linear-gradient(160deg, #fff, var(--b26-amber-soft));
+}
+
+.besoiu-kpi-mini--sky {
+  border-color: #6ee7b7;
+  background: linear-gradient(160deg, #fff, var(--b26-sky-soft));
+}
+
+.besoiu-kpi-mini--violet {
+  border-color: #c4b5fd;
+  background: linear-gradient(160deg, #fff, var(--b26-violet-soft));
+}
+
+.besoiu-kpi-mini__value--sm {
+  font-size: 1rem;
+}
+
+/* ── Comenzi admin — modale & toast (tm_117) ── */
+.besoiu-modal--lg {
+  max-width: 48rem;
+}
+
+.besoiu-modal--wide {
+  max-width: 56rem;
+}
+
+.besoiu-modal__close {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.besoiu-modal__foot {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 2px solid var(--b26-line);
+}
+
+.besoiu-modal-shortcuts {
+  padding: 14px 22px;
+  border-bottom: 2px solid var(--b26-line);
+  background: var(--b26-emerald-panel);
+}
+
+.besoiu-modal-shortcuts__label {
+  margin: 0 0 10px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--b26-muted);
+}
+
+.besoiu-modal-shortcuts__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.besoiu-modal__field > span {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--b26-slate);
+}
+
+.besoiu-modal__field input,
+.besoiu-modal__field select,
+.besoiu-modal__field textarea {
+  width: 100%;
+}
+
+.besoiu-modal__meta-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--b26-muted);
+}
+
+.besoiu-modal__meta-value {
+  margin-top: 4px;
+  font-weight: 800;
+  color: var(--b26-navy);
+}
+
+.besoiu-toast--stack {
+  top: 72px;
+}
+
+body.besoiu-admin-2026 #comenzi-modal.besoiu-modal-backdrop:not(.hidden) {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  z-index: 99990;
+}
+
+body.besoiu-admin-2026 #comenzi-modal.besoiu-modal-backdrop.hidden {
+  display: none !important;
+}
+
+/* ── Pagini fără hero propriu ── */
+.admin-content > h2:first-child {
+  display: none;
+}
+
+.admin-content .besoiu-page {
+  margin-top: 8px;
+}
+
+/* ── Fallback global: tabele & butoane în alte module ── */
+.admin-content .admin-panel,
+.admin-content > .box:not(.besoiu-filters),
+.admin-content .grid > [class*="col-span"] > .box:not(.besoiu-produse-card):not(.product-card .box) {
+  border: 2px solid var(--b26-line) !important;
+  border-radius: var(--b26-radius-sm) !important;
+  box-shadow: var(--b26-shadow) !important;
+}
+
+.admin-content .besoiu-page .product-card > .box::before,
+.admin-content .besoiu-page .product-card > .box::after {
+  display: none !important;
+  content: none !important;
+}
+
+.admin-content table.w-full:not(.besoiu-data-table),
+.admin-content .box table:not(.besoiu-data-table):not(.markup-preview-table),
+.admin-content .admin-table-wrap table,
+.admin-content .st-table,
+.admin-content .scan-table {
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.admin-content table.w-full:not(.besoiu-data-table) thead,
+.admin-content .box table:not(.besoiu-data-table):not(.markup-preview-table) thead,
+.admin-content .admin-table-wrap table thead,
+.admin-content .st-table thead,
+.admin-content .scan-table thead {
+  background: linear-gradient(90deg, var(--b26-emerald-deep), var(--b26-navy));
+}
+
+.admin-content table.w-full:not(.besoiu-data-table) thead th,
+.admin-content .box table:not(.besoiu-data-table):not(.markup-preview-table) thead th,
+.admin-content .admin-table-wrap table thead th,
+.admin-content .st-table thead th,
+.admin-content .scan-table thead th {
+  padding: 12px 14px;
+  color: #fff !important;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.admin-content table.w-full:not(.besoiu-data-table) tbody td,
+.admin-content .box table:not(.besoiu-data-table):not(.markup-preview-table) tbody td,
+.admin-content .admin-table-wrap table tbody td,
+.admin-content .st-table tbody td,
+.admin-content .scan-table tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--b26-line);
+}
+
+.admin-content .bg-primary\/20.text-primary,
+.admin-content button.bg-primary\/20 {
+  background: linear-gradient(180deg, #10b981, #047857) !important;
+  color: #fff !important;
+  border: 2px solid #047857 !important;
+  font-weight: 800 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 10px !important;
+}
+
+/* ── Modul Produse (scanate / vitrină) ── */
+.besoiu-produse-page {
+  max-width: 100%;
+}
+
+.besoiu-tabs--sections {
+  margin-top: 18px;
+  margin-bottom: 18px;
+}
+
+.besoiu-tabs--compact {
+  margin-top: 0;
+  padding: 6px;
+  gap: 6px;
+}
+
+.besoiu-tabs--compact .besoiu-tabs__btn,
+.besoiu-tabs--compact .admin-tab {
+  padding: 8px 14px !important;
+  font-size: 11px !important;
+}
+
+.besoiu-produse-panel {
+  padding: 20px 22px 24px;
+  border: 2px solid var(--b26-line);
+  border-radius: var(--b26-radius);
+  background: #fff;
+  box-shadow: var(--b26-shadow);
+}
+
+.besoiu-produse-panel__toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--b26-line);
+}
+
+.besoiu-toolbar--inline {
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 0;
+}
+
+.besoiu-produse-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+@media (max-width: 1280px) {
+  .besoiu-produse-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .besoiu-produse-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .besoiu-produse-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.besoiu-produse-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  border: 2px solid var(--b26-line);
+  border-radius: var(--b26-radius-sm);
+  background: #fff;
+  overflow: hidden;
+}
+
+.besoiu-produse-card__media {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  padding: 14px;
+  background: #f8fafc;
+  border-bottom: 1px solid var(--b26-line);
+  text-decoration: none;
+}
+
+.besoiu-produse-card__media--db {
+  min-height: 168px;
+}
+
+.besoiu-produse-card__media img {
+  width: 100%;
+  height: 100%;
+  max-height: 140px;
+  object-fit: contain;
+  object-position: center;
+}
+
+.besoiu-produse-card__placeholder {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--b26-muted);
+}
+
+.besoiu-produse-card__badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #fff;
+  background: rgba(15, 23, 42, 0.82);
+}
+
+.besoiu-produse-card__body {
+  flex: 1;
+  padding: 14px 16px 12px;
+}
+
+.besoiu-produse-card__title {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--b26-navy);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.besoiu-produse-card__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.besoiu-produse-card__meta {
+  margin: 6px 0 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--b26-muted);
+}
+
+.besoiu-produse-card__facts {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: #475569;
+}
+
+.besoiu-produse-card__facts li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.besoiu-produse-card__facts svg {
+  width: 14px;
+  height: 14px;
+  stroke: #059669;
+  flex-shrink: 0;
+}
+
+.besoiu-produse-card__badge--vitrina {
+  background: #047857 !important;
+  border: 1px solid #6ee7b7;
+}
+
+.besoiu-produse-card__foot--actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.besoiu-produse-card__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #047857;
+  cursor: pointer;
+}
+
+.besoiu-produse-card__btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.besoiu-produse-card__desc {
+  margin: 8px 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--b26-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.besoiu-produse-card__price {
+  margin: 10px 0 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #047857;
+}
+
+.besoiu-produse-card__foot {
+  padding: 10px 16px 14px;
+  border-top: 1px solid var(--b26-line);
+  text-align: right;
+}
+
+.besoiu-produse-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--b26-emerald-deep, #047857);
+  text-decoration: none;
+}
+
+.besoiu-produse-card__link svg {
+  width: 14px;
+  height: 14px;
+}
+
+.besoiu-produse-empty {
+  padding: 48px 20px;
+  text-align: center;
+  font-size: 0.92rem;
+  color: var(--b26-muted);
+  background: #f8fafc;
+  border: 1px dashed var(--b26-line);
+  border-radius: var(--b26-radius-sm);
+}
+
+.besoiu-produse-empty a {
+  color: var(--b26-emerald-deep);
+  font-weight: 800;
+}
+
+/* ── Vitrina homepage admin ── */
+.besoiu-vitrina-preview-panel {
+  --line: #e2e8f0;
+  --text: #0f172a;
+  --muted: #64748b;
+  --green: #059669;
+  --green-dark: #047857;
+  --green-soft: #ecfdf5;
+  --shadow-soft: 0 4px 14px rgba(15, 23, 42, 0.06);
+  --shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
+}
+
+.besoiu-vitrina-page .besoiu-vitrina-count-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 10px;
+  background: #ecfdf5;
+  border: 1px solid #6ee7b7;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #047857;
+}
+
+.besoiu-vitrina-preview-panel {
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid var(--b26-line);
+  border-radius: var(--b26-radius-sm);
+  background: #fff;
+}
+
+.besoiu-vitrina-preview-panel__head h2,
+.besoiu-vitrina-picker-panel__head h2 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--b26-navy);
+}
+
+.besoiu-vitrina-preview-panel__head p,
+.besoiu-vitrina-picker-panel__head p {
+  margin: 0 0 16px;
+  font-size: 0.85rem;
+  color: var(--b26-muted);
+}
+
+/* Previzualizare homepage — reutilizează besoiu-produse-grid + besoiu-produse-card (ca produse-scanate) */
+.besoiu-vitrina-home-grid {
+  position: relative;
+  z-index: 1;
+}
+
+.besoiu-vitrina-page ._product-grid.besoiu-vitrina-home-grid[data-home-vitrina="1"] {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 16px;
+  width: 100%;
+  margin: 0;
+}
+
+.besoiu-vitrina-page .besoiu-vitrina-home-card-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.besoiu-vitrina-page .besoiu-vitrina-home-card-wrap > ._product-card {
+  flex: 1 1 auto;
+  pointer-events: none;
+}
+
+.besoiu-vitrina-page .besoiu-vitrina-home-card-wrap ._product-card-image--clickable {
+  pointer-events: none;
+  cursor: default;
+}
+
+.besoiu-vitrina-page .besoiu-produse-card__badge--recomandat {
+  background: linear-gradient(135deg, #fde047 0%, #eab308 55%, #facc15 100%);
+  color: #422006;
+  letter-spacing: 0.04em;
+}
+
+.besoiu-vitrina-page .besoiu-vitrina-home-card .besoiu-vitrina-home-card__foot {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  text-align: left;
+}
+
+.besoiu-vitrina-page .besoiu-vitrina-home-card .besoiu-vitrina-preview-btn {
+  width: 100%;
+  min-height: 38px;
+  pointer-events: auto;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.besoiu-vitrina-picker-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.besoiu-vitrina-picker-toolbar .besoiu-tabs {
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  padding-bottom: 2px;
+}
+
+.besoiu-vitrina-table__noimg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+
+.besoiu-vitrina-picker-panel__head {
+  margin-bottom: 12px;
+}
+
+.besoiu-vitrina-bulk-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border: 1px solid #bfdbfe;
+  border-radius: 12px;
+  background: #eff6ff;
+  position: relative;
+  z-index: 4;
+}
+
+.besoiu-vitrina-bulk-bar[hidden] {
+  display: none !important;
+}
+
+.besoiu-vitrina-bulk-bar:not([hidden]) {
+  display: flex !important;
+}
+
+.besoiu-vitrina-bulk-bar__actions .besoiu-vitrina-bulk-btn {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.besoiu-vitrina-bulk-bar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.besoiu-vitrina-table-wrap {
+  overflow-x: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.besoiu-vitrina-table input[type="checkbox"],
+.besoiu-vitrina-check-all input[type="checkbox"] {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 2;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
+  margin: 0;
+  cursor: pointer;
+  accent-color: #047857;
+}
+
+.besoiu-vitrina-toggle-label,
+.besoiu-vitrina-check-all {
+  pointer-events: auto;
+}
+
+.besoiu-vitrina-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.besoiu-vitrina-table th,
+.besoiu-vitrina-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--b26-line);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.besoiu-vitrina-table th {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748b;
+  background: #f8fafc;
+}
+
+.besoiu-vitrina-table__check {
+  width: 42px;
+}
+
+.besoiu-vitrina-table__product {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 220px;
+}
+
+.besoiu-vitrina-table__product img {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #f1f5f9;
+  flex-shrink: 0;
+}
+
+.besoiu-vitrina-table__empty {
+  padding: 28px 12px !important;
+  text-align: center;
+  color: var(--b26-muted);
+}
+
+.besoiu-vitrina-toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.besoiu-vitrina-toggle-label__text {
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+.besoiu-vitrina-toggle-label__text.is-on {
+  color: #047857;
+  font-weight: 800;
+}
+
+.besoiu-vitrina-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.besoiu-vitrina-badge-pill.is-on {
+  background: linear-gradient(135deg, #fde047 0%, #eab308 55%, #facc15 100%);
+  color: #422006;
+}
+
+/* ── Vitrina: izolare shop + layout card + click (CSS retry) ── */
+.besoiu-vitrina-page {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+/* Ascunde markup shop (Detalii/coș/plată) dacă a rămas din renderer vechi */
+.besoiu-vitrina-page ._product-card-actions,
+.besoiu-vitrina-page ._product-card-btn,
+.besoiu-vitrina-page .btn_addtoccard,
+.besoiu-vitrina-page .btn_quickbuy,
+.besoiu-vitrina-page article._product-card:not(.besoiu-vitrina-home-card) {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+.besoiu-vitrina-preview-panel,
+.besoiu-vitrina-picker-panel {
+  position: relative;
+  z-index: 2;
+  pointer-events: auto;
+  isolation: isolate;
+}
+
+.besoiu-vitrina-home-grid {
+  width: 100%;
+  align-items: stretch;
+}
+
+.besoiu-vitrina-page .besoiu-vitrina-home-card {
+  overflow: hidden;
+  height: 100%;
+  pointer-events: auto;
+  isolation: isolate;
+}
+
+.besoiu-vitrina-page .besoiu-vitrina-home-card .besoiu-vitrina-home-card__foot {
+  position: relative;
+  z-index: 3;
+  pointer-events: auto;
+}
+
+.besoiu-vitrina-page .besoiu-vitrina-home-card .besoiu-vitrina-preview-btn[data-product-id] {
+  position: relative;
+  z-index: 4;
+}
+
+.besoiu-vitrina-picker-toolbar .admin-tab,
+.besoiu-vitrina-picker-toolbar .besoiu-tabs__btn {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 3;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.besoiu-vitrina-picker-toolbar .admin-tab__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5em;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.08);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.besoiu-vitrina-table-wrap,
+.besoiu-vitrina-table tbody tr,
+.besoiu-vitrina-bulk-bar,
+.besoiu-vitrina-bulk-bar__actions {
+  pointer-events: auto;
+}
+
+body.besoiu-admin-2026 .page-loader.hidden,
+body.besoiu-admin-2026 .page-loader.opacity-0 {
+  pointer-events: none !important;
+  display: none !important;
+}
+
+.besoiu-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--b26-line);
+}
+
+.besoiu-pagination__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px;
+  border: 2px solid var(--b26-line);
+  border-radius: 10px;
+  background: #fff;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--b26-navy);
+  text-decoration: none;
+}
+
+.besoiu-pagination__btn--active {
+  background: linear-gradient(180deg, #10b981, #047857);
+  border-color: #047857;
+  color: #fff;
+}
+
+/* ── Galerie poze — formular editare produs ── */
+.besoiu-product-photos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+}
+
+@media (min-width: 768px) {
+  .besoiu-product-photos-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.besoiu-product-photo-tile {
+  position: relative;
+  aspect-ratio: 1;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  border: 1px solid var(--b26-line, #e2e8f0);
+  background: #f8fafc;
+}
+
+.besoiu-product-photo-tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.besoiu-product-photo-remove {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: none;
+  border-radius: 9999px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 0.875rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* ── Produse listă: modal adaos selectiv (tm_022) — z-index / pointer-events admin ── */
+body.besoiu-admin-2026 .produse-list-page {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+  isolation: isolate;
+}
+
+body.besoiu-admin-2026 .produse-list-page .product-card > .box::before,
+body.besoiu-admin-2026 .produse-list-page .product-card > .box::after {
+  pointer-events: none !important;
+}
+
+body.besoiu-admin-2026 .produse-list-page .product-card .open-markup-modal,
+body.besoiu-admin-2026 .produse-list-page #applySelectedMarkupBtn:not(:disabled) {
+  pointer-events: auto !important;
+  cursor: pointer;
+  position: relative;
+  z-index: 12;
+}
+
+body.besoiu-admin-2026 #markupSelectModal,
+body.besoiu-admin-2026 #badgeSelectModal,
+body.besoiu-admin-2026 #addProductModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  pointer-events: none;
+  background: rgba(15, 23, 42, 0.58);
+  backdrop-filter: blur(2px);
+}
+
+body.besoiu-admin-2026 #markupSelectModal.is-open,
+body.besoiu-admin-2026 #badgeSelectModal.is-open,
+body.besoiu-admin-2026 #addProductModal.is-open {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  pointer-events: auto;
+}
+
+body.besoiu-admin-2026 #markupSelectModal.is-open .markup-select-modal__panel,
+body.besoiu-admin-2026 #badgeSelectModal.is-open .markup-select-modal__panel,
+body.besoiu-admin-2026 #addProductModal.is-open > .products-overlay-modal__panel {
+  display: block;
+  visibility: visible;
+  pointer-events: auto;
+  position: relative;
+  z-index: 1;
+  width: min(1200px, calc(100vw - 32px));
+  height: min(calc(100vh - 48px), 920px);
+  max-height: calc(100vh - 48px);
+  margin: 0 auto;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, .25);
+}
+
+body.besoiu-admin-2026 #addProductModal.is-open #addProductFrame {
+  display: block;
+  visibility: visible;
+  pointer-events: auto;
+  width: 100%;
+  height: calc(100% - 57px);
+  min-height: 280px;
+  border: 0;
+  background: #fff;
+}
+
+body.besoiu-admin-2026 .produse-list-page #openAddProduct,
+body.besoiu-admin-2026 .produse-list-page #openAddProductMini {
+  pointer-events: auto;
+  cursor: pointer;
+  position: relative;
+  z-index: 12;
+}
+
+body.besoiu-admin-2026 #markupSelectModal.is-open select,
+body.besoiu-admin-2026 #markupSelectModal.is-open input[type="checkbox"],
+body.besoiu-admin-2026 #markupSelectModal.is-open button,
+body.besoiu-admin-2026 #badgeSelectModal.is-open select,
+body.besoiu-admin-2026 #badgeSelectModal.is-open input[type="checkbox"],
+body.besoiu-admin-2026 #badgeSelectModal.is-open button {
+  pointer-events: auto !important;
+}
+
+body.besoiu-admin-2026 #badgeSelectModal:not(.is-open) .markup-select-modal__panel,
+body.besoiu-admin-2026 #markupSelectModal:not(.is-open) .markup-select-modal__panel,
+body.besoiu-admin-2026 #badgeSelectModal:not(.is-open) .markup-select-modal__callout,
+body.besoiu-admin-2026 #markupSelectModal:not(.is-open) .markup-select-modal__callout {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+body.besoiu-admin-2026 #badgeSelectModal.is-open .markup-select-modal__callout,
+body.besoiu-admin-2026 #markupSelectModal.is-open .markup-select-modal__callout {
+  display: flex !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+}
+
+body.besoiu-admin-2026.products-modal-open {
+  overflow: hidden;
+}
+
+/* ── Categorii admin: modal referință TecDoc (tm_021) — z-index / pointer-events ── */
+body.besoiu-admin-2026 .categorii-admin-page {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+  isolation: isolate;
+}
+
+body.besoiu-admin-2026 .categorii-admin-page .rubick::before,
+body.besoiu-admin-2026 .categorii-admin-page .rubick::after {
+  pointer-events: none !important;
+}
+
+body.besoiu-admin-2026 #catModal.categorii-overlay-modal:not(.is-open),
+body.besoiu-admin-2026 #tecdocModal.categorii-overlay-modal:not(.is-open),
+body.besoiu-admin-2026 .categorii-overlay-modal[hidden],
+body.besoiu-admin-2026 .categorii-overlay-modal[aria-hidden="true"]:not(.is-open) {
+  display: none !important;
+  visibility: hidden !important;
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  background: rgba(15, 23, 42, 0.58);
+  backdrop-filter: blur(2px);
+}
+
+body.besoiu-admin-2026 #catModal.categorii-overlay-modal.is-open,
+body.besoiu-admin-2026 #tecdocModal.categorii-overlay-modal.is-open {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  background: rgba(15, 23, 42, 0.58);
+  backdrop-filter: blur(2px);
+}
+
+body.besoiu-admin-2026 .categorii-overlay-modal:not(.is-open) .categorii-overlay-modal__panel {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+body.besoiu-admin-2026 #tecdocModal.categorii-overlay-modal.is-open > .categorii-overlay-modal__panel,
+body.besoiu-admin-2026 #catModal.categorii-overlay-modal.is-open > .categorii-overlay-modal__panel {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 1;
+}
+
+body.besoiu-admin-2026 #btn-tecdoc-reference {
+  pointer-events: auto !important;
+  cursor: pointer;
+  position: relative;
+  z-index: 12;
+}
+
+body.besoiu-admin-2026 #tecdocModal.is-open select,
+body.besoiu-admin-2026 #tecdocModal.is-open button,
+body.besoiu-admin-2026 #catModal.is-open input,
+body.besoiu-admin-2026 #catModal.is-open select,
+body.besoiu-admin-2026 #catModal.is-open textarea,
+body.besoiu-admin-2026 #catModal.is-open button {
+  pointer-events: auto !important;
+}
+
+body.besoiu-admin-2026.categorii-modal-open {
+  overflow: hidden;
+}
+
+/* ── Importreview: scan imagini în fundal (tm_importreview_image_scan) — cascade terminal display/z-index/pointer-events ── */
+body.besoiu-admin-2026 #imageScanStatus.import-image-scan-status[hidden],
+body.besoiu-admin-2026 #imageScanStatus[data-besoiu-block="image-scan-dock"][hidden] {
+  display: none !important;
+}
+
+body.besoiu-admin-2026 #imageScanStatus.import-image-scan-status:not([hidden]),
+body.besoiu-admin-2026 #imageScanStatus.import-image-scan-status.is-scanning,
+body.besoiu-admin-2026 #imageScanStatus.import-image-scan-status.is-success,
+body.besoiu-admin-2026 #imageScanStatus.import-image-scan-status.is-partial,
+body.besoiu-admin-2026 #imageScanStatus.import-image-scan-status.is-error,
+body.besoiu-admin-2026.import-image-scan-active #imageScanStatus.import-image-scan-status,
+body.besoiu-admin-2026 #imageScanStatus[data-besoiu-block="image-scan-dock"]:not([hidden]) {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  position: fixed !important;
+  bottom: 20px !important;
+  top: auto !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+  z-index: 9600 !important;
+  width: min(720px, calc(100vw - 32px)) !important;
+  max-width: calc(100vw - 32px) !important;
+  margin: 0 !important;
+  box-shadow: 0 12px 40px rgba(2, 132, 199, 0.22);
+}
+
+body.besoiu-admin-2026 #imageScanStatus.is-scanning #imageScanProgress,
+body.besoiu-admin-2026 #imageScanStatus.is-scanning .import-image-scan-status__progress,
+body.besoiu-admin-2026 #imageScanStatus:not([hidden]) #imageScanProgress,
+body.besoiu-admin-2026.import-image-scan-active #imageScanProgress,
+body.besoiu-admin-2026 [data-besoiu-block="image-scan-progress"],
+body.besoiu-admin-2026 [data-besoiu-block="image-scan-progress"][hidden] {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  min-height: 8px !important;
+  pointer-events: none !important;
+}
+
+body.besoiu-admin-2026 #imageScanStatus.is-scanning #imageScanProgressBar,
+body.besoiu-admin-2026 #imageScanStatus:not([hidden]) #imageScanProgressBar,
+body.besoiu-admin-2026.import-image-scan-active #imageScanProgressBar,
+body.besoiu-admin-2026 [data-besoiu-block="image-scan-progress-bar"] {
+  display: block !important;
+  min-width: 2%;
+}
+
+body.besoiu-admin-2026 #imageScanProgressBar.is-indeterminate {
+  width: 38% !important;
+  animation: imageScanIndeterminate 1.25s ease-in-out infinite;
+}
+
+@keyframes imageScanIndeterminate {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(250%); }
+}
+
+body.besoiu-admin-2026 #imageScanStatus.is-scanning #refreshImagesStop,
+body.besoiu-admin-2026 #imageScanStatus.is-scanning .import-image-scan-status__stop,
+body.besoiu-admin-2026 #imageScanStatus:not([hidden]) #refreshImagesStop,
+body.besoiu-admin-2026.import-image-scan-active #refreshImagesStop,
+body.besoiu-admin-2026 [data-besoiu-action="refresh-images-stop"] {
+  display: inline-block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  cursor: pointer;
+}
+
+body.besoiu-admin-2026.import-image-scan-active .page-loader,
+body.besoiu-admin-2026.import-image-scan-active:has(#imageScanStatus.is-scanning) .page-loader {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+body.besoiu-admin-2026.import-image-scan-active .admin-panel,
+body.besoiu-admin-2026.import-image-scan-active .admin-table-wrap,
+body.besoiu-admin-2026.import-image-scan-active .import-row,
+body.besoiu-admin-2026.import-image-scan-active .import-row button,
+body.besoiu-admin-2026.import-image-scan-active .import-row a,
+body.besoiu-admin-2026.import-image-scan-active .import-row input,
+body.besoiu-admin-2026.import-image-scan-active .content__scroll-area {
+  pointer-events: auto !important;
+}
+
+body.besoiu-admin-2026.import-image-scan-active .content__scroll-area {
+  padding-bottom: 120px;
+}
+
+body.besoiu-admin-2026.import-image-scan-active #refreshImages[disabled] {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+body.besoiu-admin-2026.import-image-scan-active .side-menu,
+body.besoiu-admin-2026.import-image-scan-active .side-menu a,
+body.besoiu-admin-2026.import-image-scan-active .top-bar,
+body.besoiu-admin-2026.import-image-scan-active .top-bar a,
+body.besoiu-admin-2026.import-image-scan-active .admin-panel__head a,
+body.besoiu-admin-2026.import-image-scan-active .content a[href] {
+  pointer-events: auto !important;
+  cursor: pointer;
+}
+
+body.besoiu-admin-2026.import-image-scan-active {
+  overflow: auto !important;
+  pointer-events: auto !important;
+}
+
+body.besoiu-admin-2026 #imageScanStatus.is-scanning #imageScanProgress,
+body.besoiu-admin-2026 #imageScanStatus.is-scanning #imageScanProgress[hidden] {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  min-height: 8px !important;
+  pointer-events: none !important;
+}
+
+/* 0% + fetch activ: progres vizibil chiar dacă Tailwind/Edmate ascund [hidden] pe copii */
+body.besoiu-admin-2026[data-image-scan-active="1"] #imageScanProgress,
+body.besoiu-admin-2026[data-image-scan-active="1"] #imageScanProgress[hidden],
+body.besoiu-admin-2026[data-image-scan-active="1"] #imageScanProgressPct,
+body.besoiu-admin-2026[data-image-scan-active="1"] [data-besoiu-block="image-scan-progress"],
+body.besoiu-admin-2026[data-image-scan-active="1"] [data-besoiu-block="image-scan-progress-pct"],
+body.besoiu-admin-2026.import-image-scan-active #imageScanProgress.hidden {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: none !important;
+}
+
+body.besoiu-admin-2026[data-image-scan-active="1"] #imageScanProgressBar.is-indeterminate,
+body.besoiu-admin-2026.import-image-scan-active #imageScanProgressBar.is-indeterminate {
+  display: block !important;
+  width: 38% !important;
+  animation: imageScanIndeterminate 1.25s ease-in-out infinite;
+}
+
+/* ── Caiet comenzi legacy (tab-uri în Comenzi admin) — display / z-index / pointer-events ── */
+body.besoiu-admin-2026 .comenzi-admin-page {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+  isolation: isolate;
+}
+
+body.besoiu-admin-2026 .comenzi-admin-page .besoiu-tabs {
+  position: relative;
+  z-index: 5;
+  pointer-events: auto;
+}
+
+body.besoiu-admin-2026 .comenzi-admin-page .comenzi-tab-btn {
+  pointer-events: auto !important;
+  cursor: pointer;
+  position: relative;
+  z-index: 6;
+}
+
+body.besoiu-admin-2026 .comenzi-admin-page .comenzi-tab-panel.hidden,
+body.besoiu-admin-2026 .comenzi-admin-page .comenzi-tab-panel[aria-hidden="true"]:not(.comenzi-tab-panel--active) {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+body.besoiu-admin-2026 .comenzi-admin-page .comenzi-tab-panel:not(.hidden),
+body.besoiu-admin-2026 .comenzi-admin-page .comenzi-tab-panel.comenzi-tab-panel--active {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto;
+  position: relative;
+  z-index: 2;
+}
+
+body.besoiu-admin-2026 .comenzi-admin-page .besoiu-legacy-panel,
+body.besoiu-admin-2026 .comenzi-admin-page .besoiu-legacy-panel .besoiu-toolbar,
+body.besoiu-admin-2026 .comenzi-admin-page .besoiu-legacy-panel .besoiu-filters,
+body.besoiu-admin-2026 .comenzi-admin-page .besoiu-legacy-panel .besoiu-table-wrap,
+body.besoiu-admin-2026 .comenzi-admin-page .besoiu-legacy-panel .legacy-body,
+body.besoiu-admin-2026 .comenzi-admin-page .besoiu-legacy-panel button,
+body.besoiu-admin-2026 .comenzi-admin-page .besoiu-legacy-panel a,
+body.besoiu-admin-2026 .comenzi-admin-page .besoiu-legacy-panel input,
+body.besoiu-admin-2026 .comenzi-admin-page .besoiu-legacy-panel select {
+  pointer-events: auto;
+}
+
+body.besoiu-admin-2026 .comenzi-admin-page .besoiu-legacy-panel .legacy-expand-row:not(.hidden) {
+  display: table-row !important;
+  visibility: visible !important;
+}
+
+body.besoiu-admin-2026 .comenzi-admin-page .besoiu-legacy-panel .legacy-expand-row.hidden {
+  display: none !important;
+}
+
+.besoiu-legacy-panel .legacy-status,
+.besoiu-legacy-panel .legacy-date-from,
+.besoiu-legacy-panel .legacy-date-to {
+  width: 100%;
+}
+
+.besoiu-legacy-panel .legacy-refresh {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 2px solid var(--b26-line);
+  border-radius: 10px;
+  background: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.besoiu-legacy-panel .legacy-stat-month,
+.besoiu-legacy-panel .legacy-stat-day,
+.besoiu-legacy-panel .legacy-stat-revenue {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--b26-navy);
+}
+
+.besoiu-legacy-panel .legacy-stat-revenue {
+  font-size: 1rem;
+}
+
+.besoiu-legacy-panel .legacy-counter {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 13px;
+}
+
+.besoiu-legacy-panel .legacy-expand-row td {
+  background: var(--b26-emerald-panel) !important;
+  padding: 16px !important;
+}
+
+.besoiu-legacy-panel .legacy-expand-row table {
+  width: 100%;
+  font-size: 12px;
+}
+
+body.besoiu-admin-2026 #legacy-comenzi-modal.comenzi-legacy-modal:not(.is-open),
+body.besoiu-admin-2026 #legacy-comenzi-modal.comenzi-legacy-modal.hidden,
+body.besoiu-admin-2026 #legacy-comenzi-modal.comenzi-legacy-modal[aria-hidden="true"]:not(.is-open) {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
+body.besoiu-admin-2026 #legacy-comenzi-modal.comenzi-legacy-modal.is-open {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  background: rgba(11, 31, 51, 0.55);
+  backdrop-filter: blur(2px);
+  overflow-y: auto;
+}
+
+body.besoiu-admin-2026 #legacy-comenzi-modal.comenzi-legacy-modal.is-open > div {
+  pointer-events: auto;
+  position: relative;
+  z-index: 1;
+}
+
+body.besoiu-admin-2026 #legacy-comenzi-modal.comenzi-legacy-modal.is-open button,
+body.besoiu-admin-2026 #legacy-comenzi-modal.comenzi-legacy-modal.is-open select,
+body.besoiu-admin-2026 #legacy-comenzi-modal.comenzi-legacy-modal.is-open input {
+  pointer-events: auto !important;
+  cursor: pointer;
+}
+
+body.besoiu-admin-2026.comenzi-legacy-modal-open {
+  overflow: hidden;
+}
+
+/* ── Adaos comercial: tab Log formare preț (display/z-index/pointer-events) ── */
+body.besoiu-admin-2026 .adaos-comercial-page {
+  position: relative;
+  z-index: 1;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page .adaos-page-tabs {
+  position: relative;
+  z-index: 5;
+  pointer-events: auto;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page .adaos-page-tab {
+  pointer-events: auto !important;
+  cursor: pointer;
+  position: relative;
+  z-index: 6;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page .adaos-page-pane:not(.active) {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page .adaos-page-pane.active {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 2;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel,
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel .pfl-mode-bar,
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel .pfl-search-row:not(.pfl-is-hidden),
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel #pflEmpty:not(.pfl-is-hidden),
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel #pflResult:not(.pfl-is-hidden),
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel #pflSteps,
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel #pflBatchWrap:not(.pfl-is-hidden) {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel .pfl-search-row.pfl-is-hidden,
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel #pflResult.pfl-is-hidden,
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel #pflBatchWrap.pfl-is-hidden,
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel #pflEmpty.pfl-is-hidden {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel .pfl-mode-bar {
+  display: flex !important;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel .pfl-search-row:not(.pfl-is-hidden) {
+  display: flex !important;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel #pflSteps {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel button,
+body.besoiu-admin-2026 .adaos-comercial-page #price-formation-log-panel input {
+  pointer-events: auto !important;
+  cursor: pointer;
+}

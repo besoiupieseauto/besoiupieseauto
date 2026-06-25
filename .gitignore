@@ -1,0 +1,119 @@
+# --- Mediu / secrete ---
+.env
+.env.*
+!.env.example
+*.local.php
+config/furnizori_connections.local.php
+config/supplier_sync_agent.local.php
+admin/storage/rclone/
+admin/storage/rclone/rclone.conf
+admin/storage/supplier_sync_agent_state.json
+
+# --- IDE / tooling local ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.boon/
+.cursor/
+
+# --- Backup / temporare ---
+*.bak
+*.bak_*
+*.backup
+*.old
+index.php.bak_*
+_boon_verify.html
+
+# --- Documente interne (contract) ---
+Document Tehnic *.pdf
+
+# --- Cache runtime ---
+cache_tecdoc/*
+!cache_tecdoc/.gitkeep
+robot/cache_tecdoc/*
+!robot/cache_tecdoc/.gitkeep
+tmp/
+admin/storage/cache/*
+!admin/storage/cache/.gitkeep
+admin/storage/logs/*
+!admin/storage/logs/.gitkeep
+admin/storage/imports/*
+!admin/storage/imports/.gitkeep
+admin/storage/supplier_sync/
+admin/storage/supplier_feeds/*
+!admin/storage/supplier_feeds/.gitkeep
+admin/tools/cursor-audit/pydeps/
+storage/scraper/raw/*
+!storage/scraper/raw/.gitkeep
+
+# --- Upload-uri runtime (imagini produse etc.) ---
+uploads/*
+!uploads/.gitkeep
+!uploads/products/
+uploads/products/*
+!uploads/products/.gitkeep
+!uploads/products/tecdoc/
+uploads/products/tecdoc/*
+!uploads/products/tecdoc/.gitkeep
+
+# --- Dump-uri / backup BD ---
+*.sql
+!admin/migrations/*.sql
+!admin/database/*.sql
+!SQL/*.sql
+admin/src/storage/backups/
+
+# --- Upload-uri admin runtime ---
+admin/public/uploads/*
+!admin/public/uploads/.gitkeep
+
+# --- PHP dependencies (composer install) ---
+admin/vendor/
+
+# --- Robot runtime ---
+robot/data/
+robot/*.log
+robot/*.txt
+!robot/.env.example
+
+# --- ERP Laravel (bes/well-known) ---
+bes/well-known/vendor/
+bes/well-known/node_modules/
+bes/well-known/.env
+bes/well-known/.env.backup
+bes/well-known/.phpunit.result.cache
+bes/well-known/Homestead.json
+bes/well-known/Homestead.yaml
+bes/well-known/npm-debug.log
+bes/well-known/yarn-error.log
+bes/well-known/auth.json
+
+# Laravel storage & bootstrap cache (păstrează doar .gitignore din subfoldere)
+bes/well-known/storage/*.key
+bes/well-known/storage/app/*
+!bes/well-known/storage/app/.gitignore
+!bes/well-known/storage/app/public/
+bes/well-known/storage/app/public/*
+!bes/well-known/storage/app/public/.gitignore
+bes/well-known/storage/framework/cache/*
+!bes/well-known/storage/framework/cache/.gitignore
+!bes/well-known/storage/framework/cache/data/
+bes/well-known/storage/framework/cache/data/*
+!bes/well-known/storage/framework/cache/data/.gitignore
+bes/well-known/storage/framework/sessions/*
+!bes/well-known/storage/framework/sessions/.gitignore
+bes/well-known/storage/framework/testing/*
+!bes/well-known/storage/framework/testing/.gitignore
+bes/well-known/storage/framework/views/*
+!bes/well-known/storage/framework/views/.gitignore
+bes/well-known/storage/logs/*
+!bes/well-known/storage/logs/.gitignore
+bes/well-known/bootstrap/cache/*
+!bes/well-known/bootstrap/cache/.gitignore
+
+# --- OS ---
+Thumbs.db
+Desktop.ini
+.DS_Store

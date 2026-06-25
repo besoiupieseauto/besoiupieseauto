@@ -1,0 +1,34 @@
+{
+    "image_plans": [
+        {
+            "tier": 1,
+            "label": "Plan 1 — autodoc.ro",
+            "source_id": "autodoc",
+            "enabled": true,
+            "roles": ["image", "title"]
+        },
+        {
+            "tier": 2,
+            "label": "Plan 2 — TecDoc RapidAPI",
+            "source_id": "tecdoc_api",
+            "enabled": true,
+            "roles": ["image", "description", "oem"]
+        }
+    ],
+    "image_ai": {
+        "enabled": true,
+        "engine": "cursor",
+        "prompt_extra": "Respinge mașini întregi, logo-uri și imagini fără piesă clară. Acceptă fundal alb. Imaginea trebuie să corespundă titlului și categoriei (filtru, frână, suspensie etc.).\n",
+        "accept_white_background": true,
+        "accept_product_match": true,
+        "reject_placeholder": true,
+        "reject_wrong_category": true,
+        "min_score_keep": 70,
+        "on_import_review": true,
+        "on_import_cron": true,
+        "auto_retry_on_mismatch": true,
+        "verdicts_retry": ["mismatch", "error", "no_image"]
+    },
+    "active_source_ids": ["autodoc", "tecdoc_api"],
+    "synced_at": "2026-06-19T12:00:00+00:00"
+}

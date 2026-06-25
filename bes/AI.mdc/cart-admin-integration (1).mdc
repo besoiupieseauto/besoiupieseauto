@@ -1,0 +1,492 @@
+---
+description: Analizează și corectează fluxul "Adaugă în coș" pentru besoiupieseauto.ro. Asigură că butonul .btn_addtoccard adaugă produse în coș cu imagine, actualizează badge-ul din header (1, 2, 3...), afișează popup confirmare, și salvează produsele în adminul /admin/public/comenzi IMEDIAT (nu doar după completarea formularului de checkout).
+globs:
+  - "**/*.php"
+  - "**/*.js"
+  - "**/*.sql"
+  - "admin/**/*"
+alwaysApply: false
+---
+
+# Rule: Corectare Flux Coș de Cumpărături — besoiupieseauto.ro
+
+Ești expert PHP/JavaScript pe proiectul **besoiupieseauto.ro**. Rolul tău este să corectezi fluxul "Adaugă în coș" astfel încât totul să funcționeze end-to-end și să fie vizibil în adminul `/admin/public/comenzi`.
+
+## CONTEXT PROIECT
+
+- **Site:** https://besoiupieseauto.ro
+- **Pagina coș:** `cart.php`
+- **Admin comenzi:** `/admin/public/comenzi`
+- **Stack:** PHP + JS, MySQL/PostgreSQL
+- **Buton adaugă în coș:**
+  ```html
+  <button class="btn_addtoccard" type="button">
+      <img src="img/sopcart.png" alt="Coș" class="_home-user-icon">
+  </button>
+  ```
+- **Link coș din header:**
+  ```html
+  <a href="cart.php" class="_home-user-link">
+      <img src="img/sopcart.png" alt="Utilizator" class="_home-user-icon">
+  </a>
+  ```
+
+---
+
+## PROBLEME DE REZOLVAT (PRIORITATE ÎNALTĂ)
+
+### ❌ Problema 1: Butonul `.btn_addtoccard` nu adaugă în coș corect
+**Cerință:** Când utilizatorul apasă butonul, produsul trebuie să apară imediat pe `cart.php` cu toate datele: nume, preț, **imagine**, cantitate.
+
+### ❌ Problema 2: Badge-ul din header nu afișează numărul de produse
+**Cerință:** Lângă iconița coșului din header trebuie să apară un număr (1, 2, 3...) care reflectă produsele din coș. Se actualizează instant la apăsarea butonului `.btn_addtoccard`.
+
+### ❌ Problema 3: Lipsește popup-ul de confirmare
+**Cerință:** Când produsul e adăugat, trebuie afișat un popup/toast: *"Produs adăugat în coș"* cu poza produsului și butoanele "Continuă cumpărăturile" / "Mergi la coș".
+
+### ❌ Problema 4: Imaginea produsului se pierde pe drum
+**Cerință:** Imaginea trebuie salvată în coș și afișată atât pe `cart.php` cât și în adminul `/admin/public/comenzi`. NU se pierde la nicio etapă.
+
+### ❌ Problema 5: Comenzile apar în admin DOAR după completarea formularului de checkout
+**Cerință CRITICĂ:** Adminul trebuie să vadă **coșurile active / comenzile în lucru** imediat ce un utilizator adaugă produse, nu doar comenzile finalizate. Tabela `cart_items` (sau echivalent) trebuie să fie vizibilă în admin ca "Coșuri active" sau "Comenzi în curs".
+
+---
+
+## FAZA 1: ANALIZĂ TARGETED
+
+Înainte de orice modificare, deschide și analizează:
+
+1. **Frontend:**
+   - Pagina cu produs (caută `.btn_addtoccard`) — vezi ce date are produsul în DOM
+   - Header-ul (caută `_home-user-link`) — vezi unde se poate adăuga badge-ul
+   - `cart.php` — vezi cum citește produsele și de unde
+
+2. **JS:**
+   - Caută `cart.js`, `main.js`, `script.js` — vezi dacă există handler pentru `.btn_addtoccard`
+   - Verifică dacă există funcție de update badge
+
+3. **Backend:**
+   - Caută `add_to_cart.php`, `api/cart*`, `cart_handler.php`
+   - Verifică structura sesiunii (`$_SESSION['cart']`) sau tabela DB
+
+4. **Admin:**
+   - Deschide `/admin/public/comenzi/index.php` (sau echivalent)
+   - Verifică ce query rulează — probabil citește doar din `orders`, nu și din `cart_items`
+
+5. **Bază de date:**
+   - Verifică structura tabelelor `products`, `cart_items`, `orders`, `order_items`
+   - **IMPORTANT:** confirmă că `cart_items` și `order_items` au coloana `product_image` sau că fac JOIN corect cu `products`
+
+---
+
+## FAZA 2: SOLUȚIA COMPLETĂ DE IMPLEMENTAT
+
+### 2.1 Schema DB — asigură aceste coloane
+
+```sql
+-- Tabela cart_items (sesiuni active de cumpărare)
+CREATE TABLE IF NOT EXISTS cart_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    session_id VARCHAR(128) NOT NULL,
+    user_id INT NULL,
+    product_id INT NOT NULL,
+    product_name VARCHAR(255) NOT NULL,
+    product_image VARCHAR(500),  -- ⚠️ OBLIGATORIU pentru a nu pierde imaginea
+    price DECIMAL(10,2) NOT NULL,
+    quantity INT NOT NULL DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_session (session_id),
+    INDEX idx_user (user_id),
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
+-- Tabela order_items trebuie să stocheze și imaginea (snapshot la momentul comenzii)
+ALTER TABLE order_items ADD COLUMN IF NOT EXISTS product_image VARCHAR(500);
+ALTER TABLE order_items ADD COLUMN IF NOT EXISTS product_name VARCHAR(255);
+```
+
+### 2.2 Endpoint backend — `api/add_to_cart.php`
+
+```php
+<?php
+session_start();
+header('Content-Type: application/json; charset=utf-8');
+require_once __DIR__ . '/../config/database.php';
+
+try {
+    $productId = (int)($_POST['product_id'] ?? 0);
+    $quantity = max(1, (int)($_POST['quantity'] ?? 1));
+
+    if ($productId <= 0) {
+        throw new Exception('ID produs invalid');
+    }
+
+    // Preia datele produsului din DB (NU avea încredere în ce vine din frontend pentru preț!)
+    $stmt = $pdo->prepare("SELECT id, name, price, image, stock FROM products WHERE id = ?");
+    $stmt->execute([$productId]);
+    $product = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$product) {
+        throw new Exception('Produs inexistent');
+    }
+
+    if ($product['stock'] < $quantity) {
+        throw new Exception('Stoc insuficient');
+    }
+
+    $sessionId = session_id();
+    $userId = $_SESSION['user_id'] ?? null;
+
+    // Verifică dacă produsul e deja în coș
+    $check = $pdo->prepare("SELECT id, quantity FROM cart_items WHERE session_id = ? AND product_id = ?");
+    $check->execute([$sessionId, $productId]);
+    $existing = $check->fetch(PDO::FETCH_ASSOC);
+
+    if ($existing) {
+        $upd = $pdo->prepare("UPDATE cart_items SET quantity = quantity + ?, updated_at = NOW() WHERE id = ?");
+        $upd->execute([$quantity, $existing['id']]);
+    } else {
+        // Insert nou — SALVĂM și imaginea ca să nu se piardă
+        $ins = $pdo->prepare("
+            INSERT INTO cart_items (session_id, user_id, product_id, product_name, product_image, price, quantity)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ");
+        $ins->execute([
+            $sessionId,
+            $userId,
+            $product['id'],
+            $product['name'],
+            $product['image'],  // ⚠️ IMAGINEA — nu o lăsa pe dinafară
+            $product['price'],
+            $quantity
+        ]);
+    }
+
+    // Calculează totalul de produse pentru badge
+    $count = $pdo->prepare("SELECT COALESCE(SUM(quantity), 0) FROM cart_items WHERE session_id = ?");
+    $count->execute([$sessionId]);
+    $totalItems = (int)$count->fetchColumn();
+
+    echo json_encode([
+        'success' => true,
+        'message' => 'Produs adăugat în coș',
+        'cart_count' => $totalItems,
+        'product' => [
+            'id' => $product['id'],
+            'name' => $product['name'],
+            'image' => $product['image'],
+            'price' => $product['price'],
+            'quantity' => $quantity
+        ]
+    ]);
+
+} catch (Exception $e) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+}
+```
+
+### 2.3 JS Frontend — `assets/js/cart.js`
+
+```javascript
+document.addEventListener('DOMContentLoaded', () => {
+    // Atașează handler la TOATE butoanele .btn_addtoccard
+    document.querySelectorAll('.btn_addtoccard').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+
+            // Găsește product_id din atribut data-* sau din contextul cardului
+            const productCard = btn.closest('[data-product-id]') || btn.closest('.product-card');
+            const productId = btn.dataset.productId || productCard?.dataset.productId;
+            const quantity = btn.dataset.quantity || 1;
+
+            if (!productId) {
+                console.error('Nu s-a găsit product_id pentru butonul:', btn);
+                return;
+            }
+
+            btn.disabled = true;
+
+            try {
+                const formData = new FormData();
+                formData.append('product_id', productId);
+                formData.append('quantity', quantity);
+
+                const res = await fetch('/api/add_to_cart.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    updateCartBadge(data.cart_count);
+                    showCartPopup(data.product);
+                } else {
+                    alert(data.message || 'Eroare la adăugare');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Eroare de rețea');
+            } finally {
+                btn.disabled = false;
+            }
+        });
+    });
+
+    // La încărcarea paginii, sincronizează badge-ul
+    syncCartBadge();
+});
+
+function updateCartBadge(count) {
+    let badge = document.querySelector('.cart-badge');
+    const link = document.querySelector('._home-user-link[href="cart.php"]');
+
+    if (!link) return;
+
+    if (!badge) {
+        badge = document.createElement('span');
+        badge.className = 'cart-badge';
+        link.style.position = 'relative';
+        link.appendChild(badge);
+    }
+
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'inline-block' : 'none';
+}
+
+async function syncCartBadge() {
+    try {
+        const res = await fetch('/api/get_cart_count.php');
+        const data = await res.json();
+        if (data.success) updateCartBadge(data.count);
+    } catch (e) {
+        console.error('Eroare sync badge:', e);
+    }
+}
+
+function showCartPopup(product) {
+    document.querySelector('.cart-popup')?.remove();
+
+    const popup = document.createElement('div');
+    popup.className = 'cart-popup';
+    popup.innerHTML = `
+        <div class="cart-popup-content">
+            <button class="cart-popup-close" aria-label="Închide">&times;</button>
+            <h3>✓ Produs adăugat în coș</h3>
+            <div class="cart-popup-product">
+                <img src="${product.image}" alt="${product.name}">
+                <div>
+                    <p class="cart-popup-name">${product.name}</p>
+                    <p class="cart-popup-price">${product.price} RON × ${product.quantity}</p>
+                </div>
+            </div>
+            <div class="cart-popup-actions">
+                <button class="btn-continue">Continuă cumpărăturile</button>
+                <a href="cart.php" class="btn-go-cart">Mergi la coș</a>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(popup);
+
+    popup.querySelector('.cart-popup-close').onclick = () => popup.remove();
+    popup.querySelector('.btn-continue').onclick = () => popup.remove();
+
+    // Auto-close după 5 secunde
+    setTimeout(() => popup.remove(), 5000);
+}
+```
+
+### 2.4 CSS pentru badge și popup — `assets/css/cart.css`
+
+```css
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #e74c3c;
+    color: white;
+    border-radius: 50%;
+    min-width: 20px;
+    height: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+}
+
+.cart-popup {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 360px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    z-index: 9999;
+    animation: slideIn 0.3s ease;
+}
+
+.cart-popup-content { padding: 20px; position: relative; }
+.cart-popup-product { display: flex; gap: 12px; margin: 12px 0; }
+.cart-popup-product img { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; }
+.cart-popup-actions { display: flex; gap: 8px; margin-top: 12px; }
+.cart-popup-actions button, .cart-popup-actions a {
+    flex: 1; padding: 10px; text-align: center; border-radius: 4px;
+    text-decoration: none; cursor: pointer; border: none; font-size: 14px;
+}
+.btn-continue { background: #f0f0f0; color: #333; }
+.btn-go-cart { background: #1abc9c; color: white; }
+.cart-popup-close { position: absolute; top: 8px; right: 8px; background: none; border: none; font-size: 24px; cursor: pointer; }
+
+@keyframes slideIn {
+    from { transform: translateX(400px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+```
+
+### 2.5 Modificare HTML buton — adăugare `data-product-id`
+
+În toate locurile unde apare butonul, asigură-te că are atributul de identificare:
+
+```html
+<!-- ÎNAINTE -->
+<button class="btn_addtoccard" type="button">
+    <img src="img/sopcart.png" alt="Coș" class="_home-user-icon">
+</button>
+
+<!-- DUPĂ -->
+<button class="btn_addtoccard" type="button" data-product-id="<?= (int)$product['id'] ?>" data-quantity="1">
+    <img src="img/sopcart.png" alt="Coș" class="_home-user-icon">
+</button>
+```
+
+### 2.6 Header — link coș cu badge
+
+```html
+<a href="cart.php" class="_home-user-link" style="position: relative;">
+    <img src="img/sopcart.png" alt="Coș" class="_home-user-icon">
+    <?php
+    $cartCount = 0;
+    if (session_id()) {
+        $stmt = $pdo->prepare("SELECT COALESCE(SUM(quantity), 0) FROM cart_items WHERE session_id = ?");
+        $stmt->execute([session_id()]);
+        $cartCount = (int)$stmt->fetchColumn();
+    }
+    if ($cartCount > 0): ?>
+        <span class="cart-badge"><?= $cartCount ?></span>
+    <?php endif; ?>
+</a>
+```
+
+### 2.7 Admin — `/admin/public/comenzi` afișează ȘI coșurile active
+
+Modifică pagina admin să afișeze 2 secțiuni:
+
+```php
+<!-- Secțiunea 1: COȘURI ACTIVE (vezi imediat ce userii adaugă produse) -->
+<h2>🛒 Coșuri active (în curs de cumpărare)</h2>
+<?php
+$stmt = $pdo->query("
+    SELECT
+        ci.session_id,
+        ci.user_id,
+        u.name AS user_name,
+        u.email,
+        COUNT(ci.id) AS items_count,
+        SUM(ci.quantity * ci.price) AS total,
+        MAX(ci.updated_at) AS last_update
+    FROM cart_items ci
+    LEFT JOIN users u ON u.id = ci.user_id
+    GROUP BY ci.session_id, ci.user_id, u.name, u.email
+    ORDER BY last_update DESC
+");
+?>
+<table class="admin-table">
+    <thead>
+        <tr>
+            <th>Sesiune / Utilizator</th>
+            <th>Produse</th>
+            <th>Total</th>
+            <th>Ultima activitate</th>
+            <th>Detalii</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($stmt as $row): ?>
+        <tr>
+            <td><?= htmlspecialchars($row['user_name'] ?? 'Vizitator (' . substr($row['session_id'], 0, 8) . '...)') ?></td>
+            <td><?= $row['items_count'] ?></td>
+            <td><?= number_format($row['total'], 2) ?> RON</td>
+            <td><?= $row['last_update'] ?></td>
+            <td><a href="cart_detail.php?session=<?= urlencode($row['session_id']) ?>">Vezi</a></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+<!-- Secțiunea 2: COMENZI FINALIZATE -->
+<h2>📦 Comenzi finalizate</h2>
+<!-- query existent pe orders -->
+```
+
+### 2.8 Admin — detaliu coș/comandă cu imagini
+
+În `cart_detail.php` și `order_detail.php` afișează produsele cu imagine:
+
+```php
+<table>
+    <thead>
+        <tr><th>Imagine</th><th>Produs</th><th>Preț</th><th>Cantitate</th><th>Subtotal</th></tr>
+    </thead>
+    <tbody>
+        <?php foreach ($items as $item): ?>
+        <tr>
+            <td>
+                <!-- ⚠️ Imaginea NU se pierde — vine din cart_items.product_image sau order_items.product_image -->
+                <img src="/<?= htmlspecialchars($item['product_image']) ?>"
+                     alt="<?= htmlspecialchars($item['product_name']) ?>"
+                     style="width: 60px; height: 60px; object-fit: cover;">
+            </td>
+            <td><?= htmlspecialchars($item['product_name']) ?></td>
+            <td><?= number_format($item['price'], 2) ?> RON</td>
+            <td><?= $item['quantity'] ?></td>
+            <td><?= number_format($item['price'] * $item['quantity'], 2) ?> RON</td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+```
+
+---
+
+## FAZA 3: CHECKLIST DE TESTARE
+
+```
+□ 1. Click pe .btn_addtoccard pe pagina unui produs
+     → produsul apare în cart.php cu imagine ✓
+□ 2. Badge-ul de lângă iconița coșului afișează 1 ✓
+□ 3. Mai apăs o dată → badge devine 2 ✓
+□ 4. Apare popup-ul cu poza produsului ✓
+□ 5. Deschid /admin/public/comenzi
+     → văd "Coșuri active" cu sesiunea curentă, înainte de checkout ✓
+□ 6. Click pe "Vezi" în admin
+     → văd produsele cu imagini ✓
+□ 7. Finalizez comanda din checkout
+     → apare în "Comenzi finalizate" cu imagini păstrate ✓
+□ 8. Reîncarc pagina → badge-ul rămâne corect (sync din DB) ✓
+```
+
+---
+
+## REGULI STRICTE
+
+- **Securitate:** PDO prepared statements peste tot, validare input, htmlspecialchars la afișare
+- **Imagine:** salvează calea imaginii în `cart_items.product_image` ȘI `order_items.product_image` — NU te baza doar pe JOIN cu `products` (dacă produsul e șters, imaginea se pierde)
+- **Sesiune:** `session_start()` la începutul fiecărui fișier care folosește coșul
+- **Răspunde în română**
+- **Nu rescrie** fișiere existente fără să arăți diff-ul
+- La final, întreabă: *"Vrei să testez cu tine fluxul complet sau ai întrebări la o secțiune anume?"*

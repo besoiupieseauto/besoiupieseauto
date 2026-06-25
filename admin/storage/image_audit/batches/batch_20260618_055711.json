@@ -1,0 +1,33 @@
+{
+    "schema": "product_image_audit_v1",
+    "created_at": "2026-06-18T05:57:11+00:00",
+    "project": "besoiupieseauto.ro",
+    "agent": "image-audit",
+    "composer_model": "composer-2.5",
+    "meta": {
+        "source": "admin_crud",
+        "ids": [
+            "d963ab5318550acf"
+        ],
+        "engine": "cursor-composer-2.5",
+        "save_results_to": "admin/storage/image_audit/by_product/{randomn_id}.json"
+    },
+    "instructions": "Deschide fiecare local_image_path cu Read; compară vizual cu title și description_excerpt.",
+    "products": [
+        {
+            "id": 121,
+            "randomn_id": "d963ab5318550acf",
+            "title": "Aditiv Ulei Motor 2671",
+            "code": "2671",
+            "brand": "",
+            "category": "Uleiuri și lubrifianți auto",
+            "subcategory": "Aditiv Ulei Motor",
+            "description_excerpt": "DescriereaDescrierea:Aditiv ulei motorNumăr articol:2671Condiție:Nou",
+            "image_url": "/uploads/products/tecdoc/2671.jpg",
+            "image_source": "emag_search",
+            "local_image_path": "E:\\laragon\\www\\besoiupieseauto.ro/uploads\\products\\tecdoc\\2671.jpg",
+            "image_readable_by_agent": true,
+            "vitrina": true
+        }
+    ]
+}

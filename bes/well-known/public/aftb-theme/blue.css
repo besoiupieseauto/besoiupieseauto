@@ -1,0 +1,11 @@
+:root {
+  --box-color: #ffffff;       /* White background for boxes */
+  --main-color: #000000;      /* Black text for main content */
+  --btn-bg-color: #f0f0f0;    /* Light gray button background */
+  --btn-text-color: #000000;  /* Black button text */
+  --td-bg-color: #ffffff;     /* White table cell background */
+  --top-header-color: #f0f0f0; /* Light gray header */
+  --highlight-bg-color: #f5f5f5; /* Light gray highlight background */
+  --pagination-active-bg: #e0e0e0;
+  --orders-border-color: #cccccc;
+}

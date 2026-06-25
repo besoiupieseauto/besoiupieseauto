@@ -1,0 +1,20 @@
+{
+  "randomn_id": "47355b581bb2f997",
+  "title": "Filtru Combustibil Bosch 1 457 434 437",
+  "code": "1457434437",
+  "category": "Filtre",
+  "image_url": "",
+  "verdict": "no_image",
+  "match_score": 0,
+  "image_shows": "Nicio imagine disponibilă — câmpurile image_url și local_image_path sunt goale, image_source=missing.",
+  "issues": [
+    "Produsul nu are imagine încărcată în catalog.",
+    "Nu se poate efectua comparația vizuală cu titlul «Filtru Combustibil Bosch 1 457 434 437».",
+    "Nu se poate confirma filtrul de combustibil Bosch cod 1457434437 din categoria Filtre."
+  ],
+  "recommendation": "replace",
+  "summary_ro": "Produs fără imagine. Audit vizual imposibil; se recomandă găsirea și încărcarea unei fotografii corecte pentru filtru combustibil Bosch 1457434437 din categoria Filtre.",
+  "analyzed_at": "2026-06-19T12:58:01.779008+00:00",
+  "engine": "cursor-composer-2.5",
+  "model": "composer-2.5"
+}

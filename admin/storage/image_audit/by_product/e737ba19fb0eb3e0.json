@@ -1,0 +1,54 @@
+{
+    "randomn_id": "e737ba19fb0eb3e0",
+    "title": "Olej Gm Opel 10W40 1L Olg Opel GM104",
+    "code": "GM104",
+    "category": "Uleiuri și lubrifianți auto",
+    "image_url": "/uploads/products/tecdoc/GM104.jpg",
+    "analyzed_at": "2026-06-18T09:19:34+03:00",
+    "verdict": "match",
+    "match_score": 90,
+    "image_shows": "Colaj: filtre MANN-FILTER (cutii și filtre diverse) + 4 bidonașe Genuine GM Motor Oil 5W-30 dexos2, câte 1 litru fiecare.",
+    "issues": [
+        "Vâscozitatea din imagine este 5W-30, nu 10W40 din titlu și descriere.",
+        "Imaginea include filtre MANN-FILTER, absente din listare — produsul listat este un singur bidon de ulei 1 L.",
+        "Marca afișată este Genuine GM, nu OLG OPEL din titlu.",
+        "Codul GM104 nu este vizibil în imagine.",
+        "Imagine identică cu cea de la articolul 1942050 (kit filtre + ulei 5W-30)."
+    ],
+    "recommendation": "keep",
+    "summary_ro": "Imagine înlocuită și salvată local din autodoc_scraper.",
+    "model": "composer-2.5",
+    "engine": "cursor-composer-2.5",
+    "batch": "batch_20260618_061406.json",
+    "pipeline_retry": {
+        "at": "2026-06-18T08:24:02+00:00",
+        "new_image": "/uploads/products/tecdoc/GM104.jpg",
+        "remote_url": "https://cdn.autodoc.de/thumb?id=27391552&m=0&n=0&lng=ro&rev=94078038",
+        "source": "autodoc_scraper",
+        "plans_tried": [
+            {
+                "tier": 1,
+                "source_id": "epiesa",
+                "label": "Plan 1 — Caiet comenzi / TTC_ART_ID",
+                "status": "miss",
+                "message": "ePiesa: fără potrivire"
+            },
+            {
+                "tier": 2,
+                "source_id": "epiesa",
+                "label": "Plan 2 — TecDoc CSV (import local)",
+                "status": "miss",
+                "message": "ePiesa: fără potrivire"
+            },
+            {
+                "tier": 3,
+                "source_id": "autodoc",
+                "label": "Plan 3 — autodoc.ro",
+                "status": "ok",
+                "message": "Imagine găsită"
+            }
+        ],
+        "note_ro": "Imagine salvată în produs (Plan 1→2→3)."
+    },
+    "pipeline_replaced": true
+}

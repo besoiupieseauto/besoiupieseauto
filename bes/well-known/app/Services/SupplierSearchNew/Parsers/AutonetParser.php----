@@ -1,0 +1,163 @@
+<?php
+
+namespace App\Services\SupplierSearchNew\Parsers;
+
+use App\Services\SupplierSearchNew\Contracts\SupplierParserInterface;
+use App\Services\Autonet\AutonetService;
+
+class AutonetParser implements SupplierParserInterface
+{
+    /** @var array<string, array{manufacturer: mixed, db_name: mixed, order_code: mixed}> */
+    protected array $requestRowMap = [];
+
+    public function __construct(
+        protected AutonetService $autonetService
+    ) {}
+
+    public function setRequestRowMap(array $rowMap): void
+    {
+        $this->requestRowMap = $rowMap;
+    }
+
+    public function parse(string $query, $rawResponse, string $rawBody): array
+    {
+        $data = is_array($rawResponse) ? $rawResponse : (json_decode($rawBody, true) ?: []);
+        if (!is_array($data)) {
+            return [];
+        }
+
+        $articles = isset($data[0]) ? $data : [$data];
+        $entries = [];
+        $metaCache = [];
+
+        foreach ($articles as $article) {
+            $apiPartNo = $article['PartNo'] ?? '';
+            if ($apiPartNo === '') {
+                continue;
+            }
+
+            $normalizedCode = $this->autonetService->normalizeCode($apiPartNo);
+            $normalizedBaseCode = str_replace([' ', '-', '/', '|', '\\'], '', $normalizedCode);
+            if ($normalizedBaseCode === '') {
+                continue;
+            }
+
+            $cacheKey = $normalizedBaseCode . '|' . $normalizedCode;
+            if (!isset($metaCache[$cacheKey])) {
+                $metaCache[$cacheKey] = $this->resolveProductMeta(
+                    $normalizedBaseCode,
+                    $normalizedCode,
+                    $apiPartNo
+                );
+            }
+            $meta = $metaCache[$cacheKey];
+            $fallbackManufacturer = $this->firstNonEmpty(
+                $article['BrandName'] ?? null,
+                $article['Brand'] ?? null,
+                $article['Manufacturer'] ?? null,
+                $article['Producer'] ?? null
+            );
+            $fallbackName = $this->firstNonEmpty(
+                $article['PartName'] ?? null,
+                $article['Description'] ?? null,
+                $article['ArticleName'] ?? null,
+                $article['Name'] ?? null
+            );
+            if ($fallbackName === null) {
+                $fallbackName = trim((string) ($article['PartNo'] ?? '')) ?: $normalizedBaseCode;
+            }
+
+            $orderCode = $meta['order_code'] ?? $normalizedCode;
+            $deliveryData = $article['DeliveryData'] ?? [];
+            $variants = [];
+
+            if (empty($deliveryData) && isset($article['PriceWoVat']) && $article['PriceWoVat'] > 0) {
+                $variants[] = [
+                    'supplier_stock' => 0,
+                    'price' => (float) ($article['PriceWoVat'] ?? 0),
+                    'currency' => $article['Currency'] ?? 'RON',
+                    'order_code' => $orderCode,
+                    'depot' => '',
+                    'is_blocked' => false,
+                    'delivery' => ['info_text' => '', 'plant_name' => null],
+                    'multiple_qty' => 1,
+                ];
+            } else {
+                foreach ($deliveryData as $delivery) {
+                    $variants[] = [
+                        'supplier_stock' => (int) ($delivery['Quantity'] ?? 0),
+                        'price' => (float) ($article['PriceWoVat'] ?? 0),
+                        'currency' => $article['Currency'] ?? 'RON',
+                        'order_code' => $orderCode,
+                        'depot' => $delivery['Code'] ?? '',
+                        'is_blocked' => false,
+                        'delivery' => [
+                            'info_text' => $delivery['DeliveryDate'] ?? '',
+                            'plant_name' => null,
+                        ],
+                        'multiple_qty' => 1,
+                    ];
+                }
+            }
+
+            if (!empty($variants)) {
+                $entries[] = [
+                    'code' => $normalizedBaseCode,
+                    'mfrpn' => $normalizedBaseCode,
+                    'manufacturer' => $meta['manufacturer'] ?? $fallbackManufacturer,
+                    'db_name' => $meta['db_name'] ?? $fallbackName,
+                    'name' => null,
+                    'ean' => null,
+                    'material' => null,
+                    'supplier_name' => 'autonet',
+                    'variants' => $variants,
+                ];
+            }
+        }
+
+        return $entries;
+    }
+
+    /**
+     * Resolve product metadata for Autonet results using the same priority as legacy flow:
+     * parts_catalog first, then autonet_qwp_data fallback.
+     */
+    private function resolveProductMeta(
+        string $normalizedBaseCode,
+        string $normalizedCode,
+        string $apiPartNo = ''
+    ): array
+    {
+        if (isset($this->requestRowMap[$normalizedBaseCode])) {
+            return $this->requestRowMap[$normalizedBaseCode];
+        }
+
+        if ($apiPartNo !== '') {
+            $normalizedApiPartNo = preg_replace('/[.\s\-\/|\\\\]+/', '', $apiPartNo);
+            if ($normalizedApiPartNo !== '' && isset($this->requestRowMap[$normalizedApiPartNo])) {
+                return $this->requestRowMap[$normalizedApiPartNo];
+            }
+        }
+
+        return [
+            'manufacturer' => null,
+            'db_name' => null,
+            'order_code' => $normalizedCode,
+        ];
+    }
+
+    private function firstNonEmpty(mixed ...$values): ?string
+    {
+        foreach ($values as $value) {
+            if (!is_string($value)) {
+                continue;
+            }
+            $trimmed = trim($value);
+            if ($trimmed !== '') {
+                return $trimmed;
+            }
+        }
+
+        return null;
+    }
+}

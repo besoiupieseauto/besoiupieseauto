@@ -1,0 +1,1 @@
+(()=>{$(".editor").each(function(){let e=this;e.classList.contains("ck")||CkeditorDocument.create(e.querySelectorAll(".editable")[0]).then(t=>{e.parentElement.classList.add("prose","max-w-full"),e.querySelectorAll(".toolbar")[0].append(t.ui.view.toolbar.element)}).catch(t=>{console.error(t)})});})();

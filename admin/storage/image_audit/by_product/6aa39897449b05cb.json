@@ -1,0 +1,20 @@
+{
+  "randomn_id": "6aa39897449b05cb",
+  "title": "Tambur Frana Bosch 0 986 477 083",
+  "code": "0986477083",
+  "category": "Frâne",
+  "image_url": "",
+  "verdict": "no_image",
+  "match_score": 0,
+  "image_shows": "Nicio imagine disponibilă — câmpurile image_url și local_image_path sunt goale, image_source=missing.",
+  "issues": [
+    "Produsul nu are imagine încărcată în catalog.",
+    "Nu se poate efectua comparația vizuală cu titlul «Tambur Frana Bosch 0 986 477 083».",
+    "Nu se poate confirma tamburul de frână Bosch cod 0986477083 din categoria Frâne."
+  ],
+  "recommendation": "replace",
+  "summary_ro": "Produs fără imagine. Audit vizual imposibil; se recomandă găsirea și încărcarea unei fotografii corecte pentru tambur frână Bosch 0986477083 din categoria Frâne.",
+  "analyzed_at": "2026-06-19T12:58:14.518900+00:00",
+  "engine": "cursor-composer-2.5",
+  "model": "composer-2.5"
+}

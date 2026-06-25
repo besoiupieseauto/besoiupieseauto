@@ -1,0 +1,91 @@
+# =====================
+# URL Rewrite Setup
+# =====================
+RewriteEngine On
+
+# Logout — fișier fizic (evită 404 când ruta DB/bootstrap nu se potrivește)
+RewriteRule ^logout/?$ logout.php [L,QSA]
+
+# ——— BYPASS pentru endpointul API (crududoc) ———
+RewriteCond %{REQUEST_URI} ^/public/crududoc(?:\.php)?/?$ [OR]
+RewriteCond %{REQUEST_URI} ^/crududoc(?:\.php)?/?$
+RewriteRule ^ - [L]
+
+# Nu rescrie dacă există fișier/dir fizic
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# Front controller
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# =====================
+# Font MIME Types
+# =====================
+AddType application/font-woff2 .woff2
+AddType application/font-woff  .woff
+AddType application/x-font-ttf .ttf
+
+# =====================
+# Font Compression
+# =====================
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE font/woff font/woff2 font/ttf
+</IfModule>
+
+# =====================
+# PHP Error Display and Logging
+# =====================
+php_flag display_errors on
+php_flag log_errors on
+php_value error_log logs/php_errors.log
+php_value upload_max_filesize 1024M
+php_value post_max_size 1024M
+php_value max_execution_time 600
+php_value max_input_time 600
+php_value memory_limit 512M
+
+# =====================
+# Font Caching
+# =====================
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType application/font-woff2 "access plus 1 year"
+  ExpiresByType application/font-woff  "access plus 1 year"
+  ExpiresByType application/x-font-ttf "access plus 1 year"
+</IfModule>
+
+# =====================
+# Security Headers (CSP Complet)
+# =====================
+<IfModule mod_headers.c>
+  Header always unset Content-Security-Policy
+  Header always unset Content-Security-Policy-Report-Only
+
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; frame-ancestors 'self' https://meet.jit.si; frame-src 'self' https://besoiupieseauto.ro https://www.besoiupieseauto.ro; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tiny.cloud https://cdn.jsdelivr.net https://static.cloudflareinsights.com; script-src-elem 'self' 'unsafe-inline' https://cdn.tiny.cloud https://cdn.jsdelivr.net https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.tiny.cloud https://cdn.jsdelivr.net; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.tiny.cloud https://cdn.jsdelivr.net; img-src 'self' data: blob: https://cdn.tiny.cloud https://newton-candent-len.ngrok-free.dev https://*.your-objectstorage.com; media-src 'self' data: blob:; font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com https://unpkg.com https://cdn.tiny.cloud https://cdn.jsdelivr.net; connect-src 'self' https://cdn.tiny.cloud https://cdn.jsdelivr.net https://newton-candent-len.ngrok-free.dev https://static.cloudflareinsights.com; form-action 'self'"
+
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-XSS-Protection "1; mode=block"
+  Header always set Referrer-Policy "no-referrer"
+
+  Header set Access-Control-Allow-Origin "*"
+  Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+  Header set Access-Control-Allow-Headers "Content-Type, Authorization, ngrok-skip-browser-warning"
+</IfModule>
+
+# =====================
+# File Protection
+# =====================
+<Files .htaccess>
+  Order allow,deny
+  Deny from all
+</Files>
+
+<FilesMatch "\.(env|ini|log|sh|bak|sql)$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+# =====================
+# Directory Browsing
+# =====================
+Options -Indexes

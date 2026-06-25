@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head> 
+    <meta charset="UTF-8">
+    <title>Control VIN Bot</title>
+    <style>
+        body { font-family: sans-serif; background: #e5ddd5; display: flex; flex-direction: column; align-items: center; margin: 0; }
+        #chat { width: 100%; max-width: 500px; height: 80vh; background: #fff; overflow-y: auto; display: flex; flex-direction: column; padding: 15px; box-sizing: border-box; border: 1px solid #ccc; }
+        .m { margin: 5px 0; padding: 10px; border-radius: 8px; max-width: 85%; font-size: 14px; }
+        .client { background: #eee; align-self: flex-start; }
+        .bot { background: #dcf8c6; align-self: flex-start; color: #111; font-weight: bold; }
+        .admin { background: #cfe9ff; align-self: flex-end; }
+        .input-bar { width: 100%; max-width: 500px; display: flex; padding: 10px; background: #f0f0f0; box-sizing: border-box; }
+        input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 20px; outline: none; }
+        button { margin-left: 5px; background: #075e54; color: #fff; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+<h3 style="color: #075e54;">🚗 Verificare VIN (Fără AI)</h3>
+<div id="chat"></div>
+<div class="input-bar">
+    <input type="text" id="phone" value="+40726048880" style="width: 110px; margin-right: 5px;">
+    <input type="text" id="msg" placeholder="Trimite mesaj manual...">
+    <button onclick="send()">Trimite</button>
+</div>
+
+<script>
+    function load() {
+        fetch('bot.php?action=fetch')
+            .then(r => r.json())
+            .then(data => {
+                const chat = document.getElementById('chat');
+                chat.innerHTML = data.map(m => `
+                    <div class="m ${m.s}">
+                        <small style="color:gray">${m.p}</small><br>${m.t}
+                        <div style="font-size:9px; text-align:right">${m.time}</div>
+                    </div>`).join('');
+            });
+    }
+
+    function send() {
+        let msgInput = document.getElementById('msg');
+        let fd = new FormData();
+        fd.append('phone', document.getElementById('phone').value);
+        fd.append('msg', msgInput.value);
+
+        fetch('bot.php?action=send', { method: 'POST', body: fd })
+            .then(() => {
+                msgInput.value = '';
+                load();
+            });
+    }
+
+    setInterval(load, 3000);
+    load();
+</script>
+</body>
+</html>

@@ -1,0 +1,643 @@
+[
+    {
+        "at": "2026-06-18T10:52:15+00:00",
+        "at_label": "18.06.2026 10:52:15",
+        "message": "Pas 4 — import consumabile (ulei · lichide · electrice) + vitrină",
+        "supplier": "",
+        "level": "info",
+        "step": "sync",
+        "detail": "Import dual finalizat: 28 produse (vitrină 8, catalog 20) — +0 noi, ~28 actualizate."
+    },
+    {
+        "at": "2026-06-18T10:52:15+00:00",
+        "at_label": "18.06.2026 10:52:15",
+        "message": "Import dual finalizat: 28 produse (vitrină 8, catalog 20) — +0 noi, ~28 actualizate.",
+        "supplier": "",
+        "level": "ok",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:15+00:00",
+        "at_label": "18.06.2026 10:52:15",
+        "message": "Vitrină homepage: max 8 produse (8 active).",
+        "supplier": "",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:15+00:00",
+        "at_label": "18.06.2026 10:52:15",
+        "message": "AUTOPARTNER: 28 publicate, vitrină 8, catalog 20 (1 cu imagine)",
+        "supplier": "AUTOPARTNER",
+        "level": "ok",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "Public catalog: 20 piese auto",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:100%] Finalizat: 8 publicate, 8 vitrină, 1 cu imagine.",
+        "supplier": "AUTOPARTNER",
+        "level": "ok",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:94%] Updated magazin: Aditiv Ulei Hidraulic 5135",
+        "supplier": "AUTOPARTNER",
+        "level": "ok",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:94%] Vitrină homepage: Aditiv Ulei Hidraulic 5135",
+        "supplier": "AUTOPARTNER",
+        "level": "ok",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:98%] Public în magazin…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:96%] Pregătire rând pentru magazin…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:93%] Public fără imagine nouă (placeholder).",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:93%] Plan 5 tecdoc_api: Cota RapidAPI depășită.",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:93%] Plan 4 tecdoc_api: Cota RapidAPI depășită.",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:93%] Plan 3 autodoc: scrape.do: cotă lunară depășită — trec la planul următor",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:93%] Plan 2 epiesa: scrape.do: cotă lunară depășită — trec la planul următor",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:93%] Plan 1 epiesa: scrape.do: cotă lunară depășită — trec la planul următor",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:93%] Plan 5 (Plan 6): încerc tecdoc_api…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:93%] Plan 4 (Plan 5 — TecDoc RapidAPI): încerc tecdoc_api…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:93%] Plan 3 (Plan 4 — autodoc.ro): încerc autodoc…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:93%] Plan 2 (Plan 3 — TecDoc CSV (import local)): încerc epiesa…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:93%] Plan 1 (Plan 1 — Caiet comenzi \/ TTC_ART_ID): încerc epiesa…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:93%] Imagine (pipeline Scraper Plan 1→N)…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:91%] Imagine (pipeline Scraper)…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:87%] Descriere produs…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:83%] Procesez 8\/8: Aditiv Ulei Hidraulic 5135 [5135]",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:83%] Updated magazin: Lubrificant Universal Bosch 5 000 000 163",
+        "supplier": "AUTOPARTNER",
+        "level": "ok",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:08+00:00",
+        "at_label": "18.06.2026 10:52:08",
+        "message": "[PROGRESS:83%] Vitrină homepage: Lubrificant Universal Bosch 5 000 000 163",
+        "supplier": "AUTOPARTNER",
+        "level": "ok",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:91%] Public în magazin…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:89%] Pregătire rând pentru magazin…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:83%] Public fără imagine nouă (placeholder).",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:83%] Plan 5 tecdoc_api: Cota RapidAPI depășită.",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:83%] Plan 4 tecdoc_api: Cota RapidAPI depășită.",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:83%] Plan 3 autodoc: scrape.do: cotă lunară depășită — trec la planul următor",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:83%] Plan 2 epiesa: scrape.do: cotă lunară depășită — trec la planul următor",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:83%] Plan 1 epiesa: scrape.do: cotă lunară depășită — trec la planul următor",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:83%] Plan 5 (Plan 6): încerc tecdoc_api…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:83%] Plan 4 (Plan 5 — TecDoc RapidAPI): încerc tecdoc_api…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:83%] Plan 3 (Plan 4 — autodoc.ro): încerc autodoc…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:83%] Plan 2 (Plan 3 — TecDoc CSV (import local)): încerc epiesa…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:83%] Plan 1 (Plan 1 — Caiet comenzi \/ TTC_ART_ID): încerc epiesa…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:83%] Imagine (pipeline Scraper Plan 1→N)…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:81%] Imagine (pipeline Scraper)…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:77%] Descriere produs…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:73%] Procesez 7\/8: Lubrificant Universal Bosch 5 000 000 163 [5000000163]",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:73%] Updated magazin: Olej Gm Opel 15W40 5L Olg Opel 1942050",
+        "supplier": "AUTOPARTNER",
+        "level": "ok",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:73%] Vitrină homepage: Olej Gm Opel 15W40 5L Olg Opel 1942050",
+        "supplier": "AUTOPARTNER",
+        "level": "ok",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:81%] Public în magazin…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:79%] Pregătire rând pentru magazin…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:73%] Public fără imagine nouă (placeholder).",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:73%] Plan 5 tecdoc_api: Cota RapidAPI depășită.",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:73%] Plan 4 tecdoc_api: Cota RapidAPI depășită.",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:73%] Plan 3 autodoc: scrape.do: cotă lunară depășită — trec la planul următor",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:73%] Plan 2 epiesa: scrape.do: cotă lunară depășită — trec la planul următor",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:73%] Plan 1 epiesa: scrape.do: cotă lunară depășită — trec la planul următor",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:73%] Plan 5 (Plan 6): încerc tecdoc_api…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:73%] Plan 4 (Plan 5 — TecDoc RapidAPI): încerc tecdoc_api…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:73%] Plan 3 (Plan 4 — autodoc.ro): încerc autodoc…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:73%] Plan 2 (Plan 3 — TecDoc CSV (import local)): încerc epiesa…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:73%] Plan 1 (Plan 1 — Caiet comenzi \/ TTC_ART_ID): încerc epiesa…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:73%] Imagine (pipeline Scraper Plan 1→N)…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:71%] Imagine (pipeline Scraper)…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:67%] Descriere produs…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:63%] Procesez 6\/8: Olej Gm Opel 15W40 5L Olg Opel 1942050 [1942050]",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:63%] Updated magazin: Vas Ulei Servo 770018",
+        "supplier": "AUTOPARTNER",
+        "level": "ok",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:07+00:00",
+        "at_label": "18.06.2026 10:52:07",
+        "message": "[PROGRESS:63%] Vitrină homepage: Vas Ulei Servo 770018",
+        "supplier": "AUTOPARTNER",
+        "level": "ok",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:06+00:00",
+        "at_label": "18.06.2026 10:52:06",
+        "message": "[PROGRESS:71%] Public în magazin…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:06+00:00",
+        "at_label": "18.06.2026 10:52:06",
+        "message": "[PROGRESS:69%] Pregătire rând pentru magazin…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:06+00:00",
+        "at_label": "18.06.2026 10:52:06",
+        "message": "[PROGRESS:63%] Public fără imagine nouă (placeholder).",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:06+00:00",
+        "at_label": "18.06.2026 10:52:06",
+        "message": "[PROGRESS:63%] Plan 5 tecdoc_api: Cota RapidAPI depășită.",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:06+00:00",
+        "at_label": "18.06.2026 10:52:06",
+        "message": "[PROGRESS:63%] Plan 4 tecdoc_api: Cota RapidAPI depășită.",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:06+00:00",
+        "at_label": "18.06.2026 10:52:06",
+        "message": "[PROGRESS:63%] Plan 3 autodoc: scrape.do: cotă lunară depășită — trec la planul următor",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:06+00:00",
+        "at_label": "18.06.2026 10:52:06",
+        "message": "[PROGRESS:63%] Plan 2 epiesa: scrape.do: cotă lunară depășită — trec la planul următor",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:06+00:00",
+        "at_label": "18.06.2026 10:52:06",
+        "message": "[PROGRESS:63%] Plan 1 epiesa: scrape.do: cotă lunară depășită — trec la planul următor",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:06+00:00",
+        "at_label": "18.06.2026 10:52:06",
+        "message": "[PROGRESS:63%] Plan 5 (Plan 6): încerc tecdoc_api…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:06+00:00",
+        "at_label": "18.06.2026 10:52:06",
+        "message": "[PROGRESS:63%] Plan 4 (Plan 5 — TecDoc RapidAPI): încerc tecdoc_api…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:06+00:00",
+        "at_label": "18.06.2026 10:52:06",
+        "message": "[PROGRESS:63%] Plan 3 (Plan 4 — autodoc.ro): încerc autodoc…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:06+00:00",
+        "at_label": "18.06.2026 10:52:06",
+        "message": "[PROGRESS:63%] Plan 2 (Plan 3 — TecDoc CSV (import local)): încerc epiesa…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:06+00:00",
+        "at_label": "18.06.2026 10:52:06",
+        "message": "[PROGRESS:63%] Plan 1 (Plan 1 — Caiet comenzi \/ TTC_ART_ID): încerc epiesa…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:06+00:00",
+        "at_label": "18.06.2026 10:52:06",
+        "message": "[PROGRESS:63%] Imagine (pipeline Scraper Plan 1→N)…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-06-18T10:52:06+00:00",
+        "at_label": "18.06.2026 10:52:06",
+        "message": "[PROGRESS:61%] Imagine (pipeline Scraper)…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    }
+]

@@ -1,0 +1,39 @@
+{
+    "randomn_id": "a2a1172c9c8f6926",
+    "title": "Cap Bara TRW 5032333",
+    "code": "5032333",
+    "category": "Caroserie",
+    "image_url": "/uploads/products/tecdoc/5032333.jpg",
+    "verdict": "match",
+    "match_score": 90,
+    "image_shows": "Nicio imagine disponibilă — câmpurile image_url și local_image_path sunt goale, image_source=missing.",
+    "issues": [
+        "Produsul nu are imagine încărcată în catalog.",
+        "Nu se poate efectua comparația vizuală cu titlul «Cap Bara TRW 5032333».",
+        "Nu se poate confirma piesa din categoria Caroserie (cap de bară/stabilizator) TRW cod 5032333."
+    ],
+    "recommendation": "keep",
+    "summary_ro": "Imagine înlocuită și salvată local din autodoc_scraper.",
+    "analyzed_at": "2026-06-19T13:26:14.348053+00:00",
+    "engine": "cursor-composer-2.5",
+    "model": "composer-2.5",
+    "pipeline_retry": {
+        "at": "2026-06-19T13:30:40+00:00",
+        "new_image": "/uploads/products/tecdoc/5032333.jpg",
+        "remote_url": "/uploads/products/tecdoc/5032333.jpg",
+        "source": "autodoc_scraper",
+        "plans_tried": [
+            {
+                "tier": 1,
+                "source_id": "autodoc",
+                "label": "Plan 1 — autodoc.ro",
+                "status": "ok",
+                "message": "Imagine validată AI — scor 72/100 (partial) — «TRW cap bara 5032333»",
+                "query_used": "TRW cap bara 5032333",
+                "duration_ms": 86764
+            }
+        ],
+        "note_ro": "Imagine salvată în produs (Plan 1→2→3)."
+    },
+    "pipeline_replaced": true
+}

@@ -1,0 +1,7 @@
+/**
+ * DEPRECATED — nu mai încărca direct.
+ * Folosește system/besoiu-assets.php → site-shell.css + (opțional) home-index.css + product-cards.css
+ */
+@import url("assets/css/site-shell.css");
+@import url("assets/css/home-index.css");
+@import url("assets/css/product-cards.css");

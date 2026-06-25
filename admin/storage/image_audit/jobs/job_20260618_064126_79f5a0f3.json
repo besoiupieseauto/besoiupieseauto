@@ -1,0 +1,21 @@
+{
+    "job_id": "job_20260618_064126_79f5a0f3",
+    "status": "starting",
+    "phase": "Pregătesc lotul pentru analiză…",
+    "batch_path": "E:\\laragon\\www\\besoiupieseauto.ro/admin/storage/image_audit/batches/batch_20260618_064126.json",
+    "batch_name": "batch_20260618_064126.json",
+    "ids": [
+        "7f0b35f05a7a2900"
+    ],
+    "products": [
+        {
+            "randomn_id": "7f0b35f05a7a2900",
+            "title": "Lubrificant Universal Bosch 5 000 000 163",
+            "code": "5000000163"
+        }
+    ],
+    "total": 1,
+    "done": 0,
+    "started_at": 1781764886,
+    "updated_at": 1781764886
+}

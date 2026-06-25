@@ -1,0 +1,1 @@
+(()=>{(function(){"use strict";$("#dialog-size").find("[data-change-size]").on("click",function(){let i=$(this).data("change-size"),e=$("#dialog-size").data("current-size");e&&$("#dialog-size").find(".box").removeClass(e),$("#dialog-size").data("current-size",i),$("#dialog-size").find(".box").addClass(i)})})();})();

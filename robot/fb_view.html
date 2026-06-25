@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>FB Group Sniper - Live</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body { background: #f0f2f5; font-family: Segoe UI, sans-serif; }
+        .fb-card { border-radius: 12px; border: none; box-shadow: 0 2px 12px rgba(0,0,0,0.1); background: #fff; }
+        .fb-header { border-bottom: 1px solid #ddd; padding: 15px; }
+        .fb-blue { color: #0866ff; }
+        .post-row { border-bottom: 1px solid #f0f2f5; transition: 0.3s; }
+        .post-row:hover { background: #f9fafb; }
+        .btn-fb { background: #0866ff; color: white; border-radius: 6px; font-weight: 600; }
+        .status-pulse { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+        .active-pulse { background: #31a24c; animation: fb-blink 1.5s infinite; }
+        @keyframes fb-blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+        .oem-in { font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:6px;background:#dcfce7;color:#166534; }
+        .oem-check { font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:6px;background:#fef3c7;color:#92400e; }
+        .oem-none { font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:6px;background:#f1f5f9;color:#64748b; }
+    </style>
+</head>
+<body>
+
+<div class="container py-5">
+    <div class="card fb-card mx-auto" style="max-width: 900px;">
+        <div class="fb-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <h5 class="fw-bold mb-0 fb-blue"><i class="bi bi-facebook"></i> Facebook Sniper Piese</h5>
+            <div class="d-flex align-items-center gap-2">
+                <span id="fb-status-native" class="small text-muted">Verificare...</span>
+                <span id="fb-dot-native" class="status-pulse bg-secondary"></span>
+                <button type="button" class="btn btn-sm btn-success px-3" id="fb-btn-run" onclick="fbSetMode('run')">PORNEȘTE</button>
+                <button type="button" class="btn btn-sm btn-danger px-3" id="fb-btn-stop" onclick="fbSetMode('stop')">OPREȘTE</button>
+            </div>
+        </div>
+
+        <div id="fb-posts-grid" class="list-group list-group-flush">
+            <div class="p-5 text-center text-muted">Apasă „Pornește” pentru scanare Apify + validare OEM...</div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function () {
+    'use strict';
+
+    let fbTimer = null;
+
+    function fbEsc(s) {
+        return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+    }
+
+    window.fbSetMode = async function (mode) {
+        await fetch('/robot/toggle2.php?target=fb&set=' + encodeURIComponent(mode));
+        if (mode === 'run') {
+            fbStartPolling();
+        } else {
+            clearInterval(fbTimer);
+            const dot = document.getElementById('fb-dot-native');
+            const lbl = document.getElementById('fb-status-native');
+            if (dot) { dot.className = 'status-pulse bg-danger'; }
+            if (lbl) lbl.textContent = 'Sistem oprit';
+        }
+    };
+
+    function fbStartPolling() {
+        fbLoad();
+        clearInterval(fbTimer);
+        fbTimer = setInterval(fbLoad, 60000);
+    }
+
+    async function fbLoad() {
+        try {
+            const res = await fetch('/robot/fb_parser.php');
+            const data = await res.json();
+            const grid = document.getElementById('fb-posts-grid');
+            const status = document.getElementById('fb-status-native');
+            const dot = document.getElementById('fb-dot-native');
+            if (!grid) return;
+
+            if (data.status === 'stopped') {
+                if (status) status.textContent = 'Sistem oprit';
+                if (dot) dot.className = 'status-pulse bg-secondary';
+                return;
+            }
+
+            if (status) status.textContent = 'Live din grup';
+            if (dot) dot.className = 'status-pulse active-pulse';
+
+            if (!Array.isArray(data) || !data.length) {
+                grid.innerHTML = '<div class="p-5 text-center text-muted">Așteptare date de la Apify...</div>';
+                return;
+            }
+
+            grid.innerHTML = data.map(post => {
+                const oemList = Array.isArray(post.oem_codes) ? post.oem_codes : [];
+                const oemBadge = post.oem_found
+                    ? '<span class="oem-in">OEM în catalog</span>'
+                    : (oemList.length ? '<span class="oem-check">OEM de verificat</span>' : '<span class="oem-none">Fără cod OEM</span>');
+                const oemChips = oemList.map(c => `<code class="me-1 small text-primary">${fbEsc(c)}</code>`).join('');
+                const reply = post.mesaj_sugerat || '';
+                const replyId = 'fb-reply-' + String(post.id || Math.random().toString(36).slice(2)).replace(/[^a-zA-Z0-9_-]/g, '');
+                return `
+                <div class="p-3 post-row">
+                    <div class="d-flex justify-content-between mb-1 flex-wrap gap-1">
+                        <span class="fw-bold text-primary">${fbEsc(post.autor)}</span>
+                        <div class="d-flex align-items-center gap-2">
+                            ${oemBadge}
+                            <span class="small text-muted">${fbEsc(post.ora)}</span>
+                        </div>
+                    </div>
+                    <p class="mb-2 small text-dark">${fbEsc(post.piesa)}</p>
+                    ${oemChips ? `<div class="mb-2">${oemChips}</div>` : ''}
+                    ${reply ? `<div class="bg-light border rounded p-2 mb-2">
+                        <div class="small fw-bold text-muted mb-1">Răspuns sugerat (OM)</div>
+                        <p id="${replyId}" class="small mb-2">${fbEsc(reply)}</p>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                                onclick="navigator.clipboard.writeText(document.getElementById('${replyId}').textContent)">Copiază răspuns</button>
+                    </div>` : ''}
+                    <div class="text-end">
+                        <a href="${fbEsc(post.url)}" target="_blank" class="btn btn-sm btn-fb px-3">Vezi postarea</a>
+                    </div>
+                </div>`;
+            }).join('');
+        } catch (e) {
+            console.log('Reconectare Apify...', e);
+        }
+    }
+
+    window.fbLoad = fbLoad;
+    fbLoad();
+})();
+</script>
+
+</body>
+</html>

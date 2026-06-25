@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Robot - Deep Scan & Price</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root { --primary-soft: #eef2ff; --match-success: #dcfce7; }
+        body { background: #f8fafc; font-family: 'Inter', sans-serif; }
+        .card-main { border-radius: 16px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.04); }
+        .match-active { background-color: var(--match-success) !important; border-left: 5px solid #16a34a !important; }
+        .price-tag { background: var(--primary-soft); color: #4338ca; padding: 10px; border-radius: 12px; border: 1px solid #e0e7ff; }
+        .pulse-online { width: 10px; height: 10px; background: #22c55e; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
+    </style>
+</head>
+<body>
+
+<div class="container py-5">
+    <div class="card card-main p-4 mb-4">
+        <div class="row align-items-center mb-4">
+            <div class="col-md-4">
+                <h4 class="fw-bold mb-0">Robot AI Hibrid</h4>
+                <div class="small text-muted"><span class="pulse-online me-1"></span> Status: <span id="status-label">Activ</span></div>
+            </div>
+            <div class="col-md-5">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-person-badge"></i></span>
+                    <input type="text" id="target-user" class="form-control border-start-0" placeholder="Utilizator Target (ex: multicomauto)" onchange="resetTable()">
+                </div>
+            </div>
+            <div class="col-md-3 text-end">
+                <div class="btn-group">
+                    <button class="btn btn-success fw-bold" onclick="updateMode('run')">RUN</button>
+                    <button class="btn btn-danger fw-bold" onclick="updateMode('stop')">STOP</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead class="table-light small text-uppercase text-muted">
+                <tr>
+                    <th class="ps-3">Ora/ID</th>
+                    <th>Vehicul / Piesă</th>
+                    <th>Faza 2: Stoc Target</th>
+                    <th>Faza 1: Analiză Piață</th>
+                    <th class="text-end pe-3">Link</th>
+                </tr>
+                </thead>
+                <tbody id="live-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    let seen = new Set();
+    let isLocked = false;
+
+    function resetTable() {
+        seen.clear();
+        document.getElementById('live-body').innerHTML = '';
+    }
+
+    async function updateMode(m) {
+        await fetch(`toggle.php?set=${m}`);
+        alert("Sistem setat pe: " + m.toUpperCase());
+        location.reload();
+    }
+
+    async function fetchRequests() {
+        if(isLocked) return;
+        isLocked = true;
+
+        const user = document.getElementById('target-user').value;
+        const statusLabel = document.getElementById('status-label');
+
+        try {
+            const res = await fetch(`parser.php?user=${encodeURIComponent(user)}`);
+            const data = await res.json();
+
+            if(data.status === 'stopped') {
+                statusLabel.innerText = "OPRIT";
+                statusLabel.className = "text-danger fw-bold";
+                isLocked = false;
+                return;
+            }
+
+            statusLabel.innerText = "ACTIV - SCANARE...";
+            statusLabel.className = "text-success fw-bold";
+
+            const tbody = document.getElementById('live-body');
+
+            data.reverse().forEach(item => {
+                if(!seen.has(item.id)) {
+                    seen.add(item.id);
+                    const row = document.createElement('tr');
+                    row.className = item.analysis.match ? 'match-active' : '';
+
+                    let matchHtml = item.analysis.match
+                        ? `<span class="badge bg-success"><i class="bi bi-check-all"></i> DISPONIBIL LA ${user.toUpperCase()}</span>`
+                        : `<span class="text-muted small">Nu este în stocul target</span>`;
+
+                    let marketHtml = `
+                        <div class="price-tag">
+                            <div class="fw-bold" style="font-size:1.1rem">${item.analysis.pret_recomandat} RON</div>
+                            <div class="x-small">Minim: ${item.analysis.minim_piata} RON (${item.analysis.total_concurenti} vânzători)</div>
+                        </div>`;
+
+                    row.innerHTML = `
+                        <td class="ps-3"><span class="small text-muted">${item.ora}</span><br><code style="font-size:0.7rem">#${item.id}</code></td>
+                        <td><strong>${item.piesa}</strong><br><small class="text-muted">${item.masina}</small></td>
+                        <td>${matchHtml}</td>
+                        <td>${marketHtml}</td>
+                        <td class="text-end pe-3">
+                            <a href="${item.url}" target="_blank" class="btn btn-sm btn-dark rounded-pill px-3">Ofertă</a>
+                        </td>
+                    `;
+                    tbody.insertBefore(row, tbody.firstChild);
+                }
+            });
+        } catch (e) { console.log("Așteptare pornire..."); }
+
+        isLocked = false;
+        // Umanizare: între 12 și 18 secunde
+        setTimeout(fetchRequests, Math.floor(Math.random() * 6000) + 12000);
+    }
+
+    fetchRequests();
+</script>
+
+</body>
+</html>

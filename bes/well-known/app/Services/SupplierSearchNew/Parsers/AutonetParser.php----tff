@@ -1,0 +1,228 @@
+<?php
+
+namespace App\Services\SupplierSearchNew\Parsers;
+
+use App\Services\SupplierSearchNew\Contracts\SupplierParserInterface;
+use App\Services\Autonet\AutonetService;
+use Illuminate\Support\Facades\DB;
+
+class AutonetParser implements SupplierParserInterface
+{
+    /** @var array<string, array{manufacturer: mixed, db_name: mixed, order_code: mixed}> */
+    protected array $requestRowMap = [];
+
+    public function __construct(
+        protected AutonetService $autonetService
+    ) {}
+
+    public function setRequestRowMap(array $rowMap): void
+    {
+        $this->requestRowMap = $rowMap;
+    }
+
+    public function parse(string $query, $rawResponse, string $rawBody): array
+    {
+        $data = is_array($rawResponse) ? $rawResponse : (json_decode($rawBody, true) ?: []);
+        if (!is_array($data)) {
+            return [];
+        }
+
+        $articles = isset($data[0]) ? $data : [$data];
+        $entries = [];
+        $metaCache = [];
+        $preloaded = $this->buildPreloadedLookups($articles);
+        $preloadedMetaMap = $preloaded['meta_map'];
+        $qwpCodeSet = $preloaded['qwp_code_set'];
+
+        foreach ($articles as $article) {
+            $apiPartNo = $article['PartNo'] ?? '';
+            if ($apiPartNo === '') {
+                continue;
+            }
+
+            $normalizedCode = $this->autonetService->normalizeCode($apiPartNo);
+            $normalizedBaseCode = str_replace([' ', '-', '/', '|', '\\'], '', $normalizedCode);
+            if ($normalizedBaseCode === '') {
+                continue;
+            }
+
+            $cacheKey = $normalizedBaseCode . '|' . $normalizedCode;
+            if (!isset($metaCache[$cacheKey])) {
+                $metaCache[$cacheKey] = $this->resolveProductMeta(
+                    $normalizedBaseCode,
+                    $normalizedCode,
+                    $apiPartNo,
+                    $preloadedMetaMap,
+                    $qwpCodeSet
+                );
+            }
+            $meta = $metaCache[$cacheKey];
+
+            $orderCode = $meta['order_code'] ?? $normalizedCode;
+            $deliveryData = $article['DeliveryData'] ?? [];
+            $variants = [];
+
+            if (empty($deliveryData) && isset($article['PriceWoVat']) && $article['PriceWoVat'] > 0) {
+                $variants[] = [
+                    'supplier_stock' => 0,
+                    'price' => (float) ($article['PriceWoVat'] ?? 0),
+                    'currency' => $article['Currency'] ?? 'RON',
+                    'order_code' => $orderCode,
+                    'depot' => '',
+                    'is_blocked' => false,
+                    'delivery' => ['info_text' => '', 'plant_name' => null],
+                    'multiple_qty' => 1,
+                ];
+            } else {
+                foreach ($deliveryData as $delivery) {
+                    $variants[] = [
+                        'supplier_stock' => (int) ($delivery['Quantity'] ?? 0),
+                        'price' => (float) ($article['PriceWoVat'] ?? 0),
+                        'currency' => $article['Currency'] ?? 'RON',
+                        'order_code' => $orderCode,
+                        'depot' => $delivery['Code'] ?? '',
+                        'is_blocked' => false,
+                        'delivery' => [
+                            'info_text' => $delivery['DeliveryDate'] ?? '',
+                            'plant_name' => null,
+                        ],
+                        'multiple_qty' => 1,
+                    ];
+                }
+            }
+
+            if (!empty($variants)) {
+                $entries[] = [
+                    'code' => $normalizedBaseCode,
+                    'mfrpn' => $normalizedBaseCode,
+                    'manufacturer' => $meta['manufacturer'] ?? null,
+                    'db_name' => $meta['db_name'] ?? null,
+                    'name' => null,
+                    'ean' => null,
+                    'material' => null,
+                    'supplier_name' => 'autonet',
+                    'variants' => $variants,
+                ];
+            }
+        }
+
+        return $entries;
+    }
+
+    /**
+     * Resolve product metadata for Autonet results using the same priority as legacy flow:
+     * parts_catalog first, then autonet_qwp_data fallback.
+     */
+    private function resolveProductMeta(
+        string $normalizedBaseCode,
+        string $normalizedCode,
+        string $apiPartNo = '',
+        array $preloadedMetaMap = [],
+        array $qwpCodeSet = []
+    ): array
+    {
+        if (isset($this->requestRowMap[$normalizedBaseCode])) {
+            return $this->requestRowMap[$normalizedBaseCode];
+        }
+
+        if ($apiPartNo !== '') {
+            $normalizedApiPartNo = preg_replace('/[.\s\-\/|\\\\]+/', '', $apiPartNo);
+            if ($normalizedApiPartNo !== '' && isset($this->requestRowMap[$normalizedApiPartNo])) {
+                return $this->requestRowMap[$normalizedApiPartNo];
+            }
+        }
+
+        if (isset($preloadedMetaMap[$normalizedBaseCode])) {
+            return $preloadedMetaMap[$normalizedBaseCode];
+        }
+        if (isset($preloadedMetaMap[$normalizedCode])) {
+            return $preloadedMetaMap[$normalizedCode];
+        }
+
+        if (isset($qwpCodeSet[$normalizedCode]) || isset($qwpCodeSet[$normalizedBaseCode])) {
+            return [
+                'manufacturer' => 'QWP',
+                'db_name' => 'QWP',
+                'order_code' => $normalizedCode,
+            ];
+        }
+
+        return [
+            'manufacturer' => null,
+            'db_name' => null,
+            'order_code' => $normalizedCode,
+        ];
+    }
+
+    /**
+     * Preload parts/qwp lookups in batch to avoid per-article DB queries.
+     *
+     * @param array<int, mixed> $articles
+     * @return array{meta_map: array<string, array{manufacturer:mixed, db_name:mixed, order_code:mixed}>, qwp_code_set: array<string, bool>}
+     */
+    private function buildPreloadedLookups(array $articles): array
+    {
+        $candidateCodes = [];
+        foreach ($articles as $article) {
+            if (!is_array($article)) {
+                continue;
+            }
+            $apiPartNo = (string) ($article['PartNo'] ?? '');
+            if ($apiPartNo === '') {
+                continue;
+            }
+            $normalizedCode = $this->autonetService->normalizeCode($apiPartNo);
+            $normalizedBaseCode = $this->normalizeFlat($normalizedCode);
+            $normalizedApiPartNo = $this->normalizeFlat($apiPartNo);
+            if ($normalizedCode !== '') {
+                $candidateCodes[$normalizedCode] = true;
+            }
+            if ($normalizedBaseCode !== '') {
+                $candidateCodes[$normalizedBaseCode] = true;
+            }
+            if ($normalizedApiPartNo !== '') {
+                $candidateCodes[$normalizedApiPartNo] = true;
+            }
+        }
+
+        if (empty($candidateCodes)) {
+            return ['meta_map' => [], 'qwp_code_set' => []];
+        }
+
+        $codes = array_keys($candidateCodes);
+        $metaMap = [];
+        foreach (array_chunk($codes, 400) as $chunk) {
+            $rows = DB::table('parts_catalog')
+                ->where(function ($q) use ($chunk) {
+                    $q->whereIn('code_parts', $chunk)
+                        ->orWhereIn('mainart_code_parts', $chunk);
+                })
+                ->get();
+
+            foreach ($rows as $row) {
+                $codeA = $this->normalizeFlat((string) ($row->code_parts ?? ''));
+                $codeB = $this->normalizeFlat((string) ($row->mainart_code_parts ?? ''));
+                $meta = [
+                    'manufacturer' => $row->mainart_brands ?? null,
+                    'db_name' => $row->mainart_name ?? null,
+                    'order_code' => $row->mainart_code_parts ?? null,
+                ];
+                if ($codeA !== '' && !isset($metaMap[$codeA])) {
+                    $metaMap[$codeA] = $meta;
+                }
+                if ($codeB !== '' && !isset($metaMap[$codeB])) {
+                    $metaMap[$codeB] = $meta;
+                }
+            }
+        }
+
+        // Keep qwp fallback disabled here to avoid expensive large OR scans.
+        // QWP identity for direct lookups is already seeded via request row map.
+        return ['meta_map' => $metaMap, 'qwp_code_set' => []];
+    }
+
+    private function normalizeFlat(string $value): string
+    {
+        return preg_replace('/[.\s\-\/|\\\\]+/', '', $value) ?: '';
+    }
+}

@@ -1,0 +1,130 @@
+{
+    "id": "autodoc",
+    "label": "Autodoc.ro",
+    "enabled": true,
+    "fetch": {
+        "via": "scrape_do",
+        "timeout_sec": 90,
+        "super": true,
+        "render": true,
+        "save_raw": true
+    },
+    "test": {
+        "query": "filtre ulei",
+        "limit": 5
+    },
+    "output": {
+        "fields_needed": [
+            "title",
+            "image",
+            "url",
+            "price",
+            "sku"
+        ],
+        "map_to_product": {
+            "title": "pName",
+            "image": "pImages",
+            "url": "source_url",
+            "price": "pPrice",
+            "sku": "pCode"
+        }
+    },
+    "steps": [
+        {
+            "id": "step_1",
+            "order": 1,
+            "label": "Pas 1 — Deschide pagina (fetch)",
+            "type": "fetch",
+            "enabled": true,
+            "params": {
+                "url_template": "https://www.autodoc24.ro/search?keyword={query}"
+            }
+        },
+        {
+            "id": "step_2",
+            "order": 2,
+            "label": "Pas 2 — Scanează blocul listă",
+            "type": "extract_list",
+            "enabled": true,
+            "params": {
+                "limit": 5,
+                "ignore": "placeholder, star-fill, 360-icon, brands/thumbs",
+                "parser_builtin": null,
+                "elements": [
+                    {
+                        "id": "el_block",
+                        "key": "block",
+                        "label": "Bloc produs",
+                        "selector": "div.listing-item__wrap"
+                    },
+                    {
+                        "id": "el_title",
+                        "key": "title",
+                        "label": "Title",
+                        "selector": "a.listing-item__name"
+                    },
+                    {
+                        "id": "el_image",
+                        "key": "image",
+                        "label": "Image",
+                        "selector": ".listing-item__image-product img@src"
+                    },
+                    {
+                        "id": "el_url",
+                        "key": "url",
+                        "label": "Url",
+                        "selector": "a.listing-item__name@href"
+                    },
+                    {
+                        "id": "el_price",
+                        "key": "price",
+                        "label": "Price",
+                        "selector": ".listing-item__price-new"
+                    },
+                    {
+                        "id": "el_sku",
+                        "key": "sku",
+                        "label": "SKU",
+                        "selector": ".listing-item__article-item"
+                    }
+                ]
+            }
+        },
+        {
+            "id": "step_3",
+            "order": 3,
+            "label": "Pas 3 — Intră în link produs (detaliu)",
+            "type": "follow_links",
+            "enabled": false,
+            "params": {
+                "save_links": true,
+                "max_follow": 1,
+                "elements": []
+            }
+        }
+    ],
+    "integration": {
+        "use_in_image_pipeline": true,
+        "pipeline_tier": null,
+        "extraction_goals": [],
+        "image_ai": {
+            "enabled": false,
+            "prompt_extra": ""
+        },
+        "rapidapi": {
+            "validate_on_import": false,
+            "fields": [
+                "oem",
+                "image",
+                "description"
+            ]
+        }
+    },
+    "ai_agent": {
+        "enabled": true,
+        "auto_on_fail": true,
+        "goals": "Vreau titlu pret imagine url sku pentru fiecare filtru"
+    },
+    "notes": "Autodoc24.ro — necesită SCRAPE_DO_TOKEN + render JS la test.",
+    "updated_at": "2026-06-18T05:52:54+00:00"
+}

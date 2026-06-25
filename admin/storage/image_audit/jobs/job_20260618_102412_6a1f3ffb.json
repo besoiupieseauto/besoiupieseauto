@@ -1,0 +1,75 @@
+{
+    "job_id": "job_20260618_102412_6a1f3ffb",
+    "status": "starting",
+    "phase": "Pregătesc lotul pentru analiză…",
+    "batch_path": "E:\\laragon\\www\\besoiupieseauto.ro/admin/storage/image_audit/batches/batch_20260618_102412.json",
+    "batch_name": "batch_20260618_102412.json",
+    "ids": [
+        "0b932c5d742957d8",
+        "84612b28dce336f5",
+        "d026740b233f88fc",
+        "09df4088afcb54cc",
+        "e18f0cb5dc875396",
+        "5d2969567653c8ae",
+        "67400b12b3da324a",
+        "06bd82712da66773",
+        "12ef538004abb6e1",
+        "492a845829d2943b"
+    ],
+    "products": [
+        {
+            "randomn_id": "0b932c5d742957d8",
+            "title": "Cap Bara TRW 5034724",
+            "code": "5034724"
+        },
+        {
+            "randomn_id": "84612b28dce336f5",
+            "title": "Bucsa Brat TRW 5103904",
+            "code": "5103904"
+        },
+        {
+            "randomn_id": "d026740b233f88fc",
+            "title": "Sonda Lambda Bosch 0 258 005 083",
+            "code": "0258005083"
+        },
+        {
+            "randomn_id": "09df4088afcb54cc",
+            "title": "Disc Frana Bosch 0 986 478 486",
+            "code": "0986478486"
+        },
+        {
+            "randomn_id": "e18f0cb5dc875396",
+            "title": "Bucsa Brat TRW 5102301",
+            "code": "5102301"
+        },
+        {
+            "randomn_id": "5d2969567653c8ae",
+            "title": "Cap Bara TRW 5031012",
+            "code": "5031012"
+        },
+        {
+            "randomn_id": "67400b12b3da324a",
+            "title": "Cap Bara TRW 5031011",
+            "code": "5031011"
+        },
+        {
+            "randomn_id": "06bd82712da66773",
+            "title": "Cap Bara TRW 5032333",
+            "code": "5032333"
+        },
+        {
+            "randomn_id": "12ef538004abb6e1",
+            "title": "Disc Frana Bosch 0 986 478 470",
+            "code": "0986478470"
+        },
+        {
+            "randomn_id": "492a845829d2943b",
+            "title": "Filtru Aer Bosch 1 987 429 135",
+            "code": "1987429135"
+        }
+    ],
+    "total": 10,
+    "done": 0,
+    "started_at": 1781778252,
+    "updated_at": 1781778252
+}

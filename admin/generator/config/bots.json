@@ -1,0 +1,9 @@
+{
+    "table": "bots",
+    "fields": {
+        "name": "VARCHAR(255) NOT NULL",
+        "email": "VARCHAR(255)",
+        "phone": "VARCHAR(50)",
+        "status": "TINYINT(1) DEFAULT 1"
+    }
+}

@@ -1,0 +1,20 @@
+{
+  "randomn_id": "90ec7bee7e311b83",
+  "title": "Vas Ulei Servo 770018",
+  "code": "770018",
+  "category": "Uleiuri și lubrifianți auto",
+  "image_url": "",
+  "verdict": "no_image",
+  "match_score": 0,
+  "image_shows": "Nicio imagine disponibilă — câmpurile image_url și local_image_path sunt goale, image_source=missing.",
+  "issues": [
+    "Produsul nu are imagine încărcată în catalog.",
+    "Nu se poate efectua comparația vizuală cu titlul «Vas Ulei Servo 770018».",
+    "Nu se poate confirma vasul/rezervorul de ulei servo cod 770018 din categoria Uleiuri și lubrifianți auto."
+  ],
+  "recommendation": "replace",
+  "summary_ro": "Produs fără imagine. Audit vizual imposibil; se recomandă găsirea și încărcarea unei fotografii corecte pentru vas ulei servo 770018 din categoria Uleiuri și lubrifianți auto.",
+  "analyzed_at": "2026-06-19T12:58:33.819337+00:00",
+  "engine": "cursor-composer-2.5",
+  "model": "composer-2.5"
+}

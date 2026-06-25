@@ -1,0 +1,963 @@
+{
+    "generated_at": "2026-06-25T08:19:13+00:00",
+    "database": "besoiupieseauto.ro",
+    "tables_total": 51,
+    "tables_with_findings": 39,
+    "legacy_hyphen_tables": [],
+    "findings": {
+        "alerts": {
+            "issues": [
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "name",
+                "email",
+                "phone",
+                "status",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "api_token_budgets": {
+            "issues": [
+                "lipseste_created_at"
+            ],
+            "columns": [
+                "id",
+                "provider_key",
+                "label",
+                "env_key",
+                "monthly_quota",
+                "tokens_per_request",
+                "remaining_override",
+                "cost_per_unit",
+                "warning_pct",
+                "is_active",
+                "notes",
+                "updated_at"
+            ],
+            "has_created_at": false,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "api_token_usage_log": {
+            "issues": [
+                "posibil_singular"
+            ],
+            "columns": [
+                "id",
+                "provider_key",
+                "units",
+                "cost_ron",
+                "source",
+                "note",
+                "created_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": false,
+            "legacy_exception": false
+        },
+        "bots": {
+            "issues": [
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "randomn_id",
+                "name",
+                "email",
+                "phone",
+                "bot_type",
+                "channel",
+                "token_value",
+                "token_status",
+                "token_plan",
+                "starts_at",
+                "ends_at",
+                "requests_limit",
+                "requests_used",
+                "webhook_url",
+                "test_url",
+                "last_test_status",
+                "last_test_message",
+                "last_test_at",
+                "notes",
+                "status",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "cart_abandonments": {
+            "issues": [
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "session_id",
+                "client_name",
+                "phone",
+                "email",
+                "cart_json",
+                "total_amount",
+                "items_count",
+                "checkout_step",
+                "status",
+                "notes",
+                "last_seen_at",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "categorii": {
+            "issues": [
+                "posibil_singular"
+            ],
+            "columns": [
+                "id",
+                "slug",
+                "label",
+                "icon",
+                "parent_id",
+                "sort_order",
+                "is_active",
+                "type",
+                "tecdoc_id",
+                "meta",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "clienti": {
+            "issues": [
+                "posibil_singular",
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "randomn_id",
+                "name",
+                "email",
+                "phone",
+                "city",
+                "address",
+                "status",
+                "total_orders",
+                "total_paid",
+                "preferred_courier",
+                "notes",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "comenzi": {
+            "issues": [
+                "posibil_singular",
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "randomn_id",
+                "order_number",
+                "name",
+                "product_image",
+                "client_name",
+                "email",
+                "phone",
+                "vin",
+                "channel",
+                "payment_status",
+                "payment_reference",
+                "payment_status_detail",
+                "invoice_randomn_id",
+                "livrare_randomn_id",
+                "delivery_method",
+                "delivery_status",
+                "order_status",
+                "quantity",
+                "total_amount",
+                "coupon_code",
+                "discount_amount",
+                "status",
+                "notes",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "cron": {
+            "issues": [
+                "posibil_singular",
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "name",
+                "email",
+                "phone",
+                "status",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "cross_reference": {
+            "issues": [
+                "posibil_singular",
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "name",
+                "email",
+                "phone",
+                "status",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "facturi": {
+            "issues": [
+                "posibil_singular",
+                "data_fara_sufix_at: due_date",
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "randomn_id",
+                "invoice_number",
+                "smartbill_series",
+                "smartbill_number",
+                "smartbill_invoice_id",
+                "order_number",
+                "order_id",
+                "name",
+                "client_name",
+                "email",
+                "phone",
+                "payment_method",
+                "invoice_status",
+                "amount",
+                "due_date",
+                "notes",
+                "status",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "furnizori": {
+            "issues": [
+                "posibil_singular",
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "randomn_id",
+                "name",
+                "code",
+                "status",
+                "price_markup_type",
+                "price_markup_value",
+                "price_round_to",
+                "price_min_margin",
+                "adaos_template_rule_id",
+                "stock_zero_mode",
+                "scan_include_zero_stock",
+                "scan_skip_unavailable",
+                "connection_type",
+                "scan_interval_minutes",
+                "conn_host",
+                "conn_port",
+                "conn_username",
+                "conn_password",
+                "conn_remote_path",
+                "conn_passive",
+                "conn_email",
+                "conn_email_inbox",
+                "conn_imap_host",
+                "conn_imap_port",
+                "conn_email_password",
+                "api_base_url",
+                "api_token",
+                "last_scan_at",
+                "last_scan_status",
+                "last_scan_message",
+                "last_test_status",
+                "last_test_message",
+                "last_test_at",
+                "products_count",
+                "notes",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "img_bd": {
+            "issues": [
+                "posibil_singular",
+                "lipseste_created_at"
+            ],
+            "columns": [
+                "id",
+                "nameImg",
+                "data_inser",
+                "id_users",
+                "randomn_id",
+                "pag",
+                "connect_id"
+            ],
+            "has_created_at": false,
+            "has_updated_at": false,
+            "legacy_exception": false
+        },
+        "import_produse": {
+            "issues": [
+                "posibil_singular",
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "pName",
+                "pCode",
+                "pBrand",
+                "pMarca",
+                "pModel",
+                "pMotorizare",
+                "pCar",
+                "pPrice",
+                "pBasePrice",
+                "pStock",
+                "pCategory",
+                "pSubcategory",
+                "pCompatibilitati",
+                "pOem",
+                "pSupplier",
+                "pState",
+                "pCity",
+                "pNote",
+                "pNoteWebsite",
+                "pNoteMarketplace",
+                "pImages",
+                "pImageSource",
+                "pShipping",
+                "pCurierLivrare",
+                "pWarranty",
+                "pReturn",
+                "pWhatsapp",
+                "pMarkupRuleId",
+                "pMarkupRuleName",
+                "pMarkupAppliedAt",
+                "pBadge",
+                "pVitrina",
+                "status",
+                "raw_json",
+                "imported_product_id",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "livrare": {
+            "issues": [
+                "posibil_singular",
+                "data_fara_sufix_at: delivery_date",
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "randomn_id",
+                "awb",
+                "order_number",
+                "order_id",
+                "name",
+                "client_name",
+                "email",
+                "phone",
+                "address",
+                "courier",
+                "courier_provider",
+                "service_type",
+                "delivery_status",
+                "delivery_date",
+                "delivery_time",
+                "total_amount",
+                "notes",
+                "courier_response",
+                "status",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "marketplace": {
+            "issues": [
+                "posibil_singular",
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "randomn_id",
+                "name",
+                "platform",
+                "account_name",
+                "account_email",
+                "api_token",
+                "token_status",
+                "token_plan",
+                "starts_at",
+                "ends_at",
+                "api_base_url",
+                "webhook_url",
+                "bl_inventory_id",
+                "field_mapping",
+                "sync_mode",
+                "products_synced",
+                "requests_today",
+                "offers_sent",
+                "errors_count",
+                "last_sync_at",
+                "last_test_status",
+                "last_test_message",
+                "last_test_at",
+                "notes",
+                "email",
+                "phone",
+                "status",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "messages": {
+            "issues": [
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "randomn_id",
+                "conversation_id",
+                "name",
+                "email",
+                "phone",
+                "subject",
+                "message_body",
+                "direction",
+                "message_status",
+                "channel",
+                "external_conversation_id",
+                "external_message_id",
+                "delivery_status",
+                "bot_status",
+                "source_url",
+                "assigned_bot",
+                "is_read",
+                "status",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "payment_sessions": {
+            "issues": [
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "order_randomn_id",
+                "provider",
+                "status",
+                "amount",
+                "currency",
+                "reference",
+                "payload_json",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "price_formation_logic": {
+            "issues": [
+                "posibil_singular",
+                "lipseste_created_at"
+            ],
+            "columns": [
+                "id",
+                "config_json",
+                "updated_at"
+            ],
+            "has_created_at": false,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "product_images": {
+            "issues": [
+                "lipseste_created_at"
+            ],
+            "columns": [
+                "id",
+                "product_id",
+                "image_url",
+                "local_path"
+            ],
+            "has_created_at": false,
+            "has_updated_at": false,
+            "legacy_exception": false
+        },
+        "produse": {
+            "issues": [
+                "posibil_singular",
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "name",
+                "email",
+                "phone",
+                "status",
+                "created_at",
+                "updated_at",
+                "pName",
+                "pCar",
+                "pCode",
+                "pPrice",
+                "pBasePrice",
+                "pState",
+                "pCity",
+                "pNote",
+                "pNoteWebsite",
+                "pNoteMarketplace",
+                "pShipping",
+                "pCurierLivrare",
+                "pWarranty",
+                "pReturn",
+                "pImages",
+                "pImageSource",
+                "pWhatsapp",
+                "pMarkupRuleId",
+                "pMarkupRuleName",
+                "pMarkupAppliedAt",
+                "pBadge",
+                "pVitrina",
+                "pSpecial",
+                "connect_id",
+                "randomn_id",
+                "id_users",
+                "pSupplier",
+                "pBrand",
+                "pMarca",
+                "pModel",
+                "pMotorizare",
+                "pStock",
+                "pCategory",
+                "pSubcategory",
+                "pCompatibilitati",
+                "pOem"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "produse_oem": {
+            "issues": [
+                "lipseste_created_at"
+            ],
+            "columns": [
+                "id",
+                "produs_id",
+                "oem_code"
+            ],
+            "has_created_at": false,
+            "has_updated_at": false,
+            "legacy_exception": false
+        },
+        "queue_jobs": {
+            "issues": [
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "queue",
+                "job_type",
+                "payload_json",
+                "status",
+                "attempts",
+                "available_at",
+                "reserved_at",
+                "last_error",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "reply_templates": {
+            "issues": [
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "randomn_id",
+                "title",
+                "slug",
+                "category",
+                "channel",
+                "body_text",
+                "body_html",
+                "is_quick",
+                "use_count",
+                "status",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "report": {
+            "issues": [
+                "posibil_singular",
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "name",
+                "email",
+                "phone",
+                "status",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "role_nav": {
+            "issues": [
+                "posibil_singular"
+            ],
+            "columns": [
+                "id",
+                "role_slug",
+                "label",
+                "path",
+                "prime",
+                "is_active",
+                "url",
+                "sort_order",
+                "parent_id",
+                "icon"
+            ],
+            "has_created_at": false,
+            "has_updated_at": false,
+            "legacy_exception": false
+        },
+        "role_widgets": {
+            "issues": [
+                "lipseste_created_at"
+            ],
+            "columns": [
+                "id",
+                "role_slug",
+                "widget_key",
+                "is_active",
+                "sort_order"
+            ],
+            "has_created_at": false,
+            "has_updated_at": false,
+            "legacy_exception": false
+        },
+        "scan": {
+            "issues": [
+                "posibil_singular",
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "name",
+                "email",
+                "phone",
+                "status",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "schema_legacy_registry": {
+            "issues": [
+                "posibil_singular"
+            ],
+            "columns": [
+                "id",
+                "table_name",
+                "reason",
+                "target_name",
+                "is_active",
+                "created_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": false,
+            "legacy_exception": false
+        },
+        "search_logs": {
+            "issues": [
+                "boolean_fara_prefix_is_: found"
+            ],
+            "columns": [
+                "id",
+                "query_type",
+                "query_value",
+                "found",
+                "car_id",
+                "vehicle_label",
+                "result_count",
+                "notice",
+                "meta_json",
+                "ip_hash",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "search_logs_scaffold": {
+            "issues": [
+                "posibil_singular",
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "name",
+                "email",
+                "phone",
+                "status",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "settings": {
+            "issues": [
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "name",
+                "email",
+                "phone",
+                "status",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "shop_customers": {
+            "issues": [
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "name",
+                "email",
+                "password_hash",
+                "phone",
+                "city",
+                "address",
+                "postal_code",
+                "status",
+                "created_at",
+                "updated_at",
+                "last_login_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "site_pages": {
+            "issues": [
+                "lipseste_created_at"
+            ],
+            "columns": [
+                "id",
+                "slug",
+                "label",
+                "title",
+                "meta_description",
+                "hero_label",
+                "hero_title",
+                "hero_subtitle",
+                "body_html",
+                "sections_json",
+                "faq_json",
+                "cta_json",
+                "is_active",
+                "sort_order",
+                "updated_at"
+            ],
+            "has_created_at": false,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "tecdoc_api_cache": {
+            "issues": [
+                "posibil_singular"
+            ],
+            "columns": [
+                "cache_key",
+                "url",
+                "body",
+                "expires_at",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "users": {
+            "issues": [
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "name",
+                "email",
+                "phone",
+                "status",
+                "created_at",
+                "updated_at"
+            ],
+            "has_created_at": true,
+            "has_updated_at": true,
+            "legacy_exception": false
+        },
+        "users_connect": {
+            "issues": [
+                "posibil_singular",
+                "lipseste_created_at",
+                "boolean_fara_prefix_is_: status"
+            ],
+            "columns": [
+                "id",
+                "nikname",
+                "fullname",
+                "login",
+                "password",
+                "contact",
+                "role",
+                "permissions_json",
+                "closs",
+                "status",
+                "id_users",
+                "connect_id",
+                "randomn_id",
+                "token",
+                "datainsert",
+                "datareg"
+            ],
+            "has_created_at": false,
+            "has_updated_at": false,
+            "legacy_exception": false
+        },
+        "users_info": {
+            "issues": [
+                "posibil_singular",
+                "lipseste_created_at"
+            ],
+            "columns": [
+                "id",
+                "nikname",
+                "fname",
+                "lastname",
+                "email",
+                "companyname",
+                "adress",
+                "telegram",
+                "countor",
+                "city",
+                "tel",
+                "dob",
+                "marital_status",
+                "age_group",
+                "experience_level",
+                "channels",
+                "availability",
+                "portfolio",
+                "gender",
+                "tools",
+                "comments",
+                "zipcode",
+                "langue",
+                "rating",
+                "star",
+                "des",
+                "id_users",
+                "connect_id",
+                "randomn_id",
+                "datareg"
+            ],
+            "has_created_at": false,
+            "has_updated_at": false,
+            "legacy_exception": false
+        },
+        "v_schema_convention_gaps": {
+            "issues": [
+                "lipseste_created_at"
+            ],
+            "columns": [
+                "table_name",
+                "has_non_standard_name",
+                "missing_created_at",
+                "missing_updated_at",
+                "is_legacy_exception"
+            ],
+            "has_created_at": false,
+            "has_updated_at": false,
+            "legacy_exception": false
+        }
+    }
+}

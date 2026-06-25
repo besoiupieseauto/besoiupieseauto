@@ -1,0 +1,20 @@
+{
+  "randomn_id": "f84bafcb77db9e6d",
+  "title": "Radiator Ulei Termoflot 140011",
+  "code": "140011",
+  "category": "Uleiuri și lubrifianți auto",
+  "image_url": "",
+  "verdict": "no_image",
+  "match_score": 0,
+  "image_shows": "Nicio imagine disponibilă — câmpurile image_url și local_image_path sunt goale, image_source=missing.",
+  "issues": [
+    "Produsul nu are imagine încărcată în catalog.",
+    "Nu se poate efectua comparația vizuală cu titlul «Radiator Ulei Termoflot 140011».",
+    "Nu se poate confirma radiatorul de ulei Termoflot cod 140011 din categoria Uleiuri și lubrifianți auto."
+  ],
+  "recommendation": "replace",
+  "summary_ro": "Produs fără imagine. Audit vizual imposibil; se recomandă găsirea și încărcarea unei fotografii corecte pentru radiator ulei Termoflot 140011 din categoria Uleiuri și lubrifianți auto.",
+  "analyzed_at": "2026-06-19T12:58:37.697415+00:00",
+  "engine": "cursor-composer-2.5",
+  "model": "composer-2.5"
+}

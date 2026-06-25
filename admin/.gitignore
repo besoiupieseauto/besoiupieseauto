@@ -1,0 +1,6 @@
+.env
+config/furnizori_connections.local.php
+config/supplier_sync_agent.local.php
+storage/supplier_sync_agent_state.json
+storage/rclone/rclone.conf
+tools/rclone/
