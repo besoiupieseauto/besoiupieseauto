@@ -1,9 +1,10 @@
 <?php
 
-namespace Evasystem\Controllers;
+namespace Besoiu\Controllers;
 
-use Evasystem\Core\AdminPageResolver;
-use Evasystem\Core\AdminUrl;
+use Besoiu\Core\AdminPageResolver;
+use Besoiu\Core\AdminUrl;
+use Besoiu\Core\Auth\AdminCsrf;
 
 class Templates
 {
@@ -76,7 +77,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <html lang="ro"><!-- BEGIN: Head -->
 <head>
     <meta charset="utf-8">
-    <meta name="csrf-token" content="edjGgac9mtFsWPbrGHhItAsXhkBE8VClTqg62ZE4">
+    ' . AdminCsrf::metaTag() . '
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Panou administrare Besoiu Piese Auto">
     <meta name="author" content="BesoiuPieseAuto">
@@ -98,17 +99,47 @@ License: You must have a valid license purchased only from themeforest(the above
     <link rel="stylesheet" href="/admin/Templates/admin/dist/css/themes/rubick/side-menu.css">
     <link rel="stylesheet" href="/admin/Templates/admin/dist/css/vendors/simplebar.css">
     <link rel="stylesheet" href="/admin/Templates/admin/dist/css/app.css">
-    <link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-layout.css') . '?v=20260625-shell-guard">
+    <link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-layout.css') . '?v=20260625-notif-popup">
     <link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-besoiu-theme.css') . '?v=20260623-search-analytics-layout">
     <link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-pages.css') . '?v=20260625-adaos-pfl-v2">
     <link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-mobile.css') . '?v=20260625-adaos-pfl-v2">
     <link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-workspace.css') . '?v=20260624f">
-    <link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-comunicare.css') . '?v=20260625-adaos-pfl-v2">
-    <!-- END: CSS Assets-->
-    <script defer src="' . AdminUrl::publicAsset('js/admin-async.js') . '"></script>
+    <link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-load-progress.css') . '?v=20260627-progress">
+    <script src="' . AdminUrl::publicAsset('js/admin-action-progress.js') . '?v=20260627-progress"></script>
+    ' . (str_contains(strtolower($this->contentFile), 'homepages')
+        ? '<link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-workspace-dashboard.css') . '?v=20260625-ws-grid2">' . "\n    "
+            . '<link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-company-dashboard.css') . '?v=20260625-company-organic2">' . "\n    "
+        : '') . '<link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-comunicare.css') . '?v=20260625-adaos-pfl-v2">
+    <link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-ai-agent.css') . '?v=20260627-rag2">
+    ' . (str_contains(strtolower($this->contentFile), 'ai-agent')
+        ? '<link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-ai-agent-mission.css') . '?v=20260627-ui2">' . "\n    "
+            . '<link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-ai-agent-supervisor.css') . '?v=20260627-ui3">' . "\n    "
+        : '') . '
+    <link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-alert-fix.css') . '?v=20260626-links2">
+    ' . ($this->sectionAssistantEnabled()
+        ? '<link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-section-assistant.css') . '?v=' . $this->publicAssetVersion('css/admin-section-assistant.css') . '">' . "\n    "
+        : '') . (str_contains(strtolower($this->contentFile), 'alerts/alerts')
+        ? '<link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-alerts.css') . '?v=20260625-alerts2">' . "\n    "
+        : '') . (str_contains(strtolower($this->contentFile), 'system-errors')
+        ? '<link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-system-errors.css') . '?v=20260625-syserr">' . "\n    "
+        : '') . (str_contains(strtolower($this->contentFile), 'comenzi/comenzi') || str_contains(strtolower($this->contentFile), 'comenzi.php')
+        ? '<link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-comenzi.css') . '?v=20260625-comenzi-v2">' . "\n    "
+        : '') . (str_contains(strtolower($this->contentFile), 'export/export') || str_contains(strtolower($this->contentFile), 'export.php')
+        ? '<link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-export.css') . '?v=20260625-export-hub">' . "\n    "
+        : '') . (str_contains(strtolower($this->contentFile), 'import/import')
+        ? '<link rel="stylesheet" href="' . AdminUrl::publicAsset('css/admin-import-consumables.css') . '?v=20260625-consumables-v1">' . "\n    "
+        : '') . '<!-- END: CSS Assets-->
+    <script defer src="' . AdminUrl::publicAsset('js/admin-async.js') . '?v=20260625-load-v1"></script>
+    <script>
+    (function(){var m=document.querySelector(\'meta[name="csrf-token"]\');if(!m||!m.content)return;var t=m.content;var f=window.fetch;window.fetch=function(u,o){o=o||{};o.headers=o.headers||{};if(o.headers instanceof Headers){if(!o.headers.has("X-Admin-CSRF"))o.headers.set("X-Admin-CSRF",t);}else{if(!o.headers["X-Admin-CSRF"])o.headers["X-Admin-CSRF"]=t;}return f.call(this,u,o);};})();
+    </script>
     <script defer src="' . AdminUrl::publicAsset('js/admin-pagination.js') . '"></script>
     <script defer src="' . AdminUrl::publicAsset('js/admin-workspace-switcher.js') . '?v=20260624e"></script>
-    ';
+    ' . (str_contains(strtolower($this->contentFile), 'homepages')
+        ? '<script defer src="' . AdminUrl::publicAsset('js/admin-workspace-dashboard.js') . '?v=20260625-ws-user"></script>' . "\n    "
+            . '<script defer src="' . AdminUrl::publicAsset('js/admin-company-dashboard.js') . '?v=20260625-company-datafix"></script>' . "\n    "
+        : '') . '
+';
 
 
 echo '
@@ -140,6 +171,7 @@ echo '
                 <div class="relative z-10 hidden h-[65px] w-[275px] flex-none items-center overflow-hidden px-6 duration-200 xl:flex group-[.side-menu--collapsed.side-menu--on-hover]:xl:w-[275px] group-[.side-menu--collapsed]:xl:w-[110px]">
                     <a class="brand-logo flex items-center transition-[margin] duration-200 xl:ml-2 group-[.side-menu--collapsed.side-menu--on-hover]:xl:ml-2 group-[.side-menu--collapsed]:xl:ml-6" href="/admin/dashboard">
                         BesoiuPieseAuto
+                        <span id="besoiu-logo-alert-dot" class="besoiu-logo-alert-dot hidden" title="Alerte critice"></span>
                     </a>
                     <a class="toggle-compact-menu border-background/20 bg-background/10 dark:bg-foreground/[.02] dark:border-foreground/[.09] ml-auto hidden items-center justify-center rounded-md border py-0.5 pl-0.5 pr-1 opacity-70 transition-[opacity,transform] hover:opacity-100 group-[.side-menu--collapsed]:xl:rotate-180 group-[.side-menu--collapsed.side-menu--on-hover]:xl:opacity-100 group-[.side-menu--collapsed]:xl:opacity-0 2xl:flex" href="/admin/dashboard">
                         <i data-lucide="chevron-left" class="size-4 stroke-[1.5] [--color:currentColor] stroke-(--color) fill-(--color)/25"></i>
@@ -240,7 +272,33 @@ echo '
 
 
         echo '
-    <script defer src="/admin/Templates/admin/dist/js/vendors/lucide.js"></script>
+    <script type="application/json" id="besoiu-admin-nav-cfg">' . json_encode([
+        'base' => AdminUrl::BASE,
+        'legacy' => [
+            '/admin/cron-sync' => AdminUrl::navPath('cron'),
+            '/admin/homepages' => AdminUrl::navPath('dashboard'),
+            '/admin/furnizori' => AdminUrl::navPath('suppliers'),
+        ],
+        'paths' => [
+            'import' => AdminUrl::navPath('import'),
+            'importJobs' => AdminUrl::navPath('import') . '#job-progress-wrap',
+            'cron' => AdminUrl::navPath('cron'),
+            'suppliers' => AdminUrl::navPath('suppliers'),
+            'alerts' => AdminUrl::navPath('alerts'),
+        ],
+    ], JSON_UNESCAPED_UNICODE) . '</script>
+    <script defer src="' . AdminUrl::publicAsset('js/admin-alert-fix.js') . '?v=20260626-links2"></script>
+    <script defer src="' . AdminUrl::publicAsset('js/admin-ops-alerts.js') . '?v=20260626-fix"></script>
+    ' . ($this->sectionAssistantEnabled()
+        ? '<script type="application/json" id="besoiu-section-assist-cfg">' . json_encode([
+            'api' => AdminUrl::api('admin_hub_endpoint.php'),
+            'section' => $this->sectionAssistantSlug(),
+            'label' => $this->sectionAssistantLabel(),
+        ], JSON_UNESCAPED_UNICODE) . '</script>' . "\n    "
+            . '<script defer src="' . AdminUrl::publicAsset('js/admin-section-assistant.js') . '?v=' . $this->publicAssetVersion('js/admin-section-assistant.js') . '"></script>' . "\n    "
+        : '') . (str_contains(strtolower($this->contentFile), 'alerts/alerts')
+        ? '<script defer src="' . AdminUrl::publicAsset('js/admin-alerts.js') . '?v=20260626-fix"></script>' . "\n    "
+        : '') . '<script defer src="/admin/Templates/admin/dist/js/vendors/lucide.js"></script>
     <script defer src="/admin/Templates/admin/dist/js/components/base/lucide.js"></script>
     <script defer src="/admin/Templates/admin/dist/js/vendors/dom.js"></script>
     <script defer src="/admin/Templates/admin/dist/js/vendors/tippy.js"></script>
@@ -331,6 +389,14 @@ echo '
             'comunicare/comunicare-archive' => ['section' => 'Comunicare', 'title' => 'Arhivă conversații'],
             'messages/messages' => ['section' => 'Comunicare', 'title' => 'Mesagerie'],
             'bots/bots' => ['section' => 'Automatizare', 'title' => 'Roboți AI'],
+            'bots/pieseauto' => ['section' => 'Automatizare', 'title' => 'PieseAuto Scanner'],
+            'bots/whatsapp' => ['section' => 'Automatizare', 'title' => 'WhatsApp AI'],
+            'bots/facebook' => ['section' => 'Automatizare', 'title' => 'Facebook Sniper'],
+            'bots/baselinker' => ['section' => 'Automatizare', 'title' => 'BaseLinker Sync'],
+            'bots/monitor' => ['section' => 'Automatizare', 'title' => 'Monitor Roboți'],
+            'bots/registry' => ['section' => 'Automatizare', 'title' => 'Registry Roboți'],
+            'ai-agent/ai-agent' => ['section' => 'Automatizare', 'title' => 'AI Agent'],
+            'export/export' => ['section' => 'Automatizare', 'title' => 'Export date'],
             'settings/settings' => ['section' => 'Sistem', 'title' => 'Setări'],
             'users/users' => ['section' => 'Sistem', 'title' => 'Utilizatori'],
             'scraper/scraper' => ['section' => 'Sistem', 'title' => 'Scraper'],
@@ -346,6 +412,7 @@ echo '
             'marketplace/baselinker' => ['section' => 'Automatizare', 'title' => 'BaseLinker Catalog'],
             'scan/scan' => ['section' => 'Automatizare', 'title' => 'Scanare cereri'],
             'alerts/alerts' => ['section' => 'Sistem', 'title' => 'Alerte'],
+            'system-errors/system-errors' => ['section' => 'Sistem', 'title' => 'Jurnal erori'],
             'report/reports' => ['section' => 'Analiză', 'title' => 'Rapoarte'],
             'cross-reference/cross-reference' => ['section' => 'Analiză', 'title' => 'Echivalențe OEM'],
             'supplier-search/supplier-search' => ['section' => 'Comenzi', 'title' => 'Supplier Search'],
@@ -361,11 +428,91 @@ echo '
             }
         }
 
+        $uriPath = strtolower(str_replace('\\', '/', (string) (parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?: '')));
+        foreach ($map as $needle => $meta) {
+            if ($uriPath !== '' && (str_contains($uriPath, '/' . $needle) || str_ends_with($uriPath, '/' . basename($needle)))) {
+                return $meta;
+            }
+        }
+
         $base = basename($file, '.php');
         $base = str_replace(['-', '_'], ' ', $base);
         $title = mb_convert_case($base, MB_CASE_TITLE, 'UTF-8');
 
         return ['section' => 'Admin', 'title' => $title !== '' ? $title : 'Panou'];
+    }
+
+    protected function publicAssetVersion(string $relativePath): string
+    {
+        $full = dirname(__DIR__, 2) . '/public/assets/' . ltrim($relativePath, '/');
+
+        return is_file($full) ? (string) filemtime($full) : '1';
+    }
+
+    protected function sectionAssistantEnabled(): bool
+    {
+        $file = strtolower(str_replace('\\', '/', $this->contentFile));
+        foreach (['login/', 'login.php', 'reset-password', 'reg.php', 'reg/'] as $skip) {
+            if (str_contains($file, $skip)) {
+                return false;
+            }
+        }
+
+        if (str_contains($file, 'templates/admin/pages/')) {
+            return true;
+        }
+
+        $path = strtolower(str_replace('\\', '/', (string) ($_SERVER['REQUEST_URI'] ?? '')));
+        if (str_contains($path, '/admin/') && !preg_match('#/admin/(login|logout|reg)(/|$|\?)#', $path)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function sectionAssistantSlug(): string
+    {
+        $file = strtolower(str_replace('\\', '/', $this->contentFile));
+        if (str_contains($file, 'adaos')) {
+            return 'adaos';
+        }
+        if (str_contains($file, 'dashboard')) {
+            return 'dashboard';
+        }
+        if (str_contains($file, 'comunicare') || str_contains($file, 'messages')) {
+            return 'comunicare';
+        }
+        if (str_contains($file, 'order') || str_contains($file, 'comenzi') || str_contains($file, 'facturi') || str_contains($file, 'livrare')) {
+            return 'comenzi';
+        }
+        if (str_contains($file, 'furnizor')) {
+            return 'furnizori';
+        }
+        if (str_contains($file, 'import')) {
+            return 'import';
+        }
+        if (str_contains($file, 'categorii')) {
+            return 'categorii';
+        }
+        if (str_contains($file, 'scraper')) {
+            return 'scraper';
+        }
+
+        return 'produse';
+    }
+
+    protected function sectionAssistantLabel(): string
+    {
+        return match ($this->sectionAssistantSlug()) {
+            'adaos' => 'Adaos comercial',
+            'dashboard' => 'Dashboard',
+            'comunicare' => 'Comunicare',
+            'furnizori' => 'Furnizori',
+            'import' => 'Import',
+            'categorii' => 'Categorii',
+            'scraper' => 'Scraper',
+            default => 'Produse',
+        };
     }
 
     private function resolveLocalPath(?string $path): ?string

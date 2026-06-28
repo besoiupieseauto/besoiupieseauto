@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Evasystem\Core;
+namespace Besoiu\Core;
 
-use Evasystem\Core\PageLoader;
+use Besoiu\Core\PageLoader;
 use RuntimeException;
-use Evasystem\Core\AdminUrl;
+use Besoiu\Core\AdminUrl;
 
 /**
  * Router HTTP — potrivește method + path și delegă Controller sau PageLoader.
@@ -90,7 +90,7 @@ final class Router
         $templateDirectory = $routeDefinition['dir'];
 
         if ($controllerName !== null && $controllerName !== '' && $actionName !== null && $actionName !== '') {
-            $controllerClass = 'Evasystem\\Controllers\\' . $controllerName;
+            $controllerClass = 'Besoiu\\Controllers\\' . $controllerName;
 
             if (!class_exists($controllerClass)) {
                 throw new RuntimeException("Controller inexistent: {$controllerClass}");
@@ -140,7 +140,7 @@ final class Router
         $pageLoader = new PageLoader([trim($lookupPath, '/') => $filePath]);
 
         if (!method_exists($pageLoader, $loadType)) {
-            error_log("[EvaSystem][Router] Metodă PageLoader inexistentă: {$loadType}");
+            error_log("[Besoiu][Router] Metodă PageLoader inexistentă: {$loadType}");
             $this->renderNotFound();
             return;
         }
@@ -150,6 +150,8 @@ final class Router
 
     private function renderNotFound(): void
     {
+        $path = (string) ($_SERVER['REQUEST_URI'] ?? '');
+        error_log('[admin-404] ' . $path);
         http_response_code(404);
         echo '<h1>404 - Pagină inexistentă</h1>';
     }

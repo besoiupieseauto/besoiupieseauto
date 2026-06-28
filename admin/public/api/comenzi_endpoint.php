@@ -5,12 +5,12 @@ declare(strict_types=1);
 require_once __DIR__ . '/_autoload.php';
 
 use Config\Database;
-use Evasystem\Controllers\Comenzi\Comenzi;
-use Evasystem\Controllers\Comenzi\ComenziService;
-use Evasystem\Core\Bootstrap\ApiBootstrap;
-use Evasystem\Core\Comenzi\ComenziModel;
-use Evasystem\Exceptions\NotFoundException;
-use Evasystem\Exceptions\ValidationException;
+use Besoiu\Controllers\Comenzi\Comenzi;
+use Besoiu\Controllers\Comenzi\ComenziService;
+use Besoiu\Core\Bootstrap\ApiBootstrap;
+use Besoiu\Core\Comenzi\ComenziModel;
+use Besoiu\Exceptions\NotFoundException;
+use Besoiu\Exceptions\ValidationException;
 ApiBootstrap::bootJsonApi();
 
 require_once dirname(ApiBootstrap::projectRoot()) . '/system/shop-order-guard.php';
@@ -44,25 +44,40 @@ try {
         && !empty($payload['items'])
         && is_array($payload['items'])
         && (string) ($payload['channel'] ?? 'website') === 'website';
+    $isWebsiteQuote = $action === 'quote'
+        && !empty($payload['items'])
+        && is_array($payload['items']);
 
-    if (!$isWebsiteCheckout) {
+    if (!$isWebsiteCheckout && !$isWebsiteQuote) {
         ApiBootstrap::requireAuthenticatedSession();
     }
 
-    if ($isWebsiteCheckout) {
+    if ($isWebsiteCheckout || $isWebsiteQuote) {
         $csrfToken = (string) ($payload['csrf_token'] ?? $_SERVER['HTTP_X_BPA_CSRF'] ?? '');
         if (!shop_order_csrf_validate($csrfToken)) {
             ApiBootstrap::json(['success' => false, 'message' => 'Sesiune invalidă. Reîncarcă pagina și încearcă din nou.'], 403);
         }
 
-        if (!shop_order_rate_limit_check(15)) {
+        if ($isWebsiteCheckout && !shop_order_rate_limit_check(15)) {
             ApiBootstrap::json(['success' => false, 'message' => 'Prea multe comenzi trimise. Încearcă din nou peste câteva minute.'], 429);
+        }
+
+        if ($isWebsiteQuote && !shop_order_rate_limit_check(120)) {
+            ApiBootstrap::json(['success' => false, 'message' => 'Prea multe cereri de cotatie. Incearca din nou.'], 429);
         }
     }
 
     $controller = new Comenzi(new ComenziService(new ComenziModel()));
 
     switch ($action) {
+        case 'quote':
+            $response = [
+                'success' => true,
+                'message' => 'Cotatie cos.',
+                'data' => $controller->quote($payload),
+            ];
+            break;
+
         case 'list':
             $response = [
                 'success' => true,
@@ -142,6 +157,12 @@ try {
 
 function ensureComenziProductImageColumn(): void
 {
+    static $checked = false;
+    if ($checked) {
+        return;
+    }
+    $checked = true;
+
     $pdo = Database::getDB();
     $statement = $pdo->query("SHOW COLUMNS FROM comenzi LIKE 'product_image'");
 

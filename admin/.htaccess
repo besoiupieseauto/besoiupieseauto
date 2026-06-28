@@ -9,10 +9,10 @@ DirectoryIndex index.php index.html
 RewriteEngine On
 RewriteBase /admin/
 
-# /admin/assets/* → public/assets/* (fișiere EvaSystem; admin/assets/ e alt set legacy)
+# /admin/assets/* → public/assets/* (fișiere Besoiu Admin; admin/assets/ e alt set legacy)
 RewriteRule ^assets/(.*)$ public/assets/$1 [L]
 
-# /admin/api/* → public/api/* (endpoint-uri JSON EvaSystem)
+# /admin/api/* → public/api/* (endpoint-uri JSON Besoiu Admin)
 RewriteRule ^api/(.*)$ public/api/$1 [L]
 
 # ——— BYPASS pentru endpointul API (crududoc) ———
@@ -21,15 +21,16 @@ RewriteCond %{REQUEST_URI} ^/crududoc(?:\.php)?/?$
 RewriteRule ^ - [L]
 
 # Cron Sync UI — prioritate față de orice folder fizic admin/cron/ (conflict Apache)
+RewriteRule ^cron-sync/?$ cron [R=301,L,QSA]
 RewriteRule ^cron/?$ public/index.php [L,QSA]
 RewriteRule ^cron/index\.php$ public/index.php [L,QSA]
 
 # Nu rescrie dacă există fișier/dir fizic
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-# Lasă /admin/public/* către public/.htaccess (logout.php, index.php EvaSystem)
+# Lasă /admin/public/* către public/.htaccess (logout.php, index.php Besoiu Admin)
 RewriteCond %{REQUEST_URI} !^/admin/public/
-# Front controller EvaSystem — URL-uri curate /admin/* (fără /public/ în browser)
+# Front controller Besoiu Admin — URL-uri curate /admin/* (fără /public/ în browser)
 RewriteRule ^(.*)$ public/index.php [QSA,L]
 
 # =====================
@@ -49,7 +50,7 @@ AddType application/x-font-ttf .ttf
 # =====================
 # PHP Error Display and Logging
 # =====================
-php_flag display_errors on
+php_flag display_errors off
 php_flag log_errors on
 php_value error_log logs/php_errors.log
 
@@ -81,7 +82,8 @@ php_value error_log logs/php_errors.log
   Header always set Referrer-Policy "no-referrer"
 
   # CORS (opțional; ajustează după nevoie)
-  Header set Access-Control-Allow-Origin "*"
+  Header set Access-Control-Allow-Origin "https://besoiupieseauto.ro"
+  Header append Access-Control-Allow-Origin "https://www.besoiupieseauto.ro"
   Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
   Header set Access-Control-Allow-Headers "Content-Type, Authorization"
 </IfModule>

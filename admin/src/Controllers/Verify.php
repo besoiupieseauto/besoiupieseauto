@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Evasystem\Controllers;
+/** @deprecated Neutilizat — auth centralizat in Permision::guard(). Pastrat doar pentru referinta legacy. */
+namespace Besoiu\Controllers;
 
-use Evasystem\Controllers\Users\UsersService;
+use Besoiu\Controllers\Users\UsersService;
 
 class Verify
 {
@@ -32,13 +33,13 @@ class Verify
         // ==== Allow-list pentru rute publice ====
         // Adaugă aici absolut tot ce trebuie să fie accesibil fără login
         $publicPrefixes = [
-            \Evasystem\Core\AdminUrl::path('login'),
-            \Evasystem\Core\AdminUrl::path('reg'),
-            \Evasystem\Core\AdminUrl::path('addusersadd'),
-            \Evasystem\Core\AdminUrl::LEGACY_PREFIX . '/login',
-            \Evasystem\Core\AdminUrl::LEGACY_PREFIX . '/reg',
-            \Evasystem\Core\AdminUrl::LEGACY_PREFIX . '/addusersadd',
-            \Evasystem\Core\AdminUrl::LEGACY_PREFIX . '/pages',
+            \Besoiu\Core\AdminUrl::path('login'),
+            \Besoiu\Core\AdminUrl::path('reg'),
+            \Besoiu\Core\AdminUrl::path('addusersadd'),
+            \Besoiu\Core\AdminUrl::LEGACY_PREFIX . '/login',
+            \Besoiu\Core\AdminUrl::LEGACY_PREFIX . '/reg',
+            \Besoiu\Core\AdminUrl::LEGACY_PREFIX . '/addusersadd',
+            \Besoiu\Core\AdminUrl::LEGACY_PREFIX . '/pages',
             // '/public/forgot',
             // '/public/reset',
             // '/public/api/some-endpoint',

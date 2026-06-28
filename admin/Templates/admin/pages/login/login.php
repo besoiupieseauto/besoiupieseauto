@@ -1,6 +1,6 @@
 <?php
 
-use Evasystem\Core\AdminUrl;
+use Besoiu\Core\AdminUrl;
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
@@ -13,8 +13,8 @@ if (!empty($_SESSION['user_id'])) {
         header('Location: ' . $next, true, 302);
         exit;
     }
-    $dest = class_exists(\Evasystem\Core\Auth\AdminWorkspace::class)
-        ? \Evasystem\Core\Auth\AdminWorkspace::redirectAfterLogin()
+    $dest = class_exists(\Besoiu\Core\Auth\AdminWorkspace::class)
+        ? \Besoiu\Core\Auth\AdminWorkspace::redirectAfterLogin()
         : AdminUrl::path('dashboard');
     header('Location: ' . $dest, true, 302);
     exit;
@@ -31,7 +31,10 @@ $assetPath = '/admin/Templates/admin';
 <html lang="ro">
 <head>
     <meta charset="utf-8">
-    <meta name="csrf-token" content="edjGgac9mtFsWPbrGHhItAsXhkBE8VClTqg62ZE4">
+    <?php
+    require_once __DIR__ . '/../../../../vendor/autoload.php';
+    echo \Besoiu\Core\Auth\AdminCsrf::metaTag();
+    ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
     <title>Autentificare — Besoiu Admin</title>

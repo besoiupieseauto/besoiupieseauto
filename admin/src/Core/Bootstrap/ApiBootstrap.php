@@ -2,11 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Evasystem\Core\Bootstrap;
+namespace Besoiu\Core\Bootstrap;
 
 use Config\Database;
-use Evasystem\Exceptions\NotFoundException;
-use Evasystem\Exceptions\ValidationException;
+use Besoiu\Core\Auth\AdminPermissionCatalog;
+use Besoiu\Core\Auth\AdminWorkspace;
+use Besoiu\Exceptions\NotFoundException;
+use Besoiu\Exceptions\ValidationException;
+use Besoiu\Services\AiSupervisor\Phase1\AdminEventBridge;
 use JsonException;
 use Throwable;
 
@@ -95,6 +98,202 @@ final class ApiBootstrap
         if (empty($_SESSION['user_id'])) {
             self::json(['success' => false, 'message' => 'Autentificare necesară.'], 401);
         }
+    }
+
+    /** CSRF obligatoriu pe mutații API admin autentificate. */
+    public static function requireAdminCsrfForMutation(): void
+    {
+        $method = strtoupper((string) ($_SERVER['REQUEST_METHOD'] ?? 'GET'));
+        if (!in_array($method, ['POST', 'PUT', 'PATCH', 'DELETE'], true)) {
+            return;
+        }
+
+        if (empty($_SESSION['user_id'])) {
+            return;
+        }
+
+        $token = trim((string) ($_SERVER['HTTP_X_ADMIN_CSRF'] ?? $_POST['csrf_token'] ?? ''));
+        if (!\Besoiu\Core\Auth\AdminCsrf::validate($token)) {
+            self::json(['success' => false, 'message' => 'Token CSRF invalid. Reîncarcă pagina admin.'], 403);
+        }
+    }
+
+    /**
+     * Verifică permisiunea granulară admin (feature key din AdminPermissionCatalog).
+     */
+    public static function requireAdminFeature(string $featureKey, bool $destructive = false): void
+    {
+        self::requireAuthenticatedSession();
+
+        $role = strtolower(trim((string) ($_SESSION['role'] ?? 'guest')));
+
+        if ($destructive && !in_array($role, ['super_ambassador', 'manager'], true)) {
+            self::json([
+                'success' => false,
+                'message' => 'Acțiune restricționată — necesită rol manager sau super ambassador.',
+            ], 403);
+        }
+
+        if (!\Besoiu\Core\Auth\AdminPermissionCatalog::featureAllowed($featureKey, $role)) {
+            self::json([
+                'success' => false,
+                'message' => 'Acces interzis — lipsește permisiunea: ' . $featureKey,
+            ], 403);
+        }
+    }
+
+    /**
+     * Auth implicit pentru toate scripturile admin/public/api/* (except allowlist).
+     */
+    public static function enforceDefaultApiAuthIfNeeded(): void
+    {
+        static $checked = false;
+        if ($checked) {
+            return;
+        }
+        $checked = true;
+
+        $script = basename((string) ($_SERVER['SCRIPT_FILENAME'] ?? ''));
+        if ($script === '' || $script === '_autoload.php') {
+            return;
+        }
+
+        $allowlistPath = self::projectRoot() . '/config/api_public_allowlist.php';
+        if (!is_file($allowlistPath)) {
+            self::requireAuthenticatedSession();
+
+            return;
+        }
+
+        /** @var list<string> $allowlist */
+        $allowlist = require $allowlistPath;
+        if (in_array($script, $allowlist, true)) {
+            return;
+        }
+
+        self::requireAuthenticatedSession();
+        self::enforceApiWorkspaceIfNeeded();
+        self::requireAdminCsrfForMutation();
+    }
+
+    /**
+     * Izolare departamente pe API (#45) — user din social nu poate apela import/furnizori etc.
+     */
+    public static function enforceApiWorkspaceIfNeeded(): void
+    {
+        static $checked = false;
+        if ($checked) {
+            return;
+        }
+        $checked = true;
+
+        self::ensureSession();
+
+        if (empty($_SESSION['user_id'])) {
+            return;
+        }
+
+        $script = basename((string) ($_SERVER['SCRIPT_FILENAME'] ?? ''));
+        if ($script === '' || $script === '_autoload.php') {
+            return;
+        }
+
+        $mapPath = self::projectRoot() . '/config/api_workspace_features.php';
+        if (!is_file($mapPath)) {
+            return;
+        }
+
+        /** @var array<string, string> $map */
+        $map = require $mapPath;
+        $featureKey = $map[$script] ?? '';
+        if ($featureKey === '') {
+            if (!in_array($role, ['super_ambassador', 'manager'], true)) {
+                self::json([
+                    'success' => false,
+                    'message' => 'API neconfigurat — acces interzis.',
+                ], 403);
+            }
+
+            return;
+        }
+
+        $role = strtolower(trim((string) ($_SESSION['role'] ?? 'guest')));
+
+        if ($role !== 'super_ambassador' && !AdminPermissionCatalog::featureAllowed($featureKey, $role)) {
+            self::json([
+                'success' => false,
+                'message' => 'Acces interzis — lipsește permisiunea: ' . $featureKey,
+            ], 403);
+        }
+
+        if ($role === 'super_ambassador' || AdminWorkspace::isCrossWorkspaceFeature($featureKey)) {
+            return;
+        }
+
+        $current = AdminWorkspace::getCurrent();
+        if ($current === null) {
+            $allowed = AdminWorkspace::allowedWorkspacesForSession();
+            if (count($allowed) === 1) {
+                AdminWorkspace::setCurrent($allowed[0]);
+                $current = $allowed[0];
+            } else {
+                self::json([
+                    'success' => false,
+                    'message' => 'Selectează departamentul activ înainte de a apela acest API.',
+                ], 403);
+            }
+        }
+
+        if (!AdminWorkspace::featureAllowedInWorkspace($featureKey, (string) $current)) {
+            self::json([
+                'success' => false,
+                'message' => 'API indisponibil în departamentul activ.',
+                'workspace' => $current,
+                'feature' => $featureKey,
+            ], 403);
+        }
+    }
+
+    /**
+     * Înregistrare eveniment AI supervisor (#49) — import/scraper/bots/marketplace.
+     *
+     * @param array<string, mixed> $payload
+     */
+    public static function recordAdminEvent(
+        array $payload,
+        int $statusCode,
+        string $module,
+        string $actionHint = '',
+        bool $forceError = false
+    ): void {
+        if (!class_exists(AdminEventBridge::class)) {
+            return;
+        }
+
+        $bridge = new AdminEventBridge();
+        if (!$forceError && $statusCode >= 200 && $statusCode < 300 && !empty($payload['success'])) {
+            $bridge->recordSuccess($module, $payload, $statusCode, $actionHint);
+        } else {
+            $bridge->recordFailure(
+                $module,
+                $payload,
+                $statusCode,
+                $actionHint !== '' ? $actionHint : 'api_error',
+            );
+        }
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     */
+    public static function jsonAndRecordEvent(
+        array $payload,
+        int $statusCode,
+        string $module,
+        string $actionHint = ''
+    ): void {
+        self::recordAdminEvent($payload, $statusCode, $module, $actionHint);
+        self::json($payload, $statusCode);
     }
 
     /** Eliberează lock-ul de sesiune — necesar la job-uri AJAX lungi (scan imagini import). */
@@ -222,7 +421,7 @@ final class ApiBootstrap
     public static function requireSharedSecret(
         string $envKey,
         string $headerName = 'X-Cron-Key',
-        bool $allowQueryFallback = true
+        bool $allowQueryFallback = false
     ): void {
         $expected = trim((string) ($_ENV[$envKey] ?? getenv($envKey) ?: ''));
         if ($expected === '') {
@@ -272,24 +471,63 @@ final class ApiBootstrap
         callable $handler,
         string $logContext,
         bool $withDatabase = true,
-        bool $requireAuth = true
+        bool $requireAuth = true,
+        ?string $eventModule = null
     ): void {
         self::bootJsonApi($withDatabase);
 
         if ($requireAuth) {
             self::requireAuthenticatedSession();
+        } elseif (!empty($_SESSION['user_id'])) {
+            self::enforceApiWorkspaceIfNeeded();
         }
 
         try {
             $handler();
         } catch (JsonException $exception) {
+            if ($eventModule !== null) {
+                self::recordAdminEvent(
+                    ['success' => false, 'message' => 'JSON invalid.'],
+                    400,
+                    $eventModule,
+                    'json_error',
+                    true
+                );
+            }
             self::json(['success' => false, 'message' => 'JSON invalid.'], 400);
         } catch (ValidationException $exception) {
+            if ($eventModule !== null) {
+                self::recordAdminEvent(
+                    ['success' => false, 'message' => $exception->getMessage()],
+                    400,
+                    $eventModule,
+                    'validation_error',
+                    true
+                );
+            }
             self::json(['success' => false, 'message' => $exception->getMessage()], 400);
         } catch (NotFoundException $exception) {
+            if ($eventModule !== null) {
+                self::recordAdminEvent(
+                    ['success' => false, 'message' => $exception->getMessage()],
+                    404,
+                    $eventModule,
+                    'not_found',
+                    true
+                );
+            }
             self::json(['success' => false, 'message' => $exception->getMessage()], 404);
         } catch (Throwable $exception) {
             self::logError($logContext, $exception);
+            if ($eventModule !== null) {
+                self::recordAdminEvent(
+                    ['success' => false, 'message' => $exception->getMessage()],
+                    500,
+                    $eventModule,
+                    'internal_error',
+                    true
+                );
+            }
             self::json(['success' => false, 'message' => self::internalErrorMessage($exception)], 500);
         }
     }

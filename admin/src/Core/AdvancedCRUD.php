@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Evasystem\Core;
+namespace Besoiu\Core;
 
-use Evasystem\Core\Sql\SqlIdentifier;
+use Besoiu\Core\Sql\SqlIdentifier;
 use InvalidArgumentException;
 use PDO;
 use Config\Database;
@@ -174,12 +174,21 @@ final class AdvancedCRUD
 
         $pdo = Database::getDB();
 
-        // Compatibilitate module vechi — nu folosi pentru conturi noi
-        if (isset($rowData['password']) && !isset($_GET['usid'])) {
-            $rowData['password'] = md5((string) $rowData['password']);
+        // Compatibilitate module vechi — hash securizat
+        if (isset($rowData['password']) && is_string($rowData['password']) && $rowData['password'] !== '') {
+            $info = password_get_info((string) $rowData['password']);
+            if ($info['algo'] === 0) {
+                $rowData['password'] = password_hash((string) $rowData['password'], PASSWORD_DEFAULT);
+            }
         }
 
-        $columnNames = implode(', ', array_keys($rowData));
+        SqlIdentifier::assertColumnList(implode(', ', array_keys($rowData)));
+
+        $quotedColumns = array_map(
+            static fn (string $col): string => '`' . str_replace('`', '``', $col) . '`',
+            array_keys($rowData)
+        );
+        $columnNames = implode(', ', $quotedColumns);
         $placeholders = implode(', ', array_fill(0, count($rowData), '?'));
         $sql = 'INSERT INTO ' . self::quotedTable($tableName) . " ({$columnNames}) VALUES ({$placeholders})";
 

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Evasystem\Controllers\Users;
+namespace Besoiu\Controllers\Users;
 
-use Evasystem\Controllers\Users\UsersService;          // păstrat cum ai cerut
+use Besoiu\Controllers\Users\UsersService;          // păstrat cum ai cerut
 use League\OAuth2\Client\Provider\Google;              // necesar pentru OAuth
 use Exception;
 
@@ -34,7 +34,7 @@ class Users
     /* ======================= GOOGLE OAUTH ======================= */
 
     private function googleProvider(): Google {
-        $appUrl = \Evasystem\Core\AdminUrl::siteBaseUrl();
+        $appUrl = \Besoiu\Core\AdminUrl::siteBaseUrl();
         $redirectUri = $appUrl . '/public/auth/google/callback';
         return new Google([
             'clientId'     => $_ENV['GOOGLE_CLIENT_ID'] ?? '',
@@ -188,7 +188,10 @@ class Users
 
             // 2) validări pentru CREATE (login + password)
             if (!$isUpdate) {
-                $requestedRole = strtolower(trim((string)($usersConnect['role'] ?? 'manager')));
+                if (empty($_SESSION['user_id'])) {
+                    throw new \RuntimeException('Înregistrarea publică este dezactivată.');
+                }
+                $requestedRole = strtolower(trim((string)($usersConnect['role'] ?? 'operator')));
                 $allowedRoles = ['manager', 'super_ambassador', 'regional_ambassador', 'executive', 'operator'];
                 if (!in_array($requestedRole, $allowedRoles, true)) {
                     throw new \InvalidArgumentException('Rol invalid.');
@@ -294,6 +297,12 @@ class Users
         $login    = \trim((string)($data['login'] ?? ''));
         $password = (string)($data['password'] ?? '');
 
+        require_once dirname(__DIR__, 3) . '/system/shop-order-guard.php';
+        if (!shop_order_rate_limit_check(30)) {
+            \usleep(300000);
+            return ['success' => false, 'message' => 'Prea multe încercări. Încearcă din nou peste câteva minute.'];
+        }
+
         // 1) Validări de bază
         if ($login === '' || $password === '') {
             return ['success' => false, 'message' => 'Completează login și parola.'];
@@ -357,19 +366,6 @@ class Users
                 } catch (\Throwable $e) {
                     $log('legacy upgrade failed', ['err' => $e->getMessage()]);
                 }
-            } elseif (
-                \strlen($stored) < 72
-                && !\str_starts_with($stored, '$')
-                && \hash_equals($stored, $password)
-            ) {
-                // Parolă salvată plain-text (instalări vechi) — acceptă și migrează la bcrypt
-                $ok = true;
-                try {
-                    $this->usersService->updatePasswordHash((int)($row['randomn_id'] ?? 0), \password_hash($password, PASSWORD_DEFAULT));
-                    $log('plaintext password upgraded', ['user_id' => (int)($row['randomn_id'] ?? 0)]);
-                } catch (\Throwable $e) {
-                    $log('plaintext upgrade failed', ['err' => $e->getMessage()]);
-                }
             }
         }
 
@@ -390,8 +386,8 @@ class Users
         $_SESSION['user_login'] = (string)($row['login'] ?? $login);
         $_SESSION['user_name'] = (string)($row['fullname'] ?? $row['nikname'] ?? $login);
 
-        if (class_exists(\Evasystem\Core\Auth\AdminPermissionCatalog::class)) {
-            $_SESSION['admin_permissions'] = \Evasystem\Core\Auth\AdminPermissionCatalog::normalizePermissions(
+        if (class_exists(\Besoiu\Core\Auth\AdminPermissionCatalog::class)) {
+            $_SESSION['admin_permissions'] = \Besoiu\Core\Auth\AdminPermissionCatalog::normalizePermissions(
                 $row['permissions_json'] ?? null,
                 (string) ($row['role'] ?? 'manager')
             );
@@ -405,8 +401,8 @@ class Users
         if ($next !== '' && str_starts_with($next, '/admin/')) {
             $redirect = $next;
         } else {
-            $redirect = class_exists(\Evasystem\Core\Auth\AdminWorkspace::class)
-                ? \Evasystem\Core\Auth\AdminWorkspace::redirectAfterLogin()
+            $redirect = class_exists(\Besoiu\Core\Auth\AdminWorkspace::class)
+                ? \Besoiu\Core\Auth\AdminWorkspace::redirectAfterLogin()
                 : '/admin/dashboard';
         }
 

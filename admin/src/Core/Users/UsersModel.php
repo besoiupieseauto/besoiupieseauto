@@ -1,9 +1,9 @@
 <?php
 
-namespace Evasystem\Core\Users;
+namespace Besoiu\Core\Users;
 
-use Evasystem\Core\AdvancedCRUD;
-use Evasystem\Core\Sql\SqlIdentifier;
+use Besoiu\Core\AdvancedCRUD;
+use Besoiu\Core\Sql\SqlIdentifier;
 use PDO;
 use Config\Database;
 class UsersModel
@@ -15,7 +15,19 @@ class UsersModel
 
     public static function getUserssId($id, $db = 'users_connect', $where = 'randomn_id')
     {
-        return AdvancedCRUD::select($db, '*', "WHERE " . $where . " = '$id' ");
+        $allowed = ['randomn_id', 'id', 'login', 'contact'];
+        if (!in_array($where, $allowed, true)) {
+            $where = 'randomn_id';
+        }
+
+        return AdvancedCRUD::selectnew(
+            $db,
+            '*',
+            'WHERE `' . $where . '` = :id',
+            '',
+            '1',
+            ['id' => (string) $id]
+        );
     }
     public static function findByLogin($id, $db = 'users_connect', $where = 'login')
     {
@@ -55,16 +67,33 @@ class UsersModel
 
     public static function updateTask($taskId, $taskData)
     {
-        return AdvancedCRUD::update('users_connect', $taskData, "WHERE id = $taskId");
+        $id = (int) $taskId;
+        if ($id <= 0) {
+            return false;
+        }
+
+        return AdvancedCRUD::update('users_connect', $taskData, 'WHERE id = ' . $id);
     }
 
     public static function del($taskId, $db = 'users_connect', $where = 'randomn_id')
     {
-        return AdvancedCRUD::delete($db, "WHERE $where = $taskId");
+        SqlIdentifier::assertTableName($db);
+        SqlIdentifier::assertColumnList($where);
+        $id = (int) $taskId;
+        if ($id <= 0) {
+            return false;
+        }
+
+        return AdvancedCRUD::delete($db, 'WHERE `' . str_replace('`', '', $where) . '` = ' . $id);
     }
 
     public static function udape($taskId, $taskData, $db = 'users_connect')
     {
-        return AdvancedCRUD::update($db, $taskData, "WHERE randomn_id = $taskId");
+        $id = (int) $taskId;
+        if ($id <= 0) {
+            return false;
+        }
+
+        return AdvancedCRUD::update($db, $taskData, 'WHERE randomn_id = ' . $id);
     }
 }

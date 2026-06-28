@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Evasystem\Core\Auth;
+namespace Besoiu\Core\Auth;
 
-use Evasystem\Core\AdminUrl;
-use Evasystem\Core\AdvancedCRUD;
+use Besoiu\Core\AdminUrl;
+use Besoiu\Core\AdvancedCRUD;
 
 /**
  * Permision – control de permisiuni / navigare / vizibilitate pe roluri.
@@ -124,7 +124,7 @@ class Permision
     {
       
         // dacă în DB au rămas spații, le ignorăm cu REPLACE
-        $rows = \Evasystem\Core\AdvancedCRUD::selectnew(
+        $rows = \Besoiu\Core\AdvancedCRUD::selectnew(
             'role_nav',
             '*',
             'WHERE is_active = 1 AND FIND_IN_SET(:role, REPLACE(role_slug, " ", "")) > 0',
@@ -254,17 +254,11 @@ class Permision
         // public
         if ($this->isPublic($path)) return true;
 
-        // Orice utilizator autentificat → pagini UI standard admin (dashboard, cron, scan…)
-        if (!empty($_SESSION['user_id']) && $this->isStandardAdminPagePath($path)) {
-            return true;
-        }
-
-        // super user
+        // super user — acces total explicit
         if ($role === 'super_ambassador') return true;
         if ($role === 'manager') return true;
-        if ($role === 'regional_ambassador') return true;
-        if ($role === 'executive') return true;
-        if ($role === 'operator') return true;
+
+        // Roluri restrânse — verificare nav + overrides (fără bypass total)
 
         // overrides deny_paths
         foreach ((array)($overrides['deny_paths'] ?? []) as $deny) {
@@ -290,7 +284,8 @@ class Permision
         if ($base !== null) {
             foreach ($nav as $label => $href) {
                 $npath = $this->normalizePath($href);
-                if (strpos($base, $this->lastSegment($npath)) !== false) {
+                $navBase = $this->crudBaseFromPath($npath);
+                if ($navBase !== null && $navBase === $base) {
                     return true;
                 }
             }
@@ -311,18 +306,13 @@ class Permision
 
         // Delegare module (utilizatori cu permissions_json în BD)
         if ($isLoggedIn && !empty($_SESSION['admin_permissions_delegated']) && $role !== 'super_ambassador') {
-            $perms = \Evasystem\Core\Auth\AdminPermissionCatalog::normalizePermissions(
+            $perms = \Besoiu\Core\Auth\AdminPermissionCatalog::normalizePermissions(
                 $_SESSION['admin_permissions'] ?? null,
                 $role
             );
-            if (!\Evasystem\Core\Auth\AdminPermissionCatalog::urlAllowed($path, $perms, $role)) {
+            if (!\Besoiu\Core\Auth\AdminPermissionCatalog::urlAllowed($path, $perms, $role)) {
                 $this->denyAccess($isLoggedIn, $role, $path);
             }
-            return;
-        }
-
-        // Fast-path: admin autentificat pe pagină UI validă
-        if ($isLoggedIn && $this->isStandardAdminPagePath($path)) {
             return;
         }
 
@@ -470,4 +460,4 @@ class Permision
 }
 
 /** Alias convenabil dacă vrei „Permission” în loc de „Permision” */
-\class_alias(\Evasystem\Core\Auth\Permision::class, \Evasystem\Core\Auth\Permission::class);
+\class_alias(\Besoiu\Core\Auth\Permision::class, \Besoiu\Core\Auth\Permission::class);

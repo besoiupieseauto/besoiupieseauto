@@ -5,15 +5,20 @@ declare(strict_types=1);
 require_once __DIR__ . '/_autoload.php';
 
 use Config\Database;
-use Evasystem\Controllers\Alerts\AlertsService;
-use Evasystem\Controllers\Cron\CronService;
-use Evasystem\Controllers\Dashboard\DashboardService;
-use Evasystem\Controllers\Report\ReportService;
-use Evasystem\Controllers\Scan\ScanCancelledException;
-use Evasystem\Controllers\Scan\ScanService;
-use Evasystem\Controllers\Settings\SettingsService;
-use Evasystem\Controllers\Users\UsersService;
-use Evasystem\Core\Bootstrap\ApiBootstrap;
+use Besoiu\Controllers\Alerts\AlertsService;
+use Besoiu\Controllers\Cron\CronService;
+use Besoiu\Controllers\Dashboard\DashboardService;
+use Besoiu\Controllers\Report\ReportService;
+use Besoiu\Controllers\Scan\ScanCancelledException;
+use Besoiu\Controllers\Scan\ScanService;
+use Besoiu\Services\AdminOpsAlertsFixService;
+use Besoiu\Services\AdminOpsAlertsService;
+use Besoiu\Services\ComposerRepairAgentService;
+use Besoiu\Services\SectionAssistantService;
+use Besoiu\Services\SectionAssistantQueryLogService;
+use Besoiu\Controllers\Settings\SettingsService;
+use Besoiu\Controllers\Users\UsersService;
+use Besoiu\Core\Bootstrap\ApiBootstrap;
 
 ApiBootstrap::bootJsonApi();
 
@@ -56,13 +61,18 @@ try {
         $action = 'overview';
     }
 
+    $destructiveActions = ['ops_alert_fix', 'scan_unlock', 'scan_stop', 'cron_reset'];
+    if (in_array($action, $destructiveActions, true)) {
+        ApiBootstrap::requireAdminFeature('dashboard.home', true);
+    }
+
     $hubPage = max(1, (int) ($_GET['page'] ?? 1));
     $hubPerPage = max(1, min(100, (int) ($_GET['per_page'] ?? 10)));
 
     switch ($action) {
         case 'settings':
             $all = (new SettingsService())->getAllSettingss();
-            $pageData = \Evasystem\Core\Pagination::envelope(
+            $pageData = \Besoiu\Core\Pagination::envelope(
                 array_slice(is_array($all) ? $all : [], ($hubPage - 1) * $hubPerPage, $hubPerPage),
                 count(is_array($all) ? $all : []),
                 $hubPage,
@@ -70,25 +80,74 @@ try {
             );
             ApiBootstrap::json(['success' => true, 'data' => $pageData['items'], 'pagination' => $pageData]);
 
-        case 'alerts':
-            $all = (new AlertsService())->getAllAlertss();
-            $pageData = \Evasystem\Core\Pagination::envelope(
-                array_slice(is_array($all) ? $all : [], ($hubPage - 1) * $hubPerPage, $hubPerPage),
-                count(is_array($all) ? $all : []),
-                $hubPage,
-                $hubPerPage
-            );
-            $dash = (new DashboardService())->overview();
+        case 'ops_alerts':
+            ApiBootstrap::json(['success' => true, 'data' => (new AdminOpsAlertsService())->summary()]);
+
+        case 'ops_alert_fix':
+            if ($method !== 'POST') {
+                ApiBootstrap::json(['success' => false, 'message' => 'Doar POST.'], 405);
+            }
+            $fixPayload = is_array($payload ?? null) ? $payload : [];
+            $code = trim((string) ($fixPayload['code'] ?? ''));
+            if ($code === '') {
+                ApiBootstrap::json(['success' => false, 'message' => 'Lipsește codul alertei.'], 400);
+            }
+            $result = (new ComposerRepairAgentService())->fixAlert($code, $fixPayload, true);
+            ApiBootstrap::json(array_merge($result, [
+                'ops_alerts' => (new AdminOpsAlertsService())->summary(),
+            ]), ($result['success'] ?? false) ? 200 : 422);
+
+        case 'section_assist':
+            if ($method !== 'POST') {
+                ApiBootstrap::json(['success' => false, 'message' => 'Doar POST.'], 405);
+            }
+            $assistPayload = is_array($payload ?? null) ? $payload : [];
+            $assist = SectionAssistantService::assistFromPayload($assistPayload);
+            ApiBootstrap::json([
+                'success' => !empty($assist['ok']),
+                'message' => (string) ($assist['reply'] ?? $assist['message'] ?? ''),
+                'data' => $assist,
+            ], !empty($assist['ok']) ? 200 : 422);
+
+        case 'section_assist_queries':
             ApiBootstrap::json([
                 'success' => true,
-                'data' => $pageData['items'],
-                'pagination' => $pageData,
-                'red_flags' => $dash['red_flags'] ?? [],
+                'data' => (new SectionAssistantQueryLogService())->recent($hubPerPage),
+                'summary' => (new SectionAssistantQueryLogService())->summary(7),
             ]);
+
+        case 'section_assist_feedback':
+            if ($method !== 'POST') {
+                ApiBootstrap::json(['success' => false, 'message' => 'Doar POST.'], 405);
+            }
+            $fbPayload = is_array($payload ?? null) ? $payload : [];
+            $queryId = trim((string) ($fbPayload['query_id'] ?? ''));
+            $rating = trim((string) ($fbPayload['rating'] ?? ''));
+            $note = trim((string) ($fbPayload['note'] ?? ''));
+            if ($queryId === '') {
+                ApiBootstrap::json(['success' => false, 'message' => 'Lipseste query_id.'], 400);
+            }
+            $saved = (new SectionAssistantQueryLogService())->setOperatorRating($queryId, $rating, $note);
+            ApiBootstrap::json(['success' => $saved, 'message' => $saved ? 'Feedback salvat.' : 'Query negasit.'], $saved ? 200 : 404);
+
+        case 'section_assist_learn':
+            if ($method !== 'POST') {
+                ApiBootstrap::json(['success' => false, 'message' => 'Doar POST.'], 405);
+            }
+            $learnPayload = is_array($payload ?? null) ? $payload : [];
+            $learn = SectionAssistantService::learnFromPayload($learnPayload);
+            ApiBootstrap::json([
+                'success' => !empty($learn['ok']),
+                'message' => (string) ($learn['reply'] ?? $learn['message'] ?? ''),
+                'data' => $learn,
+            ], !empty($learn['ok']) ? 200 : 422);
+
+        case 'alerts':
+            ApiBootstrap::json(['success' => true, 'data' => (new AdminOpsAlertsService())->feed()]);
 
         case 'reports':
             $all = (new ReportService())->getAllReports();
-            $pageData = \Evasystem\Core\Pagination::envelope(
+            $pageData = \Besoiu\Core\Pagination::envelope(
                 array_slice(is_array($all) ? $all : [], ($hubPage - 1) * $hubPerPage, $hubPerPage),
                 count(is_array($all) ? $all : []),
                 $hubPage,
@@ -104,7 +163,7 @@ try {
 
         case 'scan_activity':
             $scanService = new ScanService();
-            $dashProgress = new \Evasystem\Controllers\Scan\SupplierScanDashboardService();
+            $dashProgress = new \Besoiu\Controllers\Scan\SupplierScanDashboardService();
             ApiBootstrap::json([
                 'success' => true,
                 'activity' => $scanService->getActivityFeed(),
@@ -121,6 +180,17 @@ try {
             $scanService = new ScanService();
             $scanService->releaseScanLock();
             ScanService::clearStopRequest();
+            // Reset UI progres (altfel panoul poate rămâne “running” vizual).
+            (new \Besoiu\Controllers\Scan\SupplierScanDashboardService())->updateProgress([
+                'running' => false,
+                'pct' => 0,
+                'phase' => 'stopped',
+                'phase_label' => 'Oprit',
+                'message' => 'Scan deblocat de utilizator',
+                'supplier' => '',
+                'supplier_index' => 0,
+                'supplier_total' => 0,
+            ]);
             ApiBootstrap::json([
                 'success' => true,
                 'message' => 'Lock scan eliberat — poți porni o scanare nouă.',
@@ -143,7 +213,7 @@ try {
             $scanService = new ScanService();
             // Curăță lock-uri vechi fără a bloca request-ul
             $scanRunning = $scanService->isScanRunning();
-            $scanProgress = (new \Evasystem\Controllers\Scan\SupplierScanDashboardService())->readProgress();
+            $scanProgress = (new \Besoiu\Controllers\Scan\SupplierScanDashboardService())->readProgress();
 
             $mirrorCron = (string) ($_GET['mirror'] ?? '0') !== '0';
             $analyzeCron = (string) ($_GET['analyze'] ?? '0') !== '0';
@@ -165,7 +235,7 @@ try {
             ApiBootstrap::json([
                 'success' => true,
                 'data' => [],
-                'pagination' => \Evasystem\Core\Pagination::envelope([], 0, 1, 10),
+                'pagination' => \Besoiu\Core\Pagination::envelope([], 0, 1, 10),
                 'tasks' => admin_cron_tasks_registry(),
                 'modules' => admin_cron_modules_registry(),
                 'setup_doc' => 'admin/docs/CRON_WINDOWS_SETUP.md',
@@ -229,7 +299,7 @@ try {
                     ], 409);
                 }
 
-                (new \Evasystem\Controllers\Scan\SupplierScanDashboardService())->updateProgress([
+                (new \Besoiu\Controllers\Scan\SupplierScanDashboardService())->updateProgress([
                     'running' => true,
                     'pct' => 2,
                     'phase' => 'run',
@@ -252,7 +322,7 @@ try {
                     $result = $scanService->runFullSync($remoteFtp, false);
                     $scanService->saveLastRunResult($result);
                 } catch (ScanCancelledException $cancelled) {
-                    $dashErr = new \Evasystem\Controllers\Scan\SupplierScanDashboardService();
+                    $dashErr = new \Besoiu\Controllers\Scan\SupplierScanDashboardService();
                     $dashErr->log('Scan oprit de utilizator.', '', 'warn', 'run');
                     $dashErr->updateProgress([
                         'running' => false,
@@ -268,7 +338,7 @@ try {
                         'cancelled' => true,
                     ]);
                 } catch (Throwable $runError) {
-                    $dashErr = new \Evasystem\Controllers\Scan\SupplierScanDashboardService();
+                    $dashErr = new \Besoiu\Controllers\Scan\SupplierScanDashboardService();
                     $dashErr->log(
                         'Eroare scan: ' . $runError->getMessage(),
                         '',
@@ -310,7 +380,7 @@ try {
             try {
                 $pdo = Database::getDB();
                 $total = (int) $pdo->query('SELECT COUNT(*) FROM products_oem')->fetchColumn();
-                $meta = \Evasystem\Core\Pagination::normalize($hubPage, $hubPerPage);
+                $meta = \Besoiu\Core\Pagination::normalize($hubPage, $hubPerPage);
                 $stmt = $pdo->prepare(
                     'SELECT o.id, o.product_id, o.oem_code, o.brand, o.is_primary, o.source, p.pName AS product_name, p.pCode AS product_code
                      FROM products_oem o
@@ -324,7 +394,7 @@ try {
             } catch (Throwable) {
                 $oem = [];
             }
-            $pageData = \Evasystem\Core\Pagination::envelope($oem, $total, $hubPage, $hubPerPage);
+            $pageData = \Besoiu\Core\Pagination::envelope($oem, $total, $hubPage, $hubPerPage);
             ApiBootstrap::json([
                 'success' => true,
                 'data' => $pageData['items'],
@@ -334,7 +404,7 @@ try {
 
         case 'users':
             $all = (new UsersService())->getAllUserss();
-            $pageData = \Evasystem\Core\Pagination::envelope(
+            $pageData = \Besoiu\Core\Pagination::envelope(
                 array_slice(is_array($all) ? $all : [], ($hubPage - 1) * $hubPerPage, $hubPerPage),
                 count(is_array($all) ? $all : []),
                 $hubPage,

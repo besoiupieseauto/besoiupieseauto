@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Evasystem\Core\AdminUrl;
+use Besoiu\Core\AdminUrl;
 
 /**
  * Slug-uri meniu admin — rute GET curate generate în routes_bootstrap.
@@ -31,6 +31,7 @@ return [
     'livrare',
     'clienti',
     'bots',
+    'ai-agent',
     'comunicare',
     'reply-templates',
     'comunicare-canale',
@@ -57,11 +58,9 @@ return [
     'addusers',
     'reset-password',
     'help',
-    'reg',
     'ai-tokens',
     'system-errors',
     'order-edit',
-    'order-create',
     'editproduse',
     'supplier',
     'customer',

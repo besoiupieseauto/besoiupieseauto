@@ -34,7 +34,7 @@ AddType application/x-font-ttf .ttf
 # =====================
 # PHP Error Display and Logging
 # =====================
-php_flag display_errors on
+php_flag display_errors off
 php_flag log_errors on
 php_value error_log logs/php_errors.log
 php_value upload_max_filesize 1024M
@@ -60,14 +60,15 @@ php_value memory_limit 512M
   Header always unset Content-Security-Policy
   Header always unset Content-Security-Policy-Report-Only
 
-  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; frame-ancestors 'self' https://meet.jit.si; frame-src 'self' https://besoiupieseauto.ro https://www.besoiupieseauto.ro; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tiny.cloud https://cdn.jsdelivr.net https://static.cloudflareinsights.com; script-src-elem 'self' 'unsafe-inline' https://cdn.tiny.cloud https://cdn.jsdelivr.net https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.tiny.cloud https://cdn.jsdelivr.net; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.tiny.cloud https://cdn.jsdelivr.net; img-src 'self' data: blob: https://cdn.tiny.cloud https://newton-candent-len.ngrok-free.dev https://*.your-objectstorage.com; media-src 'self' data: blob:; font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com https://unpkg.com https://cdn.tiny.cloud https://cdn.jsdelivr.net; connect-src 'self' https://cdn.tiny.cloud https://cdn.jsdelivr.net https://newton-candent-len.ngrok-free.dev https://static.cloudflareinsights.com; form-action 'self'"
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; frame-ancestors 'self' https://meet.jit.si; frame-src 'self' https://besoiupieseauto.ro https://www.besoiupieseauto.ro; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tiny.cloud https://cdn.jsdelivr.net https://static.cloudflareinsights.com; script-src-elem 'self' 'unsafe-inline' https://cdn.tiny.cloud https://cdn.jsdelivr.net https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.tiny.cloud https://cdn.jsdelivr.net; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.tiny.cloud https://cdn.jsdelivr.net; img-src 'self' data: blob: https://cdn.tiny.cloud https://*.your-objectstorage.com; media-src 'self' data: blob:; font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com https://unpkg.com https://cdn.tiny.cloud https://cdn.jsdelivr.net; connect-src 'self' https://cdn.tiny.cloud https://cdn.jsdelivr.net https://static.cloudflareinsights.com; form-action 'self'"
 
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set X-XSS-Protection "1; mode=block"
   Header always set Referrer-Policy "no-referrer"
 
-  Header set Access-Control-Allow-Origin "*"
+  Header set Access-Control-Allow-Origin "https://besoiupieseauto.ro"
+  Header append Access-Control-Allow-Origin "https://www.besoiupieseauto.ro"
   Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
   Header set Access-Control-Allow-Headers "Content-Type, Authorization, ngrok-skip-browser-warning"
 </IfModule>

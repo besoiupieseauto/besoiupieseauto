@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-use Evasystem\Controllers\Users\Users;
-use Evasystem\Controllers\Users\UsersService;
-use Evasystem\Core\Auth\SessionAuth;
-use Evasystem\Core\Crud\LegacyJsonCrud;
+use Besoiu\Controllers\Users\Users;
+use Besoiu\Controllers\Users\UsersService;
+use Besoiu\Core\Auth\SessionAuth;
+use Besoiu\Core\Crud\LegacyJsonCrud;
 
 LegacyJsonCrud::prepare();
 
@@ -27,6 +27,17 @@ try {
     $type = $data['type_product'] ?? $data['type'] ?? null;
     if (!$type) {
         json_response(['success' => false, 'message' => 'Lipsește tipul acțiunii (type_product).'], 400);
+    }
+
+    $publicActions = ['login', 'logout'];
+    if (!in_array((string) $type, $publicActions, true)) {
+        if (empty($_SESSION['user_id'])) {
+            json_response(['success' => false, 'message' => 'Autentificare necesară.'], 401);
+        }
+        $csrf = (string) ($data['csrf_token'] ?? $_SERVER['HTTP_X_ADMIN_CSRF'] ?? '');
+        if (!\Besoiu\Core\Auth\AdminCsrf::validate($csrf)) {
+            json_response(['success' => false, 'message' => 'Token CSRF invalid. Reîncarcă pagina.'], 403);
+        }
     }
 
     // —— aici adunăm rezultatul, iar la final facem un singur echo
@@ -139,5 +150,9 @@ try {
     json_response($payload ?? ['success' => false, 'message' => 'Fără payload generat.'], $status);
 
 } catch (\Throwable $e) {
-    json_response(['success' => false, 'message' => 'Eroare: ' . $e->getMessage()], 500);
+    error_log('[crudu_users] ' . $e->getMessage());
+    $message = (getenv('APP_ENV') === 'development' || getenv('APP_ENV') === 'local')
+        ? 'Eroare: ' . $e->getMessage()
+        : 'Eroare internă.';
+    json_response(['success' => false, 'message' => $message], 500);
 }
