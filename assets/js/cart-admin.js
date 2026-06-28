@@ -41,7 +41,7 @@
         clearTimeout(serverCartSyncTimer);
         serverCartSyncTimer = setTimeout(() => {
             syncServerCart(items).catch(() => {});
-        }, 3000);
+        }, 800);
     }
 
     async function fetchShopOrderCsrf(forceRefresh = false) {
@@ -99,11 +99,63 @@
     }
 
     function parsePrice(value) {
-        const normalized = String(value || '')
-            .replace(/[^\d.,]/g, '')
-            .replace(',', '.');
-        const parsed = parseFloat(normalized);
+        let raw = String(value ?? '').trim();
+        if (raw === '' || /la\s*cerere/i.test(raw)) {
+            return 0;
+        }
+
+        raw = raw.replace(/[^\d.,]/g, '');
+        if (raw === '') {
+            return 0;
+        }
+
+        const hasComma = raw.includes(',');
+        const hasDot = raw.includes('.');
+
+        if (hasComma && hasDot) {
+            const lastComma = raw.lastIndexOf(',');
+            const lastDot = raw.lastIndexOf('.');
+            raw = lastComma > lastDot
+                ? raw.replace(/\./g, '').replace(',', '.')
+                : raw.replace(/,/g, '');
+        } else if (hasComma) {
+            const parts = raw.split(',');
+            raw = parts.length === 2 && parts[1].length <= 2
+                ? parts[0].replace(/\./g, '') + '.' + parts[1]
+                : raw.replace(/,/g, '');
+        } else if (hasDot) {
+            const parts = raw.split('.');
+            if (!(parts.length === 2 && parts[1].length <= 2)) {
+                raw = raw.replace(/\./g, '');
+            }
+        }
+
+        const parsed = parseFloat(raw);
         return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    function priceFromElement(root) {
+        if (!root) {
+            return 0;
+        }
+
+        const datasetPrice = root.dataset?.price ?? root.getAttribute?.('data-price') ?? '';
+        if (String(datasetPrice).trim() !== '') {
+            const fromDataset = parsePrice(datasetPrice);
+            if (fromDataset > 0) {
+                return fromDataset;
+            }
+        }
+
+        const newPriceNode = root.querySelector?.('._product-price-new');
+        if (newPriceNode) {
+            const fromNewPrice = parsePrice(newPriceNode.textContent);
+            if (fromNewPrice > 0) {
+                return fromNewPrice;
+            }
+        }
+
+        return parsePrice(textFrom(root, '._product-price') || textFrom(root, '.new-price') || textFrom(root, '.price-box'));
     }
 
     function formatMoney(value) {
@@ -426,7 +478,7 @@
 
         const productName = source.dataset.name || textFrom(source, '._product-card-name');
         const oem = source.dataset.oem || textFrom(source, '._product-oem').replace(/^OEM:\s*/i, '');
-        const price = parsePrice(source.dataset.price || textFrom(source, '._product-price'));
+        const price = priceFromElement(source);
         const quantity = 1;
         const specs = getProductSpecsFromSource(source);
 
@@ -450,7 +502,7 @@
         const quantity = Math.max(1, parseInt(details.querySelector('.horizontal-quantity')?.value || '1', 10) || 1);
         const productName = textFrom(details, '.product-title') || 'Produs site';
         const productCode = textFrom(details, '.single-info-list li strong') || '';
-        const price = parsePrice(textFrom(details, '.new-price') || textFrom(details, '.price-box'));
+        const price = priceFromElement(details);
         const productId = details.dataset.productId || '';
 
         return {
@@ -828,6 +880,76 @@
         ].join('\n');
     }
 
+    async function fetchCartQuote(cart) {
+        const missing = cart.find((item) => !/^[a-f0-9]{16}$/i.test(String(item.product_id || item.randomn_id || '').trim()));
+        if (missing) {
+            throw new Error('Un produs din cos nu are ID valid de magazin. Reincarca pagina si adauga produsul din nou.');
+        }
+
+        const csrfToken = await fetchShopOrderCsrf();
+        const response = await fetch(ORDERS_ENDPOINT, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-BPA-CSRF': csrfToken,
+            },
+            body: JSON.stringify({
+                type_product: 'quote',
+                csrf_token: csrfToken,
+                items: cart.map((item) => ({
+                    randomn_id: String(item.product_id || item.randomn_id || '').toLowerCase(),
+                    quantity: Number(item.quantity) || 1,
+                })),
+            }),
+        });
+
+        const result = await response.json();
+        if (response.status === 403) {
+            shopOrderCsrfToken = '';
+            throw new Error(result.message || 'Sesiune expirata. Reincarca pagina.');
+        }
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || 'Nu am putut valida preturile din catalog.');
+        }
+
+        return result.data;
+    }
+
+    function applyQuoteToCart(cart, quote) {
+        const byId = {};
+        for (const line of quote?.lines || []) {
+            byId[String(line.randomn_id || '').toLowerCase()] = line;
+        }
+
+        let changed = false;
+        const next = cart.map((item) => {
+            const id = String(item.product_id || item.randomn_id || '').toLowerCase();
+            const line = byId[id];
+            if (!line) {
+                return item;
+            }
+            const newPrice = Number(line.unit_price) || 0;
+            const qty = Number(item.quantity) || 1;
+            if (Math.abs(newPrice - (Number(item.price) || 0)) > 0.009) {
+                changed = true;
+            }
+            return {
+                ...item,
+                price: newPrice,
+                total_amount: newPrice * qty,
+                product_name: line.product_name || item.product_name,
+                product_image: line.product_image || item.product_image,
+            };
+        });
+
+        return {
+            cart: next,
+            changed,
+            total_amount: Number(quote?.total_amount) || getCartTotal(next),
+        };
+    }
+
     async function sendCartToAdmin(cart, checkoutData, notesPrefix) {
         const missingIdItem = cart.find((item) => !(item.product_id || item.randomn_id));
         if (missingIdItem) {
@@ -900,7 +1022,7 @@
     }
 
     async function handleSubmitOrder(button) {
-        const cart = readCart();
+        let cart = readCart();
         if (cart.length === 0) {
             showCartMessage('Cosul este gol.', true);
             return;
@@ -909,6 +1031,21 @@
         let checkoutData;
         try {
             checkoutData = collectCheckoutData();
+        } catch (error) {
+            showCartMessage(error.message, true);
+            return;
+        }
+
+        try {
+            const quote = await fetchCartQuote(cart);
+            const applied = applyQuoteToCart(cart, quote);
+            if (applied.changed) {
+                writeCart(applied.cart);
+                renderCartPage();
+                window.dispatchEvent(new CustomEvent('besoiu:cart-updated'));
+                cart = applied.cart;
+                showCartMessage('Preturile au fost sincronizate cu catalogul magazinului.', false);
+            }
         } catch (error) {
             showCartMessage(error.message, true);
             return;
@@ -971,10 +1108,17 @@
             return;
         }
 
+        const productId = String(product.product_id || product.randomn_id || '').trim();
+        if (productId.startsWith('epiesa_') || (productId && !/^[a-f0-9]{16}$/i.test(productId))) {
+            showCartMessage('Acest produs nu poate fi comandat online. Contacteaza-ne pe WhatsApp.', true);
+            return;
+        }
+
         button.disabled = true;
         addToLocalCart(product);
         showCartMessage('Produs adaugat in cos. Comanda ramane salvata local pana la confirmare.', false);
         window.dispatchEvent(new CustomEvent('besoiu:cart-updated'));
+        window.dispatchEvent(new CustomEvent('besoiu:product-added', { detail: product }));
         button.disabled = false;
     }
 
@@ -1595,7 +1739,7 @@
                     <div class="ci-info">
                         <div class="ci-name">${escapeHtml(item.product_name)}</div>
                         <div class="ci-meta">${item.oem ? 'OEM: ' + escapeHtml(item.oem) + ' · ' : ''}${unitPrice}/buc</div>
-                        <span class="ci-stock green"><i class="fa-solid fa-circle-check"></i> În stoc</span>
+                        <span class="ci-stock ${item.in_stock === false ? 'red' : 'green'}"><i class="fa-solid fa-circle-check"></i> ${item.in_stock === false ? 'Stoc epuizat' : 'In stoc'}</span>
                     </div>
                     <div class="ci-qty">
                         <button type="button" class="ci-qty-btn minus" data-cart-qty-dec="${index}"><i class="fa-solid fa-minus"></i></button>

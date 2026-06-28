@@ -9,6 +9,15 @@
     var catalogSearchDebounce = null;
     var stockSearchTimer = null;
 
+    const catalogNotices = document.getElementById('catalog-notices');
+    if (productGrid.dataset.catalogTruncated === '1' && catalogNotices) {
+        var total = parseInt(productGrid.dataset.catalogTotal || '0', 10);
+        var loaded = parseInt(productGrid.dataset.catalogLoaded || '0', 10);
+        if (total > loaded) {
+            catalogNotices.innerHTML = '<div class="catalog-notice">Afisam <strong>' + loaded + '</strong> din <strong>' + total + '</strong> produse. Foloseste filtrele sau cautarea pentru rezultate mai precise.</div>';
+        }
+    }
+
     let allProducts = Array.from(productGrid.querySelectorAll('._product-card'));
 
     function productCardSlot(card) {
@@ -490,7 +499,7 @@
 
     function syncPriceRangeFromProducts() {
         const prices = allProducts
-            .map(function(p) { return parseInt(p.dataset.price || '0', 10); })
+            .map(function(p) { return parseFloat(p.dataset.price || '0'); })
             .filter(function(p) { return Number.isFinite(p) && p > 0; });
 
         if (!prices.length) return;
@@ -823,7 +832,7 @@
             var category = normalize(product.dataset.category);
             var subcategory = normalize(product.dataset.subcategory || '');
             var marca = normalize(product.dataset.marca || '');
-            var price = parseInt(product.dataset.price, 10);
+            var price = parseFloat(product.dataset.price || '0');
             var oem = normalize(product.dataset.oem || '');
 
             var matchesSearch = !query || name.includes(query) || oem.includes(query) || productSearchText(product).includes(query);
@@ -839,8 +848,8 @@
         filtered.sort(function(a, b) {
             var aName = (a.dataset.name || '').toLowerCase();
             var bName = (b.dataset.name || '').toLowerCase();
-            var aPrice = parseInt(a.dataset.price, 10) || 0;
-            var bPrice = parseInt(b.dataset.price, 10) || 0;
+            var aPrice = parseFloat(a.dataset.price || '0') || 0;
+            var bPrice = parseFloat(b.dataset.price || '0') || 0;
             var aTime = getDeliveryTime(a);
             var bTime = getDeliveryTime(b);
 

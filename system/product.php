@@ -4,7 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/note-html.php';
 
 use Config\Database;
-use Evasystem\Controllers\Produse\ProduseService;
+use Besoiu\Controllers\Produse\ProduseService;
 
 if (!function_exists('besoiu_catalog_h')) {
     function besoiu_catalog_h($value): string
@@ -47,7 +47,7 @@ if (!function_exists('besoiu_store_price_round_config')) {
                 $config['db_pass']
             );
 
-            $model = new \Evasystem\Core\Furnizori\PriceFormationLogicModel();
+            $model = new \Besoiu\Core\Furnizori\PriceFormationLogicModel();
             $stored = $model->loadConfig() ?? [];
             $mode = mb_strtolower(trim((string) ($stored['global_price_round_mode'] ?? 'none')));
             if (!in_array($mode, ['next_integer', 'round_to'], true)) {
@@ -359,22 +359,30 @@ if (!function_exists('besoiu_product_specs_html')) {
 }
 
 if (!function_exists('besoiu_product_card_actions_html')) {
-    function besoiu_product_card_actions_html(string $productId = ''): string
+    function besoiu_product_card_actions_html(string $productId = '', bool $allowCart = true): string
     {
         $idAttr = $productId !== '' ? ' data-product-id="' . besoiu_catalog_h($productId) . '"' : '';
+        $cartAllowed = $allowCart && $productId !== '' && !str_starts_with($productId, 'epiesa_');
 
-        return '<div class="_product-card-actions">' .
+        $html = '<div class="_product-card-actions">' .
             '<button class="_product-card-btn product_detal" type="button"' . $idAttr . ' title="Detalii produs">' .
                 '<img src="img/icons/22_cutie_produse.svg" alt="" class="_pca-btn-icon" width="18" height="18">' .
                 '<span>Detalii</span>' .
-            '</button>' .
+            '</button>';
+
+        if ($cartAllowed) {
+            $html .=
             '<button class="btn_addtoccard _pca-icon" type="button" title="Adaugă în coș">' .
                 '<img src="img/icons/14_cos_cumparaturi.svg" alt="" class="_pca-btn-icon" width="20" height="20">' .
             '</button>' .
             '<button class="btn_quickbuy _pca-icon" type="button" title="Cumpără cu 1 click">' .
                 '<img src="img/icons/26_plata_card.svg" alt="" class="_pca-btn-icon" width="20" height="20">' .
-            '</button>' .
-            '</div>';
+            '</button>';
+        } else {
+            $html .= '<span class="_product-card-external-hint muted" style="font-size:12px;margin-left:8px;">Disponibil doar prin WhatsApp</span>';
+        }
+
+        return $html . '</div>';
     }
 }
 
@@ -588,7 +596,7 @@ if (!empty($catalogGridMeta['truncated'])) {
             ?>
             <div class="col-12 col-sm-4 product-col"
                  data-name="<?= besoiu_catalog_h($name . ' ' . $code . ' ' . $car . ' ' . $brand) ?>"
-                 data-price="<?= besoiu_catalog_h((string) (int) round($price)) ?>"
+                 data-price="<?= besoiu_catalog_h(number_format($price, 2, '.', '')) ?>"
                  data-time="<?= besoiu_catalog_h((string) $deliveryTime) ?>"
                  data-category="<?= besoiu_catalog_h($category) ?>"
                  data-product-id="<?= besoiu_catalog_h($productId) ?>">

@@ -40,9 +40,15 @@ try {
     }
 
     if ($method === 'POST' && $action === 'init') {
+        shop_order_guard_session_start();
         $payload = json_decode(file_get_contents('php://input') ?: '{}', true);
         if (!is_array($payload)) {
             throw new InvalidArgumentException('Payload invalid.');
+        }
+
+        $csrfToken = (string) ($payload['csrf_token'] ?? $_SERVER['HTTP_X_BPA_CSRF'] ?? '');
+        if (!shop_order_csrf_validate($csrfToken)) {
+            throw new InvalidArgumentException('Sesiune invalida. Reincarca pagina.');
         }
 
         $orderRandomId = (int) ($payload['order_randomn_id'] ?? 0);
@@ -51,7 +57,18 @@ try {
             throw new InvalidArgumentException('Comanda sau suma invalida.');
         }
 
-        $session = shop_payment_create_session($pdo, $orderRandomId, $amount, 'stub');
+        $orderStmt = $pdo->prepare('SELECT total_amount FROM comenzi WHERE randomn_id = ? LIMIT 1');
+        $orderStmt->execute([$orderRandomId]);
+        $orderRow = $orderStmt->fetch(PDO::FETCH_ASSOC);
+        if (!$orderRow) {
+            throw new InvalidArgumentException('Comanda nu exista.');
+        }
+        $expectedAmount = round((float) ($orderRow['total_amount'] ?? 0), 2);
+        if ($expectedAmount <= 0 || abs($expectedAmount - $amount) > 0.01) {
+            throw new InvalidArgumentException('Suma platii nu corespunde comenzii.');
+        }
+
+        $session = shop_payment_create_session($pdo, $orderRandomId, $expectedAmount, 'stub');
         echo json_encode([
             'success' => true,
             'message' => 'Sesiune plata creata.',

@@ -4,8 +4,17 @@ declare(strict_types=1);
 require_once __DIR__ . '/system/public-api-init.php';
 require_once __DIR__ . '/system/storefront-context.php';
 require_once __DIR__ . '/system/tecdoc_stock.php';
+require_once __DIR__ . '/system/shop-order-guard.php';
 
 header('Content-Type: application/json; charset=utf-8');
+
+$action = (string)($_GET['action'] ?? '');
+$rateLimitedActions = ['get_models', 'get_vehicles', 'get_parts', 'get_articles', 'decode_vin', 'search_stock', 'search_oem', 'vitrina', 'status'];
+if (in_array($action, $rateLimitedActions, true) && !shop_order_rate_limit_check(120)) {
+    http_response_code(429);
+    echo json_encode(['success' => false, 'message' => 'Prea multe cereri. Incearca din nou.'], JSON_UNESCAPED_UNICODE);
+    exit;
+}
 
 /** @param array<string, mixed> $payload */
 function tecdoc_proxy_json(array $payload): void
@@ -16,7 +25,6 @@ function tecdoc_proxy_json(array $payload): void
     );
 }
 
-$action = (string)($_GET['action'] ?? '');
 $host = BESOiu_TECDOC_HOST;
 
 try {
@@ -40,11 +48,7 @@ try {
             echo tecdoc_cached_response($url);
             break;
 
-        /* ──────────────────────────────────────────────
-           get_articles — IDENTIC cu codul tău VECHI care mergea
-           Endpoint: /articles/list/type-id/1/vehicle-id/{carId}/category-id/{nodeId}/lang-id/4
-           Răspunsul e ARRAY simplu cu câmpurile: brandName, articleName, articleNumber, img, s3image
-           ────────────────────────────────────────────── */
+        /* get_articles — intersectează stoc BD cu articole TecDoc (lang-id din tecdoc_catalog_lang_id(), RO=21) */
         case 'get_articles':
             $carId  = (int)($_GET['carId']  ?? 0);
             $nodeId = (int)($_GET['nodeId'] ?? 0);
@@ -103,9 +107,16 @@ try {
             break;
 
         case 'status':
+            $automationPaused = false;
+            $guardPath = __DIR__ . '/system/api_automation_guard.php';
+            if (is_file($guardPath)) {
+                require_once $guardPath;
+                $automationPaused = besoiu_api_automation_paused();
+            }
             echo json_encode(besoiu_storefront_sanitize_api_payload([
                 'success' => true,
                 'api_unavailable' => tecdoc_api_is_unavailable(),
+                'automation_paused' => $automationPaused,
                 'rate_limit_only' => !tecdoc_api_is_unavailable() && is_array(tecdoc_last_api_error())
                     && tecdoc_is_rate_limited(
                         (string)(tecdoc_last_api_error()['message'] ?? ''),

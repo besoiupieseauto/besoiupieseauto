@@ -8,7 +8,8 @@ require_once __DIR__ . '/system/note-html.php';
 require_once __DIR__ . '/system/tecdoc_description.php';
 
 use Config\Database;
-use Evasystem\Controllers\Produse\ProduseService;
+use Besoiu\Controllers\Produse\ProduseService;
+use PDO;
 
 function product_page_h($value): string
 {
@@ -75,10 +76,7 @@ function product_page_load_product(): ?array
         $product = $id !== '' ? $service->getIdProduses($id) : null;
 
         if (!$product) {
-            $products = array_values(array_filter($service->getAllProduses(), static function (array $item): bool {
-                return (string) ($item['status'] ?? '1') !== '0';
-            }));
-            $product = $products[0] ?? null;
+            return null;
         }
 
         require_once __DIR__ . '/system/tecdoc_stock.php';
@@ -92,6 +90,28 @@ function product_page_load_product(): ?array
     }
 }
 
+function product_page_stock_label(?array $product): array
+{
+    if (!$product) {
+        return ['in_stock' => false, 'label' => 'Indisponibil', 'schema' => 'https://schema.org/OutOfStock'];
+    }
+
+    $stockRaw = trim((string) ($product['pStock'] ?? ''));
+    $stockNum = is_numeric(str_replace(',', '.', preg_replace('/[^0-9.,]/', '', $stockRaw) ?? ''))
+        ? (float) str_replace(',', '.', preg_replace('/[^0-9.,]/', '', $stockRaw) ?? '')
+        : null;
+
+    if ($stockRaw !== '' && ($stockNum === null || $stockNum <= 0)) {
+        return ['in_stock' => false, 'label' => 'Stoc epuizat', 'schema' => 'https://schema.org/OutOfStock'];
+    }
+
+    if (preg_match('/(epuizat|indisponibil|0)/i', $stockRaw) && ($stockNum === null || $stockNum <= 0)) {
+        return ['in_stock' => false, 'label' => 'Stoc epuizat', 'schema' => 'https://schema.org/OutOfStock'];
+    }
+
+    return ['in_stock' => true, 'label' => 'În stoc · Livrare în 24-48h', 'schema' => 'https://schema.org/InStock'];
+}
+
 function product_page_related_products(?array $current, int $limit = 4): array
 {
     if (!$current) {
@@ -99,6 +119,10 @@ function product_page_related_products(?array $current, int $limit = 4): array
     }
 
     $currentId = trim((string) ($current['randomn_id'] ?? ''));
+    if ($currentId === '' || str_starts_with($currentId, 'epiesa_')) {
+        return [];
+    }
+
     $category = product_page_category($current);
     $brand = trim((string) ($current['pBrand'] ?? ''));
 
@@ -117,50 +141,24 @@ function product_page_related_products(?array $current, int $limit = 4): array
             $config['db_pass']
         );
 
-        $service = new ProduseService();
-        $all = array_values(array_filter($service->getAllProduses(), static function (array $item): bool {
-            return (string) ($item['status'] ?? '1') !== '0';
-        }));
-
-        $scored = [];
-        foreach ($all as $item) {
-            $itemId = trim((string) ($item['randomn_id'] ?? ''));
-            if ($itemId === '' || $itemId === $currentId) {
-                continue;
-            }
-
-            $score = 0;
-            if ($category !== '' && product_page_category($item) === $category) {
-                $score += 2;
-            }
-            if ($brand !== '' && trim((string) ($item['pBrand'] ?? '')) === $brand) {
-                $score += 1;
-            }
-            if ($score > 0) {
-                $scored[] = ['item' => $item, 'score' => $score];
-            }
-        }
-
-        usort($scored, static function (array $a, array $b): int {
-            return $b['score'] <=> $a['score'];
-        });
-
-        $related = array_map(static fn (array $row): array => $row['item'], array_slice($scored, 0, $limit));
-        $relatedIds = array_flip(array_map(static fn (array $item): string => trim((string) ($item['randomn_id'] ?? '')), $related));
-
-        if (count($related) < $limit) {
-            foreach ($all as $item) {
-                if (count($related) >= $limit) {
-                    break;
-                }
-                $itemId = trim((string) ($item['randomn_id'] ?? ''));
-                if ($itemId === '' || $itemId === $currentId || isset($relatedIds[$itemId])) {
-                    continue;
-                }
-                $related[] = $item;
-                $relatedIds[$itemId] = true;
-            }
-        }
+        $pdo = Database::getDB();
+        $stmt = $pdo->prepare(
+            'SELECT id, randomn_id, status, pName, pCode, pOem, pBrand, pMarca, pCar, pCategory, pSubcategory, pPrice, pImages, pBadge, pShipping, pStock, pNote
+             FROM produse
+             WHERE status <> :hidden AND randomn_id <> :current
+               AND (pCategory = :category OR (:brand <> \'\' AND pBrand = :brand2))
+             ORDER BY (pCategory = :category2) DESC, id DESC
+             LIMIT :lim'
+        );
+        $stmt->bindValue(':hidden', '0');
+        $stmt->bindValue(':current', $currentId);
+        $stmt->bindValue(':category', $category);
+        $stmt->bindValue(':category2', $category);
+        $stmt->bindValue(':brand', $brand);
+        $stmt->bindValue(':brand2', $brand);
+        $stmt->bindValue(':lim', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        $related = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
 
         require_once __DIR__ . '/system/tecdoc_stock.php';
 
@@ -173,8 +171,17 @@ function product_page_related_products(?array $current, int $limit = 4): array
     }
 }
 
+$productPageRequestedId = trim((string) ($_GET['id'] ?? ''));
 $productPageProduct = product_page_load_product();
-$productPageId = trim((string) ($_GET['id'] ?? ($productPageProduct['randomn_id'] ?? '')));
+
+if ($productPageRequestedId !== '' && !$productPageProduct) {
+    http_response_code(404);
+    $productPageNotFound = true;
+} else {
+    $productPageNotFound = false;
+}
+
+$productPageId = trim((string) ($productPageRequestedId !== '' ? $productPageRequestedId : ($productPageProduct['randomn_id'] ?? '')));
 $productPageName = trim((string) ($productPageProduct['pName'] ?? 'Produs indisponibil'));
 $productPageCode = trim((string) ($productPageProduct['pCode'] ?? ''));
 $productPageBrand = trim((string) ($productPageProduct['pBrand'] ?? ''));
@@ -186,8 +193,9 @@ $productPageDescription = $productPageProduct
         : tecdoc_resolve_product_description($productPageProduct))
     : 'Produs disponibil în catalogul Besoiu Piese Auto. Pentru compatibilitate exactă, recomandăm verificarea după VIN.';
 $productPageDescriptionPlain = besoiu_note_plain_text($productPageDescription);
-$productPagePrice = product_page_price($productPageProduct['pPrice'] ?? 0);
+$productPagePrice = $productPageProduct ? product_page_price($productPageProduct['pPrice'] ?? 0) : 0;
 $productPagePriceLabel = $productPagePrice > 0 ? number_format($productPagePrice, 2, '.', '') . ' RON' : 'La cerere';
+$productPageStock = product_page_stock_label($productPageProduct);
 $productPageImages = product_page_images($productPageProduct['pImages'] ?? '');
 if (!$productPageImages) {
     $productPageImages = ['assets/images/products/1.jpg'];
@@ -232,8 +240,8 @@ $productPageSchema = [
         'url' => $productPageAbsoluteUrl,
         'priceCurrency' => 'RON',
         'price' => $productPagePrice > 0 ? number_format($productPagePrice, 2, '.', '') : '0.00',
-        'availability' => 'https://schema.org/InStock',
-        'itemCondition' => 'https://schema.org/UsedCondition',
+        'availability' => $productPageStock['schema'],
+        'itemCondition' => 'https://schema.org/NewCondition',
         'seller' => [
             '@type' => 'Organization',
             'name' => 'Besoiu Piese Auto',
@@ -265,6 +273,15 @@ $productPageSchema = [
 
     <?php include_once 'system/header.php'; ?>
 
+    <?php if (!empty($productPageNotFound)): ?>
+    <main id="main-content" class="page-content">
+        <div class="container" style="padding:80px 20px;text-align:center;">
+            <h1>Produs negăsit</h1>
+            <p>Produsul solicitat nu există sau nu mai este disponibil.</p>
+            <a href="/catalog" class="btn btn-primary" style="margin-top:20px;display:inline-block;">Înapoi la catalog</a>
+        </div>
+    </main>
+    <?php else: ?>
     <main id="main-content">
         <div class="container">
 
@@ -280,7 +297,7 @@ $productPageSchema = [
 
                 <div class="prod-gallery">
                     <div class="prod-gallery-main">
-                        <span class="badge-stock">ÎN STOC</span>
+                        <span class="badge-stock"><?= product_page_h($productPageStock['in_stock'] ? 'ÎN STOC' : 'EPUIZAT') ?></span>
                         <div class="gallery-actions">
                             <button type="button" id="prod-share-btn" class="prod-share-btn" aria-label="Distribuie produsul" data-share-url="<?= product_page_h($productPageAbsoluteUrl) ?>" data-share-title="<?= product_page_h($productPageName) ?>"><i class="fa-solid fa-share-nodes"></i></button>
                             <button type="button" id="prod-fav-btn" class="prod-fav-btn" aria-label="Adaugă la favorite" aria-pressed="false" data-product-id="<?= product_page_h($productPageId) ?>"><i class="fa-regular fa-heart"></i></button>
@@ -311,14 +328,11 @@ $productPageSchema = [
                     </div>
                 </div>
 
-                <div class="prod-details product-single-details" data-product-id="<?= product_page_h($productPageId) ?>">
+                <div class="prod-details product-single-details"
+                     data-product-id="<?= product_page_h($productPageId) ?>"
+                     data-price="<?= product_page_h(number_format($productPagePrice, 2, '.', '')) ?>">
                     <div class="prod-category-label"><?= product_page_h($productPageCategory) ?></div>
                     <h1 class="product-title"><?= product_page_h($productPageName) ?></h1>
-
-                    <div class="prod-rating">
-                        <span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
-                        <a href="#product-reviews-content" class="review-link">(1 recenzie)</a>
-                    </div>
 
                     <div class="prod-divider"></div>
 
@@ -329,7 +343,7 @@ $productPageSchema = [
 
                     <div class="stock-badge">
                         <i class="fa-solid fa-circle-check"></i>
-                        În stoc · Livrare în 24-48h
+                        <?= product_page_h($productPageStock['label']) ?>
                     </div>
 
                     <ul class="prod-specs-list">
@@ -557,6 +571,7 @@ $productPageSchema = [
 
         </div>
     </main>
+    <?php endif; ?>
 
     <?php include_once 'system/footer.php'; ?>
 

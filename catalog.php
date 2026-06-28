@@ -9,7 +9,7 @@ $GLOBALS['bpaCmsPage'] = 'catalog';
 
 $catalogMeta = site_content_page('catalog', array_merge(site_defaults_page_meta('catalog'), [
     'title' => 'Catalog Piese Auto',
-    'description' => 'Catalog piese auto - Besoiu Piese Auto. Peste 15.000 de piese pentru toate mărcile auto.',
+    'description' => 'Catalog piese auto - Besoiu Piese Auto. Cauta piese dupa categorie, marca sau cod OEM.',
 ]));
 $catalogBlocks = site_content_blocks('catalog');
 $catalogHero = $catalogBlocks['hero'] ?? site_defaults_blocks('catalog')['hero'];

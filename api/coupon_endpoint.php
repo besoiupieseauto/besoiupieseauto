@@ -9,9 +9,17 @@ error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 require_once __DIR__ . '/../system/shop-cart.php';
 require_once __DIR__ . '/../system/shop-coupon.php';
 
+require_once __DIR__ . '/../system/shop-order-guard.php';
+
 header('Content-Type: application/json; charset=utf-8');
 
 try {
+    if (!shop_order_rate_limit_check(60)) {
+        http_response_code(429);
+        echo json_encode(['success' => false, 'message' => 'Prea multe incercari. Incearca din nou.'], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
     $pdo = shop_db_bootstrap();
     $method = strtoupper((string) ($_SERVER['REQUEST_METHOD'] ?? 'GET'));
 

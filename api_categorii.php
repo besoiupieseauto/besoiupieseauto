@@ -8,7 +8,12 @@ ini_set('display_errors', '0');
 require_once __DIR__ . '/system/public-api-init.php';
 
 header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Origin: *');
+$origin = (string) ($_SERVER['HTTP_ORIGIN'] ?? '');
+$allowedOrigins = ['https://besoiupieseauto.ro', 'https://www.besoiupieseauto.ro'];
+if ($origin !== '' && in_array($origin, $allowedOrigins, true)) {
+    header('Access-Control-Allow-Origin: ' . $origin);
+    header('Vary: Origin');
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);
@@ -18,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 require_once __DIR__ . '/admin/vendor/autoload.php';
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/admin');
-$dotenv->load();
+$dotenv->safeLoad();
 
 $config = require __DIR__ . '/admin/config/config.php';
 Config\Database::getInstance(
@@ -28,7 +33,7 @@ Config\Database::getInstance(
     $config['db_pass']
 );
 
-use Evasystem\Controllers\Produse\ProductFacetsService;
+use Besoiu\Controllers\Produse\ProductFacetsService;
 
 $facetsService = new ProductFacetsService();
 $action = $_GET['action'] ?? 'popup';
@@ -115,6 +120,7 @@ try {
             echo json_encode(['success' => false, 'message' => 'Acțiune necunoscută.']);
     }
 } catch (Throwable $e) {
+    error_log('[api_categorii] ' . $e->getMessage());
     http_response_code(500);
-    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    echo json_encode(['success' => false, 'message' => 'Eroare internă.'], JSON_UNESCAPED_UNICODE);
 }

@@ -2,13 +2,7 @@
 
 declare(strict_types=1);
 
-
-
-require_once dirname(__DIR__) . '/lib/Scraper/EpiesaCatalog.php';
-
-require_once dirname(__DIR__) . '/lib/Scraper/EpiesaCategories.php';
-
-
+require_once dirname(__DIR__) . '/lib/Scraper/ScraperModule.php';
 
 if (!function_exists('besoiu_scraper_home_display_limit')) {
 
@@ -34,7 +28,7 @@ if (!function_exists('besoiu_scraper_catalog_products')) {
 
         try {
 
-            return EpiesaCatalog::listProductsLite(null, $limit, $withImages);
+            return ScraperModule::instance()->epiesaListProductsLite(null, $limit, $withImages);
 
         } catch (Throwable $e) {
 
@@ -94,7 +88,8 @@ if (!function_exists('besoiu_scraper_home_tabs')) {
 
     {
 
-        $counts = EpiesaCatalog::categorySlugCounts();
+        $mod = ScraperModule::instance();
+        $counts = $mod->epiesaCategorySlugCounts();
 
         $total = (int) ($counts['toate'] ?? 0);
 
@@ -108,7 +103,7 @@ if (!function_exists('besoiu_scraper_home_tabs')) {
 
 
 
-        foreach (EpiesaCategories::presets() as $preset) {
+        foreach ($mod->epiesaCategoryPresets() as $preset) {
 
             $slug = $preset['slug'];
 
@@ -136,7 +131,7 @@ if (!function_exists('besoiu_scraper_home_tabs')) {
 
         foreach ($counts as $slug => $count) {
 
-            if ($slug === 'toate' || isset(EpiesaCategories::presets()[$slug])) {
+            if ($slug === 'toate' || isset($mod->epiesaCategoryPresets()[$slug])) {
 
                 continue;
 
@@ -154,7 +149,7 @@ if (!function_exists('besoiu_scraper_home_tabs')) {
 
                 'slug'  => $slug,
 
-                'label' => EpiesaCategories::labelForSlug($slug),
+                'label' => $mod->epiesaCategoryLabel($slug),
 
                 'count' => $count,
 
@@ -578,7 +573,7 @@ if (!function_exists('besoiu_render_scraper_product_card')) {
 
             <div class="_product-price"><?= besoiu_catalog_h($priceLabel) ?></div>
 
-            <?= besoiu_product_card_actions_html($productId) ?>
+            <?= besoiu_product_card_actions_html($productId, false) ?>
 
         </article>
 

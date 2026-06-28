@@ -15,6 +15,7 @@ if (!function_exists('shop_auth_session_start')) {
         session_set_cookie_params([
             'lifetime' => 0,
             'path' => '/',
+            'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
             'httponly' => true,
             'samesite' => 'Lax',
         ]);
