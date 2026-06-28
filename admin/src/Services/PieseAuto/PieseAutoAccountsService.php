@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Evasystem\Services\PieseAuto;
+namespace Besoiu\Services\PieseAuto;
 
 use Config\Database;
-use Evasystem\Exceptions\ValidationException;
+use Besoiu\Exceptions\ValidationException;
 use PDO;
 
 /**
@@ -22,19 +22,35 @@ final class PieseAutoAccountsService
             `id_users` INT UNSIGNED NOT NULL DEFAULT 0,
             `company_name` VARCHAR(255) NULL DEFAULT NULL,
             `email` VARCHAR(255) NOT NULL DEFAULT '',
-            `pas` VARCHAR(255) NOT NULL DEFAULT '',
+            `pas` VARCHAR(512) NOT NULL DEFAULT '',
             `target_user` VARCHAR(64) NOT NULL DEFAULT 'besoiu',
             `created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
             `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             UNIQUE KEY `uniq_randomn_id` (`randomn_id`),
             KEY `idx_id_users` (`id_users`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+        $stmt = $pdo->query("SHOW COLUMNS FROM pieseauto_accounts LIKE 'pas'");
+        $col = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
+        if (is_array($col) && stripos((string) ($col['Type'] ?? ''), 'varchar(512)') === false) {
+            $pdo->exec('ALTER TABLE pieseauto_accounts MODIFY pas VARCHAR(512) NOT NULL DEFAULT \'\'');
+        }
     }
 
     /** @return list<array<string, mixed>> */
     public function listForCurrentUser(): array
     {
         $this->ensureTable();
+        static $migrated = false;
+        if (!$migrated) {
+            $migrated = true;
+            try {
+                $this->migratePlaintextPasswords();
+            } catch (\Throwable $e) {
+                error_log('[pieseauto_accounts] migrate passwords: ' . $e->getMessage());
+            }
+        }
+
         $pdo = Database::getDB();
         $stmt = $pdo->prepare(
             'SELECT randomn_id, id_users, company_name, email, pas, target_user, created_at, updated_at
@@ -60,7 +76,7 @@ final class PieseAutoAccountsService
                 'label' => $companyName !== '' ? $companyName : ('Cont: ' . ($row['email'] ?? '')),
                 'name' => $companyName,
                 'email' => (string) ($row['email'] ?? ''),
-                'pass' => (string) ($row['pas'] ?? ''),
+                'pass' => PieseAutoCredentialCipher::decrypt((string) ($row['pas'] ?? '')),
                 'target' => (string) ($row['target_user'] ?? 'besoiu'),
             ];
         }
@@ -75,7 +91,7 @@ final class PieseAutoAccountsService
 
         $companyName = trim((string) ($data['company_name'] ?? $data['name'] ?? ''));
         $email = trim((string) ($data['email'] ?? ''));
-        $pass = (string) ($data['pas'] ?? $data['password'] ?? '');
+        $passPlain = (string) ($data['pas'] ?? $data['password'] ?? '');
         $targetUser = trim((string) ($data['target_user'] ?? 'besoiu'));
         $rid = trim((string) ($data['ridusers'] ?? $data['randomn_id'] ?? ''));
         $adminId = $this->adminUserId();
@@ -83,20 +99,36 @@ final class PieseAutoAccountsService
         if ($companyName === '') {
             throw new ValidationException('Introdu denumirea firmei.');
         }
-        if ($email === '' || $pass === '') {
-            throw new ValidationException('Completează emailul și parola site-ului.');
+        if ($email === '') {
+            throw new ValidationException('Completează emailul site-ului.');
         }
 
         $randomnId = $rid !== '' ? (int) $rid : random_int(100, 9999);
         $pdo = Database::getDB();
+        $storedPass = '';
 
         if ($rid !== '') {
             $check = $pdo->prepare(
-                'SELECT randomn_id FROM pieseauto_accounts WHERE randomn_id = :rid AND id_users = :uid LIMIT 1'
+                'SELECT pas FROM pieseauto_accounts WHERE randomn_id = :rid AND id_users = :uid LIMIT 1'
             );
             $check->execute(['rid' => $randomnId, 'uid' => $adminId]);
-            if (!$check->fetchColumn()) {
+            $existingRow = $check->fetch(PDO::FETCH_ASSOC);
+            if (!$existingRow) {
                 throw new ValidationException('Contul nu a fost găsit.');
+            }
+
+            $existingStored = (string) ($existingRow['pas'] ?? '');
+            if ($passPlain === '') {
+                $storedPass = $existingStored;
+            } else {
+                $storedPass = PieseAutoCredentialCipher::encrypt($passPlain);
+                if (!PieseAutoCredentialCipher::isEncrypted($existingStored) && $existingStored !== '') {
+                    // Migrare automată: parolă veche plaintext înlocuită la primul save cu parolă nouă
+                }
+            }
+
+            if ($storedPass === '') {
+                throw new ValidationException('Completează parola site-ului.');
             }
 
             $stmt = $pdo->prepare(
@@ -107,12 +139,17 @@ final class PieseAutoAccountsService
             $stmt->execute([
                 'company_name' => $companyName,
                 'email' => $email,
-                'pas' => $pass,
+                'pas' => $storedPass,
                 'target_user' => $targetUser !== '' ? $targetUser : 'besoiu',
                 'rid' => $randomnId,
                 'uid' => $adminId,
             ]);
         } else {
+            if ($passPlain === '') {
+                throw new ValidationException('Completează parola site-ului.');
+            }
+            $storedPass = PieseAutoCredentialCipher::encrypt($passPlain);
+
             $stmt = $pdo->prepare(
                 'INSERT INTO pieseauto_accounts (randomn_id, id_users, company_name, email, pas, target_user)
                  VALUES (:randomn_id, :id_users, :company_name, :email, :pas, :target_user)'
@@ -122,12 +159,40 @@ final class PieseAutoAccountsService
                 'id_users' => $adminId,
                 'company_name' => $companyName,
                 'email' => $email,
-                'pas' => $pass,
+                'pas' => $storedPass,
                 'target_user' => $targetUser !== '' ? $targetUser : 'besoiu',
             ]);
         }
 
         return ['success' => true, 'message' => 'Cont salvat cu succes.', 'randomn_id' => $randomnId];
+    }
+
+    /** Re-criptează parole plaintext existente (rulare manuală sau cron). */
+    public function migratePlaintextPasswords(): int
+    {
+        $this->ensureTable();
+        $pdo = Database::getDB();
+        $stmt = $pdo->prepare('SELECT randomn_id, pas FROM pieseauto_accounts WHERE id_users = :uid');
+        $stmt->execute(['uid' => $this->adminUserId()]);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+        $count = 0;
+
+        foreach ($rows as $row) {
+            $stored = (string) ($row['pas'] ?? '');
+            if ($stored === '' || PieseAutoCredentialCipher::isEncrypted($stored)) {
+                continue;
+            }
+            $encrypted = PieseAutoCredentialCipher::encrypt($stored);
+            $upd = $pdo->prepare('UPDATE pieseauto_accounts SET pas = :pas WHERE randomn_id = :rid AND id_users = :uid');
+            $upd->execute([
+                'pas' => $encrypted,
+                'rid' => (int) ($row['randomn_id'] ?? 0),
+                'uid' => $this->adminUserId(),
+            ]);
+            $count++;
+        }
+
+        return $count;
     }
 
     /** @return array{success:bool,message:string} */

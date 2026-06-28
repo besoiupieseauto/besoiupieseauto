@@ -1,11 +1,12 @@
 -- Marketplace PieseAuto: conturi + rută panou robot
+-- NOTĂ securitate: coloana pas trebuie criptată la scriere (password_hash) în aplicație.
 CREATE TABLE IF NOT EXISTS `pieseauto_accounts` (
     `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `randomn_id` INT UNSIGNED NOT NULL,
     `id_users` INT UNSIGNED NOT NULL DEFAULT 0,
     `company_name` VARCHAR(255) NULL DEFAULT NULL,
     `email` VARCHAR(255) NOT NULL DEFAULT '',
-    `pas` VARCHAR(255) NOT NULL DEFAULT '',
+            `pas` VARCHAR(512) NOT NULL DEFAULT '',
     `target_user` VARCHAR(64) NOT NULL DEFAULT 'besoiu',
     `created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
