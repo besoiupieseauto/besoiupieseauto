@@ -12,7 +12,39 @@ require_once __DIR__ . '/bootstrap.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
+$ip = (string) ($_SERVER['REMOTE_ADDR'] ?? 'unknown');
+$rateDir = __DIR__ . '/data/rate_limits';
+if (!is_dir($rateDir)) {
+    @mkdir($rateDir, 0775, true);
+}
+$rateFile = $rateDir . '/' . sha1($ip) . '.lead.json';
+$now = time();
+$rate = ['count' => 0, 'ts' => $now];
+if (is_file($rateFile)) {
+    $decoded = json_decode((string) file_get_contents($rateFile), true);
+    if (is_array($decoded)) {
+        $rate = $decoded;
+    }
+}
+if (($now - (int) ($rate['ts'] ?? 0)) > 3600) {
+    $rate = ['count' => 0, 'ts' => $now];
+}
+if ((int) ($rate['count'] ?? 0) >= 10) {
+    http_response_code(429);
+    echo json_encode(['ok' => false, 'error' => 'rate_limit']);
+    exit;
+}
+$rate['count'] = (int) ($rate['count'] ?? 0) + 1;
+$rate['ts'] = $now;
+@file_put_contents($rateFile, json_encode($rate), LOCK_EX);
+
 $input = json_decode(file_get_contents('php://input'), true);
+
+if (!empty($input['website'])) {
+    http_response_code(400);
+    echo json_encode(['ok' => false, 'error' => 'invalid']);
+    exit;
+}
 
 if (!$input || empty($input['name']) || empty($input['phone']) || empty($input['msg'])) {
     http_response_code(400);

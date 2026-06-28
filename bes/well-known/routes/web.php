@@ -316,7 +316,15 @@ Route::middleware('auth')->group(function () {
 	});
 });
 
-Route::get('/cron/fancourier-tracking', [FanCourierController::class, 'cronFancourierTracking']);
+Route::get('/cron/fancourier-tracking', function (\Illuminate\Http\Request $request) {
+    $expected = (string) env('FANCOURIER_CRON_KEY', env('LKQ_CRON_SECRET', ''));
+    $provided = (string) $request->query('key', $request->header('X-Cron-Key', ''));
+    if ($expected === '' || $provided === '' || !hash_equals($expected, $provided)) {
+        abort(403, 'Forbidden');
+    }
+
+    return app(\App\Http\Controllers\FanCourierController::class)->cronFancourierTracking();
+});
 
 Route::post('/change-theme', [ProfileController::class, 'changeTheme'])->name('theme.change');
 

@@ -33,12 +33,12 @@ class AutototalService
 
     public function __construct()
     {
-        $this->username = (string) env('AUTOTOTAL_USER_TIMISOARA', 'peciunou');
-        $this->password = (string) env('AUTOTOTAL_PASS_TIMISOARA', 'principala');
-        $this->timisoaraUsername = (string) env('AUTOTOTAL_USER_TIMISOARA', 'peciunou');
-        $this->timisoaraPassword = (string) env('AUTOTOTAL_PASS_TIMISOARA', 'principala');
-        $this->utvinUsername = (string) env('AUTOTOTAL_USER_UTVIN', 'besoiuutvin');
-        $this->utvinPassword = (string) env('AUTOTOTAL_PASS_UTVIN', 'auto2021');
+        $this->username = (string) env('AUTOTOTAL_USER_TIMISOARA', '');
+        $this->password = (string) env('AUTOTOTAL_PASS_TIMISOARA', '');
+        $this->timisoaraUsername = (string) env('AUTOTOTAL_USER_TIMISOARA', '');
+        $this->timisoaraPassword = (string) env('AUTOTOTAL_PASS_TIMISOARA', '');
+        $this->utvinUsername = (string) env('AUTOTOTAL_USER_UTVIN', '');
+        $this->utvinPassword = (string) env('AUTOTOTAL_PASS_UTVIN', '');
     }
 
     /**

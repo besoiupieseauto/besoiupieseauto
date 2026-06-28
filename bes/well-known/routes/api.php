@@ -19,15 +19,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// FanCourier API routes
-Route::prefix('fancourier')->group(function () {
+// FanCourier API routes — autentificare Sanctum obligatorie
+Route::middleware('auth:sanctum')->prefix('fancourier')->group(function () {
 	Route::get('/services', [FanCourierController::class, 'getServices']);
     Route::post('/create-awb', [FanCourierController::class, 'createAwb']);
     Route::post('/calculate-price', [FanCourierController::class, 'calculatePrice']);
 });
 
-// SameDay API routes
-Route::prefix('sameday')->group(function () {
+// SameDay API routes — autentificare Sanctum obligatorie
+Route::middleware('auth:sanctum')->prefix('sameday')->group(function () {
     Route::get('/services', [SamedayController::class, 'getServices']);
     Route::get('/pickup-points', [SamedayController::class, 'getPickupPoints']);
     Route::post('/calculate-price', [SamedayController::class, 'calculatePrice']);

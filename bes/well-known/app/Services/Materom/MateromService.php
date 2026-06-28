@@ -14,8 +14,8 @@ class MateromService
      */
     public function __construct()
     {
-		$this->utvinToken  = (string) env('MATEROM_TOKEN_UTVIN', '1831|7hJ6PE3I5OLAWJ8JnoY6rTqXpPkemvdFgzbQWWpw');
-		$this->timisoaraToken  = (string) env('MATEROM_TOKEN_TIMISOARA', '1838|K12GuqnoQgfQJpdHkuavNXo1kyPIGcsWCha1Uket');
+		$this->utvinToken  = (string) env('MATEROM_TOKEN_UTVIN', '');
+		$this->timisoaraToken  = (string) env('MATEROM_TOKEN_TIMISOARA', '');
         $this->baseUrl = (string) env('MATEROM_API_URL', 'https://api.materom.ro/api');
     }
 	

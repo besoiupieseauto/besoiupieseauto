@@ -37,8 +37,8 @@ class ElitService
     public function __construct() 
 	{
         $this->companyName = (string) env('ELIT_COMPANY_NAME', 'ELIT_RO');
-        $this->login = (string) env('ELIT_LOGIN', 'besoiu2003');
-        $this->password = (string) env('ELIT_PASSWORD', 'Ro31298897!');
+        $this->login = (string) env('ELIT_LOGIN', '');
+        $this->password = (string) env('ELIT_PASSWORD', '');
         $this->applicationId = (string) env('ELIT_APPLICATION_ID', 'eshop');
     }
 

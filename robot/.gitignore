@@ -1,4 +1,6 @@
 .env
+profil_pa_*
+profil_pa_besoiu_*
 data/
 cache_tecdoc/
 *.log

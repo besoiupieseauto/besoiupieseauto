@@ -86,8 +86,8 @@ class SmsService
         try {
             // Get configuration
             $api_endpoint = env('MSGHUB_API_ENDPOINT', 'https://api-test.msghub.cloud/send');
-            $api_key = env('MSGHUB_API_KEY', '$2y$10$3kZirQDAi61bKfGoK00GaOeEoo/FgFCg24v.XKkRveAVHWG9EBPkW');
-            $api_secret = env('MSGHUB_API_SECRET', '$2y$10$a2Aok0g8Nu/VmkbphNkFleYtl/pd3pontI1dd98.UQ.7LYmOrNi2e');
+            $api_key = env('MSGHUB_API_KEY', '');
+            $api_secret = env('MSGHUB_API_SECRET', '');
             $service_id = env('MSGHUB_SERVICE_ID', '2219');
             $sc = env('MSGHUB_SC', '3737');
             

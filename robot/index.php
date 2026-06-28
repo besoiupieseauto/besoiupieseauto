@@ -7,6 +7,9 @@
  */
 
 require_once __DIR__ . '/bootstrap.php';
+require_once __DIR__ . '/auth_guard.php';
+
+header('Content-Type: text/html; charset=utf-8');
 
 $keys = [
     'ULTRAMSG_INSTANCE'      => 'WhatsApp UltraMsg instance',
@@ -31,8 +34,8 @@ foreach ($keys as $k => $label) {
 }
 
 $tools = [
-    ['url' => 'webhook.php?key=' . urlencode((string) env('WEBHOOK_KEY','')), 'name' => 'webhook.php', 'desc' => 'Endpoint webhook UltraMsg (PRINCIPAL — bot WhatsApp).'],
-    ['url' => 'webhook.php?key=' . urlencode((string) env('WEBHOOK_KEY','')) . '&debug=1', 'name' => 'webhook (debug)', 'desc' => 'Vezi ultimele log-uri din webhook.'],
+    ['url' => 'webhook.php', 'name' => 'webhook.php', 'desc' => 'Endpoint webhook UltraMsg (PRINCIPAL — bot WhatsApp). Cheia se configurează în robot/.env.'],
+    ['url' => 'webhook.php?debug=1', 'name' => 'webhook (debug)', 'desc' => 'Vezi ultimele log-uri din webhook (necesită WEBHOOK_KEY valid).'],
     ['url' => 'chat.php',          'name' => 'chat.php',          'desc' => 'Manager conversatii (UI simplu) + webhook varianta veche.'],
     ['url' => 'chat.html',         'name' => 'chat.html',         'desc' => 'UI chat — citeste din api.php?action=fetch.'],
     ['url' => 'api.php?action=fetch', 'name' => 'api.php',        'desc' => 'API simplu UltraMsg + arhiva mesaje.'],
