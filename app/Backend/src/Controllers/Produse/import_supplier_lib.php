@@ -1530,6 +1530,10 @@ function import_detect_supplier_type(array $headers, string $filename): ?string
 
     $name = function_exists('mb_strtolower') ? mb_strtolower($filename, 'UTF-8') : strtolower($filename);
     if (str_contains($name, 'autototal')) return 'AUTOTOTAL';
+    // „Autonet QWP” / „qwp” — înainte de fallback-ul generic Autonet (listă preț).
+    if (str_contains($name, 'qwp') || str_contains($name, 'autonet qwp')) {
+        return 'AUTONET_QWP';
+    }
     if (str_contains($name, 'autonet')) return 'AUTONET';
     if (str_contains($name, 'materom')) return 'MATEROM';
     if (str_contains($name, 'elit')) return 'ELIT';
@@ -1552,6 +1556,15 @@ function import_supplier_type_from_header_row(array $headers): ?string
     $headerSet = [];
     foreach ($headers as $header) {
         $headerSet[import_header_key((string)$header)] = true;
+    }
+
+    // Autonet QWP = cross-ref TecDoc (ArtNr/ReferenceBrand/RefNr), NU listă de preț Autonet.
+    if (
+        isset($headerSet['ARTNR'])
+        && isset($headerSet['REFERENCEBRAND'])
+        && isset($headerSet['REFNR'])
+    ) {
+        return 'AUTONET_QWP';
     }
 
     if (isset($headerSet['ARTARTICLENR']) && isset($headerSet['SUPBRAND'])) {
