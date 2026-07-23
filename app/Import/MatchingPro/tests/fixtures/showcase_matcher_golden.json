@@ -1,0 +1,11 @@
+{
+    "description": "Golden expectations ImportShowcaseTypeMatcher",
+    "cases": [
+        {"name": "Set piese, schimb de ulei cutie ZF", "type": "ulei", "match": false},
+        {"name": "Castrol Edge 5W30 5L", "type": "ulei", "match": true},
+        {"name": "Antigel G12 5L", "type": "lichid", "match": true},
+        {"name": "Termostat lichid racire", "type": "lichid", "match": false},
+        {"name": "Baterie auto 74Ah VARTA", "type": "baterie", "match": true},
+        {"name": "Suport baterie", "type": "baterie", "match": false}
+    ]
+}

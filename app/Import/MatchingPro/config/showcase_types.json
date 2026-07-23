@@ -1,0 +1,68 @@
+{
+    "types": [
+        "ulei",
+        "lichid",
+        "adeziv",
+        "baterie",
+        "bec",
+        "lubrifiant"
+    ],
+    "scan_enabled": [
+        "ulei",
+        "lichid",
+        "baterie",
+        "adeziv"
+    ],
+    "match_min_score": 72,
+    "name_fields": [
+        "title",
+        "name",
+        "matchedName"
+    ],
+    "type_defs": [
+        {
+            "key": "ulei",
+            "label": "Uleiuri — Ulei motor",
+            "epiesa_url": "https://www.epiesa.ro/gmtn1:auto/gmtn2:uleiuri-si-lubrifianti-auto/",
+            "epiesa_subcategory": "Ulei motor"
+        },
+        {
+            "key": "lubrifiant",
+            "label": "Uleiuri — Lubrifianți",
+            "epiesa_url": "https://www.epiesa.ro/gmtn1:auto/gmtn2:uleiuri-si-lubrifianti-auto/",
+            "epiesa_subcategory": "Lubrifianti auto"
+        },
+        {
+            "key": "lichid",
+            "label": "Lichide auto",
+            "epiesa_url": "https://www.epiesa.ro/gmtn1:auto/gmtn2:lichide-auto/",
+            "epiesa_subcategory": "Antigel"
+        },
+        {
+            "key": "baterie",
+            "label": "Electrice — Baterii",
+            "epiesa_url": "https://www.epiesa.ro/gmtn1:auto/gmtn2:electrice-auto/",
+            "epiesa_subcategory": "Baterii auto"
+        },
+        {
+            "key": "bec",
+            "label": "Iluminat — Becuri",
+            "epiesa_url": "https://www.epiesa.ro/gmtn1:auto/gmtn2:iluminat-auto/",
+            "epiesa_subcategory": "Becuri auto"
+        },
+        {
+            "key": "adeziv",
+            "label": "Consumabile — Adezivi",
+            "epiesa_url": "https://www.epiesa.ro/gmtn1:auto/gmtn2:consumabile-service-auto/",
+            "epiesa_subcategory": "Benzi adezive"
+        }
+    ],
+    "epiesa_categories": {
+        "ulei": "gmtn2:uleiuri-si-lubrifianti-auto",
+        "lichid": "gmtn2:lichide-auto",
+        "baterie": "gmtn2:electrice-auto",
+        "bec": "gmtn2:iluminat-auto",
+        "lubrifiant": "gmtn2:uleiuri-si-lubrifianti-auto",
+        "adeziv": "gmtn2:consumabile-service-auto"
+    }
+}

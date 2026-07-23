@@ -77,7 +77,20 @@ storage/scraper/
 *.tflite
 
 app/Backend/storage/tecdoc/
-app/Import/
+# Import runtime (ignorat), dar MatchingPro sursă e pe git
+app/Import/*
+!app/Import/MatchingPro/
+!app/Import/MatchingPro/**
+app/Import/MatchingPro/logs/
+app/Import/MatchingPro/state/
+app/Import/MatchingPro/uploads/
+app/Import/MatchingPro/reports/
+app/Import/MatchingPro/processed/
+app/Import/MatchingPro/suppliers/
+app/Import/MatchingPro/**/__pycache__/
+app/Import/MatchingPro/**/*.pyc
+app/Import/MatchingPro/_scan_result.json
+app/Import/MatchingPro/_test_poze.php
 
 
 admin/storage/tecdoc/

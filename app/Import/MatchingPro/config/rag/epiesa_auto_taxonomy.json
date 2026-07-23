@@ -1,0 +1,105 @@
+{
+    "source": "https://www.epiesa.ro/",
+    "source_label": "Produse auto universale (epiesa.ro — gmtn1:auto)",
+    "base_url": "https://www.epiesa.ro/gmtn1:auto/gmtn2:",
+    "showcase_type_map": {
+        "ulei": {
+            "epiesa_gmtn2": ["uleiuri-si-lubrifianti-auto"],
+            "subcategories": [
+                "Ulei motor",
+                "Ulei transmisie",
+                "Ulei hidraulic",
+                "Ulei motociclete si barci",
+                "Diverse uleiuri si lubrifianti auto"
+            ],
+            "include_signals": [
+                "ulei motor", "ulei cutie", "ulei transmisie", "ulei hidraulic", "ulei atf", "ulei cvt",
+                "5w30", "5w40", "10w40", "0w20", "0w30", "75w90", "80w90", "85w140",
+                "bidon", "sticla", "1l", "4l", "5l", "20l", "208l", "longlife", "dexos"
+            ],
+            "exclude_signals": [
+                "filtru ulei", "set piese", "schimb de ulei", "senzor ulei", "pompa ulei", "radiator ulei",
+                "baie ulei", "garnitura ulei", "kit ulei", "termostat", "filtru"
+            ]
+        },
+        "lubrifiant": {
+            "epiesa_gmtn2": ["uleiuri-si-lubrifianti-auto"],
+            "subcategories": ["Lubrifianti auto", "Diverse uleiuri si lubrifianti auto"],
+            "include_signals": [
+                "spray lubrifiant", "lubrifiant", "wd-40", "wd40", "ungere", "spray ungere", "paste ungere"
+            ],
+            "exclude_signals": [
+                "ulei motor", "5w30", "5w40", "bidon ulei", "filtru", "scule lubrifiere"
+            ]
+        },
+        "lichid": {
+            "epiesa_gmtn2": ["lichide-auto"],
+            "subcategories": ["Antigel", "Apa distilata", "Lichid de frana"],
+            "include_signals": [
+                "antigel", "coolant", "g11", "g12", "g13", "lichid frana", "lichid de frana", "dot3", "dot4", "dot5",
+                "apa distilata", "apă distilată", "drauliquid", "brake fluid", "1l", "5l"
+            ],
+            "exclude_signals": [
+                "termostat", "pompa apa", "pompa de apa", "vas expansiune", "radiator", "furtun", "garnitura lichid",
+                "senzor lichid", "pompa lichid", "schimbator caldura"
+            ]
+        },
+        "baterie": {
+            "epiesa_gmtn2": ["electrice-auto"],
+            "subcategories": ["Baterii auto"],
+            "include_signals": [
+                "baterie auto", "acumulator auto", "acumulator", "baterie 12v", "ah", "cca", "varta", "banner", "exide", "bosch"
+            ],
+            "exclude_signals": [
+                "suport baterie", "borna baterie", "cablu baterie", "capac baterie", "comutator baterie",
+                "intretinere baterii", "incarcator baterie", "tester baterie"
+            ]
+        },
+        "bec": {
+            "epiesa_gmtn2": ["iluminat-auto"],
+            "subcategories": ["Becuri auto", "Leduri auto", "Xenon auto", "Set becuri rezerva"],
+            "include_signals": [
+                "bec auto", "bec h1", "bec h4", "bec h7", "bec h11", "led auto", "xenon", "w5w", "p21w", "d1s", "d2s"
+            ],
+            "exclude_signals": ["faruri led", "proiector", "modul far", "garnitura far", "suport far"]
+        },
+        "adeziv": {
+            "epiesa_gmtn2": ["consumabile-service-auto", "echipamente-si-accesorii-vopsitorie-auto"],
+            "subcategories": ["Benzi adezive", "Vopsea, pigmenti si chimice auto"],
+            "include_signals": ["adeziv", "lipici", "silicon", "chit", "mastic", "etansant"],
+            "exclude_signals": ["banda adeziva decor", "benzi adezive auto", "scotch decorativ"]
+        }
+    },
+    "epiesa_auto_groups": [
+        {
+            "label": "Uleiuri si lubrifianti auto",
+            "gmtn2": "uleiuri-si-lubrifianti-auto",
+            "url": "https://www.epiesa.ro/gmtn1:auto/gmtn2:uleiuri-si-lubrifianti-auto/"
+        },
+        {
+            "label": "Lichide auto",
+            "gmtn2": "lichide-auto",
+            "url": "https://www.epiesa.ro/gmtn1:auto/gmtn2:lichide-auto/"
+        },
+        {
+            "label": "Electrice auto",
+            "gmtn2": "electrice-auto",
+            "url": "https://www.epiesa.ro/gmtn1:auto/gmtn2:electrice-auto/"
+        },
+        {
+            "label": "Iluminat auto",
+            "gmtn2": "iluminat-auto",
+            "url": "https://www.epiesa.ro/gmtn1:auto/gmtn2:iluminat-auto/"
+        },
+        {
+            "label": "Cosmetica auto",
+            "gmtn2": "cosmetica-auto",
+            "url": "https://www.epiesa.ro/gmtn1:auto/gmtn2:cosmetica-auto/"
+        },
+        {
+            "label": "Consumabile service auto",
+            "gmtn2": "consumabile-service-auto",
+            "url": "https://www.epiesa.ro/gmtn1:auto/gmtn2:consumabile-service-auto/"
+        }
+    ]
+}

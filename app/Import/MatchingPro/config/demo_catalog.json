@@ -1,0 +1,92 @@
+[
+  {
+    "internal_sku": "INT-A001",
+    "codes": ["A001", "F001"],
+    "ean": "5901234123457",
+    "name": "Produs A filtru ulei",
+    "brand": "DEMO",
+    "price": 25.50,
+    "stock": 10
+  },
+  {
+    "internal_sku": "INT-B002",
+    "codes": ["B002", "F002"],
+    "ean": "5901234123458",
+    "name": "Produs B disc frana",
+    "brand": "DEMO",
+    "price": 40.00,
+    "stock": 0
+  },
+  {
+    "internal_sku": "INT-C003",
+    "codes": ["C003"],
+    "ean": "",
+    "name": "Produs C ambreiaj",
+    "brand": "DEMO",
+    "price": 12.99,
+    "stock": 5
+  },
+  {
+    "internal_sku": "INT-D004",
+    "codes": ["D004", "F004"],
+    "ean": "5901234123460",
+    "name": "Produs D kit distributie",
+    "brand": "DEMO",
+    "price": 99.99,
+    "stock": 3
+  },
+  {
+    "internal_sku": "INT-E005",
+    "codes": ["E005", "F005"],
+    "ean": "5901234123461",
+    "name": "Produs E bucse brat",
+    "brand": "DEMO",
+    "price": 18.00,
+    "stock": 8
+  },
+  {
+    "internal_sku": "INT-F006",
+    "codes": ["F006"],
+    "ean": "5901234123462",
+    "name": "Produs F rulment roata",
+    "brand": "DEMO",
+    "price": 55.00,
+    "stock": 12
+  },
+  {
+    "internal_sku": "INT-G007",
+    "codes": ["G007", "F007"],
+    "ean": "5901234123463",
+    "name": "Produs G pompa apa",
+    "brand": "DEMO",
+    "price": 120.00,
+    "stock": 2
+  },
+  {
+    "internal_sku": "INT-H008",
+    "codes": ["H008"],
+    "ean": "",
+    "name": "Produs H alternator reconditionat",
+    "brand": "DEMO",
+    "price": 350.00,
+    "stock": 1
+  },
+  {
+    "internal_sku": "INT-I009",
+    "codes": ["I009", "F009"],
+    "ean": "5901234123465",
+    "name": "Produs I senzor ABS",
+    "brand": "DEMO",
+    "price": 45.00,
+    "stock": 15
+  },
+  {
+    "internal_sku": "INT-J010",
+    "codes": ["J010"],
+    "ean": "5901234123466",
+    "name": "Produs J far stanga",
+    "brand": "DEMO",
+    "price": 210.00,
+    "stock": 4
+  }
+]

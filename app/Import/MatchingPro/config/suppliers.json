@@ -1,0 +1,195 @@
+{
+  "furnizor_demo": {
+    "label": "Furnizor Demo (test 10 produse)",
+    "priority": 99,
+    "detection": {
+      "filename_contains": ["furnizor_demo", "test_10"],
+      "headers_all": ["SKU_furnizor", "Nume_produs", "Pret"]
+    },
+    "columns": {
+      "sku": ["SKU_furnizor", "SKU", "Cod"],
+      "ean": ["EAN", "Cod_bare", "EAN13"],
+      "name": ["Nume_produs", "Denumire", "NAME"],
+      "price": ["Pret", "Preț", "PRET", "Price"],
+      "stock": ["Stoc", "Stock", "Cantitate"],
+      "brand": ["Brand", "Producator"]
+    },
+    "sku_map": {
+      "F001": "INT-A001",
+      "F002": "INT-B002",
+      "F004": "INT-D004",
+      "F005": "INT-E005",
+      "F007": "INT-G007",
+      "F009": "INT-I009"
+    },
+    "use_demo_catalog": true
+  },
+  "autototal": {
+    "label": "Autototal",
+    "priority": 1,
+    "detection": {
+      "filename_contains": ["autototal"],
+      "headers_all": ["ART_ARTICLE_NR", "SUP_BRAND"]
+    },
+    "columns": {
+      "sku": ["ART_ARTICLE_NR", "ART ARTICLE NR"],
+      "ean": [],
+      "name": ["DENUMIRE", "ART_NAME", "ART NAME"],
+      "price": ["PRET", "NET PRICE"],
+      "stock": [],
+      "brand": ["SUP_BRAND", "SUP BRAND"]
+    },
+    "extra_codes": ["CODE_ECHIV", "CODE ECHIV"],
+    "match_code_only": true
+  },
+  "autonet_qwp": {
+    "label": "Autonet QWP",
+    "priority": 1,
+    "detection": {
+      "filename_contains": ["qwp"],
+      "headers_all": ["ArtNr", "ReferenceBrand", "RefNr"]
+    },
+    "columns": {
+      "sku": ["RefNr", "REFNR"],
+      "ean": [],
+      "name": [],
+      "price": [],
+      "stock": [],
+      "brand": ["ReferenceBrand", "REFERENCEBRAND"],
+      "art_nr": ["ArtNr", "ARTNR"]
+    },
+    "feed_supplier": "autonet",
+    "force_brand": "QWP",
+    "output_sku_from_art_nr": true,
+    "price_from_feed_list": true,
+    "brand_code_trim": true,
+    "match_code_only": false
+  },
+  "autonet": {
+    "label": "Autonet",
+    "priority": 2,
+    "detection": {
+      "filename_contains": ["autonet"],
+      "headers_all": ["CODARTICOL", "PRODUCATOR"]
+    },
+    "columns": {
+      "sku": ["COD ARTICOL", "CODARTICOL"],
+      "ean": [],
+      "name": ["DENUMIRE ARTICOL", "DENUMIRE", "Denumire"],
+      "price": ["PRET UNITAR", "PRET UNITAR TAXA", "PRET"],
+      "stock": ["STOC"],
+      "brand": ["PRODUCATOR", "PRODUCĂTOR"]
+    },
+    "brand_code_trim": true,
+    "match_code_only": true
+  },
+  "materom": {
+    "label": "Materom",
+    "priority": 3,
+    "detection": {
+      "filename_contains": ["materom"],
+      "headers_all": ["CODNPF", "BRAND"]
+    },
+    "columns": {
+      "sku": ["COD NPF", "CODNPF"],
+      "ean": ["EAN"],
+      "name": ["DENUMIRE", "Denumire"],
+      "price": ["PRET"],
+      "stock": ["STOC"],
+      "brand": ["BRAND"]
+    },
+    "extra_codes": ["EAN"],
+    "match_code_only": true
+  },
+  "elit": {
+    "label": "Elit",
+    "priority": 4,
+    "detection": {
+      "filename_contains": ["elit"],
+      "headers_all": ["SUPPLIERCATALOGNR"]
+    },
+    "columns": {
+      "sku": ["Supplier Catalog Nr.", "Supplier Catalog Nr", "SUPPLIER CATALOG NR"],
+      "ean": [],
+      "name": ["GenArt Description - RO", "GenArt Description - EN", "Description", "DENUMIRE"],
+      "price": ["Net price", "NET PRICE"],
+      "stock": [],
+      "brand": ["LKQ Brand Name", "LKQ BRAND NAME"]
+    }
+  },
+  "intercars": {
+    "label": "Intercars",
+    "priority": 5,
+    "detection": {
+      "filename_contains": ["intercars"],
+      "headers_any": ["ACTIVENO", "ACTIVENO_", "Active No."]
+    },
+    "columns": {
+      "sku": ["P2 Code", "P2 CODE", "Active No.", "Active No", "ACTIVE NO"],
+      "ean": [],
+      "name": ["Description", "Short Description"],
+      "price": ["Unit Price", "UNIT PRICE"],
+      "stock": [],
+      "brand": ["Manufacturer Name", "MANUFACTURER NAME"]
+    },
+    "price_includes_vat": true
+  },
+  "autopartner": {
+    "label": "Autopartner",
+    "priority": 6,
+    "detection": {
+      "filename_contains": ["autopartner"],
+      "headers_all": ["INDEXTECDOC", "PURCHASEPRICE"]
+    },
+    "columns": {
+      "sku": ["INDEX TECDOC", "INDEX AUTOPARTNER"],
+      "ean": [],
+      "name": ["NAME"],
+      "price": ["PURCHASE PRICE"],
+      "stock": [],
+      "brand": ["BRAND CODE TECDOC", "BRAND CODE AUTO PARTNER"]
+    },
+    "match_code_only": false,
+    "brand_aliases": {
+      "BOS": "BOSCH",
+      "REI": "VICTOR REINZ",
+      "CON": "CONTINENTALCTAM",
+      "LMI": "LEMFORDER",
+      "MEY": "MEYLE",
+      "VAL": "VALEO",
+      "MAG": "MAGNETIMARELLI",
+      "MAN": "MANNFILTER",
+      "DAY": "DAYCO",
+      "SAC": "SACHS",
+      "SKF": "SKF",
+      "INA": "INA",
+      "LUK": "LUK"
+    },
+    "positional_fallback": {
+      "min_columns": 8,
+      "sku": 0,
+      "name": 1,
+      "price": 5,
+      "brand": 3,
+      "extra_columns": {
+        "INDEX TECDOC": 0,
+        "OEM DISPLAY": 2
+      }
+    }
+  },
+  "generic": {
+    "label": "Generic CSV",
+    "priority": 50,
+    "detection": {
+      "headers_any": ["SKU", "EAN", "Nume_produs", "Pret"]
+    },
+    "columns": {
+      "sku": ["SKU", "SKU_furnizor", "Cod", "Cod_produs"],
+      "ean": ["EAN", "Cod_bare", "EAN13", "Barcode"],
+      "name": ["Nume_produs", "Nume", "Denumire", "Product", "NAME"],
+      "price": ["Pret", "Preț", "PRET", "Price", "Pret_net"],
+      "stock": ["Stoc", "Stock", "Cantitate", "Qty"],
+      "brand": ["Brand", "Producator", "Manufacturer"]
+    }
+  }
+}
