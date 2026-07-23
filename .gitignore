@@ -34,6 +34,8 @@ admin/storage/cache/*
 !admin/storage/cache/.gitkeep
 admin/storage/logs/*
 !admin/storage/logs/.gitkeep
+admin/storage/rate_limits/
+app/Storage/ai_intel/
 
 # --- Backup-uri DB/aplicație (nu se versionează) ---
 app/Backend/storage/backups/

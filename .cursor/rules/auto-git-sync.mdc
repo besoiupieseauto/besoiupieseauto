@@ -1,0 +1,33 @@
+---
+description: Commit + push automat pe GitHub dupa modificarile din acest proiect
+alwaysApply: true
+---
+
+# Auto Git Sync — besoiupieseauto.ro
+
+Utilizatorul a cerut ca modificarile pe acest proiect sa ajunga automat pe GitHub.
+
+## Branch
+
+- Branch de lucru / sync: `upload/snapshot-20260723`
+- Remote: `origin` → `https://github.com/besoiupieseauto/besoiupieseauto.git`
+
+## La finalul unei sarcini de modificare
+
+Cand ai facut schimbari reale in cod/config (nu doar citiri):
+
+1. Asigura-te ca esti pe `upload/snapshot-20260723` (sau creeaza/checkout acest branch daca lipseste).
+2. `git add` doar fisierele relevante (respecta `.gitignore`; NU comite `.env`, `rclone.conf`, dump-uri SQL, sqlite, feed-uri, tecdoc CSV, vendor, venv).
+3. Creeaza commit cu mesaj scurt in romana/engleza (de ce, nu doar ce).
+4. `git push -u origin HEAD` (fara `--force`).
+5. Spune utilizatorului branch-ul + hash-ul commit-ului.
+
+## Nu cere permisiune pentru commit/push
+
+In acest proiect, commit + push pe `upload/snapshot-20260723` este cerut implicit dupa modificari. Nu amana sync-ul.
+
+## Exceptii
+
+- Nu comite secrete sau fisiere >50MB.
+- Nu face force-push pe `main`.
+- Daca push esueaza (auth/retea/fisier mare), raporteaza eroarea si nu ascunde esecul.
