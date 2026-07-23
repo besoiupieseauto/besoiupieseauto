@@ -1,0 +1,20 @@
+﻿*************************** 1. row ***************************
+       Table: product_compatibilities
+Create Table: CREATE TABLE `product_compatibilities` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `product_id` bigint unsigned NOT NULL,
+  `ttc_typ_id` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `car_brand` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `car_model` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `car_typ` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `car_body` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `car_of_year` varchar(16) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `car_to_year` varchar(16) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `car_kw` varchar(16) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `car_pm` varchar(16) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `car_cc` varchar(16) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_compat_product` (`product_id`),
+  KEY `idx_compat_car` (`car_brand`,`car_model`),
+  KEY `idx_compat_year` (`car_of_year`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
