@@ -1,0 +1,43 @@
+﻿{
+    "id": "produse",
+    "name": "Produse",
+    "version": "1.0.0",
+    "type": "optional",
+    "enabled": true,
+    "description": "Catalog produse magazin — listă, vitrină, scanate, CRUD.",
+    "entry": "Besoiu\\Modules\\Produse\\ProduseModule",
+    "dependencies": [],
+    "permissions": [
+        "module.produse",
+        "produse.manage"
+    ],
+    "workspace": "suppliers",
+    "nav_section": {
+        "group_label": "PRODUSE"
+    },
+    "nav": [{"id":"produse","label":"Lista produse","href":"/admin/product","icon":"package","group":"PRODUSE"}],
+    "provides": {
+        "folder": "produse",
+        "slugs": ["product", "vitrina", "scanned", "addproduse", "editproduse", "produse"],
+        "paths": [
+            "/admin/product",
+            "/admin/vitrina",
+            "/admin/scanned",
+            "/admin/addproduse",
+            "/admin/editproduse",
+            "/admin/produse",
+            "/admin/crudproduse",
+            "/admin/public/product",
+            "/admin/public/vitrina",
+            "/admin/public/scanned",
+            "/admin/public/addproduse",
+            "/admin/public/editproduse",
+            "/admin/public/crudproduse",
+            "/admin/public/api/produse_endpoint.php"
+        ],
+        "crud_key": "produse",
+        "api_scripts": ["produse_endpoint.php"],
+        "quick_actions": ["product", "produse"]
+    },
+    "migrations": []
+}

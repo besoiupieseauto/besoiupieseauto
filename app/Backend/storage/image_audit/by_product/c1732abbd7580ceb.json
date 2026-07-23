@@ -1,0 +1,20 @@
+{
+  "randomn_id": "c1732abbd7580ceb",
+  "title": "Placute Frana Bosch 0 986 460 955",
+  "code": "0986460955",
+  "category": "Frâne",
+  "image_url": "",
+  "verdict": "no_image",
+  "match_score": 0,
+  "image_shows": "Nicio imagine disponibilă — câmpurile image_url și local_image_path sunt goale, image_source=missing.",
+  "issues": [
+    "Produsul nu are imagine încărcată în catalog.",
+    "Nu se poate efectua comparația vizuală cu titlul «Placute Frana Bosch 0 986 460 955».",
+    "Nu se poate confirma setul de plăcuțe de frână Bosch cod 0986460955 din categoria Frâne."
+  ],
+  "recommendation": "replace",
+  "summary_ro": "Produs fără imagine. Audit vizual imposibil; se recomandă găsirea și încărcarea unei fotografii corecte pentru plăcuțe frână Bosch 0986460955 din categoria Frâne.",
+  "analyzed_at": "2026-06-19T12:57:48.880540+00:00",
+  "engine": "cursor-composer-2.5",
+  "model": "composer-2.5"
+}

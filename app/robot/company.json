@@ -1,0 +1,26 @@
+{
+  "_note": "Cheile API au fost mutate in robot/.env. Aici raman doar config-ul de business si referinte la env.",
+  "webhook_key_env": "WEBHOOK_KEY",
+  "demo_notice": "Acesta este un DEMO automat pentru piese auto",
+  "ultramsg_env": {
+    "instance_id": "ULTRAMSG_INSTANCE",
+    "token": "ULTRAMSG_TOKEN"
+  },
+  "openai_env": {
+    "api_key": "OPENAI_KEY",
+    "model": "OPENAI_MODEL"
+  },
+  "company": {
+    "name": "AI Bot Piese (Demo)",
+    "description": "Asistent automat pentru piese auto: cautare dupa OEM, VIN, marca/model/an si afisare produse din catalog."
+  },
+  "terms": {
+    "delivery": "Livrare 24-48h prin curier (DEMO).",
+    "payment": "Ramburs / transfer bancar (DEMO).",
+    "returns": "Retur 14 zile daca piesa nu a fost montata (DEMO).",
+    "warranty": "Garantie 30 zile (DEMO).",
+    "order": "Trimite VIN + piesa dorita + pozitie. Confirmam compatibilitatea.",
+    "contact": "+40 700 000 000 (DEMO)",
+    "hours": "L-V 09:00-18:00"
+  }
+}

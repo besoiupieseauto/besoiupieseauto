@@ -1,0 +1,70 @@
+{
+
+    "id": "dashboard",
+
+    "name": "Dashboard",
+
+    "version": "1.0.0",
+
+    "type": "core",
+
+    "enabled": true,
+
+    "description": "Tablou de bord per zonă de lucru (layout + logică panouri). Pagina, partialele și catalogul de panouri stau în acest modul; ruta /admin/dashboard e servită prin shim din admin/Templates.",
+
+    "entry": "Besoiu\\Modules\\Dashboard\\DashboardModule",
+
+    "dependencies": [],
+
+    "permissions": [
+
+        "dashboard.home",
+
+        "module.dashboard"
+
+    ],
+
+    "workspace": "company",
+
+    "nav": [],
+
+    "provides": {
+
+        "folder": "dashboard",
+
+        "slugs": [
+
+            "dashboard",
+
+            "homepages"
+
+        ],
+
+        "paths": [
+
+            "/admin/dashboard",
+
+            "/admin/public/api/admin_hub_endpoint.php",
+
+            "/admin/public/api/jobs_endpoint.php"
+
+        ],
+
+        "crud_key": null,
+
+        "api_scripts": [
+
+            "admin_hub_endpoint.php",
+
+            "jobs_endpoint.php"
+
+        ],
+
+        "quick_actions": []
+
+    },
+
+    "migrations": []
+
+}
+

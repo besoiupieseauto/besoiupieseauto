@@ -1,0 +1,1 @@
+{"id":"smoke-stale-134520b9","type":"demo.progress","queue":"products","status":"failed","progress":0,"created_at":1784001960,"updated_at":1784009160,"timeout_at":1784005560,"timeout_sec":60,"error":"timeout_pending_no_worker","failed_at":1784009160}

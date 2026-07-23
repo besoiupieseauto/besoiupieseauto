@@ -1,0 +1,19 @@
+{
+  "randomn_id": "4a69d20a599efe0d",
+  "title": "Ulei Cutie Automata 3659",
+  "code": "3659",
+  "category": "Uleiuri și lubrifianți auto",
+  "image_url": "/uploads/products/tecdoc/3659.jpg",
+  "verdict": "match",
+  "match_score": 90,
+  "image_shows": "Sticla gri de 1L BMW Group ATF 1 (Automatic Transmission Fluid / ulei cutie automata), cu eticheta vizibila si capac negru",
+  "issues": [
+    "Codul 3659 nu este vizibil pe ambalaj (probabil cod intern TecDoc/articole)",
+    "Titlul nu mentioneaza marca si modelul specific (BMW Group ATF 1) desi sunt clar vizibile pe eticheta"
+  ],
+  "recommendation": "Pastreaza imaginea; optional actualizeaza titlul la ceva de forma «BMW Group ATF 1 - Ulei cutie automata» pentru a reflecta marca de pe ambalaj",
+  "summary_ro": "Imaginea corespunde produsului: arata ulei de cutie automata (ATF), in concordanta cu titlul, subcategoria si categoria. Ambalajul este BMW Group ATF 1, 1 litru. Codul 3659 pare a fi referinta interna, neafisata pe eticheta.",
+  "analyzed_at": "2026-06-18T06:30:03.456698+00:00",
+  "engine": "cursor-composer-2.5",
+  "model": "composer-2.5"
+}

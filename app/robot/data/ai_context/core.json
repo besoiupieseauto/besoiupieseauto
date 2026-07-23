@@ -1,0 +1,229 @@
+{
+    "updated_at": "2026-07-20T10:10:30+00:00",
+    "event_count": 200,
+    "actors": {
+        "admin": 0,
+        "client": 200,
+        "robot": 0,
+        "cron": 0,
+        "system": 0
+    },
+    "highlights": [
+        {
+            "at": "2026-07-20T07:17:57+00:00",
+            "actor_type": "client",
+            "text": "Client caută oem «9683750480» — NEGĂSIT"
+        },
+        {
+            "at": "2026-07-20T07:17:35+00:00",
+            "actor_type": "client",
+            "text": "Client caută oem «2182E2» — NEGĂSIT"
+        },
+        {
+            "at": "2026-07-19T06:23:37+00:00",
+            "actor_type": "client",
+            "text": "Client caută oem «X3E83» — NEGĂSIT"
+        },
+        {
+            "at": "2026-07-19T03:30:07+00:00",
+            "actor_type": "client",
+            "text": "Client timp pe pagină: 5s pe \/catalog"
+        },
+        {
+            "at": "2026-07-18T19:30:13+00:00",
+            "actor_type": "client",
+            "text": "Client timp pe pagină: 6s pe \/"
+        },
+        {
+            "at": "2026-07-18T17:10:25+00:00",
+            "actor_type": "client",
+            "text": "Client scroll pe site: 25% · \/"
+        },
+        {
+            "at": "2026-07-18T17:10:17+00:00",
+            "actor_type": "client",
+            "text": "Client deschide pagina \/"
+        },
+        {
+            "at": "2026-07-18T17:10:14+00:00",
+            "actor_type": "client",
+            "text": "Client deschide pagina \/"
+        },
+        {
+            "at": "2026-07-18T17:10:14+00:00",
+            "actor_type": "client",
+            "text": "Client timp pe pagină: 43389s pe \/"
+        },
+        {
+            "at": "2026-07-18T17:10:14+00:00",
+            "actor_type": "client",
+            "text": "Client timp pe pagină: 43389s pe \/"
+        },
+        {
+            "at": "2026-07-18T17:10:14+00:00",
+            "actor_type": "client",
+            "text": "Client revine pe tab: \/"
+        },
+        {
+            "at": "2026-07-18T16:19:04+00:00",
+            "actor_type": "client",
+            "text": "Client revine pe tab: \/"
+        },
+        {
+            "at": "2026-07-18T14:51:25+00:00",
+            "actor_type": "client",
+            "text": "Client revine pe tab: \/"
+        },
+        {
+            "at": "2026-07-18T14:51:12+00:00",
+            "actor_type": "client",
+            "text": "Client scroll pe site: 50% · \/"
+        },
+        {
+            "at": "2026-07-18T14:51:04+00:00",
+            "actor_type": "client",
+            "text": "Client caută piesă «bmw x3» — NEGĂSIT"
+        },
+        {
+            "at": "2026-07-18T14:51:02+00:00",
+            "actor_type": "client",
+            "text": "Client caută oem «BMWX3» — NEGĂSIT"
+        },
+        {
+            "at": "2026-07-18T14:50:51+00:00",
+            "actor_type": "client",
+            "text": "Client caută piesă «Cârlig remorcare» — NEGĂSIT"
+        },
+        {
+            "at": "2026-07-18T14:50:49+00:00",
+            "actor_type": "client",
+            "text": "Client caută oem «CRLIGREMORCARE» — NEGĂSIT"
+        },
+        {
+            "at": "2026-07-18T14:50:47+00:00",
+            "actor_type": "client",
+            "text": "Client caută piesă «Cârlig remorcare BMW» — NEGĂSIT"
+        },
+        {
+            "at": "2026-07-18T14:50:45+00:00",
+            "actor_type": "client",
+            "text": "Client caută oem «CRLIGREMORCAREBMW» — NEGĂSIT"
+        },
+        {
+            "at": "2026-07-18T14:50:41+00:00",
+            "actor_type": "client",
+            "text": "Client caută piesă «Cârlig remorcare BMW x3» — NEGĂSIT"
+        },
+        {
+            "at": "2026-07-18T14:50:39+00:00",
+            "actor_type": "client",
+            "text": "Client caută oem «CRLIGREMORCAREBMWX3» — NEGĂSIT"
+        },
+        {
+            "at": "2026-07-18T14:50:15+00:00",
+            "actor_type": "client",
+            "text": "Client caută piesă «Cârlig remorcare BMW x3 e83» — NEGĂSIT"
+        },
+        {
+            "at": "2026-07-18T14:50:09+00:00",
+            "actor_type": "client",
+            "text": "Client scroll pe site: 25% · \/"
+        },
+        {
+            "at": "2026-07-18T14:50:09+00:00",
+            "actor_type": "client",
+            "text": "Client caută piesă «Cârlig remorcare BMW x3 e83» — NEGĂSIT"
+        }
+    ],
+    "admin_recent": [],
+    "client_recent": [
+        "Client caută oem «9683750480» — NEGĂSIT",
+        "Client caută oem «2182E2» — NEGĂSIT",
+        "Client caută oem «X3E83» — NEGĂSIT",
+        "Client timp pe pagină: 5s pe \/catalog",
+        "Client timp pe pagină: 6s pe \/",
+        "Client scroll pe site: 25% · \/",
+        "Client deschide pagina \/",
+        "Client deschide pagina \/",
+        "Client timp pe pagină: 43389s pe \/",
+        "Client timp pe pagină: 43389s pe \/",
+        "Client revine pe tab: \/",
+        "Client revine pe tab: \/"
+    ],
+    "patterns": {
+        "searches_not_found": [
+            {
+                "query_type": "oem",
+                "query_value": "9683750480",
+                "vehicle_label": null,
+                "created_at": "2026-07-20 10:17:57"
+            },
+            {
+                "query_type": "oem",
+                "query_value": "2182E2",
+                "vehicle_label": null,
+                "created_at": "2026-07-20 10:17:35"
+            },
+            {
+                "query_type": "name",
+                "query_value": "Spune doar: OK bridge.",
+                "vehicle_label": null,
+                "created_at": "2026-07-19 14:37:15"
+            },
+            {
+                "query_type": "name",
+                "query_value": "Spune doar: OK bridge.",
+                "vehicle_label": null,
+                "created_at": "2026-07-19 14:37:15"
+            },
+            {
+                "query_type": "name",
+                "query_value": "Spune doar: OK bridge.",
+                "vehicle_label": null,
+                "created_at": "2026-07-19 14:32:21"
+            },
+            {
+                "query_type": "oem",
+                "query_value": "X3E83",
+                "vehicle_label": null,
+                "created_at": "2026-07-19 09:23:37"
+            },
+            {
+                "query_type": "name",
+                "query_value": "Spune doar: OK bridge.",
+                "vehicle_label": null,
+                "created_at": "2026-07-18 21:34:15"
+            },
+            {
+                "query_type": "name",
+                "query_value": "Spune doar: OK bridge.",
+                "vehicle_label": null,
+                "created_at": "2026-07-18 21:25:05"
+            },
+            {
+                "query_type": "name",
+                "query_value": "Toyota Fuel Ec 5W30 5L-NOU 13- - ce sti despre asa ceva",
+                "vehicle_label": null,
+                "created_at": "2026-07-18 21:21:23"
+            },
+            {
+                "query_type": "name",
+                "query_value": "Spray pentru reparatii anvelope ZOLLEX Tire Doctor T-522Z, 450 ml - ce sti despre acest produs",
+                "vehicle_label": null,
+                "created_at": "2026-07-18 20:51:58"
+            }
+        ],
+        "searches_resolved": [],
+        "admin_activity": [],
+        "recent_orders": [],
+        "open_cart_abandonments": 0,
+        "recent_import_activity": []
+    },
+    "robot_directives": [
+        "🎼 Orchestră Live: router alege agent specialist (catalog, coș, comenzi…) — fiecare cu prompt și fișiere proprii în robot\/data\/ai_agents\/.",
+        "📡 Citește core.json + evenimente live; nu presupune stoc\/preț fără confirmare.",
+        "🔍 Clienții caută fără rezultat: «9683750480», «2182E2», «Spune doar: OK bridge.» — propune echivalente, filtre alternative sau escaladare operator.",
+        "👥 Trafic clienți ridicat — prioritizează căutări, produse văzute, coș și timp pe pagină.",
+        "⚡ Ultimul semnal: Client caută oem «9683750480» — NEGĂSIT"
+    ]
+}

@@ -1,0 +1,35 @@
+---
+description: Integrare din proiectul vechi Besoiu — sursă read-only, destinație proiectul activ Laragon
+alwaysApply: true
+---
+
+# Integrare proiect vechi → proiect nou
+
+## Căi fixe
+
+| Rol | Cale |
+|-----|------|
+| **Proiect NOU (modifici aici)** | `F:\laragon\www\besoiupieseauto.ro` |
+| **Proiect VECHI (read-only, extragi date)** | `F:\bakapbesoiu\besoiupieseauto.ro\besoiupieseauto.ro` |
+
+Prompt complet + șabloane: `.cursor/PROMPT_INTEGRARE_PROIECT_VECHI.md`
+
+## Când userul cere integrare / portare / „din vechi”
+
+1. Citește sursa în proiectul **VECHI** (Read/Grep) — **nu scrie** acolo.
+2. Verifică ce există deja în proiectul **NOU** înainte de a duplica cod.
+3. Livrează mapare vechi→nou, apoi implementează **doar în NOU**.
+4. Laravel din `bes/well-known/` → traduce în PHP pur (PDO, templates admin, fără Eloquent/Facades).
+5. Nu copia credențiale hardcodate; folosește `.env`.
+6. Respectă arhitectura nouă: `app/Core`, `app/Modules` (storefront), `app/Backend/src` + `admin/` (ERP).
+
+## Mapare rapidă
+
+- Site vechi `*.php` + `system/` → nou `app/Modules/`, `app/Legacy/`, `app/Views/`
+- Admin vechi `admin/src/` → nou `app/Backend/src/`
+- ERP Laravel `bes/well-known/` → nou `app/Backend/src/` + `admin/Templates/`
+- Prompturi detaliate vechi: `.cursor/PROMPT_TEHNIC_PROIECT.md`, `PROMPT_EXTRAGERE_MODULE.md` (în proiectul vechi)
+
+## Limba
+
+Răspunsuri în română; cod în engleză; UI română; prețuri RON.

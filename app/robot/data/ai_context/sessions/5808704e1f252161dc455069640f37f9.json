@@ -1,0 +1,17 @@
+{
+    "session_id": "cmrliw0wr7o2lkx73",
+    "updated_at": "2026-07-15T03:30:53+00:00",
+    "first_seen_at": "2026-07-15T03:30:53+00:00",
+    "last_page": "\/catalog",
+    "pages": [
+        "\/catalog"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-15T03:30:53+00:00",
+            "action": "time_on_page",
+            "subject": "5s pe \/catalog"
+        }
+    ],
+    "event_count": 1
+}

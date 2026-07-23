@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<title>Plan de deploy — Besoiu Piese Auto pe VPS Linux</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #1f2733;
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 0;
+  }
+  h1 {
+    font-size: 22px;
+    color: #0d47a1;
+    margin: 0 0 4px;
+    border-bottom: 3px solid #0d47a1;
+    padding-bottom: 8px;
+  }
+  .subtitle { color: #64748b; font-size: 11px; margin-bottom: 18px; }
+  h2 {
+    font-size: 15px;
+    color: #0d47a1;
+    margin: 22px 0 8px;
+    border-left: 4px solid #0d47a1;
+    padding-left: 8px;
+  }
+  h3 { font-size: 12.5px; margin: 14px 0 4px; color: #0f172a; }
+  p { margin: 6px 0; }
+  ul { margin: 6px 0; padding-left: 20px; }
+  li { margin: 3px 0; }
+  code {
+    background: #eef2f7;
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 11px;
+    color: #b3261e;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 11px;
+  }
+  th, td {
+    border: 1px solid #cbd5e1;
+    padding: 6px 8px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th { background: #0d47a1; color: #fff; font-weight: 600; }
+  tr:nth-child(even) td { background: #f4f7fb; }
+  .big { font-weight: 700; color: #b3261e; }
+  .ok { font-weight: 700; color: #1b7a34; }
+  .callout {
+    background: #fff7e6;
+    border: 1px solid #f0c36d;
+    border-left: 4px solid #e69500;
+    border-radius: 4px;
+    padding: 10px 12px;
+    margin: 12px 0;
+  }
+  .callout.blue { background: #e8f1fd; border-color: #7fa8e0; border-left-color: #0d47a1; }
+  .muted { color: #64748b; }
+  .avoid-break { break-inside: avoid; }
+  footer { margin-top: 24px; border-top: 1px solid #cbd5e1; padding-top: 8px; color: #94a3b8; font-size: 10px; }
+</style>
+</head>
+<body>
+
+<h1>Plan de deploy — Besoiu Piese Auto pe VPS Linux</h1>
+<div class="subtitle">Magazin + admin pe server &nbsp;·&nbsp; unelte AI/scraper pe altă mașină &nbsp;·&nbsp; Apache &nbsp;·&nbsp; deploy prin git</div>
+
+<h2>Principiul de bază</h2>
+<p>Problema nu e aplicația, ci ce ai lângă ea. Din <span class="big">~8.7 GB</span>, codul real e <span class="ok">~80 MB</span>; restul de ~8.6 GB sunt date regenerabile (<code>imports</code>, <code>tecdoc</code>, <code>feeds</code>, <code>backups</code>) și unelte de dev (Ollama, Python, Playwright, venv-uri) legate de Windows/Laragon.</p>
+<p>Soluția: <b>un pachet de deploy curat de ~80 MB</b> care conține doar aplicația web. Datele grele și AI/scraper rămân pe mașina locală și trimit rezultatele pe server (mecanismul există deja: <code>SUPPLIER_SYNC_TOKEN</code> + agent local supplier_sync).</p>
+
+<h3>Unde e greutatea</h3>
+<table class="avoid-break">
+  <thead><tr><th>Folder</th><th>Mărime</th><th>Ce e</th><th>Pe server?</th></tr></thead>
+  <tbody>
+    <tr><td><code>app/Backend/storage/imports</code></td><td class="big">4.2 GB</td><td>fișiere import furnizori</td><td>Nu (regenerabil)</td></tr>
+    <tr><td><code>app/Backend/storage/tecdoc</code></td><td class="big">2.9 GB</td><td>cache TecDoc</td><td>Nu (regenerabil)</td></tr>
+    <tr><td><code>app/Backend/storage/backups</code></td><td>758 MB</td><td>backup-uri DB</td><td>Nu</td></tr>
+    <tr><td><code>app/Backend/storage/ttc_image_library</code></td><td>234 MB</td><td>imagini</td><td>Parțial</td></tr>
+    <tr><td><code>app/Backend/storage/supplier_feeds</code></td><td>227 MB</td><td>feed-uri</td><td>Nu (regenerabil)</td></tr>
+    <tr><td><code>storage/scraper</code> + <code>tools/</code></td><td>~825 MB</td><td>scraper Python + Playwright + venv</td><td>Nu (rulează local)</td></tr>
+    <tr><td><b>cod real</b> (<code>admin</code>, <code>api</code>, <code>app/*</code>, <code>assets</code>, <code>modules</code>)</td><td class="ok">~80 MB</td><td>aplicația efectivă</td><td class="ok">Da</td></tr>
+  </tbody>
+</table>
+
+<h2>1. Ce EXCLUZI din pachet (nu urcă pe server)</h2>
+<ul>
+  <li><code>app/Backend/storage/imports/**</code>, <code>.../tecdoc/**</code>, <code>.../backups/**</code>, <code>.../supplier_feeds/**</code>, <code>.../ttc_image_library/**</code> — regenerabile / se sincronizează separat</li>
+  <li><code>tools/</code> (scraper-core, stealth-browser-mcp) și <code>storage/scraper/</code> — rulează pe mașina locală</li>
+  <li><code>app/Import/**</code> (motor import/scraper Python, ~298 MB)</li>
+  <li>toate <code>*/venv/</code>, <code>*/.venv/</code>, <code>node_modules/</code></li>
+  <li><code>*.bat</code> (Windows/Laragon), <code>.git/</code>, <code>.cursor/</code>, <code>docs/</code>, fișierele <code>.json</code>/<code>.md</code> de audit din root</li>
+  <li><code>.env</code> reale (le creezi direct pe server, nu le urci)</li>
+</ul>
+
+<h2>2. Ce PĂSTREZI (aplicația reală)</h2>
+<p><code>index.php</code>, <code>.htaccess</code>, <code>robots.php</code>, <code>sitemap.php</code>, <code>admin/</code> (fără <code>storage</code>+<code>vendor</code>), <code>api/</code>, <code>assets/</code>, <code>modules/</code>, <code>app/</code> <b>fără</b> <code>Backend/storage</code>, <code>Import</code>, <code>Lib/scraper</code> — plus <code>app/Backend/vendor/</code> (generat pe server cu <code>composer install --no-dev</code>).</p>
+<p>Foldere goale de recreat pe server (cu drept de scriere): <code>app/Storage/{cache,uploads,seo}</code>, <code>app/Backend/storage/{cache,logs,queue,async_jobs,rate_limits}</code>, <code>admin/storage/{cache,logs}</code>.</p>
+
+<h2>3. Cerințe server (VPS Linux)</h2>
+<ul>
+  <li><b>PHP 8.3</b> (min 8.1) cu extensiile: <code>pdo_mysql</code>, <code>mbstring</code>, <code>curl</code>, <code>zip</code> (pt. phpword), <code>openssl</code> (AES-256-GCM), <code>gd</code>, <code>intl</code>, <code>dom/xml</code>, <code>json</code></li>
+  <li><b>MySQL/MariaDB</b> — 2 baze: <code>besoiupieseauto.ro</code> (principală) + <code>caietcom_comenzilv</code> (legacy „Caiet de comenzi")</li>
+  <li><b>Apache</b> cu <code>mod_rewrite</code> + <code>mod_headers</code> + <code>mod_deflate</code> + <code>mod_expires</code>, <code>AllowOverride All</code></li>
+  <li><b>Composer</b> (pt. build; se poate rula și local înainte de upload)</li>
+  <li>DocumentRoot = rădăcina proiectului (unde e <code>index.php</code>)</li>
+</ul>
+
+<h2>4. Ce dezactivezi/repointezi în <code>.env</code> pe server</h2>
+<p class="muted">AI/scraper pe altă mașină:</p>
+<ul>
+  <li><code>OLLAMA_BASE_URL</code> → IP-ul mașinii locale (sau <code>OLLAMA_ENABLED=0</code> dacă serverul nu cheamă LLM)</li>
+  <li><code>STEALTH_BROWSER_ENABLED=0</code> (scraping doar local)</li>
+  <li><code>ASYNC_FILE_FALLBACK=1</code> (deja setat) → <b>Redis nu e obligatoriu</b> pe server</li>
+  <li><code>API_AUTOMATION_DISABLED=1</code>, <code>AI_AGENT_CYCLE_ENABLED=0</code> (fără cron AI automat)</li>
+  <li><code>APP_ENV=production</code>, <code>APP_URL=https://besoiupieseauto.ro</code></li>
+  <li>căi Windows (<code>F:/Poze</code>, <code>D:/laragon/...</code>) → căi Linux sau golite</li>
+  <li>secrete reale: DB, <code>PAYMENT_WEBHOOK_KEY</code>, <code>PIESEAUTO_CREDENTIAL_KEY</code>, SmartBill/FanCourier/Sameday, <code>SUPPLIER_SYNC_TOKEN</code></li>
+</ul>
+<p>Trebuie configurate <code>.env</code> în 3-4 locuri: <code>app/Config/.env</code>, <code>app/Backend/.env</code>, <code>admin/.env</code>, (opțional <code>robot/.env</code>).</p>
+
+<h2>5. Pașii de deploy</h2>
+<ul>
+  <li>Build local: copiezi doar fișierele de la pct. 2 într-un folder <code>dist/</code> (via listă de excludere)</li>
+  <li><code>composer install --no-dev --optimize-autoloader</code> în <code>app/Backend/</code> (local sau pe server)</li>
+  <li>Urci <code>dist/</code> pe server (git) în DocumentRoot</li>
+  <li>Creezi cele 3-4 <code>.env</code> pe server și completezi secretele</li>
+  <li>Import DB: creezi cele 2 baze + rulezi migrațiile din <code>admin/migrations/*.sql</code></li>
+  <li>Setezi permisiuni scriere pe folderele de storage (pct. 2)</li>
+  <li>Configurezi cron minimal (pct. 6)</li>
+  <li>Verifici: <code>/</code> (magazin), <code>/admin/</code> (login), <code>/api/...</code></li>
+</ul>
+
+<h2>6. Cron minimal pe server (fără AI)</h2>
+<ul>
+  <li><code>php admin/cron_cli/async_stale_job_sweeper.php</code> (la 60s) — curăță joburi blocate</li>
+  <li>sync furnizori / dashboard <b>doar dacă</b> vrei automatizare pe server; altfel importurile vin de pe mașina locală prin supplier_sync</li>
+</ul>
+
+<h2>7. Atenție la deploy prin git</h2>
+<div class="callout">
+<p style="margin-top:0"><b>Important:</b> la deploy prin git ajunge pe server <b>exact ce e comis în repo</b>. <code>.gitignore</code>-ul actual <b>nu</b> exclude tot ce e greu — lipsesc:</p>
+<ul style="margin-bottom:0">
+  <li><code>app/Backend/storage/tecdoc/</code> (2.9 GB)</li>
+  <li><code>app/Backend/storage/supplier_feeds/</code> (227 MB)</li>
+  <li><code>app/Backend/storage/ttc_image_library/</code> (234 MB)</li>
+  <li><code>tools/</code> și <code>storage/scraper/</code> (~825 MB)</li>
+  <li><code>app/Import/</code> (~298 MB)</li>
+</ul>
+</div>
+<p>Dacă acestea au ajuns deja în istoricul git, un simplu <code>git clone</code> le va trage oricum (chiar dacă le adaugi acum în <code>.gitignore</code>, rămân în istoric). Verifică cu <code>git ls-files</code> ce e efectiv versionat înainte de primul deploy — altfel „ușurarea" de la 8.7 GB la ~80 MB nu se întâmplă.</p>
+
+<div class="callout blue">
+<b>Pas următor opțional:</b> scoaterea folderelor grele din repo și din istoric (comenzi <code>git rm --cached</code> + rescriere istoric), plus scripturi automate de build <code>dist/</code>.
+</div>
+
+<footer>
+Besoiu Piese Auto — plan de deploy VPS · generat 20 iulie 2026
+</footer>
+
+</body>
+</html>

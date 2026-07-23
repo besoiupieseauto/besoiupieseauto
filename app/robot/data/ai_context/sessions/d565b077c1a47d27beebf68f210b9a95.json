@@ -1,0 +1,27 @@
+{
+    "session_id": "cmrn35wmxk54aomot",
+    "updated_at": "2026-07-16T05:46:09+00:00",
+    "first_seen_at": "2026-07-16T05:46:09+00:00",
+    "last_page": "\/",
+    "pages": [
+        "\/"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-16T05:46:09+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T05:46:09+00:00",
+            "action": "time_on_page",
+            "subject": "3s pe \/"
+        },
+        {
+            "at": "2026-07-16T05:46:09+00:00",
+            "action": "time_on_page",
+            "subject": "3s pe \/"
+        }
+    ],
+    "event_count": 3
+}

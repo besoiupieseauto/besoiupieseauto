@@ -1,0 +1,1466 @@
+body.besoiu-admin-2026 .bsa-root {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 99990;
+  font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif;
+}
+
+body.besoiu-admin-2026 .bsa-fab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #1abc9c, #16a085);
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(26, 188, 156, 0.35);
+  position: relative;
+}
+
+body.besoiu-admin-2026 .bsa-fab__conn {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #94a3b8;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+}
+
+body.besoiu-admin-2026 .bsa-fab__conn.is-online {
+  background: #22c55e;
+}
+
+body.besoiu-admin-2026 .bsa-fab__conn.is-busy {
+  background: #fbbf24;
+  animation: bsa-pulse 1s ease-in-out infinite;
+}
+
+body.besoiu-admin-2026 .bsa-fab__conn.is-offline {
+  background: #ef4444;
+}
+
+@keyframes bsa-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+body.besoiu-admin-2026 .bsa-fab.is-open {
+  opacity: 0.85;
+}
+
+body.besoiu-admin-2026 .bsa-fab__icon {
+  font-size: 16px;
+}
+
+body.besoiu-admin-2026 .bsa-panel {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 12px);
+  width: min(420px, calc(100vw - 40px));
+  height: min(86vh, 720px);
+  max-height: calc(100vh - 96px);
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
+  overflow: hidden;
+}
+
+body.besoiu-admin-2026 .bsa-panel.hidden {
+  display: none;
+}
+
+body.besoiu-admin-2026 .bsa-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: linear-gradient(180deg, #ecfdf5, #fff);
+  border-bottom: 1px solid rgba(26, 188, 156, 0.2);
+  flex-shrink: 0;
+}
+
+body.besoiu-admin-2026 .bsa-scorecard {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f8fafc;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  flex-shrink: 0;
+  min-height: 44px;
+}
+
+body.besoiu-admin-2026 .bsa-scorecard__loading,
+body.besoiu-admin-2026 .bsa-scorecard__empty {
+  font-size: 11px;
+  color: #64748b;
+}
+
+body.besoiu-admin-2026 .bsa-scorecard__grade {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 13px;
+  flex-shrink: 0;
+  color: #fff;
+}
+
+body.besoiu-admin-2026 .bsa-scorecard__grade--a { background: #059669; }
+body.besoiu-admin-2026 .bsa-scorecard__grade--b { background: #0d9488; }
+body.besoiu-admin-2026 .bsa-scorecard__grade--c { background: #d97706; }
+body.besoiu-admin-2026 .bsa-scorecard__grade--d { background: #dc2626; }
+
+body.besoiu-admin-2026 .bsa-scorecard__tiles {
+  display: flex;
+  flex: 1;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+body.besoiu-admin-2026 .bsa-scorecard__tiles::-webkit-scrollbar {
+  display: none;
+}
+
+body.besoiu-admin-2026 .bsa-scorecard__tile {
+  display: flex;
+  flex-direction: column;
+  min-width: 72px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  flex-shrink: 0;
+}
+
+body.besoiu-admin-2026 .bsa-scorecard__tile--ok { border-color: rgba(5, 150, 105, 0.35); }
+body.besoiu-admin-2026 .bsa-scorecard__tile--warn { border-color: rgba(217, 119, 6, 0.45); }
+body.besoiu-admin-2026 .bsa-scorecard__tile--bad { border-color: rgba(220, 38, 38, 0.45); }
+
+body.besoiu-admin-2026 .bsa-scorecard__tile-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748b;
+  line-height: 1.2;
+}
+
+body.besoiu-admin-2026 .bsa-scorecard__tile-value {
+  font-size: 11px;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+}
+
+body.besoiu-admin-2026 .bsa-scorecard__link {
+  font-size: 10px;
+  font-weight: 600;
+  color: #0d9488;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+body.besoiu-admin-2026 .bsa-scorecard__link:hover {
+  text-decoration: underline;
+}
+
+body.besoiu-admin-2026 .bsa-bot-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+body.besoiu-admin-2026 .bsa-bot-avatar,
+body.besoiu-admin-2026 .bsa-msg__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1abc9c, #16a085);
+  color: #fff;
+  font-weight: 800;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+body.besoiu-admin-2026 .bsa-panel__head strong {
+  color: #0f766e;
+  font-size: 14px;
+}
+
+body.besoiu-admin-2026 .bsa-panel__sub {
+  display: block;
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+body.besoiu-admin-2026 .bsa-close {
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  color: #64748b;
+}
+
+body.besoiu-admin-2026 .bsa-panel__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  padding: 0;
+}
+
+body.besoiu-admin-2026 .bsa-panel__scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 12px 10px 8px;
+  -webkit-overflow-scrolling: touch;
+  background: #f8fafc;
+}
+
+body.besoiu-admin-2026 .bsa-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 120px;
+}
+
+body.besoiu-admin-2026 .bsa-msg {
+  display: flex;
+  gap: 8px;
+  max-width: 100%;
+  animation: bsa-msg-in 0.25s ease-out;
+}
+
+@keyframes bsa-msg-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+body.besoiu-admin-2026 .bsa-msg--user {
+  justify-content: flex-end;
+}
+
+body.besoiu-admin-2026 .bsa-msg__content {
+  max-width: calc(100% - 40px);
+  min-width: 0;
+}
+
+body.besoiu-admin-2026 .bsa-msg__content--user .bsa-msg__body {
+  background: linear-gradient(135deg, #1abc9c, #16a085);
+  color: #fff;
+  border-radius: 14px 14px 4px 14px;
+  padding: 9px 12px;
+  font-size: 13px;
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+body.besoiu-admin-2026 .bsa-msg--bot .bsa-msg__content {
+  flex: 1;
+}
+
+body.besoiu-admin-2026 .bsa-msg__who {
+  font-size: 10px;
+  font-weight: 700;
+  color: #0f766e;
+  margin-bottom: 4px;
+  text-transform: lowercase;
+}
+
+body.besoiu-admin-2026 .bsa-msg--bot .bsa-msg__body {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px 14px 14px 14px;
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+body.besoiu-admin-2026 .bsa-msg--rich .bsa-msg__body {
+  padding: 8px;
+  max-width: 100%;
+}
+
+body.besoiu-admin-2026 .bsa-msg--thinking .bsa-msg__body {
+  background: #ecfdf5;
+  border-color: rgba(26, 188, 156, 0.25);
+}
+
+body.besoiu-admin-2026 .bsa-thinking {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #0f766e;
+  font-style: italic;
+}
+
+body.besoiu-admin-2026 .bsa-thinking__pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1abc9c;
+  animation: bsa-pulse 1s ease-in-out infinite;
+}
+
+body.besoiu-admin-2026 .bsa-chat-intro {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: #334155;
+}
+
+body.besoiu-admin-2026 .bsa-chat-lead {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+body.besoiu-admin-2026 .bsa-chat-muted {
+  margin: 0;
+  color: #64748b;
+  font-size: 12px;
+}
+
+body.besoiu-admin-2026 .bsa-organism-wrap {
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px dashed rgba(26, 188, 156, 0.3);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+body.besoiu-admin-2026 .bsa-organism-wrap summary {
+  cursor: pointer;
+  padding: 6px 10px;
+  font-size: 11px;
+  color: #64748b;
+  user-select: none;
+}
+
+body.besoiu-admin-2026 .bsa-panel__composer.bsa-chat-bar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 12px;
+  border-top: 1px solid #e2e8f0;
+  background: #fff;
+}
+
+body.besoiu-admin-2026 .bsa-chat-bar #bsa-input {
+  flex: 1;
+  min-height: 40px;
+  max-height: 40px;
+  border-radius: 999px;
+  padding: 0 14px;
+  border: 1px solid #cbd5e1;
+  font-size: 13px;
+}
+
+body.besoiu-admin-2026 .bsa-chat-bar .bsa-send {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  margin-top: 0;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 16px;
+  line-height: 1;
+  background: #1abc9c;
+}
+
+body.besoiu-admin-2026 .bsa-chat-bar .bsa-send:disabled {
+  opacity: 0.5;
+}
+
+body.besoiu-admin-2026 .bsa-chat-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+body.besoiu-admin-2026 .bsa-chat-chip {
+  border: 1px solid rgba(26, 188, 156, 0.4);
+  background: #ecfdf5;
+  color: #0f766e;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+body.besoiu-admin-2026 .bsa-chat-chip:hover {
+  background: rgba(26, 188, 156, 0.15);
+}
+
+body.besoiu-admin-2026 .bsa-msg--rich .bsa-cheat {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+body.besoiu-admin-2026 .bsa-panel__composer {
+  flex-shrink: 0;
+  padding: 10px 14px 12px;
+  border-top: 1px solid #e2e8f0;
+  background: linear-gradient(180deg, #f8fafc, #fff);
+  box-shadow: 0 -4px 16px rgba(15, 23, 42, 0.06);
+}
+
+body.besoiu-admin-2026 .bsa-hint {
+  margin: 0 0 8px;
+  font-size: 11px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+body.besoiu-admin-2026 #bsa-input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 9px 11px;
+  font-size: 13px;
+  resize: none;
+  min-height: 52px;
+  max-height: 96px;
+  line-height: 1.4;
+}
+
+body.besoiu-admin-2026 .bsa-send {
+  margin-top: 8px;
+  width: 100%;
+  padding: 9px 14px;
+  border: none;
+  border-radius: 10px;
+  background: #059669;
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+body.besoiu-admin-2026 .bsa-send:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+body.besoiu-admin-2026 .bsa-result {
+  margin: 0 0 10px;
+  max-height: none;
+  overflow: visible;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+body.besoiu-admin-2026 .bsa-result.hidden {
+  display: none;
+}
+
+body.besoiu-admin-2026 .bsa-cheat {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f8fafc;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__head {
+  padding: 12px 14px;
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__title {
+  display: block;
+  font-size: 14px;
+  color: #0f172a;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__time {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  color: #64748b;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__sub {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__stat {
+  padding: 10px 12px;
+  background: #fff;
+  text-align: center;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__stat--warn {
+  background: #fffbeb;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__stat-val {
+  display: block;
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__stat-lbl {
+  display: block;
+  margin-top: 2px;
+  font-size: 10px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__block {
+  padding: 12px 14px;
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__pill {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #ecfdf5;
+  color: #065f46;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__pill em {
+  font-style: normal;
+  opacity: 0.75;
+  margin-left: 4px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  margin: 4px 0 0;
+  padding-bottom: 6px;
+  scrollbar-gutter: stable;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__table-wrap::-webkit-scrollbar {
+  height: 8px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__table-wrap::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__table-wrap::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 4px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__table-wrap::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__table-scroll-hint {
+  margin: 6px 0 0;
+  font-size: 10px;
+  color: #94a3b8;
+  text-align: right;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__table th {
+  text-align: left;
+  padding: 6px 8px;
+  background: #f1f5f9;
+  color: #475569;
+  font-weight: 700;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__table td {
+  padding: 8px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #1e293b;
+  vertical-align: top;
+  max-width: 160px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__table td:last-child {
+  max-width: none;
+  white-space: nowrap;
+}
+
+body.besoiu-admin-2026 .bsa-cheat--supplier_list .bsa-cheat__table td {
+  max-width: 120px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__edit {
+  color: #059669;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__empty,
+body.besoiu-admin-2026 .bsa-cheat__note {
+  margin: 0;
+  font-size: 11px;
+  color: #64748b;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__note {
+  margin-top: 8px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__hints {
+  padding: 10px 14px;
+  background: #fffbeb;
+  border-bottom: 1px solid #fde68a;
+  font-size: 11px;
+  color: #92400e;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__hints p {
+  margin: 0 0 4px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__hints p:last-child {
+  margin-bottom: 0;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__shortcuts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 12px 14px;
+  background: #fff;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: #059669;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+body.besoiu-admin-2026 .bsa-reply {
+  color: #1e293b;
+  margin-bottom: 10px;
+}
+
+body.besoiu-admin-2026 .bsa-repair {
+  padding: 8px 10px;
+  background: #ecfdf5;
+  border-radius: 8px;
+  color: #065f46;
+  margin-bottom: 10px;
+}
+
+body.besoiu-admin-2026 .bsa-steps {
+  margin: 8px 0;
+  padding-left: 1.2em;
+  color: #475569;
+}
+
+body.besoiu-admin-2026 .bsa-suggestions {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+body.besoiu-admin-2026 .bsa-link {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  color: #14b8a6;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+body.besoiu-admin-2026 .bsa-template,
+body.besoiu-admin-2026 .bsa-cat,
+body.besoiu-admin-2026 .bsa-feature {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+body.besoiu-admin-2026 .bsa-template code {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  color: #64748b;
+}
+
+body.besoiu-admin-2026 .bsa-err {
+  color: #b91c1c;
+  padding: 8px;
+  background: #fef2f2;
+  border-radius: 8px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat--action_result {
+  border-color: #86efac;
+}
+
+body.besoiu-admin-2026 .bsa-cheat--action_result .bsa-cheat__head {
+  background: linear-gradient(180deg, #ecfdf5, #fff);
+}
+
+body.besoiu-admin-2026 .bsa-cheat--action_preview {
+  border-color: #fde68a;
+}
+
+body.besoiu-admin-2026 .bsa-cheat--action_preview .bsa-cheat__head {
+  background: linear-gradient(180deg, #fffbeb, #fff);
+}
+
+body.besoiu-admin-2026 .bsa-cheat--action_error {
+  border-color: #fecaca;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__badge-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__confirm-wrap {
+  padding: 12px 14px;
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__pill--agent {
+  background: #f0fdfa;
+  color: #5b21b6;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__tree {
+  display: grid;
+  gap: 10px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__tree-cat {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  font-size: 12px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__tree-cat em {
+  font-style: normal;
+  color: #64748b;
+  font-size: 11px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__tree-sub {
+  margin-top: 4px;
+  margin-left: 12px;
+  padding-left: 8px;
+  border-left: 2px solid #059669;
+  color: #334155;
+  font-size: 11px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__tree-sub--muted {
+  border-left-color: #cbd5e1;
+  color: #94a3b8;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__caps,
+body.besoiu-admin-2026 .bsa-cheat__cmds {
+  margin: 0;
+  padding: 0 0 0 1.1em;
+  font-size: 11px;
+  color: #334155;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__caps a {
+  color: #059669;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__cmds li {
+  margin-bottom: 6px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__cmds li span {
+  display: block;
+  color: #64748b;
+  font-style: italic;
+  margin-top: 2px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat--catalog_structure {
+  border-color: #86efac;
+}
+
+body.besoiu-admin-2026 .bsa-cheat--section_capabilities {
+  border-color: #a5b4fc;
+}
+
+body.besoiu-admin-2026 .bsa-cheat--admin_full_catalog {
+  border-color: #14b8a6;
+}
+
+body.besoiu-admin-2026 .bsa-cheat--adaos_comercial {
+  border-color: #f59e0b;
+}
+
+body.besoiu-admin-2026 .bsa-cheat--supplier_compare {
+  border-color: #2dd4bf;
+}
+
+body.besoiu-admin-2026 .bsa-cheat--supplier_list {
+  border-color: #0ea5e9;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__config {
+  margin: 0;
+  font-size: 11px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__config-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__config-row dt {
+  color: #64748b;
+  font-weight: 600;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__config-row dd {
+  margin: 0;
+  color: #0f172a;
+  text-align: right;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__module {
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__module-head {
+  font-size: 11px;
+  margin-bottom: 4px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__module-head em {
+  color: #64748b;
+  font-style: normal;
+  font-size: 10px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__confirm {
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 10px;
+  background: #dc2626;
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__confirm:hover {
+  background: #b91c1c;
+}
+
+body.besoiu-admin-2026 .bsa-badge {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #f0fdfa;
+  color: #5b21b6;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  body.besoiu-admin-2026 .bsa-root {
+    right: 12px;
+    bottom: 12px;
+  }
+  body.besoiu-admin-2026 .bsa-fab__label {
+    display: none;
+  }
+}
+
+body.besoiu-admin-2026 .bsa-training {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  font-size: 12px;
+}
+
+body.besoiu-admin-2026 .bsa-training--ok {
+  background: #ecfdf5;
+  border-color: #bbf7d0;
+}
+
+body.besoiu-admin-2026 .bsa-training--partial {
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+body.besoiu-admin-2026 .bsa-training--fail {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+body.besoiu-admin-2026 .bsa-training__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+body.besoiu-admin-2026 .bsa-training__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 800;
+  background: #fff;
+}
+
+body.besoiu-admin-2026 .bsa-training--ok .bsa-training__badge { color: #059669; }
+body.besoiu-admin-2026 .bsa-training--partial .bsa-training__badge { color: #d97706; }
+body.besoiu-admin-2026 .bsa-training--fail .bsa-training__badge { color: #dc2626; }
+
+body.besoiu-admin-2026 .bsa-training__label {
+  display: block;
+  font-weight: 700;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+body.besoiu-admin-2026 .bsa-training__block ul {
+  margin: 0 0 8px;
+  padding-left: 18px;
+}
+
+body.besoiu-admin-2026 .bsa-training__hint {
+  margin: 6px 0 0;
+  color: #475569;
+}
+
+body.besoiu-admin-2026 .bsa-training__rate {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+body.besoiu-admin-2026 .bsa-training__btn {
+  flex: 1;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+body.besoiu-admin-2026 .bsa-training__btn--ok { border-color: #86efac; color: #166534; }
+body.besoiu-admin-2026 .bsa-training__btn--bad { border-color: #fca5a5; color: #991b1b; }
+body.besoiu-admin-2026 .bsa-training__btn--learn {
+  border-color: #c4b5fd;
+  background: linear-gradient(135deg, #f0fdfa, #f0fdfa);
+  color: #5b21b6;
+  font-weight: 700;
+}
+
+body.besoiu-admin-2026 .bsa-training__link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #14b8a6;
+  text-decoration: none;
+}
+
+body.besoiu-admin-2026 .bsa-training__summary {
+  margin: 0 0 8px;
+  font-size: 11px;
+  color: #475569;
+}
+
+body.besoiu-admin-2026 .bsa-training__block--ok {
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 8px;
+  padding: 8px;
+}
+
+body.besoiu-admin-2026 .bsa-training__block--fail {
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 8px;
+  padding: 8px;
+}
+
+body.besoiu-admin-2026 .bsa-training__checks-wrap {
+  margin: 8px 0;
+  font-size: 11px;
+}
+
+body.besoiu-admin-2026 .bsa-training__checks-wrap summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: #334155;
+}
+
+body.besoiu-admin-2026 .bsa-training__checks {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}
+
+body.besoiu-admin-2026 .bsa-training__check {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 6px 0;
+  border-top: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+body.besoiu-admin-2026 .bsa-training__check-icon {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  background: #fff;
+}
+
+body.besoiu-admin-2026 .bsa-training__check--pass .bsa-training__check-icon { color: #059669; }
+body.besoiu-admin-2026 .bsa-training__check--warn .bsa-training__check-icon { color: #d97706; }
+body.besoiu-admin-2026 .bsa-training__check--fail .bsa-training__check-icon { color: #dc2626; }
+
+body.besoiu-admin-2026 .bsa-training__check-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+body.besoiu-admin-2026 .bsa-training__check-body strong {
+  font-size: 11px;
+}
+
+body.besoiu-admin-2026 .bsa-training__check-body span {
+  color: #64748b;
+  font-size: 11px;
+}
+
+body.besoiu-admin-2026 .bsa-training__log {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px dashed #cbd5e1;
+}
+
+body.besoiu-admin-2026 .bsa-training__log-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+body.besoiu-admin-2026 .bsa-training__log-stats {
+  font-size: 10px;
+  color: #64748b;
+}
+
+body.besoiu-admin-2026 .bsa-training__log-row p {
+  margin: 0;
+  color: #334155;
+}
+
+body.besoiu-admin-2026 .bsa-training__log-row--operator {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+body.besoiu-admin-2026 .bsa-training__log-id {
+  margin-top: 8px;
+  font-size: 10px;
+  color: #94a3b8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+body.besoiu-admin-2026 .bsa-test-log-wrap {
+  margin-top: 10px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: #f8fafc;
+}
+
+body.besoiu-admin-2026 .bsa-test-log-wrap summary {
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  color: #334155;
+}
+
+body.besoiu-admin-2026 .bsa-test-log {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+body.besoiu-admin-2026 .bsa-test-log__empty {
+  margin: 0;
+  font-size: 11px;
+  color: #64748b;
+}
+
+body.besoiu-admin-2026 .bsa-test-log__item {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+  padding: 6px 8px;
+  font-size: 11px;
+}
+
+body.besoiu-admin-2026 .bsa-test-log__item summary {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+body.besoiu-admin-2026 .bsa-test-log__item--ok { border-color: #bbf7d0; }
+body.besoiu-admin-2026 .bsa-test-log__item--partial { border-color: #fde68a; }
+body.besoiu-admin-2026 .bsa-test-log__item--fail { border-color: #fecaca; }
+
+body.besoiu-admin-2026 .bsa-test-log__badge {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  background: #f1f5f9;
+}
+
+body.besoiu-admin-2026 .bsa-test-log__msg {
+  flex: 1;
+  color: #334155;
+}
+
+body.besoiu-admin-2026 .bsa-test-log__time {
+  font-size: 10px;
+  color: #94a3b8;
+}
+
+body.besoiu-admin-2026 .bsa-reply--focus {
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #14532d;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__sel-col {
+  width: 32px;
+  text-align: center;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__bulk {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__btn--bulk {
+  font-size: 11px;
+  padding: 7px 10px;
+}
+
+body.besoiu-admin-2026 .bsa-organism {
+  margin-bottom: 0;
+  border: 1px solid rgba(26, 188, 156, 0.25);
+  border-radius: 8px;
+  background: rgba(26, 188, 156, 0.04);
+  max-height: none;
+  overflow: visible;
+}
+
+body.besoiu-admin-2026 .bsa-organism--compact .bsa-organism__mod {
+  display: none;
+}
+
+body.besoiu-admin-2026 .bsa-organism--compact .bsa-organism__hint {
+  display: none;
+}
+
+body.besoiu-admin-2026 .bsa-organism--compact .bsa-organism__head::after {
+  content: ' · click pentru exemple';
+  font-weight: 400;
+  color: #6b7280;
+  font-size: 10px;
+}
+
+body.besoiu-admin-2026 .bsa-organism__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(26, 188, 156, 0.15);
+  font-size: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+body.besoiu-admin-2026 .bsa-organism__stats {
+  color: #6b7280;
+  font-size: 11px;
+}
+
+body.besoiu-admin-2026 .bsa-organism__hint,
+body.besoiu-admin-2026 .bsa-organism__empty,
+body.besoiu-admin-2026 .bsa-organism__loading {
+  margin: 0;
+  padding: 6px 10px;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+body.besoiu-admin-2026 .bsa-organism__mod {
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+body.besoiu-admin-2026 .bsa-organism__mod summary {
+  cursor: pointer;
+  padding: 6px 10px;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+body.besoiu-admin-2026 .bsa-organism__mod summary em {
+  font-style: normal;
+  color: #1abc9c;
+  font-size: 11px;
+}
+
+body.besoiu-admin-2026 .bsa-organism__caps {
+  padding: 0 8px 8px;
+}
+
+body.besoiu-admin-2026 .bsa-organism__cap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+body.besoiu-admin-2026 .bsa-organism__cap-label {
+  font-size: 11px;
+  font-weight: 600;
+  flex: 1 1 100%;
+}
+
+body.besoiu-admin-2026 .bsa-organism__cap-badge {
+  font-size: 9px;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #e5e7eb;
+  color: #374151;
+}
+
+body.besoiu-admin-2026 .bsa-organism__cap-badge--query {
+  background: rgba(26, 188, 156, 0.15);
+  color: #0d9488;
+}
+
+body.besoiu-admin-2026 .bsa-organism__cap-badge--action {
+  background: rgba(245, 158, 11, 0.15);
+  color: #b45309;
+}
+
+body.besoiu-admin-2026 .bsa-organism__cap-badge--nav {
+  background: rgba(99, 102, 241, 0.12);
+  color: #4338ca;
+}
+
+body.besoiu-admin-2026 .bsa-organism__ex {
+  font-size: 10px;
+  padding: 4px 8px;
+  border: 1px solid rgba(26, 188, 156, 0.35);
+  border-radius: 999px;
+  background: #fff;
+  color: #0f766e;
+  cursor: pointer;
+}
+
+body.besoiu-admin-2026 .bsa-organism__ex:hover {
+  background: rgba(26, 188, 156, 0.1);
+}
+
+body.besoiu-admin-2026 .bsa-organism-hit {
+  font-size: 11px;
+  color: #0d9488;
+  margin-bottom: 8px;
+  padding: 6px 8px;
+  background: rgba(26, 188, 156, 0.08);
+  border-radius: 6px;
+}
+
+body.besoiu-admin-2026 .bsa-organism-hit em {
+  color: #6b7280;
+  font-style: normal;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__confirm-wrap {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__confirm-q {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #9a3412;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__confirm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__confirm {
+  flex: 1 1 auto;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: #dc2626;
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__confirm:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+body.besoiu-admin-2026 .bsa-cheat__cancel {
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  color: #475569;
+  font-size: 12px;
+  cursor: pointer;
+}

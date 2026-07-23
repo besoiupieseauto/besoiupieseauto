@@ -1,0 +1,1 @@
+(()=>{$(".calendar-draggable").each(function(){new Draggable($(this)[0],{itemSelector:"[data-event]",eventData:function(e){return{title:e.querySelectorAll("[data-title]")[0].innerText,duration:{days:parseInt(e.querySelectorAll("[data-days]")[0].innerText)}}}})});})();

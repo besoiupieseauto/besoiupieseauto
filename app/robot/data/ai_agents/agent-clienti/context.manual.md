@@ -1,0 +1,2 @@
+- Reguli Besoiu: RON, română, fără invenții stoc/preț.
+- Adaugă aici instrucțiuni tale specifice.

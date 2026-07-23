@@ -1,0 +1,1406 @@
+/**
+ * Lista produse — elegant aurora (fără negru), glass cards, motion
+ * Font Awesome + Three.js header ambiance
+ */
+@keyframes pl-aurora-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes pl-float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+@keyframes pl-shine {
+  0% { transform: translateX(-120%) skewX(-18deg); opacity: 0; }
+  40% { opacity: .55; }
+  100% { transform: translateX(220%) skewX(-18deg); opacity: 0; }
+}
+@keyframes pl-pulse-soft {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.35); }
+  50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+}
+@keyframes pl-card-in {
+  from { opacity: 0; transform: translateY(18px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes pl-spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+body.besoiu-admin-2026 .produse-list-page,
+.produse-list-page {
+  --pl-ink: #134e4a;
+  --pl-ink-soft: #0f766e;
+  --pl-muted: #5b7c78;
+  --pl-line: rgba(15, 118, 110, 0.14);
+  --pl-line-strong: rgba(15, 118, 110, 0.22);
+  --pl-surface: #f3fbf8;
+  --pl-card: rgba(255, 255, 255, 0.86);
+  --pl-emerald: #10b981;
+  --pl-teal: #14b8a6;
+  --pl-cyan: #0f766e;
+  --pl-gold: #f59e0b;
+  --pl-coral: #fb7185;
+  --pl-rose: #f43f5e;
+  --pl-shadow: 0 14px 40px rgba(15, 118, 110, 0.1);
+  --pl-shadow-lg: 0 28px 60px rgba(15, 118, 110, 0.16);
+  --pl-radius: 22px;
+  --pl-radius-sm: 16px;
+  --pl-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  max-width: 100%;
+  overflow: visible;
+}
+
+/* Blochează oscilația lățimii (scrollbar on/off) pe pagina produselor */
+body.besoiu-admin-2026:has(.produse-list-page),
+body.besoiu-admin-2026:has(.produse-list-page) .rubick,
+body.besoiu-admin-2026:has(.produse-list-page) .content,
+body.besoiu-admin-2026:has(.produse-list-page) .content__scroll-area {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+}
+
+body.besoiu-admin-2026:has(.produse-list-page) .content__scroll-area {
+  scrollbar-gutter: stable;
+}
+
+body.besoiu-admin-2026 .produse-list-page,
+body.besoiu-admin-2026 .produse-list-page .pl-card,
+body.besoiu-admin-2026 .produse-list-page .pl-btn,
+body.besoiu-admin-2026 .produse-list-page .products-btn-hover,
+body.besoiu-admin-2026 .produse-list-page .products-action-hover,
+body.besoiu-admin-2026 .produse-list-page .admin-tab,
+body.besoiu-admin-2026 .produse-list-page .besoiu-tabs__btn,
+body.besoiu-admin-2026 .produse-list-page .products-filters__toggle,
+body.besoiu-admin-2026 .produse-list-page .products-filters__panel,
+body.besoiu-admin-2026 .produse-list-page .products-filters__toggle .pl-chevron {
+  transition: transform 0.28s var(--pl-ease), box-shadow 0.28s var(--pl-ease),
+    border-color 0.2s ease, background 0.28s ease, color 0.2s ease,
+    opacity 0.2s ease, filter 0.28s ease !important;
+}
+
+/* Page atmosphere */
+body.besoiu-admin-2026 .produse-list-page {
+  position: relative;
+}
+
+body.besoiu-admin-2026 .produse-list-page .admin-panel {
+  position: relative !important;
+  border: 1px solid rgba(20, 184, 166, 0.22) !important;
+  border-radius: 28px !important;
+  /* visible pe ambele axe — clip pe X forțează și Y la auto și taie dropdown-urile */
+  overflow: visible !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  background:
+    radial-gradient(900px 320px at 0% 0%, rgba(34, 211, 238, 0.14), transparent 55%),
+    radial-gradient(700px 280px at 100% 0%, rgba(251, 113, 133, 0.12), transparent 50%),
+    radial-gradient(800px 360px at 50% 100%, rgba(16, 185, 129, 0.1), transparent 55%),
+    linear-gradient(180deg, #ffffff 0%, #f4fbf8 100%) !important;
+  box-shadow: var(--pl-shadow-lg) !important;
+  isolation: isolate;
+}
+
+body.besoiu-admin-2026 .produse-list-page .admin-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 15% 0%, rgba(34, 211, 238, 0.12), transparent 45%),
+    radial-gradient(ellipse at 90% 10%, rgba(251, 113, 133, 0.1), transparent 40%);
+  filter: none;
+  pointer-events: none;
+  z-index: 0;
+  animation: none;
+  border-radius: inherit;
+}
+
+body.besoiu-admin-2026 .produse-list-page .admin-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Hero header + Three.js canvas */
+body.besoiu-admin-2026 .produse-list-page .admin-panel__head,
+.produse-list-page .admin-panel__head {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  min-height: 92px;
+  padding: 22px 26px !important;
+  overflow: hidden !important;
+  border-bottom: none !important;
+  background: var(--b26-header-grad, linear-gradient(105deg, #0f766e 0%, #0a5c50 38%, #0a3d31 72%, #062e25 100%)) !important;
+  background-size: 100% 100% !important;
+  animation: none;
+}
+
+.produse-list-page .admin-panel__head #plThreeCanvas {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  z-index: 0;
+  pointer-events: none !important;
+  opacity: 0.85;
+  display: block !important;
+}
+
+.produse-list-page .admin-panel__head::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 40%, rgba(255, 255, 255, 0.35), transparent 40%),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.2), transparent 35%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.produse-list-page .admin-panel__head::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #f5a623, #0d9488, #0f766e, #0a3d31);
+  background-size: 100% 100%;
+  animation: none;
+  z-index: 2;
+}
+
+.produse-list-page .pl-head-main {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.produse-list-page .pl-head-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #fff;
+  font-size: 1.15rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 24px rgba(15, 118, 110, 0.18);
+  animation: pl-float-y 3.2s var(--pl-ease) infinite;
+}
+
+.produse-list-page .admin-panel__head h2 {
+  position: relative;
+  z-index: 3;
+  margin: 0 !important;
+  color: #fff !important;
+  font-size: 1.2rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  text-shadow: 0 8px 24px rgba(15, 118, 110, 0.25);
+}
+
+.produse-list-page .pl-head-meta {
+  position: relative;
+  z-index: 3;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 8px 14px !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.28) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  color: #fff !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 20px rgba(15, 118, 110, 0.15);
+}
+
+.produse-list-page .pl-head-meta__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  animation: pl-pulse-soft 1.8s var(--pl-ease) infinite;
+}
+
+body.besoiu-admin-2026 .produse-list-page .admin-panel > .grid,
+body.besoiu-admin-2026 .produse-list-page .admin-panel > div:not(.admin-panel__head) {
+  padding: 18px 20px 24px !important;
+}
+
+/* Tabs — elegant pills */
+.produse-list-page .besoiu-tabs--sections,
+.produse-list-page .admin-tabs {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  padding: 8px !important;
+  margin: 0 0 16px !important;
+  border-radius: 18px !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(243, 251, 248, 0.95)) !important;
+  border: 1px solid var(--pl-line) !important;
+  box-shadow: 0 8px 24px rgba(20, 184, 166, 0.06);
+}
+
+.produse-list-page .admin-tab,
+.produse-list-page .besoiu-tabs__btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  border: 1px solid transparent !important;
+  border-radius: 12px !important;
+  background: transparent !important;
+  color: var(--pl-muted) !important;
+  font-weight: 800 !important;
+  font-size: 12px !important;
+  letter-spacing: 0.03em;
+  padding: 10px 16px !important;
+  box-shadow: none !important;
+}
+
+.produse-list-page .besoiu-tabs__btn i {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.produse-list-page .admin-tab--active,
+.produse-list-page .besoiu-tabs__btn--active,
+.produse-list-page .admin-tab[aria-selected="true"] {
+  background: linear-gradient(135deg, #0d9488 0%, #0f766e 55%, #0a3d31 100%) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+  box-shadow: 0 12px 28px rgba(20, 184, 166, 0.35) !important;
+}
+
+.produse-list-page .admin-tab__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.4rem;
+  margin-left: 6px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgba(15, 118, 110, 0.08);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.produse-list-page .admin-tab--active .admin-tab__count,
+.produse-list-page .admin-tab[aria-selected="true"] .admin-tab__count {
+  background: rgba(255, 255, 255, 0.28) !important;
+  color: #fff !important;
+}
+
+/* Toolbar */
+.produse-list-page .products-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.produse-list-page .products-toolbar__primary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--pl-line-strong);
+  border-radius: var(--pl-radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(236, 253, 245, 0.9));
+  box-shadow: var(--pl-shadow);
+  backdrop-filter: blur(8px);
+}
+
+.produse-list-page .products-toolbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.produse-list-page #openAddProduct {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0d9488 0%, #0f766e 50%, #0a3d31 100%) !important;
+  border: none !important;
+  color: #fff !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.02em;
+  border-radius: 14px !important;
+  box-shadow: 0 12px 28px rgba(16, 185, 129, 0.38) !important;
+}
+
+.produse-list-page #openAddProduct::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  animation: pl-shine 2.8s var(--pl-ease) infinite;
+}
+
+.produse-list-page #openAddProduct:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 16px 36px rgba(16, 185, 129, 0.45) !important;
+}
+
+.produse-list-page .products-menu__toggle--hub {
+  border: none !important;
+  background: linear-gradient(135deg, #0f766e 0%, #0a5c50 55%, #0a3d31 100%) !important;
+  color: #fff !important;
+  font-weight: 800 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 10px 24px rgba(34, 211, 238, 0.28) !important;
+}
+
+.produse-list-page #entriesText {
+  color: var(--pl-muted) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+
+/* Filters — sub meniul „Acțiuni” (z-index pozitiv: inputurile rămân clicabile) */
+.produse-list-page .products-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  z-index: 20;
+}
+
+.produse-list-page .products-filters__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  z-index: 20;
+}
+
+.produse-list-page .products-filters__search {
+  position: relative;
+  z-index: 21;
+  flex: 1 1 240px;
+  min-width: 200px;
+  max-width: 380px;
+}
+
+.produse-list-page .products-filters__search input,
+.produse-list-page #filterText {
+  position: relative;
+  z-index: 21;
+  width: 100% !important;
+  height: 46px !important;
+  padding: 0 44px 0 16px !important;
+  border: 1px solid var(--pl-line-strong) !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  font-weight: 600 !important;
+  color: var(--pl-ink) !important;
+  box-shadow: 0 8px 20px rgba(20, 184, 166, 0.06);
+}
+
+.produse-list-page .products-filters__search input:focus-visible {
+  border-color: #14b8a6 !important;
+  box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.16) !important;
+}
+
+.produse-list-page .products-filters__search i,
+.produse-list-page .products-filters__search svg {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  color: #14b8a6;
+  pointer-events: none;
+}
+
+.produse-list-page .products-filters__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 16px;
+  border: 1px solid var(--pl-line-strong);
+  border-radius: 14px;
+  background: linear-gradient(180deg, #fff, #ecfdf5);
+  color: var(--pl-ink-soft);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(20, 184, 166, 0.08);
+}
+
+.produse-list-page .products-filters__toggle.is-open {
+  background: linear-gradient(135deg, #fb7185, #f59e0b) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+}
+
+.produse-list-page .products-filters__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.35rem;
+  height: 1.35rem;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #fff;
+  color: #e11d48;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.produse-list-page .products-quick-filter {
+  height: 46px !important;
+  border: none !important;
+  background: linear-gradient(135deg, #fef3c7, #ffedd5) !important;
+  color: #b45309 !important;
+  font-weight: 800 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 8px 18px rgba(245, 158, 11, 0.15);
+}
+
+.produse-list-page .products-quick-filter.is-active {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+  color: #fff !important;
+}
+
+.produse-list-page .products-quick-filter__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  padding: 0 6px;
+  margin-left: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.45);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.produse-list-page .products-filters__panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--pl-line-strong);
+  border-radius: var(--pl-radius);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(236, 253, 245, 0.9));
+  box-shadow: var(--pl-shadow);
+}
+
+.produse-list-page .products-filters__panel[hidden] {
+  display: none !important;
+}
+
+.produse-list-page .products-filters__panel.is-open {
+  animation: pl-card-in 0.28s var(--pl-ease);
+}
+
+.produse-list-page .products-filters__panel select,
+.produse-list-page .products-filters__panel input[type="text"] {
+  width: 100% !important;
+  height: 42px !important;
+  border: 1px solid var(--pl-line-strong) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: var(--pl-ink) !important;
+}
+
+.produse-list-page .products-bulk-bar,
+.produse-list-page #bulkBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid var(--pl-line);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(236, 253, 245, 0.9), rgba(224, 242, 254, 0.7));
+  position: relative;
+  /* Trebuie peste carduri — altfel dropdown „Acțiuni selecție” e clicabil doar pe zone goale */
+  z-index: 40;
+  overflow: visible;
+}
+
+/* Când e deschis meniul din bulk, ridică bara peste carduri */
+.produse-list-page .products-bulk-bar:has(.products-menu.is-open),
+.produse-list-page #bulkBar:has(.products-menu.is-open),
+body.products-menu-open .produse-list-page .products-bulk-bar,
+body.products-menu-open .produse-list-page #bulkBar {
+  z-index: 80;
+  overflow: visible;
+}
+
+.produse-list-page .products-menu__toggle--accent {
+  border: none !important;
+  background: linear-gradient(135deg, #0d9488, #0a3d31) !important;
+  color: #fff !important;
+  font-weight: 800 !important;
+  border-radius: 12px !important;
+}
+
+/* Stacking: filtre + bulk în spate; Acțiuni + dropdown în față */
+.produse-list-page .products-shop-area,
+.produse-list-page #productsShopArea {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  overflow: visible;
+  max-width: 100%;
+  width: 100%;
+}
+
+/* Fără clip pe X când e deschis un meniu (altfel dropdown-ul e tăiat) */
+body.products-menu-open .produse-list-page,
+body.products-menu-open .produse-list-page .admin-panel,
+body.products-menu-open .produse-list-page .products-shop-area,
+body.products-menu-open .produse-list-page #productsShopArea,
+body.products-menu-open .produse-list-page .products-bulk-bar,
+body.products-menu-open .produse-list-page #bulkBar {
+  overflow: visible !important;
+}
+
+.produse-list-page .products-toolbar {
+  position: relative;
+  z-index: 30;
+  isolation: isolate;
+}
+
+.produse-list-page .products-toolbar__primary {
+  position: relative;
+  z-index: 50;
+}
+
+.produse-list-page .products-filter-banner {
+  position: relative;
+  z-index: 20;
+}
+
+.produse-list-page .products-menu {
+  position: relative;
+  z-index: 100;
+}
+
+.produse-list-page .products-menu.is-open {
+  z-index: 200;
+}
+
+body.products-menu-open .produse-list-page .product-card,
+body.products-menu-open .produse-list-page .pl-card {
+  z-index: 1 !important;
+  transform: none !important;
+}
+
+/* Modern glass cards */
+.produse-list-page .product-card {
+  position: relative;
+  z-index: 1;
+  align-self: stretch;
+  animation: pl-card-in 0.45s var(--pl-ease) backwards;
+}
+
+.produse-list-page .product-card:nth-child(2) { animation-delay: 0.04s; }
+.produse-list-page .product-card:nth-child(3) { animation-delay: 0.08s; }
+.produse-list-page .product-card:nth-child(4) { animation-delay: 0.12s; }
+.produse-list-page .product-card:nth-child(5) { animation-delay: 0.16s; }
+
+.produse-list-page .pl-card {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid rgba(20, 184, 166, 0.18);
+  border-radius: 22px;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 253, 250, 0.92) 100%);
+  box-shadow: var(--pl-shadow);
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+}
+
+.produse-list-page .pl-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #f5a623, #0d9488, #0f766e, #0a3d31);
+  z-index: 2;
+}
+
+.produse-list-page .pl-card::after {
+  content: "";
+  position: absolute;
+  inset: 40% 0 auto 0;
+  height: 50%;
+  background: radial-gradient(circle at 50% 0%, rgba(34, 211, 238, 0.12), transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.produse-list-page .product-card:hover {
+  z-index: 2;
+}
+
+.produse-list-page .product-card:hover .pl-card {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 60px rgba(20, 184, 166, 0.22);
+  border-color: rgba(20, 184, 166, 0.4);
+}
+
+body.products-menu-open .produse-list-page .product-card:hover,
+body.products-menu-open .produse-list-page .product-card:hover .pl-card {
+  z-index: 1 !important;
+  transform: none !important;
+}
+
+.produse-list-page .product-card.is-selected .pl-card {
+  border-color: rgba(16, 185, 129, 0.55);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18), var(--pl-shadow-lg);
+}
+
+.produse-list-page .product-select-wrap {
+  position: absolute;
+  top: 16px;
+  left: 14px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(20, 184, 166, 0.25);
+  box-shadow: 0 8px 18px rgba(15, 118, 110, 0.12);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+
+.produse-list-page .product-select-wrap input {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #14b8a6;
+}
+
+.produse-list-page .pl-card__media {
+  position: relative;
+  z-index: 1;
+  display: block;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  padding: 0;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(251, 113, 133, 0.1), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(34, 211, 238, 0.12), transparent 45%),
+    linear-gradient(180deg, #f0fdfa 0%, #ecfeff 100%);
+  border-bottom: 1px solid var(--pl-line);
+  text-decoration: none;
+  overflow: hidden;
+}
+
+.produse-list-page .pl-card__media::before {
+  content: none;
+}
+
+.produse-list-page .pl-card__media img {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  padding: 10px;
+  box-sizing: border-box;
+  object-fit: contain;
+  object-position: center;
+  background: #fff;
+  filter: none;
+  transition: transform 0.35s var(--pl-ease) !important;
+}
+
+.produse-list-page .product-card:hover .pl-card__media img {
+  transform: scale(1.03);
+}
+
+.produse-list-page .pl-card__media--placeholder img {
+  background: linear-gradient(180deg, #f8fafc, #f0fdfa);
+  filter: grayscale(0.1);
+  opacity: 0.92;
+}
+
+.produse-list-page .pl-card__badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9a3412;
+  background: linear-gradient(135deg, #fef3c7, #ffedd5);
+  border: 1px solid #fcd34d;
+  box-shadow: 0 8px 16px rgba(245, 158, 11, 0.18);
+}
+
+.produse-list-page .pl-card__body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  padding: 16px 18px 14px;
+}
+
+.produse-list-page .pl-card__title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--pl-ink);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.produse-list-page .pl-card__title a {
+  color: inherit;
+  text-decoration: none;
+  background: linear-gradient(120deg, #0f766e, #0d9488);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.produse-list-page .pl-card__title a:hover {
+  filter: brightness(1.1);
+}
+
+.produse-list-page .pl-card__code {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.12), rgba(34, 211, 238, 0.12));
+  border: 1px solid rgba(20, 184, 166, 0.2);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #0f766e;
+}
+
+.produse-list-page .pl-card__prices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.produse-list-page .pl-card__price {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid var(--pl-line);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.produse-list-page .pl-card__price span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--pl-muted);
+}
+
+.produse-list-page .pl-card__price strong {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--pl-ink);
+}
+
+.produse-list-page .pl-card__price--final {
+  background: linear-gradient(160deg, rgba(209, 250, 229, 0.95), rgba(167, 243, 208, 0.75));
+  border-color: rgba(16, 185, 129, 0.28);
+}
+
+.produse-list-page .pl-card__price--final strong {
+  background: linear-gradient(120deg, #059669, #14b8a6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.produse-list-page .pl-card__facts {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+  color: var(--pl-muted);
+  font-weight: 700;
+}
+
+.produse-list-page .pl-card__facts li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.produse-list-page .pl-card__facts i {
+  color: #14b8a6;
+}
+
+.produse-list-page .pl-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.produse-list-page .pl-card__status--on {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  color: #047857;
+  border: 1px solid #0d9488;
+}
+
+.produse-list-page .pl-card__status--off {
+  background: linear-gradient(135deg, #ffe4e6, #fecdd3);
+  color: #be123c;
+  border: 1px solid #fda4af;
+}
+
+.produse-list-page .pl-card__foot {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px 14px;
+  margin-top: auto;
+  padding: 12px 16px 16px;
+  border-top: 1px solid var(--pl-line);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(240, 253, 250, 0.95));
+}
+
+.produse-list-page .pl-card__foot .products-action-hover,
+.produse-list-page .pl-card__foot a,
+.produse-list-page .pl-card__foot button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  color: #0f766e;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.produse-list-page .pl-card__foot .products-action-hover:hover {
+  transform: translateY(-2px);
+  color: #14b8a6;
+}
+
+.produse-list-page .pl-card__foot .audit-product-image {
+  color: #db2777 !important;
+}
+
+.produse-list-page .pl-card__foot .delete-product {
+  color: #e11d48 !important;
+}
+
+.produse-list-page .pl-empty {
+  padding: 56px 24px;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--pl-muted);
+  background: linear-gradient(180deg, rgba(236, 253, 245, 0.8), rgba(224, 242, 254, 0.6));
+  border: 1px dashed rgba(20, 184, 166, 0.35);
+  border-radius: var(--pl-radius-sm);
+}
+
+.produse-list-page #paginationBar a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid var(--pl-line-strong) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  color: var(--pl-ink) !important;
+  font-weight: 800 !important;
+  text-decoration: none;
+}
+
+.produse-list-page #paginationBar a.bg-primary,
+.produse-list-page #paginationBar a[aria-current="page"] {
+  background: linear-gradient(135deg, #0d9488, #0a3d31) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+  box-shadow: 0 10px 22px rgba(20, 184, 166, 0.3);
+}
+
+/* ── Dropdown simplu sub buton (fără overlay / fără fixed pe tot ecranul) ── */
+#productsMenuBackdrop {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
+.produse-list-page .products-menu__panel,
+.produse-list-page .products-menu__panel--hub {
+  position: absolute !important;
+  top: calc(100% + 8px) !important;
+  left: 0 !important;
+  right: auto !important;
+  bottom: auto !important;
+  z-index: 9999 !important;
+  min-width: 280px !important;
+  max-width: 320px !important;
+  width: 300px !important;
+  max-height: 420px !important;
+  overflow: auto !important;
+  padding: 12px !important;
+  gap: 8px !important;
+  border: 2px solid #14b8a6 !important;
+  border-radius: 16px !important;
+  background: #ffffff !important;
+  box-shadow: 0 16px 36px rgba(15, 118, 110, 0.2) !important;
+  backdrop-filter: none !important;
+  opacity: 1 !important;
+}
+
+/* Bulk „Acțiuni selecție” e pe dreapta — deschide spre stânga, ca să nu fie tăiat */
+.produse-list-page .products-menu--bulk {
+  position: relative;
+  z-index: 90;
+}
+.produse-list-page .products-menu--bulk .products-menu__panel {
+  left: auto !important;
+  right: 0 !important;
+  z-index: 10000 !important;
+  pointer-events: auto !important;
+}
+
+.produse-list-page .products-menu__panel[hidden] {
+  display: none !important;
+}
+
+body.products-menu-open::after,
+body.products-menu-open::before {
+  content: none !important;
+  display: none !important;
+}
+
+.produse-list-page .products-menu__section {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  padding: 12px !important;
+  border-radius: 14px !important;
+  background: #f0fdfa !important;
+  border: 1px solid #99f6e4 !important;
+}
+
+.produse-list-page .products-menu__section-title {
+  margin: 0 0 4px !important;
+  padding: 0 2px !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  color: #0f766e !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.produse-list-page .products-menu__item,
+.produse-list-page .products-menu__item.box,
+.produse-list-page button.products-menu__item {
+  display: inline-flex !important;
+  width: 100% !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  min-height: 44px !important;
+  padding: 10px 14px !important;
+  border-radius: 12px !important;
+  border: none !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  color: #fff !important;
+  text-align: left !important;
+  cursor: pointer !important;
+  box-shadow: 0 8px 18px rgba(15, 118, 110, 0.18) !important;
+  background: linear-gradient(135deg, #0d9488 0%, #0a3d31 100%) !important;
+  opacity: 1 !important;
+}
+
+.produse-list-page .products-menu__item i {
+  width: 1.15rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.produse-list-page .products-menu__item:hover:not(:disabled) {
+  filter: brightness(1.06);
+  box-shadow: 0 12px 24px rgba(15, 118, 110, 0.26) !important;
+}
+
+.produse-list-page .products-menu__item:disabled,
+.produse-list-page .products-menu__item:disabled:hover {
+  background: #e2e8f0 !important;
+  color: #64748b !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+/* Variante pe acțiune (doar active) */
+.produse-list-page #reapplyFilteredMarkup:not(:disabled),
+.produse-list-page #applySelectedMarkupBtn:not(:disabled) {
+  background: linear-gradient(135deg, #0d9488 0%, #0a3d31 100%) !important;
+}
+
+.produse-list-page #setFilteredBadgeHot:not(:disabled),
+.produse-list-page #applySelectedBadgeBtn:not(:disabled) {
+  background: linear-gradient(135deg, #fb7185 0%, #e11d48 100%) !important;
+  box-shadow: 0 8px 18px rgba(225, 29, 72, 0.22) !important;
+}
+
+.produse-list-page #setFilteredBadgePromo:not(:disabled) {
+  background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%) !important;
+  box-shadow: 0 8px 18px rgba(234, 88, 12, 0.22) !important;
+}
+
+.produse-list-page #setFilteredCurierNu:not(:disabled),
+.produse-list-page #setCategoryCurierNu:not(:disabled),
+.produse-list-page #setSelectedCurierNuBtn:not(:disabled) {
+  background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%) !important;
+  box-shadow: 0 8px 18px rgba(217, 119, 6, 0.22) !important;
+  color: #fff !important;
+}
+
+.produse-list-page #setCategoryCurierDa:not(:disabled) {
+  background: linear-gradient(135deg, #0f766e 0%, #0891b2 100%) !important;
+  box-shadow: 0 8px 18px rgba(8, 145, 178, 0.22) !important;
+}
+
+.produse-list-page #auditFilteredImagesBtn:not(:disabled),
+.produse-list-page #auditSelectedImagesBtn:not(:disabled),
+.produse-list-page .btn-audit-images.products-menu__item:not(:disabled) {
+  background: linear-gradient(135deg, #0d9488 0%, #0a3d31 100%) !important;
+  box-shadow: 0 8px 18px rgba(124, 58, 237, 0.22) !important;
+}
+
+.produse-list-page #deleteSelectedBtn:not(:disabled),
+.produse-list-page .btn-delete-selected.products-menu__item:not(:disabled) {
+  background: linear-gradient(135deg, #fb7185 0%, #be123c 100%) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+  box-shadow: 0 8px 18px rgba(190, 18, 60, 0.22) !important;
+}
+
+/* Bulk bar butoane secundare */
+.produse-list-page .products-bulk-bar .box:not(.products-menu__toggle):not(.products-menu__item) {
+  border: 1px solid rgba(20, 184, 166, 0.28) !important;
+  background: linear-gradient(180deg, #fff, #ecfdf5) !important;
+  color: #0f766e !important;
+  font-weight: 800 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 6px 14px rgba(20, 184, 166, 0.08) !important;
+}
+
+.produse-list-page .products-bulk-bar .box:not(.products-menu__toggle):not(.products-menu__item):hover {
+  background: linear-gradient(135deg, #0d9488, #0a3d31) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+}
+
+/* Modale overlay (în afara .produse-list-page) */
+body.besoiu-admin-2026 #markupSelectModal .markup-select-modal__panel,
+body.besoiu-admin-2026 #badgeSelectModal .markup-select-modal__panel,
+body.besoiu-admin-2026 #addProductModal .products-overlay-modal__panel {
+  border: 1px solid rgba(20, 184, 166, 0.28) !important;
+  border-radius: 22px !important;
+  overflow: hidden !important;
+  box-shadow: 0 30px 70px rgba(15, 118, 110, 0.25) !important;
+}
+
+body.besoiu-admin-2026 #markupSelectModal .markup-select-modal__header,
+body.besoiu-admin-2026 #badgeSelectModal .markup-select-modal__header,
+body.besoiu-admin-2026 #addProductModal .products-overlay-modal__header {
+  background: linear-gradient(120deg, #0d9488 0%, #0f766e 50%, #0a3d31 100%) !important;
+  border-bottom: none !important;
+  color: #fff !important;
+}
+
+body.besoiu-admin-2026 #markupSelectModal .markup-select-modal__header-title,
+body.besoiu-admin-2026 #badgeSelectModal .markup-select-modal__header-title,
+body.besoiu-admin-2026 #addProductModal .products-overlay-modal__title {
+  color: #fff !important;
+  font-weight: 800 !important;
+}
+
+body.besoiu-admin-2026 #markupSelectModal .markup-select-modal__header-sub,
+body.besoiu-admin-2026 #badgeSelectModal .markup-select-modal__header-sub {
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+body.besoiu-admin-2026 #markupSelectModal .markup-select-modal__callout,
+body.besoiu-admin-2026 #badgeSelectModal .markup-select-modal__callout {
+  border: 1px solid rgba(20, 184, 166, 0.25) !important;
+  background: linear-gradient(135deg, #ecfdf5 0%, #e0f2fe 100%) !important;
+  border-radius: 14px !important;
+}
+
+body.besoiu-admin-2026 #markupSelectModal .markup-select-modal__callout-icon,
+body.besoiu-admin-2026 #badgeSelectModal .markup-select-modal__callout-icon {
+  color: #0d9488 !important;
+}
+
+body.besoiu-admin-2026 #markupSelectModal .markup-select-modal__footer,
+body.besoiu-admin-2026 #badgeSelectModal .markup-select-modal__footer {
+  background: linear-gradient(180deg, #f0fdfa, #ecfeff) !important;
+  border-top: 1px solid rgba(20, 184, 166, 0.16) !important;
+}
+
+body.besoiu-admin-2026 #markupSelectModal .markup-select-modal__footer-actions button,
+body.besoiu-admin-2026 #badgeSelectModal .markup-select-modal__footer-actions button,
+body.besoiu-admin-2026 #addProductModal .products-overlay-modal__close,
+body.besoiu-admin-2026 #closeMarkupSelectModal,
+body.besoiu-admin-2026 #closeBadgeSelectModal,
+body.besoiu-admin-2026 #cancelMarkupSelectModal,
+body.besoiu-admin-2026 #cancelBadgeSelectModal {
+  border: 1px solid rgba(20, 184, 166, 0.3) !important;
+  background: #fff !important;
+  color: #0f766e !important;
+  font-weight: 800 !important;
+  border-radius: 12px !important;
+}
+
+body.besoiu-admin-2026 #confirmMarkupSelectModal,
+body.besoiu-admin-2026 #confirmBadgeSelectModal {
+  border: none !important;
+  background: linear-gradient(135deg, #0d9488 0%, #0a3d31 100%) !important;
+  color: #fff !important;
+  font-weight: 800 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 24px rgba(13, 148, 136, 0.35) !important;
+}
+
+body.besoiu-admin-2026 #confirmBadgeSelectModal {
+  background: linear-gradient(135deg, #fb7185 0%, #e11d48 100%) !important;
+  box-shadow: 0 10px 24px rgba(225, 29, 72, 0.3) !important;
+}
+
+@media (max-width: 767px) {
+  .produse-list-page .pl-card__prices {
+    grid-template-columns: 1fr;
+  }
+
+  .produse-list-page .products-filters__search {
+    max-width: none;
+    flex-basis: 100%;
+  }
+
+  .produse-list-page .admin-panel__head {
+    min-height: 84px;
+    padding: 18px 16px !important;
+  }
+
+  body.besoiu-admin-2026 .produse-list-page .admin-panel > .grid,
+  body.besoiu-admin-2026 .produse-list-page .admin-panel > div:not(.admin-panel__head) {
+    padding: 14px 12px 18px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .produse-list-page *,
+  .produse-list-page *::before,
+  .produse-list-page *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ── Vitrina / alte taburi produse — același shell aurora ── */
+.produse-list-page .besoiu-vitrina-page,
+.produse-list-page .besoiu-produse-page {
+  margin: 0;
+  padding: 0;
+}
+
+.produse-list-page .besoiu-dash-hero {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 0 0 1.1rem;
+  padding: 16px 18px;
+  border: 1px solid var(--pl-line-strong);
+  border-radius: var(--pl-radius-sm);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(236, 253, 245, 0.9));
+  box-shadow: var(--pl-shadow);
+}
+
+.produse-list-page .besoiu-dash-hero h1 {
+  margin: 0 0 0.35rem;
+  color: var(--pl-ink);
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.produse-list-page .besoiu-dash-hero__meta {
+  margin: 0;
+  color: var(--pl-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.produse-list-page .besoiu-vitrina-count-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #0d9488, #0a3d31);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  box-shadow: 0 10px 22px rgba(20, 184, 166, 0.28);
+}
+
+.produse-list-page .besoiu-vitrina-preview-panel,
+.produse-list-page .besoiu-produse-panel,
+.produse-list-page .besoiu-vitrina-on-panel {
+  margin-bottom: 1.25rem;
+  padding: 16px 18px;
+  border: 1px solid var(--pl-line-strong);
+  border-radius: var(--pl-radius);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(236, 253, 245, 0.88));
+  box-shadow: var(--pl-shadow);
+}
+
+.produse-list-page .besoiu-vitrina-preview-panel__head h2,
+.produse-list-page .besoiu-vitrina-picker-panel__head h2,
+.produse-list-page .besoiu-produse-panel h2 {
+  margin: 0 0 0.35rem;
+  color: var(--pl-ink);
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.produse-list-page .besoiu-btn-primary,
+.produse-list-page .besoiu-btn-secondary {
+  border-radius: 14px !important;
+  font-weight: 800 !important;
+}
+
+.produse-list-page .besoiu-btn-primary {
+  background: linear-gradient(135deg, #0d9488 0%, #0f766e 55%, #0a3d31 100%) !important;
+  border: none !important;
+  color: #fff !important;
+  box-shadow: 0 10px 24px rgba(20, 184, 166, 0.3);
+}
+
+.produse-list-page .besoiu-btn-secondary {
+  background: linear-gradient(180deg, #fff, #ecfdf5) !important;
+  border: 1px solid var(--pl-line-strong) !important;
+  color: var(--pl-ink-soft) !important;
+}
+
+.produse-list-page .besoiu-vitrina-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid var(--pl-line);
+}
+
+.produse-list-page .besoiu-vitrina-table thead th {
+  background: linear-gradient(180deg, #ecfdf5, #f0fdfa);
+  color: var(--pl-ink-soft);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--pl-line);
+}
+
+.produse-list-page .besoiu-vitrina-table tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(15, 118, 110, 0.08);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--pl-ink);
+  font-size: 0.88rem;
+}
+
+.produse-list-page .besoiu-pagination__btn--active {
+  background: linear-gradient(135deg, #0d9488, #0a3d31) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+}

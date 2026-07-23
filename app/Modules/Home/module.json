@@ -1,0 +1,17 @@
+{
+  "id": "home",
+  "name": "Homepage",
+  "version": "1.0.0",
+  "enabled": true,
+  "controller": "Storefront\\Modules\\Home\\HomeController",
+  "service": "Storefront\\Modules\\Home\\HomeService",
+  "template": "templates/home.php",
+  "cms_slug": "home",
+  "seo": {
+    "path": "/",
+    "title": "Besoiu Piese Auto — Piese auto online",
+    "description": "Magazin online de piese auto — catalog, căutare TecDoc, livrare în România.",
+    "changefreq": "daily",
+    "priority": "1.0"
+  }
+}

@@ -1,0 +1,547 @@
+/* AI Work + Sistem — scoped pe panoul Sistem (fără dependență body class) */
+
+#ai-hub-panel-system .ai-sys-pro {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+
+#ai-hub-panel-system .aiwork-hero {
+  background: linear-gradient(135deg, #0f172a 0%, #115e59 50%, #0d9488 100%);
+  border-radius: 20px;
+  padding: 22px 24px 20px;
+  color: #f8fafc;
+  box-shadow: 0 20px 50px rgba(13, 148, 136, 0.35);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#ai-hub-panel-system .aiwork-hero__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+#ai-hub-panel-system .aiwork-hero__brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+#ai-hub-panel-system .aiwork-live-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
+  animation: aiwork-live-pulse 1.8s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes aiwork-live-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.65); }
+  50% { box-shadow: 0 0 0 10px rgba(52, 211, 153, 0); }
+}
+
+#ai-hub-panel-system .aiwork-hero__title {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+}
+
+#ai-hub-panel-system .aiwork-hero__sub {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: rgba(248, 250, 252, 0.8);
+}
+
+#ai-hub-panel-system .aiwork-sync {
+  font-size: 12px;
+  color: rgba(248, 250, 252, 0.75);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 7px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+#ai-hub-panel-system .aiwork-kpis {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+  width: 100%;
+}
+
+@media (max-width: 960px) {
+  #ai-hub-panel-system .aiwork-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+#ai-hub-panel-system .aiwork-kpi {
+  display: flex !important;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.13);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  padding: 14px 16px;
+  min-height: 72px;
+  box-sizing: border-box;
+}
+
+#ai-hub-panel-system .aiwork-kpi__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+#ai-hub-panel-system .aiwork-kpi--blue .aiwork-kpi__icon { background: rgba(59, 130, 246, 0.4); color: #bfdbfe; }
+#ai-hub-panel-system .aiwork-kpi--violet .aiwork-kpi__icon { background: rgba(139, 92, 246, 0.4); color: #ddd6fe; }
+#ai-hub-panel-system .aiwork-kpi--green .aiwork-kpi__icon { background: rgba(16, 185, 129, 0.4); color: #a7f3d0; }
+#ai-hub-panel-system .aiwork-kpi--amber .aiwork-kpi__icon { background: rgba(245, 158, 11, 0.4); color: #fde68a; }
+
+#ai-hub-panel-system .aiwork-kpi__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+#ai-hub-panel-system .aiwork-kpi__val {
+  display: block;
+  font-size: 1.65rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+}
+
+#ai-hub-panel-system .aiwork-kpi__lbl {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(248, 250, 252, 0.75);
+}
+
+#ai-hub-panel-system .aiwork-table-wrap {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.12);
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+#ai-hub-panel-system .aiwork-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  color: #0f172a;
+}
+
+#ai-hub-panel-system .aiwork-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+#ai-hub-panel-system .aiwork-table thead th {
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 2px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+#ai-hub-panel-system .aiwork-table tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+#ai-hub-panel-system .aiwork-table tbody tr:hover td {
+  background: #f8fafc;
+}
+
+#ai-hub-panel-system .aiwork-table tr.aiwork-tr--ok td:first-child {
+  box-shadow: inset 4px 0 0 #10b981;
+}
+
+#ai-hub-panel-system .aiwork-table tr.aiwork-tr--fail td:first-child {
+  box-shadow: inset 4px 0 0 #ef4444;
+}
+
+#ai-hub-panel-system .aiwork-table tr.aiwork-tr--warn td:first-child {
+  box-shadow: inset 4px 0 0 #f59e0b;
+}
+
+#ai-hub-panel-system .aiwork-td-time {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+#ai-hub-panel-system .aiwork-td-section,
+#ai-hub-panel-system .aiwork-td-where {
+  font-weight: 700;
+  color: #0f766e;
+  max-width: 140px;
+}
+
+#ai-hub-panel-system .aiwork-where {
+  display: inline-block;
+  background: #ecfdf5;
+  color: #0f766e;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+#ai-hub-panel-system .aiwork-td-action {
+  font-weight: 600;
+  color: #334155;
+  white-space: nowrap;
+  max-width: 160px;
+}
+
+#ai-hub-panel-system .aiwork-td-input,
+#ai-hub-panel-system .aiwork-td-output {
+  max-width: 220px;
+  color: #475569;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+#ai-hub-panel-system .aiwork-td-input {
+  color: #0f172a;
+  font-weight: 500;
+}
+
+#ai-hub-panel-system .aiwork-td-ms {
+  font-variant-numeric: tabular-nums;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+#ai-hub-panel-system .aiwork-archive-note {
+  background: #fff7ed;
+  color: #9a3412;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px 14px;
+  border-bottom: 1px solid #fed7aa;
+}
+
+#ai-hub-panel-system .aiwork-td-summary {
+  max-width: 280px;
+  color: #475569;
+  line-height: 1.35;
+}
+
+#ai-hub-panel-system .aiwork-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+#ai-hub-panel-system .aiwork-pill--ok { background: #dcfce7; color: #166534; }
+#ai-hub-panel-system .aiwork-pill--fail { background: #fee2e2; color: #991b1b; }
+#ai-hub-panel-system .aiwork-pill--warn { background: #fef3c7; color: #92400e; }
+#ai-hub-panel-system .aiwork-pill--ollama { background: #dbeafe; color: #1d4ed8; }
+#ai-hub-panel-system .aiwork-pill--plain { background: #f1f5f9; color: #64748b; }
+
+#ai-hub-panel-system .aiwork-btn-bad {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 7px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid #fecaca;
+  white-space: nowrap;
+}
+
+#ai-hub-panel-system .aiwork-btn-bad:hover {
+  background: #fee2e2;
+}
+
+#ai-hub-panel-system .aiwork-rated {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+#ai-hub-panel-system .aiwork-rated--bad { color: #b91c1c; }
+#ai-hub-panel-system .aiwork-rated--ok { color: #059669; }
+
+#ai-hub-panel-system .aiwork-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 36px 20px;
+  text-align: center;
+  color: rgba(248, 250, 252, 0.9);
+  font-size: 14px;
+}
+
+#ai-hub-panel-system .aiwork-empty--sm {
+  padding: 16px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+#ai-hub-panel-system .aiwork-empty i { font-size: 32px; opacity: 0.9; }
+#ai-hub-panel-system .aiwork-empty small { font-size: 12px; opacity: 0.8; }
+
+#ai-hub-panel-system .aiwork-table-wrap .aiwork-empty,
+#ai-hub-panel-system .aiwork-empty--on-light {
+  color: #475569;
+}
+
+#ai-hub-panel-system .aiwork-table-wrap .aiwork-empty i,
+#ai-hub-panel-system .aiwork-empty--on-light i {
+  color: #0f766e;
+  opacity: 1;
+}
+
+#ai-hub-panel-system .ai-sys-pro__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  width: 100%;
+}
+
+@media (max-width: 960px) {
+  #ai-hub-panel-system .ai-sys-pro__grid { grid-template-columns: 1fr; }
+}
+
+#ai-hub-panel-system .ai-sys-panel {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-sizing: border-box;
+}
+
+#ai-hub-panel-system .ai-sys-panel--wide { grid-column: 1 / -1; }
+
+#ai-hub-panel-system .ai-sys-panel__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+#ai-hub-panel-system .ai-sys-panel__head h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#ai-hub-panel-system .ai-sys-panel__head h3 .fa-solid { color: #0f766e; }
+
+#ai-hub-panel-system .ai-sys-panel__hint {
+  margin: 0 0 12px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+#ai-hub-panel-system .ai-sys-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+#ai-hub-panel-system .ai-sys-ollama-bar {
+  margin-bottom: 8px;
+  border-radius: 14px;
+  border: 1px solid #99f6e4;
+  background: linear-gradient(90deg, #f0fdfa 0%, #ecfdf5 100%);
+  padding: 14px 18px;
+}
+
+#ai-hub-panel-system .ai-sys-ollama-bar__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+#ai-hub-panel-system .ai-sys-ollama-bar__status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#ai-hub-panel-system .ai-sys-ollama-bar__status .fa-server {
+  font-size: 24px;
+  color: #0f766e;
+}
+
+#ai-hub-panel-system .ai-sys-ollama-bar__detail {
+  flex: 1;
+  min-width: 160px;
+  font-size: 12px;
+  color: #475569;
+}
+
+#ai-hub-panel-system .ai-sys-ollama-bar__actions { margin-left: auto; }
+
+#ai-hub-panel-system .ai-sys-errors-title {
+  margin: 16px 0 8px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #991b1b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#ai-hub-panel-system .aiwork-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+/* Modal la nivel pagină (în afara panoului ascuns) */
+#ai-hub-root .aiwork-modal,
+.aiwork-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+#ai-hub-root .aiwork-modal.hidden,
+.aiwork-modal.hidden {
+  display: none !important;
+}
+
+#ai-hub-root .aiwork-modal__backdrop,
+.aiwork-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+}
+
+#ai-hub-root .aiwork-modal__panel,
+.aiwork-modal__panel {
+  position: relative;
+  width: min(520px, 100%);
+  background: #fff;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+}
+
+#ai-hub-root .aiwork-modal__head,
+.aiwork-modal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+#ai-hub-root .aiwork-modal__head h3,
+.aiwork-modal__head h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: #b91c1c;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#ai-hub-root .aiwork-modal__context,
+.aiwork-modal__context {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  background: #f8fafc;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #64748b;
+}
+
+#ai-hub-root .aiwork-modal__label,
+.aiwork-modal__label {
+  display: block;
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+#ai-hub-root .aiwork-modal__textarea,
+.aiwork-modal__textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 14px;
+  min-height: 100px;
+}
+
+#ai-hub-root .aiwork-modal__close,
+.aiwork-modal__close {
+  border: none;
+  background: none;
+  font-size: 26px;
+  cursor: pointer;
+  color: #94a3b8;
+}
+
+#ai-hub-root .aiwork-modal__actions,
+.aiwork-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}

@@ -1,0 +1,332 @@
+/* Marker DOM — antrenare RAG chat */
+
+body.bpa-dom-marker-on,
+body.bpa-dom-marker-on * {
+  cursor: crosshair !important;
+}
+
+body.bpa-dom-marker-on .bpa-dm-root,
+body.bpa-dom-marker-on .bpa-dm-root *,
+body.bpa-dom-marker-on .bpa-dm-bar,
+body.bpa-dom-marker-on .bpa-dm-bar * {
+  cursor: default !important;
+}
+
+body.bpa-dom-marker-on .bpa-dm-highlight {
+  cursor: crosshair !important;
+}
+
+.bpa-dm-root {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  pointer-events: none;
+}
+
+.bpa-dm-highlight {
+  position: fixed;
+  display: none;
+  border: 2px solid #1abc9c;
+  background: rgba(26, 188, 156, 0.12);
+  box-shadow: 0 0 0 1px rgba(26, 188, 156, 0.35), 0 8px 24px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  pointer-events: none;
+  transition: top 0.05s, left 0.05s, width 0.05s, height 0.05s;
+}
+
+.bpa-dm-tooltip {
+  position: fixed;
+  display: none;
+  z-index: 2147483001;
+  max-width: 340px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #0f172a;
+  color: #f8fafc;
+  font: 500 12px/1.45 Inter, system-ui, sans-serif;
+  pointer-events: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.bpa-dm-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483010;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  pointer-events: auto;
+}
+
+.bpa-dm-modal {
+  width: min(560px, 100%);
+  max-height: min(90vh, 760px);
+  overflow: auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.28);
+  pointer-events: auto;
+}
+
+.bpa-dm-modal__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px 12px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.bpa-dm-modal__head h3 {
+  margin: 0;
+  font: 800 1.05rem/1.3 Inter, system-ui, sans-serif;
+  color: #0f172a;
+}
+
+.bpa-dm-modal__sub {
+  margin: 4px 0 0;
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+.bpa-dm-modal__close {
+  border: 0;
+  background: #f1f5f9;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.bpa-dm-modal__body {
+  padding: 16px 20px 20px;
+  display: grid;
+  gap: 12px;
+}
+
+.bpa-dm-field label {
+  display: block;
+  font: 700 0.72rem/1.2 Inter, system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.bpa-dm-field input,
+.bpa-dm-field textarea,
+.bpa-dm-field select {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font: 500 0.9rem/1.4 Inter, system-ui, sans-serif;
+  color: #0f172a;
+  background: #fff;
+}
+
+.bpa-dm-field textarea {
+  min-height: 72px;
+  resize: vertical;
+}
+
+.bpa-dm-meta {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  font: 500 0.75rem/1.45 ui-monospace, monospace;
+  color: #475569;
+  word-break: break-all;
+}
+
+.bpa-dm-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 4px;
+}
+
+.bpa-dm-btn {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font: 700 0.85rem Inter, system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.bpa-dm-btn--primary {
+  background: #1abc9c;
+  color: #fff;
+}
+
+.bpa-dm-btn--ghost {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.bpa-dm-toast {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2147483020;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #0f172a;
+  color: #fff;
+  font: 600 0.85rem Inter, system-ui, sans-serif;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  animation: bpaDmToast 0.25s ease;
+}
+
+.bpa-dm-toast.is-error {
+  background: #dc2626;
+}
+
+@keyframes bpaDmToast {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Admin topbar toggle */
+.besoiu-topbar__marker.is-active {
+  background: rgba(26, 188, 156, 0.15);
+  color: #0d9488;
+  box-shadow: inset 0 0 0 2px rgba(26, 188, 156, 0.45);
+}
+
+/* Bara site public */
+.bpa-dm-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2147482000;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: linear-gradient(90deg, #0f766e, #1abc9c);
+  color: #fff;
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.2);
+  font: 600 0.82rem Inter, system-ui, sans-serif;
+}
+
+.bpa-dm-bar__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.bpa-dm-bar__hint {
+  opacity: 0.92;
+  flex: 1;
+  min-width: 180px;
+}
+
+.bpa-dm-bar__status {
+  font-size: 0.78rem;
+  opacity: 0.9;
+}
+
+.bpa-dm-bar__btn {
+  border: 0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font: 700 0.78rem Inter, system-ui, sans-serif;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.bpa-dm-bar__btn--ghost {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+body.bpa-dom-marker-page {
+  padding-bottom: 56px;
+}
+
+.bpa-dm-fab {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2147481999;
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 16px;
+  background: #0f766e;
+  color: #fff;
+  font: 700 0.78rem Inter, system-ui, sans-serif;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+.bpa-dm-fab.is-active {
+  background: #dc2626;
+}
+
+.bpa-dm-modal--info .bpa-dm-info {
+  margin: 12px 0 16px;
+}
+
+.bpa-dm-info .bsa-dom-guide,
+.bsa-dom-guide {
+  font: 400 0.875rem/1.5 Inter, system-ui, sans-serif;
+  color: #334155;
+}
+
+.bsa-dom-guide__lead {
+  margin: 0 0 10px;
+  font-size: 0.95rem;
+  color: #0f172a;
+}
+
+.bsa-dom-guide__dl {
+  margin: 0 0 12px;
+  display: grid;
+  grid-template-columns: minmax(110px, 34%) 1fr;
+  gap: 6px 12px;
+}
+
+.bsa-dom-guide__dl dt {
+  margin: 0;
+  font-weight: 700;
+  color: #64748b;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.bsa-dom-guide__dl dd {
+  margin: 0;
+}
+
+.bsa-dom-guide__meta {
+  margin: 10px 0 0;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.bsa-dom-guide__meta code,
+.bsa-dom-guide code {
+  font-size: 0.72rem;
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.bsa-dom-guide--empty {
+  padding: 8px 0;
+}

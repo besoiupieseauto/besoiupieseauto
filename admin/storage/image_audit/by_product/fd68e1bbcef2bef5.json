@@ -1,0 +1,21 @@
+{
+    "randomn_id": "fd68e1bbcef2bef5",
+    "title": "Radiator Ulei Termoflot 140011",
+    "code": "140011",
+    "category": "",
+    "image_url": "/uploads/products/tecdoc/140011.jpg",
+    "analyzed_at": "2026-06-18T09:19:11+03:00",
+    "verdict": "match",
+    "match_score": 82,
+    "image_shows": "Ansamblu radiator ulei (schimbător termic din plăci metalice argintii) montat pe carcasă plastic neagră — modul Termoflot pentru răcire ulei motor, cu zonă de filtru integrată.",
+    "issues": [
+        "Categoria produsului este goală în listare.",
+        "Codul 140011 nu este vizibil pe piesă.",
+        "Imaginea arată un ansamblu complet (carcasă + răcitor), nu doar elementul radiator standalone."
+    ],
+    "recommendation": "keep",
+    "summary_ro": "Imagine corectă: modul radiator ulei Termoflot pentru ulei motor, aliniat cu titlul și descrierea; recomandat completarea categoriei în listare.",
+    "model": "composer-2.5",
+    "engine": "cursor-composer-2.5",
+    "batch": "batch_20260618_061406.json"
+}

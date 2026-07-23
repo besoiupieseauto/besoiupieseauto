@@ -1,0 +1,1 @@
+{"id":"product","name":"Pagina produs","version":"1.0.0","enabled":true,"controller":"Storefront\\Modules\\Product\\ProductController","seo":{"path":"/produs","title":"Produs piese auto","changefreq":"weekly","priority":"0.8"}}

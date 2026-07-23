@@ -1,0 +1,1 @@
+(()=>{$(".tiny-slider").each(function(){let t=Function('"use strict";return ('+$(this).data("config")+")")();$(this)[0].tns=tns({container:$(this)[0],mouseDrag:!0,autoplay:!0,controls:!1,center:!0,items:1,nav:!1,speed:500,...t})});})();

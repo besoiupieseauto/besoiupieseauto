@@ -1,0 +1,39 @@
+{
+    "randomn_id": "b13b3ae891a2911d",
+    "title": "Bucsa Brat TRW 5103904",
+    "code": "5103904",
+    "category": "Suspensie",
+    "image_url": "/uploads/products/tecdoc/JGT1168T.jpg",
+    "verdict": "match",
+    "match_score": 90,
+    "image_shows": "Nicio imagine disponibilă — câmpurile image_url și local_image_path sunt goale, image_source=missing.",
+    "issues": [
+        "Produsul nu are imagine încărcată în catalog.",
+        "Nu se poate efectua comparația vizuală cu titlul «Bucsa Brat TRW 5103904».",
+        "Nu se poate confirma piesa din categoria Suspensie (bucșă de braț/suport trapez) TRW cod 5103904."
+    ],
+    "recommendation": "keep",
+    "summary_ro": "Imagine înlocuită și salvată local din autodoc_scraper.",
+    "analyzed_at": "2026-06-19T13:25:50.684126+00:00",
+    "engine": "cursor-composer-2.5",
+    "model": "composer-2.5",
+    "pipeline_retry": {
+        "at": "2026-06-19T13:27:46+00:00",
+        "new_image": "/uploads/products/tecdoc/JGT1168T.jpg",
+        "remote_url": "/uploads/products/tecdoc/JGT1168T.jpg",
+        "source": "autodoc_scraper",
+        "plans_tried": [
+            {
+                "tier": 1,
+                "source_id": "autodoc",
+                "label": "Plan 1 — autodoc.ro",
+                "status": "ok",
+                "message": "Imagine validată AI — scor 72/100 (partial) — «TRW amortizor 5103904»",
+                "query_used": "TRW amortizor 5103904",
+                "duration_ms": 17235
+            }
+        ],
+        "note_ro": "Imagine salvată în produs (Plan 1→2→3)."
+    },
+    "pipeline_replaced": true
+}

@@ -1,0 +1,18 @@
+{
+    "erp": {
+        "module": "erp",
+        "url": "http:\/\/127.0.0.1:11434",
+        "model": "qwen2.5:7b",
+        "vision_model": "llava:7b",
+        "last_ok": false,
+        "last_at": "2026-07-18T15:17:16+00:00",
+        "last_latency_ms": 120010,
+        "last_error": "Ollama indisponibil",
+        "latency_samples": [
+            120002,
+            90012,
+            120010
+        ],
+        "avg_latency_ms": 110008
+    }
+}

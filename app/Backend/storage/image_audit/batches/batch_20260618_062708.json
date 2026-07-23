@@ -1,0 +1,33 @@
+{
+    "schema": "product_image_audit_v1",
+    "created_at": "2026-06-18T06:27:08+00:00",
+    "project": "besoiupieseauto.ro",
+    "agent": "image-audit",
+    "composer_model": "composer-2.5",
+    "meta": {
+        "source": "admin_crud",
+        "ids": [
+            "4a69d20a599efe0d"
+        ],
+        "engine": "cursor-composer-2.5",
+        "save_results_to": "admin/storage/image_audit/by_product/{randomn_id}.json"
+    },
+    "instructions": "Deschide fiecare local_image_path cu Read; compară vizual cu title și description_excerpt.",
+    "products": [
+        {
+            "id": 120,
+            "randomn_id": "4a69d20a599efe0d",
+            "title": "Ulei Cutie Automata 3659",
+            "code": "3659",
+            "brand": "",
+            "category": "Uleiuri și lubrifianți auto",
+            "subcategory": "Ulei Cutie Automata",
+            "description_excerpt": "DescriereaDescrierea:Ulei cutie automataNumăr articol:3659Condiție:Nou",
+            "image_url": "/uploads/products/tecdoc/3659.jpg",
+            "image_source": "emag_search",
+            "local_image_path": "E:\\laragon\\www\\besoiupieseauto.ro/uploads\\products\\tecdoc\\3659.jpg",
+            "image_readable_by_agent": true,
+            "vitrina": true
+        }
+    ]
+}

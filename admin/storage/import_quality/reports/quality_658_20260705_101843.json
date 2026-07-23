@@ -1,0 +1,16 @@
+{
+    "import_id": 658,
+    "at": "2026-07-05T10:18:43+00:00",
+    "verdict": "partial",
+    "confidence": 0.81,
+    "corrections": {
+        "pOem": "5042520"
+    },
+    "issues": [
+        "brand_looks_like_catalog_label"
+    ],
+    "reasoning_ro": "Titlul produsului (articulatia sarcina\/ghidare) sugerează că marca este etichetă de catalog, deci nu se poate determina producator. De asemenea, codul echivalent din CSV nu are sens ca număr de articol.",
+    "apply_recommended": true,
+    "llm_error": null,
+    "duration_ms": 64935
+}

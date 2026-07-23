@@ -1,0 +1,774 @@
+{
+    "scanned_at": "2026-07-07 09:31:39",
+    "overview": {
+        "suppliers": 5,
+        "files_ready": 5,
+        "validated_ok": 5,
+        "needs_attention": 0,
+        "new_models_total": 0
+    },
+    "supplier_pipeline": [
+        {
+            "code": "AUTOPARTNER",
+            "name": "Auto Partner",
+            "randomn_id": 639672,
+            "profile_url": "\/admin\/profilefurnizori?randomn_id=639672",
+            "connection": "API",
+            "schedule_label": "La 360 min",
+            "progress": 100,
+            "status": "ok",
+            "status_label": "Validat",
+            "validation_detail": "Validat 4.000 randuri esantion (AUTOPARTNER, fara antet).",
+            "found_label": "CSV valid · 4000 rânduri verificate",
+            "file": "3208129.csv",
+            "files_count": 3,
+            "synced_at": "",
+            "synced_at_label": "—",
+            "last_scan_label": "07.07.2026 07:51",
+            "next_scan_label": "07.07.2026 13:51 (în 4h 20m)",
+            "is_due": false,
+            "source": "Folder local",
+            "step": "validat · 4000 rânduri",
+            "new_models_label": "—"
+        },
+        {
+            "code": "AUTONET",
+            "name": "Autonet",
+            "randomn_id": 676794,
+            "profile_url": "\/admin\/profilefurnizori?randomn_id=676794",
+            "connection": "FTP",
+            "schedule_label": "La 360 min",
+            "progress": 100,
+            "status": "ok",
+            "status_label": "Validat",
+            "validation_detail": "Validat 4.000 randuri esantion (AUTONET).",
+            "found_label": "CSV valid · 4000 rânduri verificate",
+            "file": "Lista pret Autonet 27.01.2026.csv",
+            "files_count": 3,
+            "synced_at": "",
+            "synced_at_label": "—",
+            "last_scan_label": "07.07.2026 07:51",
+            "next_scan_label": "07.07.2026 13:51 (în 4h 20m)",
+            "is_due": false,
+            "source": "Folder local",
+            "step": "validat · 4000 rânduri",
+            "new_models_label": "—"
+        },
+        {
+            "code": "AUTOTOTAL",
+            "name": "Autototal",
+            "randomn_id": 664021,
+            "profile_url": "\/admin\/profilefurnizori?randomn_id=664021",
+            "connection": "Email",
+            "schedule_label": "La 1440 min",
+            "progress": 100,
+            "status": "ok",
+            "status_label": "Validat",
+            "validation_detail": "Validat 4.000 randuri esantion (AUTOTOTAL).",
+            "found_label": "CSV valid · 4000 rânduri verificate",
+            "file": "Lista pret Autototal 16.01.2026.csv",
+            "files_count": 3,
+            "synced_at": "",
+            "synced_at_label": "—",
+            "last_scan_label": "07.07.2026 07:51",
+            "next_scan_label": "08.07.2026 07:51 (în 22h 20m)",
+            "is_due": false,
+            "source": "Email",
+            "step": "validat · 4000 rânduri",
+            "new_models_label": "—"
+        },
+        {
+            "code": "ELIT",
+            "name": "Elit (LKQ)",
+            "randomn_id": 615234,
+            "profile_url": "\/admin\/profilefurnizori?randomn_id=615234",
+            "connection": "SFTP",
+            "schedule_label": "La 360 min",
+            "progress": 100,
+            "status": "ok",
+            "status_label": "Validat",
+            "validation_detail": "Validat 4.000 randuri esantion (ELIT).",
+            "found_label": "CSV valid · 4000 rânduri verificate",
+            "file": "Lista pret Elit 16.01.2026.csv",
+            "files_count": 2,
+            "synced_at": "",
+            "synced_at_label": "—",
+            "last_scan_label": "07.07.2026 07:51",
+            "next_scan_label": "07.07.2026 13:51 (în 4h 20m)",
+            "is_due": false,
+            "source": "Folder local",
+            "step": "validat · 4000 rânduri",
+            "new_models_label": "—"
+        },
+        {
+            "code": "MATEROM",
+            "name": "Materom",
+            "randomn_id": 669542,
+            "profile_url": "\/admin\/profilefurnizori?randomn_id=669542",
+            "connection": "FTP",
+            "schedule_label": "La 720 min",
+            "progress": 100,
+            "status": "ok",
+            "status_label": "Validat",
+            "validation_detail": "Validat 4.000 randuri esantion (MATEROM).",
+            "found_label": "CSV valid · 4000 rânduri verificate",
+            "file": "Lista pret Materom 16.01.2026.csv",
+            "files_count": 2,
+            "synced_at": "",
+            "synced_at_label": "—",
+            "last_scan_label": "07.07.2026 07:51",
+            "next_scan_label": "07.07.2026 19:51 (în 10h 20m)",
+            "is_due": false,
+            "source": "Folder local",
+            "step": "validat · 4000 rânduri",
+            "new_models_label": "—"
+        }
+    ],
+    "cron_dashboard": {
+        "engine_online": true,
+        "engine_label": "Motor sincronizare activ",
+        "last_scan_at": "2026-07-07 07:51:20",
+        "last_scan_label": "07.07.2026 07:51",
+        "overview": {
+            "suppliers": 5,
+            "files_ready": 5,
+            "validated_ok": 5,
+            "needs_attention": 0,
+            "new_models_total": 0
+        },
+        "cron_tasks": [],
+        "cron_modules": [],
+        "supplier_pipeline": [
+            {
+                "code": "AUTOPARTNER",
+                "name": "Auto Partner",
+                "randomn_id": 639672,
+                "profile_url": "\/admin\/profilefurnizori?randomn_id=639672",
+                "connection": "API",
+                "schedule_label": "La 360 min",
+                "progress": 100,
+                "status": "ok",
+                "status_label": "Validat",
+                "validation_detail": "Validat 4.000 randuri esantion (AUTOPARTNER, fara antet).",
+                "found_label": "CSV valid · 4000 rânduri verificate",
+                "file": "3208129.csv",
+                "files_count": 3,
+                "synced_at": "",
+                "synced_at_label": "—",
+                "last_scan_label": "07.07.2026 07:51",
+                "next_scan_label": "07.07.2026 13:51 (în 4h 20m)",
+                "is_due": false,
+                "source": "Folder local",
+                "step": "validat · 4000 rânduri",
+                "new_models_label": "—"
+            },
+            {
+                "code": "AUTONET",
+                "name": "Autonet",
+                "randomn_id": 676794,
+                "profile_url": "\/admin\/profilefurnizori?randomn_id=676794",
+                "connection": "FTP",
+                "schedule_label": "La 360 min",
+                "progress": 100,
+                "status": "ok",
+                "status_label": "Validat",
+                "validation_detail": "Validat 4.000 randuri esantion (AUTONET).",
+                "found_label": "CSV valid · 4000 rânduri verificate",
+                "file": "Lista pret Autonet 27.01.2026.csv",
+                "files_count": 3,
+                "synced_at": "",
+                "synced_at_label": "—",
+                "last_scan_label": "07.07.2026 07:51",
+                "next_scan_label": "07.07.2026 13:51 (în 4h 20m)",
+                "is_due": false,
+                "source": "Folder local",
+                "step": "validat · 4000 rânduri",
+                "new_models_label": "—"
+            },
+            {
+                "code": "AUTOTOTAL",
+                "name": "Autototal",
+                "randomn_id": 664021,
+                "profile_url": "\/admin\/profilefurnizori?randomn_id=664021",
+                "connection": "Email",
+                "schedule_label": "La 1440 min",
+                "progress": 100,
+                "status": "ok",
+                "status_label": "Validat",
+                "validation_detail": "Validat 4.000 randuri esantion (AUTOTOTAL).",
+                "found_label": "CSV valid · 4000 rânduri verificate",
+                "file": "Lista pret Autototal 16.01.2026.csv",
+                "files_count": 3,
+                "synced_at": "",
+                "synced_at_label": "—",
+                "last_scan_label": "07.07.2026 07:51",
+                "next_scan_label": "08.07.2026 07:51 (în 22h 20m)",
+                "is_due": false,
+                "source": "Email",
+                "step": "validat · 4000 rânduri",
+                "new_models_label": "—"
+            },
+            {
+                "code": "ELIT",
+                "name": "Elit (LKQ)",
+                "randomn_id": 615234,
+                "profile_url": "\/admin\/profilefurnizori?randomn_id=615234",
+                "connection": "SFTP",
+                "schedule_label": "La 360 min",
+                "progress": 100,
+                "status": "ok",
+                "status_label": "Validat",
+                "validation_detail": "Validat 4.000 randuri esantion (ELIT).",
+                "found_label": "CSV valid · 4000 rânduri verificate",
+                "file": "Lista pret Elit 16.01.2026.csv",
+                "files_count": 2,
+                "synced_at": "",
+                "synced_at_label": "—",
+                "last_scan_label": "07.07.2026 07:51",
+                "next_scan_label": "07.07.2026 13:51 (în 4h 20m)",
+                "is_due": false,
+                "source": "Folder local",
+                "step": "validat · 4000 rânduri",
+                "new_models_label": "—"
+            },
+            {
+                "code": "MATEROM",
+                "name": "Materom",
+                "randomn_id": 669542,
+                "profile_url": "\/admin\/profilefurnizori?randomn_id=669542",
+                "connection": "FTP",
+                "schedule_label": "La 720 min",
+                "progress": 100,
+                "status": "ok",
+                "status_label": "Validat",
+                "validation_detail": "Validat 4.000 randuri esantion (MATEROM).",
+                "found_label": "CSV valid · 4000 rânduri verificate",
+                "file": "Lista pret Materom 16.01.2026.csv",
+                "files_count": 2,
+                "synced_at": "",
+                "synced_at_label": "—",
+                "last_scan_label": "07.07.2026 07:51",
+                "next_scan_label": "07.07.2026 19:51 (în 10h 20m)",
+                "is_due": false,
+                "source": "Folder local",
+                "step": "validat · 4000 rânduri",
+                "new_models_label": "—"
+            }
+        ],
+        "live_status": {
+            "last_scan_label": "07.07.2026 07:51",
+            "next_scan_label": "07.07.2026 13:51",
+            "suppliers_due": 0,
+            "suppliers_total": 5,
+            "suppliers_ok": 5,
+            "suppliers_warn": 0,
+            "suppliers_error": 0,
+            "motor_ok": false,
+            "motor_label": "Fără joburi Task Scheduler configurate în panou",
+            "summary": "5 OK · 0 atenție · 0 erori"
+        },
+        "activity": [
+            {
+                "at": "2026-07-07T09:31:39+00:00",
+                "at_label": "07.07.2026 09:31:39",
+                "message": "Pas 3 — validare structură CSV",
+                "supplier": "",
+                "level": "info",
+                "step": "validate"
+            },
+            {
+                "at": "2026-07-07T09:31:39+00:00",
+                "at_label": "07.07.2026 09:31:39",
+                "message": "3 CSV găsit(e): test_consumable.csv, test_cron_import.csv, Lista pret Autototal 16.01.2026.csv",
+                "supplier": "AUTOTOTAL",
+                "level": "ok",
+                "step": "validate",
+                "detail": "admin\/storage\/supplier_feeds\/autototal · ultimul: 0.2 KB"
+            },
+            {
+                "at": "2026-07-07T09:31:39+00:00",
+                "at_label": "07.07.2026 09:31:39",
+                "message": "Copiat din staging: test_consumable.csv",
+                "supplier": "AUTOTOTAL",
+                "level": "ok",
+                "step": "validate",
+                "detail": "F:\\laragon\\www\\besoiupieseauto.ro\\admin\/storage\/supplier_feeds\\autototal"
+            },
+            {
+                "at": "2026-07-07T09:31:39+00:00",
+                "at_label": "07.07.2026 09:31:39",
+                "message": "Pas 1 — verific folder local",
+                "supplier": "AUTOTOTAL",
+                "level": "info",
+                "step": "validate",
+                "detail": "Cale: admin\/storage\/supplier_feeds\/autototal"
+            },
+            {
+                "at": "2026-07-07T09:31:39+00:00",
+                "at_label": "07.07.2026 09:31:39",
+                "message": "3 CSV găsit(e): test_cron_import.csv, Lista pret Autonet 27.01.2026.csv, Lista pret Autonet 20.01.2026.csv",
+                "supplier": "AUTONET",
+                "level": "ok",
+                "step": "validate",
+                "detail": "admin\/storage\/supplier_feeds\/autonet · ultimul: 0.2 KB"
+            },
+            {
+                "at": "2026-07-07T09:31:39+00:00",
+                "at_label": "07.07.2026 09:31:39",
+                "message": "Pas 1 — verific folder local",
+                "supplier": "AUTONET",
+                "level": "info",
+                "step": "validate",
+                "detail": "Cale: admin\/storage\/supplier_feeds\/autonet"
+            },
+            {
+                "at": "2026-07-07T09:31:39+00:00",
+                "at_label": "07.07.2026 09:31:39",
+                "message": "2 CSV găsit(e): test_cron_import.csv, Lista pret Materom 16.01.2026.csv",
+                "supplier": "MATEROM",
+                "level": "ok",
+                "step": "validate",
+                "detail": "admin\/storage\/supplier_feeds\/materom · ultimul: 0.2 KB"
+            },
+            {
+                "at": "2026-07-07T09:31:39+00:00",
+                "at_label": "07.07.2026 09:31:39",
+                "message": "Pas 1 — verific folder local",
+                "supplier": "MATEROM",
+                "level": "info",
+                "step": "validate",
+                "detail": "Cale: admin\/storage\/supplier_feeds\/materom"
+            },
+            {
+                "at": "2026-07-07T09:31:39+00:00",
+                "at_label": "07.07.2026 09:31:39",
+                "message": "2 CSV găsit(e): test_cron_import.csv, Lista pret Elit 16.01.2026.csv",
+                "supplier": "ELIT",
+                "level": "ok",
+                "step": "validate",
+                "detail": "admin\/storage\/supplier_feeds\/elit · ultimul: 0.2 KB"
+            },
+            {
+                "at": "2026-07-07T09:31:39+00:00",
+                "at_label": "07.07.2026 09:31:39",
+                "message": "Pas 1 — verific folder local",
+                "supplier": "ELIT",
+                "level": "info",
+                "step": "validate",
+                "detail": "Cale: admin\/storage\/supplier_feeds\/elit"
+            },
+            {
+                "at": "2026-07-07T09:31:39+00:00",
+                "at_label": "07.07.2026 09:31:39",
+                "message": "3 CSV găsit(e): test_cron_import.csv, 3208129.csv, Lista pret Autopartner 16.01.2026.csv",
+                "supplier": "AUTOPARTNER",
+                "level": "ok",
+                "step": "validate",
+                "detail": "admin\/storage\/supplier_feeds\/autopartner · ultimul: 0.2 KB"
+            },
+            {
+                "at": "2026-07-07T09:31:39+00:00",
+                "at_label": "07.07.2026 09:31:39",
+                "message": "Pas 1 — verific folder local",
+                "supplier": "AUTOPARTNER",
+                "level": "info",
+                "step": "validate",
+                "detail": "Cale: admin\/storage\/supplier_feeds\/autopartner"
+            },
+            {
+                "at": "2026-07-07T09:31:39+00:00",
+                "at_label": "07.07.2026 09:31:39",
+                "message": "Furnizori în catalog: 5",
+                "supplier": "",
+                "level": "info",
+                "step": "run"
+            },
+            {
+                "at": "2026-07-07T09:31:39+00:00",
+                "at_label": "07.07.2026 09:31:39",
+                "message": "Sync besoiupieseimport: 0 CSV furnizori, 0 TecDoc, 17 sarite",
+                "supplier": "",
+                "level": "ok",
+                "step": "run",
+                "detail": "Sursă: besoiupieseimport → admin\/storage\/supplier_feeds + tecdoc"
+            },
+            {
+                "at": "2026-07-07T09:31:39+00:00",
+                "at_label": "07.07.2026 09:31:39",
+                "message": "Pornire: Scan local (folder) + validare + import",
+                "supplier": "",
+                "level": "info",
+                "step": "run",
+                "detail": "Pași: ① folder local → ② FTP (opțional) → ③ validare CSV → ④ import consumabile (ulei\/lichide\/electrice) → vitrină"
+            },
+            {
+                "at": "2026-07-07T07:52:10+00:00",
+                "at_label": "07.07.2026 07:52:10",
+                "message": "Pas 4 — import consumabile (ulei · lichide · electrice) + vitrină",
+                "supplier": "",
+                "level": "info",
+                "step": "sync",
+                "detail": "Import dual finalizat: 4 produse (vitrină 0, catalog 4) — +4 noi, ~0 actualizate."
+            },
+            {
+                "at": "2026-07-07T07:52:10+00:00",
+                "at_label": "07.07.2026 07:52:10",
+                "message": "Import dual finalizat: 4 produse (vitrină 0, catalog 4) — +4 noi, ~0 actualizate.",
+                "supplier": "",
+                "level": "ok",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:10+00:00",
+                "at_label": "07.07.2026 07:52:10",
+                "message": "Vitrină homepage: max 10 produse (4 active).",
+                "supplier": "",
+                "level": "info",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:10+00:00",
+                "at_label": "07.07.2026 07:52:10",
+                "message": "MATEROM: 4 publicate, catalog 4 (4 cu imagine)",
+                "supplier": "MATEROM",
+                "level": "ok",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:09+00:00",
+                "at_label": "07.07.2026 07:52:09",
+                "message": "Catalog sărit — date critice lipsă (categorie\/brand\/preț\/imagine).",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:09+00:00",
+                "at_label": "07.07.2026 07:52:09",
+                "message": "Catalog sărit — date critice lipsă (categorie\/brand\/preț\/imagine).",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "Catalog sărit — date critice lipsă (categorie\/brand\/preț\/imagine).",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "Catalog sărit — date critice lipsă (categorie\/brand\/preț\/imagine).",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "Catalog sărit — date critice lipsă (categorie\/brand\/preț\/imagine).",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "Catalog sărit — date critice lipsă (categorie\/brand\/preț\/imagine).",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "Public catalog: 10 piese auto",
+                "supplier": "MATEROM",
+                "level": "info",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:100%] Finalizat: 0 publicate, 0 vitrină, 0 cu imagine.",
+                "supplier": "MATEROM",
+                "level": "ok",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:98%] Sărit — date critice lipsă (categorie\/brand\/preț 0\/imagine): Toyota Fuel Ec 5W30 5L Nou 13 Toyota 0 888 080 845",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:96%] Pregătire rând pentru magazin…",
+                "supplier": "MATEROM",
+                "level": "info",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:90%] Public fără imagine nouă (placeholder).",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:90%] Plan 7 autodoc: Omis — cod deja căutat fără rezultat acum 2 min (cache negativ)",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:90%] Plan 6 tecdoc_api: Căutarea continuă în stocul local al magazinului.",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:90%] Plan 5 epiesa: Omis — cod deja căutat fără rezultat acum 2 min (cache negativ)",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:90%] Plan 4 tecdoc_csv: Handler indisponibil",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:90%] Plan 3 caietcomenzi: Caiet comenzi: fără rând TecDoc\/Excel în raw_json și fără potrivire în biblioteca locală",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:90%] Plan 2 local_ttc_poze: Bibliotecă locală: fișier import_local_ttc_lib lipsă",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:90%] Plan 1 produse_db: Niciun produs scanat anterior în BD pentru «0888080845»",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:90%] Plan 7 (Plan 6 — autodoc.ro (stealth scraper)): autodoc — Omis — cod deja căutat fără rezultat acum 2 min (cache negativ)",
+                "supplier": "MATEROM",
+                "level": "info",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:90%] Plan 6 (Plan 5 — TecDoc RapidAPI (token)): tecdoc_api — Căutarea continuă în stocul local al magazinului.",
+                "supplier": "MATEROM",
+                "level": "miss",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:90%] Plan 5 (Plan 4 — ePiesa.ro (stealth scraper)): epiesa — Omis — cod deja căutat fără rezultat acum 2 min (cache negativ)",
+                "supplier": "MATEROM",
+                "level": "info",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:90%] Plan 4 (Plan 3 — TecDoc CSV (fișiere locale)): tecdoc_csv — Handler indisponibil",
+                "supplier": "MATEROM",
+                "level": "miss",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:90%] Plan 3 (Plan 2 — Caiet comenzi (PozeEmag)): caietcomenzi — Caiet comenzi: fără rând TecDoc\/Excel în raw_json și fără potrivire în biblioteca locală",
+                "supplier": "MATEROM",
+                "level": "miss",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:90%] Plan 2 (Plan 1 — Bibliotecă locală Poze (TTC_ART_ID)): local_ttc_poze — Bibliotecă locală: fișier import_local_ttc_lib lipsă",
+                "supplier": "MATEROM",
+                "level": "miss",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:90%] Plan 1 (Plan 0 — BD magazin (produse scanate anterior)): produse_db — Niciun produs scanat anterior în BD pentru «0888080845»",
+                "supplier": "MATEROM",
+                "level": "miss",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:90%] Imagine (pipeline Scraper Plan 1→N)…",
+                "supplier": "MATEROM",
+                "level": "info",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:88%] Imagine (pipeline Scraper)…",
+                "supplier": "MATEROM",
+                "level": "info",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:84%] Descriere produs…",
+                "supplier": "MATEROM",
+                "level": "info",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:80%] Procesez 6\/6: Toyota Fuel Ec 5W30 5L Nou 13 Toyota 0 888 080 845 [0888080845]",
+                "supplier": "MATEROM",
+                "level": "info",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:84%] Sărit — date critice lipsă (categorie\/brand\/preț 0\/imagine): Total Quartz Ineo First 0W30 Total Lubricants 183135",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:82%] Pregătire rând pentru magazin…",
+                "supplier": "MATEROM",
+                "level": "info",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:76%] Public fără imagine nouă (placeholder).",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:76%] Plan 7 autodoc: Omis — cod deja căutat fără rezultat acum 2 min (cache negativ)",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:76%] Plan 6 tecdoc_api: Căutarea continuă în stocul local al magazinului.",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:76%] Plan 5 epiesa: Omis — cod deja căutat fără rezultat acum 2 min (cache negativ)",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:76%] Plan 4 tecdoc_csv: Handler indisponibil",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:76%] Plan 3 caietcomenzi: Caiet comenzi: fără rând TecDoc\/Excel în raw_json și fără potrivire în biblioteca locală",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:76%] Plan 2 local_ttc_poze: Bibliotecă locală: fișier import_local_ttc_lib lipsă",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:76%] Plan 1 produse_db: Niciun produs scanat anterior în BD pentru «183135»",
+                "supplier": "MATEROM",
+                "level": "warn",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:76%] Plan 7 (Plan 6 — autodoc.ro (stealth scraper)): autodoc — Omis — cod deja căutat fără rezultat acum 2 min (cache negativ)",
+                "supplier": "MATEROM",
+                "level": "info",
+                "step": "sync"
+            },
+            {
+                "at": "2026-07-07T07:52:08+00:00",
+                "at_label": "07.07.2026 07:52:08",
+                "message": "[PROGRESS:76%] Plan 6 (Plan 5 — TecDoc RapidAPI (token)): tecdoc_api — Căutarea continuă în stocul local al magazinului.",
+                "supplier": "MATEROM",
+                "level": "miss",
+                "step": "sync"
+            }
+        ],
+        "scripts_health": {
+            "supplier_rclone": true,
+            "supplier_sync": true,
+            "queue_worker": true,
+            "dashboard_snapshot": true,
+            "daily_backup": true
+        }
+    }
+}

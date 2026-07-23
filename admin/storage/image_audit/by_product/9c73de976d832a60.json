@@ -1,0 +1,52 @@
+{
+    "randomn_id": "9c73de976d832a60",
+    "title": "Lichid de Frana 360047",
+    "code": "360047",
+    "category": "Lichide auto",
+    "image_url": "/uploads/products/tecdoc/360047.jpg",
+    "analyzed_at": "2026-06-18T09:19:57+03:00",
+    "verdict": "match",
+    "match_score": 90,
+    "image_shows": "Bidon metalic albastru ATE Original Bremsflüssigkeit SL.6, DOT 4 (Class 6), 1 litru — lichid de frână pentru sisteme ABS/ESP/ASR.",
+    "issues": [
+        "Marca ATE nu apare în titlu, doar codul 360047.",
+        "Specificația SL.6 / DOT 4 Class 6 nu este menționată în descriere.",
+        "Codul 360047 nu este vizibil pe etichetă."
+    ],
+    "recommendation": "keep",
+    "summary_ro": "Imagine înlocuită și salvată local din autodoc_scraper.",
+    "model": "composer-2.5",
+    "engine": "cursor-composer-2.5",
+    "batch": "batch_20260618_061406.json",
+    "pipeline_retry": {
+        "at": "2026-06-18T07:40:38+00:00",
+        "new_image": "/uploads/products/tecdoc/360047.jpg",
+        "remote_url": "https://cdn.autodoc.de/thumb?id=20672664&m=0&n=0&lng=ro&rev=94078037",
+        "source": "autodoc_scraper",
+        "plans_tried": [
+            {
+                "tier": 1,
+                "source_id": "epiesa",
+                "label": "Plan 1 — Caiet comenzi / TTC_ART_ID",
+                "status": "miss",
+                "message": "ePiesa: fără potrivire"
+            },
+            {
+                "tier": 2,
+                "source_id": "epiesa",
+                "label": "Plan 2 — TecDoc CSV (import local)",
+                "status": "miss",
+                "message": "ePiesa: fără potrivire"
+            },
+            {
+                "tier": 3,
+                "source_id": "autodoc",
+                "label": "Plan 3 — autodoc.ro",
+                "status": "ok",
+                "message": "Imagine găsită"
+            }
+        ],
+        "note_ro": "Imagine salvată în produs (Plan 1→2→3)."
+    },
+    "pipeline_replaced": true
+}

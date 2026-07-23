@@ -1,0 +1,642 @@
+[
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:76%] OEM 1\/2 (autodoc): «radiator ulei termoflot 140001»",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:76%] Plan 6 (Plan 5 — TecDoc RapidAPI (token)): tecdoc_api — RapidAPI TecDoc blocat local după o eroare de cotă (acum 1418 min). Cheia poate fi validă — rulează din nou testul sau șterge flag-ul din Setări. Reset automat după 24h.",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:76%] Plan 5 (Plan 4 — ePiesa.ro (stealth scraper)): epiesa — omis (skip_sources)",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:76%] Plan 4 (Plan 3 — TecDoc CSV (fișiere locale)): tecdoc_csv — TecDoc CSV: rânduri prezente, fără URL imagine",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:76%] Plan 3 (Plan 2 — Caiet comenzi (PozeEmag)): caietcomenzi — Caiet comenzi: fără rând TecDoc\/Excel în raw_json și fără potrivire în biblioteca locală",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:76%] Plan 2 (Plan 1 — Bibliotecă locală Poze (TTC_ART_ID)): local_ttc_poze — Biblioteca are 157.857 imagini — codul «140001» nu e în indexul Excel Poze",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:76%] Plan 1 (Plan 0 — BD magazin (produse scanate anterior)): produse_db — Niciun produs scanat anterior în BD pentru «140001»",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:76%] Imagine (pipeline Scraper Plan 1→N, mod consumabil)…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:76%] Pipeline imagini (Scraper): Plan 1 → produse_db · Plan 2 → local_ttc_poze · Plan 3 → caietcomenzi · Plan 4 → tecdoc_csv · Plan 5 → epiesa · Plan 6 → tecdoc_api · Plan 7 → autodoc",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:74%] Imagine (pipeline Scraper)…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:70%] Descriere produs…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:66%] Procesez 5\/6: Radiator Ulei Termoflot 140001 [140001]",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:71%] Sărit — date critice lipsă (categorie\/brand\/preț): Radiator Ulei Termoflot 140002",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:69%] Pregătire rând pentru magazin…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:63%] Niciun plan scraper nu a returnat imagine — produsul poate fi publicat fără poză (fallback catalog).",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:63%] Plan 7 autodoc: Autodoc: Call to undefined method ScraperHubTester::isScrapeDoFallbackEnabled()",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:63%] Plan 6 tecdoc_api: RapidAPI TecDoc blocat local după o eroare de cotă (acum 1415 min). Cheia poate fi validă — rulează din nou testul sau șterge flag-ul din Setări. Reset automat după 24h.",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:63%] Plan 5 epiesa: Omis — sursă exclusă din opțiunile import (epiesa)",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:63%] Plan 4 tecdoc_csv: TecDoc CSV: rânduri prezente, fără URL imagine",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:63%] Plan 3 caietcomenzi: Caiet comenzi: fără rând TecDoc\/Excel în raw_json și fără potrivire în biblioteca locală",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:63%] Plan 2 local_ttc_poze: Biblioteca are 157.857 imagini — codul «140002» nu e în indexul Excel Poze",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:63%] Plan 1 produse_db: Niciun produs scanat anterior în BD pentru «140002»",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:46:16+00:00",
+        "at_label": "07.07.2026 09:46:16",
+        "message": "[PROGRESS:63%] Plan 7 (Plan 6 — autodoc.ro (stealth scraper)): autodoc — Autodoc: Call to undefined method ScraperHubTester::isScrapeDoFallbackEnabled()",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:22+00:00",
+        "at_label": "07.07.2026 09:43:22",
+        "message": "[PROGRESS:63%] OEM 1\/2 (autodoc): «radiator ulei termoflot 140002»",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:22+00:00",
+        "at_label": "07.07.2026 09:43:22",
+        "message": "[PROGRESS:63%] Plan 6 (Plan 5 — TecDoc RapidAPI (token)): tecdoc_api — RapidAPI TecDoc blocat local după o eroare de cotă (acum 1415 min). Cheia poate fi validă — rulează din nou testul sau șterge flag-ul din Setări. Reset automat după 24h.",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:22+00:00",
+        "at_label": "07.07.2026 09:43:22",
+        "message": "[PROGRESS:63%] Plan 5 (Plan 4 — ePiesa.ro (stealth scraper)): epiesa — omis (skip_sources)",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:22+00:00",
+        "at_label": "07.07.2026 09:43:22",
+        "message": "[PROGRESS:63%] Plan 4 (Plan 3 — TecDoc CSV (fișiere locale)): tecdoc_csv — TecDoc CSV: rânduri prezente, fără URL imagine",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:22+00:00",
+        "at_label": "07.07.2026 09:43:22",
+        "message": "[PROGRESS:63%] Plan 3 (Plan 2 — Caiet comenzi (PozeEmag)): caietcomenzi — Caiet comenzi: fără rând TecDoc\/Excel în raw_json și fără potrivire în biblioteca locală",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:22+00:00",
+        "at_label": "07.07.2026 09:43:22",
+        "message": "[PROGRESS:63%] Plan 2 (Plan 1 — Bibliotecă locală Poze (TTC_ART_ID)): local_ttc_poze — Biblioteca are 157.857 imagini — codul «140002» nu e în indexul Excel Poze",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:22+00:00",
+        "at_label": "07.07.2026 09:43:22",
+        "message": "[PROGRESS:63%] Plan 1 (Plan 0 — BD magazin (produse scanate anterior)): produse_db — Niciun produs scanat anterior în BD pentru «140002»",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:22+00:00",
+        "at_label": "07.07.2026 09:43:22",
+        "message": "[PROGRESS:63%] Imagine (pipeline Scraper Plan 1→N, mod consumabil)…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:22+00:00",
+        "at_label": "07.07.2026 09:43:22",
+        "message": "[PROGRESS:63%] Pipeline imagini (Scraper): Plan 1 → produse_db · Plan 2 → local_ttc_poze · Plan 3 → caietcomenzi · Plan 4 → tecdoc_csv · Plan 5 → epiesa · Plan 6 → tecdoc_api · Plan 7 → autodoc",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:22+00:00",
+        "at_label": "07.07.2026 09:43:22",
+        "message": "[PROGRESS:61%] Imagine (pipeline Scraper)…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:22+00:00",
+        "at_label": "07.07.2026 09:43:22",
+        "message": "[PROGRESS:57%] Descriere produs…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:22+00:00",
+        "at_label": "07.07.2026 09:43:22",
+        "message": "[PROGRESS:53%] Procesez 4\/6: Radiator Ulei Termoflot 140002 [140002]",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:22+00:00",
+        "at_label": "07.07.2026 09:43:22",
+        "message": "[PROGRESS:53%] Inserted magazin: Bol de 7 L pentru Ulei Yat YT0699",
+        "supplier": "AUTOPARTNER",
+        "level": "ok",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:22+00:00",
+        "at_label": "07.07.2026 09:43:22",
+        "message": "[PROGRESS:53%] Vitrină homepage: Bol de 7 L pentru Ulei Yat YT0699",
+        "supplier": "AUTOPARTNER",
+        "level": "ok",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:21+00:00",
+        "at_label": "07.07.2026 09:43:21",
+        "message": "[PROGRESS:57%] Public în magazin…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:21+00:00",
+        "at_label": "07.07.2026 09:43:21",
+        "message": "[PROGRESS:55%] Pregătire rând pentru magazin…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:21+00:00",
+        "at_label": "07.07.2026 09:43:21",
+        "message": "[PROGRESS:49%] Niciun plan scraper nu a returnat imagine — produsul poate fi publicat fără poză (fallback catalog).",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:21+00:00",
+        "at_label": "07.07.2026 09:43:21",
+        "message": "[PROGRESS:49%] Plan 7 autodoc: Autodoc: Call to undefined method ScraperHubTester::isScrapeDoFallbackEnabled()",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:21+00:00",
+        "at_label": "07.07.2026 09:43:21",
+        "message": "[PROGRESS:49%] Plan 6 tecdoc_api: RapidAPI TecDoc blocat local după o eroare de cotă (acum 1412 min). Cheia poate fi validă — rulează din nou testul sau șterge flag-ul din Setări. Reset automat după 24h.",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:21+00:00",
+        "at_label": "07.07.2026 09:43:21",
+        "message": "[PROGRESS:49%] Plan 5 epiesa: Omis — sursă exclusă din opțiunile import (epiesa)",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:21+00:00",
+        "at_label": "07.07.2026 09:43:21",
+        "message": "[PROGRESS:49%] Plan 4 tecdoc_csv: TecDoc CSV: rânduri prezente, fără URL imagine",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:21+00:00",
+        "at_label": "07.07.2026 09:43:21",
+        "message": "[PROGRESS:49%] Plan 3 caietcomenzi: Caiet comenzi: fără rând TecDoc\/Excel în raw_json și fără potrivire în biblioteca locală",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:21+00:00",
+        "at_label": "07.07.2026 09:43:21",
+        "message": "[PROGRESS:49%] Plan 2 local_ttc_poze: Biblioteca are 157.857 imagini — codul «YT0699» nu e în indexul Excel Poze",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:21+00:00",
+        "at_label": "07.07.2026 09:43:21",
+        "message": "[PROGRESS:49%] Plan 1 produse_db: Niciun produs scanat anterior în BD pentru «YT0699»",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:43:21+00:00",
+        "at_label": "07.07.2026 09:43:21",
+        "message": "[PROGRESS:49%] Plan 7 (Plan 6 — autodoc.ro (stealth scraper)): autodoc — Autodoc: Call to undefined method ScraperHubTester::isScrapeDoFallbackEnabled()",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:27+00:00",
+        "at_label": "07.07.2026 09:40:27",
+        "message": "[PROGRESS:49%] OEM 1\/2 (autodoc): «bol de 7 l pentru ulei yat yt0699»",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:27+00:00",
+        "at_label": "07.07.2026 09:40:27",
+        "message": "[PROGRESS:49%] Plan 6 (Plan 5 — TecDoc RapidAPI (token)): tecdoc_api — RapidAPI TecDoc blocat local după o eroare de cotă (acum 1412 min). Cheia poate fi validă — rulează din nou testul sau șterge flag-ul din Setări. Reset automat după 24h.",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:27+00:00",
+        "at_label": "07.07.2026 09:40:27",
+        "message": "[PROGRESS:49%] Plan 5 (Plan 4 — ePiesa.ro (stealth scraper)): epiesa — omis (skip_sources)",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:27+00:00",
+        "at_label": "07.07.2026 09:40:27",
+        "message": "[PROGRESS:49%] Plan 4 (Plan 3 — TecDoc CSV (fișiere locale)): tecdoc_csv — TecDoc CSV: rânduri prezente, fără URL imagine",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:27+00:00",
+        "at_label": "07.07.2026 09:40:27",
+        "message": "[PROGRESS:49%] Plan 3 (Plan 2 — Caiet comenzi (PozeEmag)): caietcomenzi — Caiet comenzi: fără rând TecDoc\/Excel în raw_json și fără potrivire în biblioteca locală",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:27+00:00",
+        "at_label": "07.07.2026 09:40:27",
+        "message": "[PROGRESS:49%] Plan 2 (Plan 1 — Bibliotecă locală Poze (TTC_ART_ID)): local_ttc_poze — Biblioteca are 157.857 imagini — codul «YT0699» nu e în indexul Excel Poze",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:27+00:00",
+        "at_label": "07.07.2026 09:40:27",
+        "message": "[PROGRESS:49%] Plan 1 (Plan 0 — BD magazin (produse scanate anterior)): produse_db — Niciun produs scanat anterior în BD pentru «YT0699»",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:27+00:00",
+        "at_label": "07.07.2026 09:40:27",
+        "message": "[PROGRESS:49%] Imagine (pipeline Scraper Plan 1→N, mod consumabil)…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:27+00:00",
+        "at_label": "07.07.2026 09:40:27",
+        "message": "[PROGRESS:49%] Pipeline imagini (Scraper): Plan 1 → produse_db · Plan 2 → local_ttc_poze · Plan 3 → caietcomenzi · Plan 4 → tecdoc_csv · Plan 5 → epiesa · Plan 6 → tecdoc_api · Plan 7 → autodoc",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:27+00:00",
+        "at_label": "07.07.2026 09:40:27",
+        "message": "[PROGRESS:47%] Imagine (pipeline Scraper)…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:27+00:00",
+        "at_label": "07.07.2026 09:40:27",
+        "message": "[PROGRESS:43%] Descriere produs…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:27+00:00",
+        "at_label": "07.07.2026 09:40:27",
+        "message": "[PROGRESS:39%] Procesez 3\/6: Bol de 7 L pentru Ulei Yat YT0699 [YT0699]",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:27+00:00",
+        "at_label": "07.07.2026 09:40:27",
+        "message": "[PROGRESS:39%] Inserted magazin: Ulei Hidraulic Sachs 0 140 206 100",
+        "supplier": "AUTOPARTNER",
+        "level": "ok",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:27+00:00",
+        "at_label": "07.07.2026 09:40:27",
+        "message": "[PROGRESS:39%] Vitrină homepage: Ulei Hidraulic Sachs 0 140 206 100",
+        "supplier": "AUTOPARTNER",
+        "level": "ok",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:26+00:00",
+        "at_label": "07.07.2026 09:40:26",
+        "message": "[PROGRESS:43%] Public în magazin…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:26+00:00",
+        "at_label": "07.07.2026 09:40:26",
+        "message": "[PROGRESS:41%] Pregătire rând pentru magazin…",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:26+00:00",
+        "at_label": "07.07.2026 09:40:26",
+        "message": "[PROGRESS:35%] Niciun plan scraper nu a returnat imagine — produsul poate fi publicat fără poză (fallback catalog).",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:26+00:00",
+        "at_label": "07.07.2026 09:40:26",
+        "message": "[PROGRESS:35%] Plan 7 autodoc: Autodoc: Call to undefined method ScraperHubTester::isScrapeDoFallbackEnabled()",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:26+00:00",
+        "at_label": "07.07.2026 09:40:26",
+        "message": "[PROGRESS:35%] Plan 6 tecdoc_api: RapidAPI TecDoc blocat local după o eroare de cotă (acum 1409 min). Cheia poate fi validă — rulează din nou testul sau șterge flag-ul din Setări. Reset automat după 24h.",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:26+00:00",
+        "at_label": "07.07.2026 09:40:26",
+        "message": "[PROGRESS:35%] Plan 5 epiesa: Omis — sursă exclusă din opțiunile import (epiesa)",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:26+00:00",
+        "at_label": "07.07.2026 09:40:26",
+        "message": "[PROGRESS:35%] Plan 4 tecdoc_csv: TecDoc CSV: rânduri prezente, fără URL imagine",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:26+00:00",
+        "at_label": "07.07.2026 09:40:26",
+        "message": "[PROGRESS:35%] Plan 3 caietcomenzi: Caiet comenzi: fără rând TecDoc\/Excel în raw_json și fără potrivire în biblioteca locală",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:26+00:00",
+        "at_label": "07.07.2026 09:40:26",
+        "message": "[PROGRESS:35%] Plan 2 local_ttc_poze: Biblioteca are 157.857 imagini — codul «0140206100» nu e în indexul Excel Poze",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:26+00:00",
+        "at_label": "07.07.2026 09:40:26",
+        "message": "[PROGRESS:35%] Plan 1 produse_db: Niciun produs scanat anterior în BD pentru «0140206100»",
+        "supplier": "AUTOPARTNER",
+        "level": "warn",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:40:26+00:00",
+        "at_label": "07.07.2026 09:40:26",
+        "message": "[PROGRESS:35%] Plan 7 (Plan 6 — autodoc.ro (stealth scraper)): autodoc — Autodoc: Call to undefined method ScraperHubTester::isScrapeDoFallbackEnabled()",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:37:32+00:00",
+        "at_label": "07.07.2026 09:37:32",
+        "message": "[PROGRESS:35%] OEM 1\/2 (autodoc): «ulei hidraulic sachs 0 140 206 100»",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:37:32+00:00",
+        "at_label": "07.07.2026 09:37:32",
+        "message": "[PROGRESS:35%] Plan 6 (Plan 5 — TecDoc RapidAPI (token)): tecdoc_api — RapidAPI TecDoc blocat local după o eroare de cotă (acum 1409 min). Cheia poate fi validă — rulează din nou testul sau șterge flag-ul din Setări. Reset automat după 24h.",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:37:32+00:00",
+        "at_label": "07.07.2026 09:37:32",
+        "message": "[PROGRESS:35%] Plan 5 (Plan 4 — ePiesa.ro (stealth scraper)): epiesa — omis (skip_sources)",
+        "supplier": "AUTOPARTNER",
+        "level": "info",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:37:32+00:00",
+        "at_label": "07.07.2026 09:37:32",
+        "message": "[PROGRESS:35%] Plan 4 (Plan 3 — TecDoc CSV (fișiere locale)): tecdoc_csv — TecDoc CSV: rânduri prezente, fără URL imagine",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:37:32+00:00",
+        "at_label": "07.07.2026 09:37:32",
+        "message": "[PROGRESS:35%] Plan 3 (Plan 2 — Caiet comenzi (PozeEmag)): caietcomenzi — Caiet comenzi: fără rând TecDoc\/Excel în raw_json și fără potrivire în biblioteca locală",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:37:32+00:00",
+        "at_label": "07.07.2026 09:37:32",
+        "message": "[PROGRESS:35%] Plan 2 (Plan 1 — Bibliotecă locală Poze (TTC_ART_ID)): local_ttc_poze — Biblioteca are 157.857 imagini — codul «0140206100» nu e în indexul Excel Poze",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    },
+    {
+        "at": "2026-07-07T09:37:32+00:00",
+        "at_label": "07.07.2026 09:37:32",
+        "message": "[PROGRESS:35%] Plan 1 (Plan 0 — BD magazin (produse scanate anterior)): produse_db — Niciun produs scanat anterior în BD pentru «0140206100»",
+        "supplier": "AUTOPARTNER",
+        "level": "miss",
+        "step": "sync"
+    }
+]

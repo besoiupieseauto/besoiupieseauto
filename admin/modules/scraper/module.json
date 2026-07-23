@@ -1,0 +1,46 @@
+{
+    "id": "scraper",
+    "name": "Scraper Hub",
+    "version": "1.0.0",
+    "type": "optional",
+    "enabled": true,
+    "description": "Hub scraping web (ePiesa, pipeline imagini, surse configurabile) — înveliș modular peste app/Lib/Scraper.",
+    "entry": "Besoiu\\Modules\\Scraper\\ScraperModule",
+    "dependencies": [],
+    "permissions": [
+        "module.scraper",
+        "automatizare.scraper"
+    ],
+    "workspace": "ai",
+    "nav_section": {
+        "group_label": "AUTOMATIZARE"
+    },
+    "nav": [
+        {
+            "id": "scraper",
+            "label": "Scraper imagini",
+            "href": "/admin/scraper",
+            "icon": "image",
+            "group": "AUTOMATIZARE"
+        }
+    ],
+    "provides": {
+        "folder": "scraper",
+        "slugs": [
+            "scraper"
+        ],
+        "paths": [
+            "/admin/scraper",
+            "/admin/public/scraper",
+            "/admin/public/api/scraper_endpoint.php"
+        ],
+        "crud_key": null,
+        "api_scripts": [
+            "scraper_endpoint.php"
+        ],
+        "quick_actions": [
+            "scraper"
+        ]
+    },
+    "migrations": []
+}

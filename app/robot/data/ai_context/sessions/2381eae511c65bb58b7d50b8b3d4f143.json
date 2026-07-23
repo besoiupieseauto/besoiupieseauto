@@ -1,0 +1,98 @@
+{
+    "session_id": "cmrm3rdimjeocijwe",
+    "updated_at": "2026-07-15T13:16:20+00:00",
+    "first_seen_at": "2026-07-15T13:15:05+00:00",
+    "last_page": "\/",
+    "pages": [
+        "\/",
+        "\/catalog"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-15T13:15:05+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-15T13:15:29+00:00",
+            "action": "search",
+            "subject": "perii electromotor valeo"
+        },
+        {
+            "at": "2026-07-15T13:15:29+00:00",
+            "action": "scroll",
+            "subject": "25% · \/"
+        },
+        {
+            "at": "2026-07-15T13:15:34+00:00",
+            "action": "time_on_page",
+            "subject": "32s pe \/"
+        },
+        {
+            "at": "2026-07-15T13:15:35+00:00",
+            "action": "time_on_page",
+            "subject": "32s pe \/"
+        },
+        {
+            "at": "2026-07-15T13:15:38+00:00",
+            "action": "page_view",
+            "subject": "\/catalog"
+        },
+        {
+            "at": "2026-07-15T13:15:38+00:00",
+            "action": "scroll",
+            "subject": "25% · \/catalog"
+        },
+        {
+            "at": "2026-07-15T13:15:40+00:00",
+            "action": "scroll",
+            "subject": "50% · \/catalog"
+        },
+        {
+            "at": "2026-07-15T13:15:40+00:00",
+            "action": "scroll",
+            "subject": "75% · \/catalog"
+        },
+        {
+            "at": "2026-07-15T13:15:40+00:00",
+            "action": "scroll",
+            "subject": "100% · \/catalog"
+        },
+        {
+            "at": "2026-07-15T13:15:57+00:00",
+            "action": "search",
+            "subject": "ELECTROMOTOR"
+        },
+        {
+            "at": "2026-07-15T13:16:20+00:00",
+            "action": "time_on_page",
+            "subject": "44s pe \/catalog"
+        },
+        {
+            "at": "2026-07-15T13:16:20+00:00",
+            "action": "time_on_page",
+            "subject": "45s pe \/catalog"
+        },
+        {
+            "at": "2026-07-15T13:16:20+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-15T13:16:20+00:00",
+            "action": "scroll",
+            "subject": "25% · \/"
+        },
+        {
+            "at": "2026-07-15T13:16:20+00:00",
+            "action": "scroll",
+            "subject": "50% · \/"
+        }
+    ],
+    "event_count": 16,
+    "intent": "browse",
+    "searches": [
+        "perii electromotor valeo",
+        "ELECTROMOTOR"
+    ]
+}

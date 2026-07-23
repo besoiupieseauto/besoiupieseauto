@@ -1,0 +1,20 @@
+{
+  "randomn_id": "61f2a07e436b8395",
+  "title": "Sonda Lambda Bosch 0 258 003 644",
+  "code": "0258003644",
+  "category": "Piese auto",
+  "image_url": "",
+  "verdict": "no_image",
+  "match_score": 0,
+  "image_shows": "Nicio imagine disponibilă — câmpurile image_url și local_image_path sunt goale, image_source=missing.",
+  "issues": [
+    "Produsul nu are imagine încărcată în catalog.",
+    "Nu se poate efectua comparația vizuală cu titlul «Sonda Lambda Bosch 0 258 003 644».",
+    "Nu se poate confirma sonda lambda Bosch cod 0258003644 din categoria Piese auto."
+  ],
+  "recommendation": "replace",
+  "summary_ro": "Produs fără imagine. Audit vizual imposibil; se recomandă găsirea și încărcarea unei fotografii corecte pentru sonda lambda Bosch 0258003644.",
+  "analyzed_at": "2026-06-19T12:57:44.658262+00:00",
+  "engine": "cursor-composer-2.5",
+  "model": "composer-2.5"
+}

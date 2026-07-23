@@ -1,0 +1,67 @@
+{
+    "session_id": "cmrq5bspov1rvtp1f",
+    "updated_at": "2026-07-18T09:10:25+00:00",
+    "first_seen_at": "2026-07-18T09:10:02+00:00",
+    "last_page": "\/",
+    "pages": [
+        "\/",
+        "\/catalog"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-18T09:10:02+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-18T09:10:04+00:00",
+            "action": "time_on_page",
+            "subject": "5s pe \/"
+        },
+        {
+            "at": "2026-07-18T09:10:07+00:00",
+            "action": "page_view",
+            "subject": "\/catalog"
+        },
+        {
+            "at": "2026-07-18T09:10:07+00:00",
+            "action": "product_view",
+            "subject": "CATALOG PIESE AUTO"
+        },
+        {
+            "at": "2026-07-18T09:10:12+00:00",
+            "action": "scroll",
+            "subject": "25% · \/catalog"
+        },
+        {
+            "at": "2026-07-18T09:10:12+00:00",
+            "action": "scroll",
+            "subject": "50% · \/catalog"
+        },
+        {
+            "at": "2026-07-18T09:10:12+00:00",
+            "action": "scroll",
+            "subject": "75% · \/catalog"
+        },
+        {
+            "at": "2026-07-18T09:10:12+00:00",
+            "action": "scroll",
+            "subject": "100% · \/catalog"
+        },
+        {
+            "at": "2026-07-18T09:10:25+00:00",
+            "action": "time_on_page",
+            "subject": "20s pe \/catalog"
+        },
+        {
+            "at": "2026-07-18T09:10:25+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        }
+    ],
+    "event_count": 10,
+    "intent": "browse",
+    "products_viewed": [
+        "CATALOG PIESE AUTO"
+    ]
+}

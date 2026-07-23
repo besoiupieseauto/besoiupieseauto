@@ -1,0 +1,17 @@
+{
+    "session_id": "cmrkg6f0ygrkx3nbv",
+    "updated_at": "2026-07-14T09:27:10+00:00",
+    "first_seen_at": "2026-07-14T09:27:10+00:00",
+    "last_page": "\/",
+    "pages": [
+        "\/"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-14T09:27:10+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        }
+    ],
+    "event_count": 1
+}

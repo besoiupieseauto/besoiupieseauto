@@ -1,0 +1,444 @@
+/**
+ * Besoiu Admin — override final: design unic mint/teal pe toate paginile.
+ * Încărcat după stilurile inline / module, forțează paleta brand.
+ */
+@import url("admin-produse-list.css?v=20260718-layout-v4");
+
+:root,
+body.besoiu-admin-2026 {
+  --color-primary: #14b8a6;
+  --b26-emerald: #1cb2a0;
+  --b26-emerald-mid: #14b8a6;
+  --b26-emerald-deep: #0f766e;
+  --b26-emerald-ink: #0a3d31;
+  --b26-header-grad: linear-gradient(105deg, #0f766e 0%, #0a5c50 38%, #0a3d31 72%, #062e25 100%);
+  --b26-btn-grad: linear-gradient(180deg, #0d9488 0%, #0f766e 55%, #0a3d31 100%);
+  --b26-tab-grad: linear-gradient(135deg, #0d9488 0%, #0f766e 55%, #0a3d31 100%);
+  --b26-bg: #f4f7f6;
+  --b26-amber: #f5a623;
+  /* Module tokens → brand */
+  --fz-primary: #14b8a6 !important;
+  --fz-primary-dark: #0f766e !important;
+  --exp-primary: #14b8a6;
+  --exp-primary-dark: #0f766e;
+  --ac-primary: #14b8a6;
+  --st-primary: #14b8a6;
+  --pl-teal: #14b8a6;
+  --pl-emerald: #10b981;
+  --ip-primary: #14b8a6;
+  --ip-primary-soft: #f0fdfa;
+  --ip-primary-dark: #0f766e;
+  --fp-primary: #14b8a6;
+  --fp-primary-soft: #f0fdfa;
+  --fp-primary-dark: #0f766e;
+  --pl-accent: #14b8a6;
+}
+
+body.besoiu-admin-2026,
+body.besoiu-admin-2026 .rubick,
+body.besoiu-admin-2026 .content__scroll-area {
+  background: #f4f7f6 !important;
+}
+
+/* ── Variabile module ── */
+body.besoiu-admin-2026 .furnizori-page {
+  --fz-primary: #14b8a6 !important;
+  --fz-primary-dark: #0f766e !important;
+  --pl-accent: #14b8a6 !important;
+}
+
+body.besoiu-admin-2026 .import-pro-ui,
+body.besoiu-admin-2026 .import-pro-erp-wrap,
+body.besoiu-admin-2026 .import-pro-inline-app {
+  --ip-primary: #14b8a6 !important;
+  --ip-primary-soft: #f0fdfa !important;
+  --ip-primary-dark: #0f766e !important;
+}
+
+body.besoiu-admin-2026 .fp-pro-ui,
+body.besoiu-admin-2026 .furnizor-profile-page {
+  --fp-primary: #14b8a6 !important;
+  --fp-primary-soft: #f0fdfa !important;
+  --fp-primary-dark: #0f766e !important;
+}
+
+/* Heroes — brand închis, fără umbră/blob care taie toolbar-ul */
+body.besoiu-admin-2026 .import-pro-ui .ip-hero,
+body.besoiu-admin-2026 .fp-pro-ui .fp-hero {
+  background: var(--b26-header-grad) !important;
+  box-shadow: none !important;
+  border-radius: 12px !important;
+  overflow: visible !important;
+  margin-top: 0 !important;
+}
+
+body.besoiu-admin-2026 .import-pro-ui .ip-hero::before,
+body.besoiu-admin-2026 .import-pro-ui .ip-hero::after,
+body.besoiu-admin-2026 .fp-pro-ui .fp-hero::before,
+body.besoiu-admin-2026 .fp-pro-ui .fp-hero::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Toolbar profil — nu se mai „mănâncă” de hero */
+body.besoiu-admin-2026 .fp-pro-ui .fp-toolbar {
+  position: relative !important;
+  z-index: 5 !important;
+  overflow: visible !important;
+  border-radius: 0 !important;
+  margin-bottom: 12px !important;
+}
+
+body.besoiu-admin-2026 .furnizor-profile-page.fp-pro-ui,
+body.besoiu-admin-2026 .import-pro-ui {
+  overflow: visible !important;
+  max-width: 100% !important;
+}
+
+body.besoiu-admin-2026:has(.furnizor-profile-page) .content > .h-full,
+body.besoiu-admin-2026:has(.import-pro-ui) .content > .h-full {
+  overflow-x: visible !important;
+}
+
+body.besoiu-admin-2026:has(.furnizor-profile-page) .admin-content,
+body.besoiu-admin-2026:has(.import-pro-ui) .admin-content {
+  overflow: visible !important;
+  padding-right: 4px;
+}
+
+body.besoiu-admin-2026 .import-pro-ui .workflow-tab.active,
+body.besoiu-admin-2026 .fp-pro-ui .fp-step.active {
+  border-color: #14b8a6 !important;
+  color: #0f766e !important;
+}
+
+body.besoiu-admin-2026 .export-hub {
+  --exp-primary: #14b8a6 !important;
+  --exp-primary-dark: #0f766e !important;
+}
+
+body.besoiu-admin-2026 .settings-page {
+  --st-primary: #14b8a6 !important;
+  --st-primary-soft: #f0fdfa !important;
+  --st-primary-ring: rgba(20, 184, 166, 0.25) !important;
+}
+
+/* ── Butoane primare (verde/teal plin) ── */
+body.besoiu-admin-2026 .furnizori-page .fz-btn-primary,
+body.besoiu-admin-2026 .furnizori-page button.fz-btn-primary,
+body.besoiu-admin-2026 .furnizori-page .fz-btn-primary:hover,
+body.besoiu-admin-2026 .furnizori-page button.fz-btn-primary:hover,
+body.besoiu-admin-2026 #furnizori-modal .fz-modal-btn-save,
+body.besoiu-admin-2026 #furnizori-modal button.fz-modal-btn-save,
+body.besoiu-admin-2026 #furnizori-modal .fz-modal-btn-save:hover,
+body.besoiu-admin-2026 .furnizori-page .fz-view-btn.active,
+body.besoiu-admin-2026 button[style*="background:#2563eb"],
+body.besoiu-admin-2026 button[style*="background: #2563eb"],
+body.besoiu-admin-2026 label[style*="background:#2563eb"],
+body.besoiu-admin-2026 label[style*="background: #2563eb"],
+body.besoiu-admin-2026 button[style*="#6366f1"],
+body.besoiu-admin-2026 button[style*="#4f46e5"],
+body.besoiu-admin-2026 #bots-open-create,
+body.besoiu-admin-2026 #td_load_btn,
+body.besoiu-admin-2026 .export-hub .exp-tabs__btn.is-active,
+body.besoiu-admin-2026 .cp-btn--primary,
+body.besoiu-admin-2026 .ac-btn--primary {
+  background: var(--b26-btn-grad) !important;
+  background-image: var(--b26-btn-grad) !important;
+  border: 2px solid #0f766e !important;
+  color: #fff !important;
+  box-shadow: 0 6px 18px rgba(20, 184, 166, 0.35) !important;
+}
+
+/* ── Butoane secundare ── */
+body.besoiu-admin-2026 .furnizori-page .fz-btn-outline,
+body.besoiu-admin-2026 .furnizori-page button.fz-btn-outline,
+body.besoiu-admin-2026 .furnizori-page .fz-btn-price,
+body.besoiu-admin-2026 .furnizori-page .fz-btn-outline:hover,
+body.besoiu-admin-2026 .furnizori-page button.fz-btn-outline:hover,
+body.besoiu-admin-2026 .furnizori-page .fz-btn-price:hover,
+body.besoiu-admin-2026 .furnizori-page .fz-card-foot .fz-btn-price:hover {
+  background: #fff !important;
+  border-color: #14b8a6 !important;
+  color: #0f766e !important;
+}
+
+/* ── Tab-uri / link-uri active (text) ── */
+body.besoiu-admin-2026 .furnizori-page .fz-page-tab.active,
+body.besoiu-admin-2026 .scraper-nav-tab.is-active,
+body.besoiu-admin-2026 .settings-page .st-tab.is-active,
+body.besoiu-admin-2026 .scraper-card-cat,
+body.besoiu-admin-2026 .scraper-card-link,
+body.besoiu-admin-2026 .sys-err-level-info,
+body.besoiu-admin-2026 .searchlogs-type-vin,
+body.besoiu-admin-2026 .ai-tokens-badge-gemini,
+body.besoiu-admin-2026 a.cat-tab[style*="#2563eb"],
+body.besoiu-admin-2026 a[style*="color:#2563eb"],
+body.besoiu-admin-2026 a[style*="color: #2563eb"],
+body.besoiu-admin-2026 label[style*="color:#2563eb"],
+body.besoiu-admin-2026 label[style*="color: #2563eb"],
+body.besoiu-admin-2026 summary[style*="#1d4ed8"],
+body.besoiu-admin-2026 [style*="color:#2563eb"],
+body.besoiu-admin-2026 [style*="color: #2563eb"],
+body.besoiu-admin-2026 [style*="color:#1d4ed8"],
+body.besoiu-admin-2026 [style*="color: #1d4ed8"],
+body.besoiu-admin-2026 [style*="color:#6366f1"],
+body.besoiu-admin-2026 [style*="color: #6366f1"],
+body.besoiu-admin-2026 .products-action-hover:hover,
+body.besoiu-admin-2026 .products-page-hover:hover {
+  color: #0f766e !important;
+}
+
+body.besoiu-admin-2026 [style*="border-bottom:3px solid #2563eb"],
+body.besoiu-admin-2026 [style*="border-bottom: 3px solid #2563eb"],
+body.besoiu-admin-2026 .scraper-nav-tab.is-active {
+  border-bottom-color: #14b8a6 !important;
+}
+
+/* Tab active — fundal brand */
+body.besoiu-admin-2026 .furnizori-page .fz-page-tab.active,
+body.besoiu-admin-2026 .settings-page .st-tab.is-active,
+body.besoiu-admin-2026 .export-hub .exp-tabs__btn.is-active,
+body.besoiu-admin-2026 .admin-tab--active,
+body.besoiu-admin-2026 .besoiu-tabs__btn--active {
+  background: var(--b26-tab-grad) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+}
+
+/* ── Fundaluri / badge-uri albastre → mint soft ── */
+body.besoiu-admin-2026 .furnizori-page .fz-empty-icon,
+body.besoiu-admin-2026 .furnizori-page .fz-card-conn,
+body.besoiu-admin-2026 .fz-modal-head-icon,
+body.besoiu-admin-2026 .chip-facebook,
+body.besoiu-admin-2026 .bot-btn-preview,
+body.besoiu-admin-2026 [style*="#eff6ff"],
+body.besoiu-admin-2026 [style*="#dbeafe"],
+body.besoiu-admin-2026 [style*="#eef2ff"],
+body.besoiu-admin-2026 [style*="background:#eff6ff"],
+body.besoiu-admin-2026 [style*="background: #eff6ff"],
+body.besoiu-admin-2026 [style*="background:#dbeafe"],
+body.besoiu-admin-2026 [style*="background: #dbeafe"],
+body.besoiu-admin-2026 .text-blue-600,
+body.besoiu-admin-2026 .text-blue-800,
+body.besoiu-admin-2026 .text-blue-900,
+body.besoiu-admin-2026 .bg-blue-50,
+body.besoiu-admin-2026 .border-blue-200,
+body.besoiu-admin-2026 .border-blue-500\/30,
+body.besoiu-admin-2026 .hover\:bg-blue-50:hover,
+body.besoiu-admin-2026 [class*="text-blue"],
+body.besoiu-admin-2026 [class*="bg-blue"],
+body.besoiu-admin-2026 [class*="border-blue"] {
+  background: #f0fdfa !important;
+  background-color: #f0fdfa !important;
+  border-color: #99f6e4 !important;
+  color: #0f766e !important;
+}
+
+body.besoiu-admin-2026 .searchlogs-type-vin,
+body.besoiu-admin-2026 .ai-tokens-badge-gemini {
+  background: rgba(20, 184, 166, 0.15) !important;
+}
+
+/* ── Roboți / icon header + focus ── */
+body.besoiu-admin-2026 div[style*="#6366f1"],
+body.besoiu-admin-2026 div[style*="#4f46e5"] {
+  background: linear-gradient(135deg, #0d9488, #0a3d31) !important;
+  background-image: linear-gradient(135deg, #0d9488, #0a3d31) !important;
+  box-shadow: 0 4px 14px rgba(10, 61, 49, 0.35) !important;
+}
+
+body.besoiu-admin-2026 .bots-filter-bar select:focus {
+  border-color: #14b8a6 !important;
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15) !important;
+}
+
+/* ── Produse hover ── */
+body.besoiu-admin-2026 .products-btn-hover:hover {
+  background: rgba(20, 184, 166, 0.12) !important;
+  border-color: rgba(20, 184, 166, 0.32) !important;
+}
+
+/* ── Progress bars ── */
+body.besoiu-admin-2026 #progress-bar,
+body.besoiu-admin-2026 #job-progress-bar {
+  background: linear-gradient(90deg, #0a3d31, #0d9488) !important;
+  background-image: linear-gradient(90deg, #0a3d31, #0d9488) !important;
+}
+
+/* ── Gradient albastru/violet → brand închis ── */
+body.besoiu-admin-2026 [style*="linear-gradient(135deg, #3b82f6"],
+body.besoiu-admin-2026 [style*="linear-gradient(135deg,#3b82f6"],
+body.besoiu-admin-2026 [style*="linear-gradient(135deg, #6366f1"],
+body.besoiu-admin-2026 [style*="linear-gradient(135deg,#6366f1"],
+body.besoiu-admin-2026 [style*="linear-gradient(90deg,#2563eb"],
+body.besoiu-admin-2026 [style*="linear-gradient(90deg, #2563eb"],
+body.besoiu-admin-2026 [style*="linear-gradient(90deg,#7c3aed,#2563eb"] {
+  background: linear-gradient(135deg, #0d9488, #0a3d31) !important;
+  background-image: linear-gradient(135deg, #0d9488, #0a3d31) !important;
+}
+
+body.besoiu-admin-2026 [style*="linear-gradient(90deg,#2563eb,#059669"],
+body.besoiu-admin-2026 [style*="linear-gradient(90deg, #2563eb, #059669"] {
+  background: linear-gradient(90deg, #0a3d31, #0d9488) !important;
+  background-image: linear-gradient(90deg, #0a3d31, #0d9488) !important;
+}
+
+/* ── Focus inputs ── */
+body.besoiu-admin-2026 .furnizori-page .fz-search:focus,
+body.besoiu-admin-2026 .furnizori-page .fz-modal-field input:focus,
+body.besoiu-admin-2026 .furnizori-page .fz-modal-field select:focus {
+  border-color: #14b8a6 !important;
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15) !important;
+}
+
+/* Contururi vizibile — inputuri + panouri */
+body.besoiu-admin-2026 .admin-content input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="file"]):not([type="submit"]):not([type="button"]),
+body.besoiu-admin-2026 .admin-content select,
+body.besoiu-admin-2026 .admin-content textarea,
+body.besoiu-admin-2026 .admin-content .form-control,
+body.besoiu-admin-2026 [id*="modal"] input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="file"]),
+body.besoiu-admin-2026 [id*="modal"] select,
+body.besoiu-admin-2026 [id*="modal"] textarea,
+body.besoiu-admin-2026 .furnizori-page .fz-search,
+body.besoiu-admin-2026 .furnizori-page .fz-filter,
+body.besoiu-admin-2026 .furnizori-page .fz-modal-field input,
+body.besoiu-admin-2026 .furnizori-page .fz-modal-field select {
+  border: 2px solid #94a3b8 !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  color: #0f172a !important;
+}
+
+body.besoiu-admin-2026 .admin-content input[readonly],
+body.besoiu-admin-2026 .admin-content textarea[readonly],
+body.besoiu-admin-2026 .admin-content .bg-slate-50 input,
+body.besoiu-admin-2026 .admin-content [class*="bg-slate-50"] input[readonly] {
+  background: #f8fafc !important;
+  border-color: #94a3b8 !important;
+}
+
+body.besoiu-admin-2026 .admin-content input:focus,
+body.besoiu-admin-2026 .admin-content select:focus,
+body.besoiu-admin-2026 .admin-content textarea:focus,
+body.besoiu-admin-2026 [id*="modal"] input:focus,
+body.besoiu-admin-2026 [id*="modal"] select:focus,
+body.besoiu-admin-2026 [id*="modal"] textarea:focus {
+  border-color: #14b8a6 !important;
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15) !important;
+  outline: none !important;
+}
+
+/* Panouri informaționale */
+body.besoiu-admin-2026 .admin-content .alert,
+body.besoiu-admin-2026 .admin-content .rounded-lg.border,
+body.besoiu-admin-2026 .admin-content .rounded-xl.border,
+body.besoiu-admin-2026 .admin-content .rounded-md.border,
+body.besoiu-admin-2026 .admin-content [class*="bg-slate-50"][class*="border"],
+body.besoiu-admin-2026 .admin-content [class*="border-foreground"],
+body.besoiu-admin-2026 #cron-setup-hint,
+body.besoiu-admin-2026 #scan-sync-hint,
+body.besoiu-admin-2026 #cron-modules-map,
+body.besoiu-admin-2026 .conn-panel,
+body.besoiu-admin-2026 .besoiu-tecdoc-ip-widget__alert,
+body.besoiu-admin-2026 .besoiu-tecdoc-ip-widget__indicator,
+body.besoiu-admin-2026 .besoiu-red-flag__intro {
+  border: 2px solid #94a3b8 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 4px 14px rgba(10, 61, 49, 0.06) !important;
+}
+
+body.besoiu-admin-2026 .admin-content [class*="bg-emerald-50"],
+body.besoiu-admin-2026 .admin-content .alert[class*="emerald"] {
+  border-color: #5eead4 !important;
+  background: #f0fdfa !important;
+  color: #0f766e !important;
+}
+
+body.besoiu-admin-2026 .admin-content [class*="bg-amber-50"],
+body.besoiu-admin-2026 .admin-content [class*="border-amber"] {
+  border-color: #fcd34d !important;
+  background: #fff7e6 !important;
+  color: #92400e !important;
+}
+
+body.besoiu-admin-2026 .admin-content [class*="bg-slate-50"][class*="border"] {
+  border-color: #94a3b8 !important;
+  background: #f8fafc !important;
+  color: #334155 !important;
+}
+
+/* ── Module: marketing / export / comenzi / workspace — anti-albastru ── */
+body.besoiu-admin-2026 .export-hub .exp-tabs__btn.is-active {
+  background: #f0fdfa !important;
+  border-color: #14b8a6 !important;
+  color: #0f766e !important;
+  box-shadow: none !important;
+}
+
+body.besoiu-admin-2026 .bmgh-metric-chip--social,
+body.besoiu-admin-2026 .comenzi-admin-page .bco-kpi--sky::after {
+  background: linear-gradient(90deg, #0d9488, #0a3d31) !important;
+  color: #fff !important;
+}
+
+body.besoiu-admin-2026 .besoiu-dashboard[data-besoiu-dash-workspace] {
+  --bws-accent: #14b8a6 !important;
+  --bws-accent2: #0f766e !important;
+}
+
+body.besoiu-admin-2026 .sys-err-level-info {
+  border-left-color: #14b8a6 !important;
+}
+
+/* Accent portocaliu (badge tip „Fără imagine”) */
+body.besoiu-admin-2026 .pl-badge--warn,
+body.besoiu-admin-2026 .badge-warning,
+body.besoiu-admin-2026 [data-badge="warn"] {
+  background: #fff7e6 !important;
+  color: #b45309 !important;
+  border-color: #f5a623 !important;
+}
+
+/* Workspace switch pe topbar gradient */
+body.besoiu-admin-2026 .besoiu-topbar__workspace,
+body.besoiu-admin-2026 .besoiu-ws-switch__trigger,
+body.besoiu-admin-2026 .besoiu-ws-switch__label-only {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  color: #fff !important;
+}
+
+body.besoiu-admin-2026 .besoiu-topbar__workspace svg,
+body.besoiu-admin-2026 .besoiu-ws-switch__trigger svg {
+  stroke: #fff !important;
+  color: #fff !important;
+}
+
+/* API live chip pe topbar gradient — contrast */
+body.besoiu-admin-2026 .besoiu-topbar .bpa-api-live {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Hero pagină setări → același gradient brand */
+body.besoiu-admin-2026 .settings-page .st-hero {
+  background: var(--b26-header-grad) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+  border-radius: 18px !important;
+  box-shadow: 0 12px 32px rgba(15, 118, 110, 0.2) !important;
+}
+
+body.besoiu-admin-2026 .settings-page .st-hero__title,
+body.besoiu-admin-2026 .settings-page .st-hero__sub,
+body.besoiu-admin-2026 .settings-page .st-hero h1,
+body.besoiu-admin-2026 .settings-page .st-hero h2 {
+  color: #fff !important;
+}
+
+body.besoiu-admin-2026 .settings-page .st-hero__icon {
+  background: rgba(255, 255, 255, 0.22) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  color: #fff !important;
+}

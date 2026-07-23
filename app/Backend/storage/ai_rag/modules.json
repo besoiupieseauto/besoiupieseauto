@@ -1,0 +1,26 @@
+{
+    "_meta": {
+        "updated_at": "2026-07-18T20:30:00+03:00",
+        "phase": 2
+    },
+    "mod_01_semantic_match": {
+        "enabled": true,
+        "model": "qwen2.5:7b",
+        "thresholds": {
+            "exact": 0.92,
+            "probable_min": 0.75
+        }
+    },
+    "mod_02_normalize_desc": {
+        "enabled": true,
+        "model": "qwen2.5:7b",
+        "thresholds": {
+            "schema_valid": 1.0
+        }
+    },
+    "mod_06_log_summary": {
+        "enabled": true,
+        "model": "qwen2.5:7b",
+        "thresholds": {}
+    }
+}

@@ -1,0 +1,20 @@
+{
+  "updated_at": "2026-07-18T16:20:00+03:00",
+  "enabled": {
+    "users": true,
+    "dashboard": true,
+    "furnizori": true,
+    "clienti": true,
+    "supplier_search": true,
+    "scraper": true,
+    "scraper_web": true,
+    "import_pro": true,
+    "import": false,
+    "nav": true,
+    "produse": true,
+    "coada_import": true,
+    "adaos_comercial": true,
+    "categorii": true,
+    "product_formation": true
+  }
+}

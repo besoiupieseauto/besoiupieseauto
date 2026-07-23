@@ -1,0 +1,94 @@
+{
+
+    "id": "users",
+
+    "name": "Utilizatori admin",
+
+    "version": "1.0.0",
+
+    "type": "core",
+
+    "enabled": true,
+
+    "description": "Autentificare admin, conturi operatori, roluri și permisiuni (users_connect).",
+
+    "entry": "Besoiu\\Modules\\Users\\UsersModule",
+
+    "dependencies": [],
+
+    "permissions": [
+
+        "utilizatori.manage",
+
+        "module.users"
+
+    ],
+
+    "workspace": "company",
+
+    "nav": [],
+
+    "provides": {
+
+        "folder": "users",
+
+        "slugs": [
+
+            "login",
+
+            "users",
+
+            "profileusers",
+
+            "addusers",
+
+            "reset-password",
+
+            "help",
+
+            "reg"
+
+        ],
+
+        "paths": [
+
+            "/admin/login",
+
+            "/admin/logout",
+
+            "/admin/addusersadd",
+
+            "/admin/users",
+
+            "/admin/profileusers",
+
+            "/admin/addusers",
+
+            "/admin/reset-password",
+
+            "/admin/help",
+
+            "/admin/reg",
+
+            "/admin/public/login",
+
+            "/admin/public/users",
+
+            "/admin/public/addusersadd",
+
+            "/admin/public/reg"
+
+        ],
+
+        "crud_key": "users",
+
+        "api_scripts": [],
+
+        "quick_actions": []
+
+    },
+
+    "migrations": []
+
+}
+

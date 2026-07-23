@@ -1,0 +1,62 @@
+{
+    "_meta": {
+        "updated_at": "2026-07-18T21:00:00+03:00",
+        "legal_note": "Respectă robots.txt și ToS. Uz intern — analiză, nu copiere pe site."
+    },
+    "defaults": {
+        "delay_min_sec": 2,
+        "delay_max_sec": 5,
+        "test_page_limit": 5,
+        "weekly_only": true
+    },
+    "sources": [
+        {
+            "id": "epiesa_pilot",
+            "name": "ePiesa — categorie ulei",
+            "domain": "www.epiesa.ro",
+            "tip_sursa": "pret_concurenta",
+            "url_template": "https://www.epiesa.ro/uleiuri-si-lubrifianti-auto/",
+            "frequency": "weekly",
+            "status": "active",
+            "use_stealth": true,
+            "robots_checked": false,
+            "notes": "Pilot preț concurență — verifică ToS înainte de automatizare completă"
+        },
+        {
+            "id": "emag_search_pilot",
+            "name": "eMAG — căutare filtru ulei",
+            "domain": "www.emag.ro",
+            "tip_sursa": "pret_concurenta",
+            "url_template": "https://www.emag.ro/search/filtru+ulei+auto",
+            "frequency": "weekly",
+            "status": "paused",
+            "use_stealth": true,
+            "robots_checked": false,
+            "notes": "Pauzat — activează după validare manuală ToS"
+        },
+        {
+            "id": "google_serp_pilot",
+            "name": "Google SERP — piese frână SEO",
+            "domain": "www.google.com",
+            "tip_sursa": "seo_keyword",
+            "url_template": "https://www.google.com/search?q=placute+frana+auto+pret&hl=ro",
+            "frequency": "manual",
+            "status": "paused",
+            "use_stealth": true,
+            "robots_checked": false,
+            "notes": "SERP — uz intern research SEO; respectă politica Google"
+        },
+        {
+            "id": "forum_auto_pilot",
+            "name": "Forum auto — tendințe (placeholder)",
+            "domain": "",
+            "tip_sursa": "tendinta_piata",
+            "url_template": "",
+            "frequency": "manual",
+            "status": "blocked",
+            "use_stealth": false,
+            "robots_checked": false,
+            "notes": "Definește URL forum valid + ToS înainte de activare"
+        }
+    ]
+}

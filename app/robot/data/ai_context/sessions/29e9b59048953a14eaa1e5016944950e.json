@@ -1,0 +1,66 @@
+{
+    "session_id": "cmrpyzgusz80qt8x9",
+    "updated_at": "2026-07-18T06:16:24+00:00",
+    "first_seen_at": "2026-07-18T06:12:29+00:00",
+    "last_page": "\/",
+    "pages": [
+        "\/"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-18T06:12:29+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-18T06:13:02+00:00",
+            "action": "scroll",
+            "subject": "25% · \/"
+        },
+        {
+            "at": "2026-07-18T06:13:05+00:00",
+            "action": "scroll",
+            "subject": "50% · \/"
+        },
+        {
+            "at": "2026-07-18T06:13:05+00:00",
+            "action": "scroll",
+            "subject": "75% · \/"
+        },
+        {
+            "at": "2026-07-18T06:13:08+00:00",
+            "action": "scroll",
+            "subject": "100% · \/"
+        },
+        {
+            "at": "2026-07-18T06:13:17+00:00",
+            "action": "search",
+            "subject": "compresor"
+        },
+        {
+            "at": "2026-07-18T06:14:30+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-18T06:16:24+00:00",
+            "action": "time_on_page",
+            "subject": "238s pe \/"
+        },
+        {
+            "at": "2026-07-18T06:16:24+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-18T06:16:24+00:00",
+            "action": "time_on_page",
+            "subject": "238s pe \/"
+        }
+    ],
+    "event_count": 10,
+    "intent": "browse",
+    "searches": [
+        "compresor"
+    ]
+}

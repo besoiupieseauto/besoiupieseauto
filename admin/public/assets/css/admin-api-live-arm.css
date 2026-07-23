@@ -1,0 +1,94 @@
+/* Control API live — topbar + setări */
+.bpa-api-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid #fecaca;
+  background: #fff5f5;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #991b1b;
+  max-width: 280px;
+}
+
+.bpa-api-live.is-armed {
+  border-color: #86efac;
+  background: #ecfdf5;
+  color: #166534;
+}
+
+.bpa-api-live.is-permanent {
+  border-color: #5eead4;
+  background: #f0fdfa;
+  color: #0f766e;
+}
+
+.bpa-api-live__status {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 118px;
+}
+
+.bpa-api-live__select {
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  padding: 0.15rem 0.25rem;
+  max-width: 4.8rem;
+}
+
+.bpa-api-live__btn {
+  border: 0;
+  border-radius: 6px;
+  padding: 0.2rem 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.bpa-api-live__btn--arm {
+  background: #1abc9c;
+  color: #fff;
+}
+
+.bpa-api-live__btn--disarm {
+  background: #ef4444;
+  color: #fff;
+}
+
+.bpa-api-live-arm-panel {
+  margin: 0 0 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  border: 1px dashed #cbd5e1;
+  background: #f8fafc;
+}
+
+.bpa-api-live-arm-panel.is-armed {
+  border-color: #86efac;
+  background: #ecfdf5;
+}
+
+.bpa-api-live-arm-panel__title {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.bpa-api-live-arm-panel__desc {
+  margin: 0 0 0.65rem;
+  font-size: 0.82rem;
+  color: #64748b;
+  line-height: 1.45;
+}
+
+.bpa-api-live-arm-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}

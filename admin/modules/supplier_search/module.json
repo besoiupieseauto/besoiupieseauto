@@ -1,0 +1,107 @@
+{
+
+    "id": "supplier_search",
+
+    "name": "Supplier Search B2B",
+
+    "version": "1.0.0",
+
+    "type": "optional",
+
+    "enabled": true,
+
+    "description": "Căutare paralelă furnizori B2B + coș. Depinde de modulul furnizori (credențiale).",
+
+    "entry": "Besoiu\\Modules\\SupplierSearch\\SupplierSearchModule",
+
+    "dependencies": ["furnizori"],
+
+    "permissions": [
+
+        "comenzi.supplier_search",
+
+        "module.supplier_search"
+
+    ],
+
+    "workspace": "orders",
+
+    "nav_section": {
+        "group_label": "COMENZI"
+    },
+
+    "nav": [
+        {
+            "id": "supplier-search",
+            "label": "Căutare furnizori",
+            "href": "/admin/supplier-search",
+            "icon": "search",
+            "group": "COMENZI"
+        },
+        {
+            "id": "supplier-cart",
+            "label": "Coș furnizori",
+            "href": "/admin/supplier-cart",
+            "icon": "shopping-cart",
+            "group": "COMENZI"
+        }
+    ],
+
+    "provides": {
+
+        "folder": "supplier_search",
+
+        "slugs": [
+
+            "supplier-search",
+
+            "supplier-cart",
+
+            "searching",
+
+            "supplier_search"
+
+        ],
+
+        "paths": [
+
+            "/admin/supplier-search",
+
+            "/admin/supplier-cart",
+
+            "/admin/searching",
+
+            "/admin/public/supplier-search",
+
+            "/admin/public/supplier-cart",
+
+            "/admin/public/searching",
+
+            "/admin/public/api/supplier_search_endpoint.php",
+
+            "/admin/public/api/supplier_cart_endpoint.php"
+
+        ],
+
+        "crud_key": null,
+
+        "api_scripts": [
+
+            "supplier_search_endpoint.php",
+
+            "supplier_cart_endpoint.php"
+
+        ],
+
+        "quick_actions": [
+
+            "supplier-search"
+
+        ]
+
+    },
+
+    "migrations": []
+
+}
+

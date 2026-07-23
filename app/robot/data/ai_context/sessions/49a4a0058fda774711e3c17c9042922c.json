@@ -1,0 +1,180 @@
+{
+    "session_id": "cmqv0uvruyjzqr7ji",
+    "updated_at": "2026-07-18T17:10:25+00:00",
+    "first_seen_at": "2026-07-15T15:28:44+00:00",
+    "last_page": "\/",
+    "pages": [
+        "\/?keys=test1",
+        "\/cart",
+        "\/"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-15T15:28:44+00:00",
+            "action": "page_view",
+            "subject": "\/?keys=test1"
+        },
+        {
+            "at": "2026-07-15T15:28:47+00:00",
+            "action": "scroll",
+            "subject": "25% · \/?keys=test1"
+        },
+        {
+            "at": "2026-07-15T15:28:47+00:00",
+            "action": "scroll",
+            "subject": "50% · \/?keys=test1"
+        },
+        {
+            "at": "2026-07-15T15:28:47+00:00",
+            "action": "scroll",
+            "subject": "75% · \/?keys=test1"
+        },
+        {
+            "at": "2026-07-15T15:28:47+00:00",
+            "action": "scroll",
+            "subject": "100% · \/?keys=test1"
+        },
+        {
+            "at": "2026-07-15T15:28:58+00:00",
+            "action": "idle_return",
+            "subject": "\/?keys=test1"
+        },
+        {
+            "at": "2026-07-15T15:28:58+00:00",
+            "action": "time_on_page",
+            "subject": "17s pe \/?keys=test1"
+        },
+        {
+            "at": "2026-07-15T15:28:58+00:00",
+            "action": "time_on_page",
+            "subject": "17s pe \/?keys=test1"
+        },
+        {
+            "at": "2026-07-15T15:29:00+00:00",
+            "action": "page_view",
+            "subject": "\/cart"
+        },
+        {
+            "at": "2026-07-15T15:29:00+00:00",
+            "action": "cart_view",
+            "subject": "3 produse în coș"
+        },
+        {
+            "at": "2026-07-15T15:29:04+00:00",
+            "action": "cart_view",
+            "subject": "2 produse în coș"
+        },
+        {
+            "at": "2026-07-15T15:29:04+00:00",
+            "action": "cart_view",
+            "subject": "1 produse în coș"
+        },
+        {
+            "at": "2026-07-15T15:29:09+00:00",
+            "action": "scroll",
+            "subject": "25% · \/cart"
+        },
+        {
+            "at": "2026-07-15T15:29:09+00:00",
+            "action": "scroll",
+            "subject": "50% · \/cart"
+        },
+        {
+            "at": "2026-07-15T15:29:09+00:00",
+            "action": "scroll",
+            "subject": "75% · \/cart"
+        },
+        {
+            "at": "2026-07-15T15:29:09+00:00",
+            "action": "scroll",
+            "subject": "100% · \/cart"
+        },
+        {
+            "at": "2026-07-18T05:07:06+00:00",
+            "action": "page_view",
+            "subject": "\/cart"
+        },
+        {
+            "at": "2026-07-18T05:07:06+00:00",
+            "action": "cart_view",
+            "subject": "1 produse în coș"
+        },
+        {
+            "at": "2026-07-18T05:07:06+00:00",
+            "action": "idle_return",
+            "subject": "\/cart"
+        },
+        {
+            "at": "2026-07-18T05:07:08+00:00",
+            "action": "time_on_page",
+            "subject": "13s pe \/cart"
+        },
+        {
+            "at": "2026-07-18T05:07:08+00:00",
+            "action": "time_on_page",
+            "subject": "13s pe \/cart"
+        },
+        {
+            "at": "2026-07-18T05:07:10+00:00",
+            "action": "page_view",
+            "subject": "\/cart"
+        },
+        {
+            "at": "2026-07-18T05:07:10+00:00",
+            "action": "cart_view",
+            "subject": "1 produse în coș"
+        },
+        {
+            "at": "2026-07-18T05:07:12+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-18T05:07:12+00:00",
+            "action": "scroll",
+            "subject": "25% · \/"
+        },
+        {
+            "at": "2026-07-18T05:07:16+00:00",
+            "action": "scroll",
+            "subject": "50% · \/"
+        },
+        {
+            "at": "2026-07-18T16:19:04+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-18T17:10:14+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-18T17:10:14+00:00",
+            "action": "time_on_page",
+            "subject": "43389s pe \/"
+        },
+        {
+            "at": "2026-07-18T17:10:14+00:00",
+            "action": "time_on_page",
+            "subject": "43389s pe \/"
+        },
+        {
+            "at": "2026-07-18T17:10:14+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-18T17:10:17+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-18T17:10:25+00:00",
+            "action": "scroll",
+            "subject": "25% · \/"
+        }
+    ],
+    "event_count": 33,
+    "intent": "buy"
+}

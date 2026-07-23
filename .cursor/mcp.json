@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "stealth-browser-mcp": {
+      "command": "D:\\laragon\\www\\besoiupieseauto.ro\\tools\\stealth-browser-mcp\\venv\\Scripts\\python.exe",
+      "args": [
+        "D:\\laragon\\www\\besoiupieseauto.ro\\tools\\stealth-browser-mcp\\src\\server.py"
+      ],
+      "env": {}
+    }
+  }
+}

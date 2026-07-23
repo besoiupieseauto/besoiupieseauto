@@ -1,0 +1,602 @@
+{
+    "version": 4,
+    "updated_at": "2026-07-22T08:36:15+00:00",
+    "scopes": {
+        "category:Filtre": {
+            "channels": {
+                "website": {
+                    "mode": "template",
+                    "segments": [
+                        {
+                            "id": "denumire",
+                            "enabled": true
+                        },
+                        {
+                            "id": "brand_piesa",
+                            "enabled": true
+                        },
+                        {
+                            "id": "cod",
+                            "enabled": true
+                        },
+                        {
+                            "id": "pozitie",
+                            "enabled": true
+                        },
+                        {
+                            "id": "vehicul_manual",
+                            "enabled": true
+                        },
+                        {
+                            "id": "compat_marci",
+                            "enabled": false
+                        },
+                        {
+                            "id": "compat_serii",
+                            "enabled": false
+                        },
+                        {
+                            "id": "categorie",
+                            "enabled": false
+                        },
+                        {
+                            "id": "subcategorie",
+                            "enabled": false
+                        }
+                    ],
+                    "template": "{denumire} {brand_piesa} {cod} {pozitie} {vehicul_manual}",
+                    "separator": " ",
+                    "vehicle_prefix": "pentru",
+                    "compat_prefix": "pentru",
+                    "max_length": 150,
+                    "uppercase": false
+                },
+                "pieseauto": {
+                    "mode": "segments",
+                    "segments": [
+                        {
+                            "id": "denumire",
+                            "enabled": true
+                        },
+                        {
+                            "id": "brand_piesa",
+                            "enabled": true
+                        },
+                        {
+                            "id": "cod",
+                            "enabled": true
+                        },
+                        {
+                            "id": "pozitie",
+                            "enabled": true
+                        },
+                        {
+                            "id": "compat_marci",
+                            "enabled": true
+                        },
+                        {
+                            "id": "compat_serii",
+                            "enabled": false
+                        },
+                        {
+                            "id": "vehicul_manual",
+                            "enabled": false
+                        },
+                        {
+                            "id": "categorie",
+                            "enabled": false
+                        },
+                        {
+                            "id": "subcategorie",
+                            "enabled": false
+                        }
+                    ],
+                    "template": "{denumire} {brand_piesa} {cod} {pozitie} {compat_marci} {compat_serii} {vehicul_manual}",
+                    "separator": " ",
+                    "vehicle_prefix": "pentru",
+                    "compat_prefix": "pentru",
+                    "max_length": 150,
+                    "uppercase": false
+                },
+                "oem": {
+                    "mode": "segments",
+                    "segments": [
+                        {
+                            "id": "denumire",
+                            "enabled": true
+                        },
+                        {
+                            "id": "cod",
+                            "enabled": true
+                        },
+                        {
+                            "id": "brand_piesa",
+                            "enabled": true
+                        },
+                        {
+                            "id": "pozitie",
+                            "enabled": true
+                        },
+                        {
+                            "id": "vehicul_manual",
+                            "enabled": true
+                        },
+                        {
+                            "id": "compat_marci",
+                            "enabled": false
+                        },
+                        {
+                            "id": "compat_serii",
+                            "enabled": false
+                        },
+                        {
+                            "id": "categorie",
+                            "enabled": false
+                        },
+                        {
+                            "id": "subcategorie",
+                            "enabled": false
+                        }
+                    ],
+                    "template": "{denumire} {cod} {brand_piesa} {pozitie} {vehicul_manual}",
+                    "separator": " ",
+                    "vehicle_prefix": "pentru",
+                    "compat_prefix": "pentru",
+                    "max_length": 150,
+                    "uppercase": false
+                }
+            },
+            "product_tabs": {
+                "tabs": [
+                    {
+                        "id": "description",
+                        "enabled": true,
+                        "label": "Descriere",
+                        "format": "prose",
+                        "prose_words": 400,
+                        "source": "field_rows",
+                        "fields": [
+                            {
+                                "id": "denumire",
+                                "label": "Descrierea",
+                                "enabled": true
+                            },
+                            {
+                                "id": "brand_piesa",
+                                "label": "Producătorul",
+                                "enabled": true
+                            },
+                            {
+                                "id": "cod",
+                                "label": "Număr articol",
+                                "enabled": true
+                            },
+                            {
+                                "id": "stare",
+                                "label": "Condiție",
+                                "enabled": true,
+                                "static_value": "Nou"
+                            }
+                        ],
+                        "footnote": ""
+                    },
+                    {
+                        "id": "fitment",
+                        "enabled": true,
+                        "label": "Compatibilitate",
+                        "format": "table",
+                        "source": "compat_entries",
+                        "columns": [
+                            {
+                                "id": "car_brand",
+                                "label": "Marcă",
+                                "enabled": true
+                            },
+                            {
+                                "id": "car_model",
+                                "label": "Model",
+                                "enabled": true
+                            },
+                            {
+                                "id": "car_motor",
+                                "label": "Motorizare",
+                                "enabled": true
+                            },
+                            {
+                                "id": "car_fuel",
+                                "label": "Combustibil",
+                                "enabled": true
+                            },
+                            {
+                                "id": "car_year",
+                                "label": "An",
+                                "enabled": true
+                            }
+                        ],
+                        "footnote": "Compatibilitatea finală se confirmă după seria VIN. Contactați-ne pentru verificare.",
+                        "fallback_manual": true
+                    },
+                    {
+                        "id": "specs",
+                        "enabled": true,
+                        "label": "Specificații tehnice",
+                        "format": "table",
+                        "source": "field_rows",
+                        "fields": [
+                            {
+                                "id": "brand_piesa",
+                                "label": "Producător",
+                                "enabled": true
+                            },
+                            {
+                                "id": "cod",
+                                "label": "Cod produs",
+                                "enabled": true
+                            },
+                            {
+                                "id": "categorie",
+                                "label": "Categorie",
+                                "enabled": true
+                            },
+                            {
+                                "id": "vehicul_manual",
+                                "label": "Compatibil",
+                                "enabled": true,
+                                "empty_label": "Verificați după VIN"
+                            },
+                            {
+                                "id": "stare",
+                                "label": "Stare",
+                                "enabled": true,
+                                "static_value": "Nou"
+                            },
+                            {
+                                "id": "garantie",
+                                "label": "Garanție",
+                                "enabled": true,
+                                "static_value": "Conform politicii magazinului"
+                            }
+                        ],
+                        "footnote": ""
+                    },
+                    {
+                        "id": "tab_nou",
+                        "enabled": true,
+                        "label": "Statistica",
+                        "format": "fields",
+                        "source": "field_rows",
+                        "fields": [
+                            {
+                                "id": "denumire",
+                                "label": "Descrierea",
+                                "enabled": true
+                            },
+                            {
+                                "id": "brand_piesa",
+                                "label": "Producătorul",
+                                "enabled": true
+                            },
+                            {
+                                "id": "cod",
+                                "label": "Număr articol",
+                                "enabled": true
+                            }
+                        ],
+                        "footnote": ""
+                    }
+                ]
+            },
+            "updated_at": "2026-06-29T10:07:24+00:00"
+        },
+        "project:oem": {
+            "channels": {
+                "oem": {
+                    "mode": "segments",
+                    "segments": [
+                        {
+                            "id": "denumire",
+                            "enabled": true
+                        },
+                        {
+                            "id": "brand_piesa",
+                            "enabled": true
+                        },
+                        {
+                            "id": "cod",
+                            "enabled": true
+                        },
+                        {
+                            "id": "pozitie",
+                            "enabled": true
+                        },
+                        {
+                            "id": "vehicul_manual",
+                            "enabled": false
+                        },
+                        {
+                            "id": "compat_marci",
+                            "enabled": false
+                        },
+                        {
+                            "id": "compat_serii",
+                            "enabled": false
+                        },
+                        {
+                            "id": "categorie",
+                            "enabled": false
+                        },
+                        {
+                            "id": "subcategorie",
+                            "enabled": false
+                        }
+                    ],
+                    "template": "{denumire} {cod} {brand_piesa} {pozitie} {vehicul_manual}",
+                    "separator": " ",
+                    "vehicle_prefix": "pentru",
+                    "compat_prefix": "pentru",
+                    "max_length": 151,
+                    "uppercase": false
+                }
+            },
+            "updated_at": "2026-07-22T08:36:15+00:00"
+        }
+    },
+    "channels": {
+        "website": {
+            "mode": "template",
+            "segments": [
+                {
+                    "id": "denumire",
+                    "enabled": true
+                },
+                {
+                    "id": "brand_piesa",
+                    "enabled": true
+                },
+                {
+                    "id": "cod",
+                    "enabled": true
+                },
+                {
+                    "id": "pozitie",
+                    "enabled": true
+                },
+                {
+                    "id": "vehicul_manual",
+                    "enabled": true
+                },
+                {
+                    "id": "compat_marci",
+                    "enabled": false
+                },
+                {
+                    "id": "compat_serii",
+                    "enabled": false
+                },
+                {
+                    "id": "categorie",
+                    "enabled": false
+                },
+                {
+                    "id": "subcategorie",
+                    "enabled": false
+                }
+            ],
+            "template": "{denumire} {brand_piesa} {cod} {pozitie} {vehicul_manual}",
+            "separator": " ",
+            "vehicle_prefix": "pentru",
+            "compat_prefix": "pentru",
+            "max_length": 150,
+            "uppercase": false
+        },
+        "pieseauto": {
+            "mode": "segments",
+            "segments": [
+                {
+                    "id": "denumire",
+                    "enabled": true
+                },
+                {
+                    "id": "brand_piesa",
+                    "enabled": true
+                },
+                {
+                    "id": "cod",
+                    "enabled": true
+                },
+                {
+                    "id": "pozitie",
+                    "enabled": true
+                },
+                {
+                    "id": "compat_marci",
+                    "enabled": true
+                },
+                {
+                    "id": "compat_serii",
+                    "enabled": false
+                },
+                {
+                    "id": "vehicul_manual",
+                    "enabled": false
+                },
+                {
+                    "id": "categorie",
+                    "enabled": false
+                },
+                {
+                    "id": "subcategorie",
+                    "enabled": false
+                }
+            ],
+            "template": "{denumire} {brand_piesa} {cod} {pozitie} {compat_marci} {compat_serii} {vehicul_manual}",
+            "separator": " ",
+            "vehicle_prefix": "pentru",
+            "compat_prefix": "pentru",
+            "max_length": 150,
+            "uppercase": false
+        },
+        "oem": {
+            "mode": "segments",
+            "segments": [
+                {
+                    "id": "denumire",
+                    "enabled": true
+                },
+                {
+                    "id": "cod",
+                    "enabled": true
+                },
+                {
+                    "id": "brand_piesa",
+                    "enabled": true
+                },
+                {
+                    "id": "pozitie",
+                    "enabled": true
+                },
+                {
+                    "id": "vehicul_manual",
+                    "enabled": true
+                },
+                {
+                    "id": "compat_marci",
+                    "enabled": false
+                },
+                {
+                    "id": "compat_serii",
+                    "enabled": false
+                },
+                {
+                    "id": "categorie",
+                    "enabled": false
+                },
+                {
+                    "id": "subcategorie",
+                    "enabled": false
+                }
+            ],
+            "template": "{denumire} {cod} {brand_piesa} {pozitie} {vehicul_manual}",
+            "separator": " ",
+            "vehicle_prefix": "pentru",
+            "compat_prefix": "pentru",
+            "max_length": 150,
+            "uppercase": false
+        }
+    },
+    "product_tabs": {
+        "tabs": [
+            {
+                "id": "description",
+                "enabled": true,
+                "label": "Descriere",
+                "format": "prose",
+                "prose_words": 400,
+                "source": "field_rows",
+                "fields": [
+                    {
+                        "id": "denumire",
+                        "label": "Descrierea",
+                        "enabled": true
+                    },
+                    {
+                        "id": "brand_piesa",
+                        "label": "Producătorul",
+                        "enabled": true
+                    },
+                    {
+                        "id": "cod",
+                        "label": "Număr articol",
+                        "enabled": true
+                    },
+                    {
+                        "id": "stare",
+                        "label": "Condiție",
+                        "enabled": true,
+                        "static_value": "Nou"
+                    }
+                ],
+                "footnote": ""
+            },
+            {
+                "id": "fitment",
+                "enabled": true,
+                "label": "Compatibilitate",
+                "format": "table",
+                "source": "compat_entries",
+                "columns": [
+                    {
+                        "id": "car_brand",
+                        "label": "Marcă",
+                        "enabled": true
+                    },
+                    {
+                        "id": "car_model",
+                        "label": "Model",
+                        "enabled": true
+                    },
+                    {
+                        "id": "car_motor",
+                        "label": "Motorizare",
+                        "enabled": true
+                    },
+                    {
+                        "id": "car_fuel",
+                        "label": "Combustibil",
+                        "enabled": true
+                    },
+                    {
+                        "id": "car_year",
+                        "label": "An",
+                        "enabled": true
+                    }
+                ],
+                "footnote": "Compatibilitatea finală se confirmă după seria VIN. Contactați-ne pentru verificare.",
+                "fallback_manual": true
+            },
+            {
+                "id": "specs",
+                "enabled": true,
+                "label": "Specificații tehnice",
+                "format": "table",
+                "source": "field_rows",
+                "fields": [
+                    {
+                        "id": "brand_piesa",
+                        "label": "Producător",
+                        "enabled": true
+                    },
+                    {
+                        "id": "cod",
+                        "label": "Cod produs",
+                        "enabled": true
+                    },
+                    {
+                        "id": "categorie",
+                        "label": "Categorie",
+                        "enabled": true
+                    },
+                    {
+                        "id": "vehicul_manual",
+                        "label": "Compatibil",
+                        "enabled": true,
+                        "empty_label": "Verificați după VIN"
+                    },
+                    {
+                        "id": "stare",
+                        "label": "Stare",
+                        "enabled": true,
+                        "static_value": "Nou"
+                    },
+                    {
+                        "id": "garantie",
+                        "label": "Garanție",
+                        "enabled": true,
+                        "static_value": "Conform politicii magazinului"
+                    }
+                ],
+                "footnote": ""
+            }
+        ]
+    }
+}

@@ -1,0 +1,70 @@
+{
+    "session_id": "cmrqhgrk773bp50af",
+    "updated_at": "2026-07-18T14:51:25+00:00",
+    "first_seen_at": "2026-07-18T14:49:49+00:00",
+    "last_page": "\/",
+    "pages": [
+        "\/"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-18T14:49:49+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-18T14:50:09+00:00",
+            "action": "search",
+            "subject": "Cârlig remorcare BMW x3 e83"
+        },
+        {
+            "at": "2026-07-18T14:50:09+00:00",
+            "action": "scroll",
+            "subject": "25% · \/"
+        },
+        {
+            "at": "2026-07-18T14:50:15+00:00",
+            "action": "search",
+            "subject": "Cârlig remorcare BMW x3 e83"
+        },
+        {
+            "at": "2026-07-18T14:50:41+00:00",
+            "action": "search",
+            "subject": "Cârlig remorcare BMW x3"
+        },
+        {
+            "at": "2026-07-18T14:50:47+00:00",
+            "action": "search",
+            "subject": "Cârlig remorcare BMW"
+        },
+        {
+            "at": "2026-07-18T14:50:51+00:00",
+            "action": "search",
+            "subject": "Cârlig remorcare"
+        },
+        {
+            "at": "2026-07-18T14:51:04+00:00",
+            "action": "search",
+            "subject": "bmw x3"
+        },
+        {
+            "at": "2026-07-18T14:51:12+00:00",
+            "action": "scroll",
+            "subject": "50% · \/"
+        },
+        {
+            "at": "2026-07-18T14:51:25+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        }
+    ],
+    "event_count": 10,
+    "intent": "browse",
+    "searches": [
+        "Cârlig remorcare BMW x3 e83",
+        "Cârlig remorcare BMW x3",
+        "Cârlig remorcare BMW",
+        "Cârlig remorcare",
+        "bmw x3"
+    ]
+}

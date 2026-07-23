@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteBase /admin/public/import-pro/
+
+# Proxy API MatchingPro: /api/files.php → api-bridge.php?script=files.php
+RewriteRule ^api/([a-zA-Z0-9_\-]+\.php)$ api-bridge.php?script=$1 [L,QSA]

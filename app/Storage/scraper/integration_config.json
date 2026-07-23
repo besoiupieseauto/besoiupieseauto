@@ -1,0 +1,75 @@
+{
+    "version": 1,
+    "image_plans": [
+        {
+            "tier": 1,
+            "label": "Plan principal",
+            "source_id": "caietcomenzi",
+            "enabled": true,
+            "roles": [
+                "image"
+            ]
+        },
+        {
+            "tier": 2,
+            "label": "Plan secundar",
+            "source_id": "tecdoc_csv",
+            "enabled": true,
+            "roles": [
+                "image",
+                "description"
+            ]
+        },
+        {
+            "tier": 3,
+            "label": "Plan 3",
+            "source_id": "epiesa",
+            "enabled": true,
+            "roles": [
+                "image",
+                "title"
+            ]
+        },
+        {
+            "tier": 4,
+            "label": "Plan 4",
+            "source_id": "autodoc",
+            "enabled": true,
+            "roles": [
+                "image",
+                "title"
+            ]
+        },
+        {
+            "tier": 5,
+            "label": "Plan 5",
+            "source_id": "tecdoc_api",
+            "enabled": true,
+            "roles": [
+                "image",
+                "oem",
+                "description"
+            ]
+        }
+    ],
+    "image_ai": {
+        "enabled": true,
+        "engine": "cursor",
+        "prompt_extra": "",
+        "accept_white_background": true,
+        "accept_product_match": true,
+        "reject_placeholder": true,
+        "reject_wrong_category": true,
+        "min_score_keep": 70,
+        "on_import_review": true,
+        "on_import_cron": false,
+        "auto_retry_on_mismatch": true,
+        "verdicts_retry": [
+            "mismatch",
+            "error",
+            "no_image"
+        ]
+    },
+    "sync_to_env": false,
+    "updated_at": "2026-07-15T05:24:43+00:00"
+}

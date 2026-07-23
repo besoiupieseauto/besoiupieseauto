@@ -1,0 +1,26 @@
+{
+    "session_id": "cmqyqikv60rgc5amk",
+    "updated_at": "2026-07-17T16:50:58+00:00",
+    "first_seen_at": "2026-07-17T16:50:58+00:00",
+    "last_page": "\/catalog",
+    "pages": [
+        "\/catalog"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-17T16:50:58+00:00",
+            "action": "page_view",
+            "subject": "\/catalog"
+        },
+        {
+            "at": "2026-07-17T16:50:58+00:00",
+            "action": "product_view",
+            "subject": "CATALOG PIESE AUTO"
+        }
+    ],
+    "event_count": 2,
+    "intent": "browse",
+    "products_viewed": [
+        "CATALOG PIESE AUTO"
+    ]
+}

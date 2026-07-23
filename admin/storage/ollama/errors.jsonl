@@ -1,0 +1,40 @@
+{"source":"import.chat_json","ok":false,"error":"Ollama HTTP 0: Operation timed out after 120013 milliseconds with 0 bytes received","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":0,"ts":"2026-07-18T15:02:29+00:00"}
+{"source":"import.chat_json","ok":false,"error":"Ollama HTTP 0: Operation timed out after 120007 milliseconds with 0 bytes received","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":0,"ts":"2026-07-18T15:04:29+00:00"}
+{"source":"import.chat_json","ok":false,"error":"Ollama HTTP 0: Operation timed out after 120000 milliseconds with 0 bytes received","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":0,"ts":"2026-07-18T15:04:36+00:00"}
+{"source":"import.chat_json","ok":false,"error":"Ollama HTTP 0: Operation timed out after 120015 milliseconds with 0 bytes received","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":0,"ts":"2026-07-18T15:06:29+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":90015,"ts":"2026-07-18T15:06:35+00:00"}
+{"source":"import.chat_json","ok":false,"error":"Ollama HTTP 0: Operation timed out after 120012 milliseconds with 0 bytes received","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":0,"ts":"2026-07-18T15:06:36+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":90002,"ts":"2026-07-18T15:08:06+00:00"}
+{"source":"import.chat_json","ok":false,"error":"Ollama HTTP 0: Operation timed out after 120012 milliseconds with 0 bytes received","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":0,"ts":"2026-07-18T15:08:29+00:00"}
+{"source":"import.chat_json","ok":false,"error":"Ollama HTTP 0: Operation timed out after 120012 milliseconds with 0 bytes received","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":0,"ts":"2026-07-18T15:08:36+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":90006,"ts":"2026-07-18T15:08:54+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":90002,"ts":"2026-07-18T15:10:26+00:00"}
+{"source":"import.chat_json","ok":false,"error":"Ollama HTTP 0: Operation timed out after 120000 milliseconds with 0 bytes received","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":0,"ts":"2026-07-18T15:10:36+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":90000,"ts":"2026-07-18T15:15:03+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"llava:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":120011,"ts":"2026-07-18T17:08:29+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":90005,"ts":"2026-07-18T18:06:41+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"llava:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":120011,"ts":"2026-07-18T18:27:07+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":90009,"ts":"2026-07-19T08:16:47+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":90010,"ts":"2026-07-19T08:16:55+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":90008,"ts":"2026-07-19T08:22:16+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":90001,"ts":"2026-07-19T08:34:18+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":90003,"ts":"2026-07-19T08:39:13+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":60010,"ts":"2026-07-19T09:04:26+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":60014,"ts":"2026-07-19T09:04:27+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":60011,"ts":"2026-07-19T09:07:35+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":60008,"ts":"2026-07-19T09:09:23+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"llava:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":120014,"ts":"2026-07-19T11:34:23+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"llava:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":120013,"ts":"2026-07-19T11:39:17+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"llava:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":120009,"ts":"2026-07-19T11:39:17+00:00"}
+{"source":"import.chat_json","ok":false,"error":"Ollama HTTP 0: Operation timed out after 120009 milliseconds with 0 bytes received","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":0,"ts":"2026-07-19T12:55:13+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":45015,"ts":"2026-07-20T05:42:51+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":60012,"ts":"2026-07-21T09:05:33+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":60008,"ts":"2026-07-21T09:09:40+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":60010,"ts":"2026-07-22T08:07:56+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":45004,"ts":"2026-07-22T08:08:43+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":60016,"ts":"2026-07-22T08:11:34+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":60008,"ts":"2026-07-22T08:12:35+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":60034,"ts":"2026-07-22T08:14:32+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":60010,"ts":"2026-07-22T08:15:32+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":60008,"ts":"2026-07-22T08:33:05+00:00"}
+{"source":"erp.chat","ok":false,"error":"Ollama indisponibil","model":"qwen2.5:7b","url":"http:\/\/127.0.0.1:11434","latency_ms":45010,"ts":"2026-07-22T09:01:51+00:00"}

@@ -1,0 +1,377 @@
+/* Jurnal erori sistem — UI clar + tab-uri + selecție */
+
+body.besoiu-admin-2026 .sys-err-page {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+body.besoiu-admin-2026 .sys-err-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 0.85rem;
+  border: 2px solid var(--b26-emerald-soft, #a7f3d0);
+  background: linear-gradient(115deg, #fff 0%, var(--b26-emerald-panel, #ecfdf5) 100%);
+}
+
+body.besoiu-admin-2026 .sys-err-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  body.besoiu-admin-2026 .sys-err-kpis {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+body.besoiu-admin-2026 .sys-err-kpi {
+  padding: 0.85rem 1rem;
+  border-radius: 0.75rem;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+}
+
+body.besoiu-admin-2026 .sys-err-kpi__lbl {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+
+body.besoiu-admin-2026 .sys-err-kpi__val {
+  margin-top: 0.35rem;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--b26-navy, #0f172a);
+}
+
+body.besoiu-admin-2026 .sys-err-kpi--danger .sys-err-kpi__val {
+  color: #dc2626;
+}
+
+body.besoiu-admin-2026 .sys-err-kpi--warn .sys-err-kpi__val {
+  color: #d97706;
+}
+
+body.besoiu-admin-2026 .sys-err-kpi--muted .sys-err-kpi__val {
+  color: #64748b;
+}
+
+body.besoiu-admin-2026 .sys-err-date-pills,
+body.besoiu-admin-2026 .sys-err-archive-period {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+body.besoiu-admin-2026 .sys-err-pill-btn {
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+body.besoiu-admin-2026 .sys-err-pill-btn.is-active {
+  background: #0f766e;
+  border-color: #0f766e;
+  color: #fff;
+}
+
+body.besoiu-admin-2026 .sys-err-archive-panel {
+  border: 2px dashed #99f6e4;
+  background: linear-gradient(135deg, #f0fdfa 0%, #fff 55%);
+}
+
+body.besoiu-admin-2026 .sys-err-archive-panel__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+body.besoiu-admin-2026 .sys-err-archive-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+}
+
+body.besoiu-admin-2026 .sys-err-archive-preview {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #0f766e;
+}
+
+body.besoiu-admin-2026 .sys-err-btn--archive {
+  background: #0f766e;
+  color: #fff;
+  border-color: #0f766e;
+}
+
+body.besoiu-admin-2026 .sys-err-recent-archives {
+  line-height: 1.5;
+}
+
+body.besoiu-admin-2026 .sys-err-channels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+body.besoiu-admin-2026 .sys-err-channel-bar {
+  display: grid;
+  grid-template-columns: 5rem 1fr 2rem;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+}
+
+body.besoiu-admin-2026 .sys-err-channel-bar__track {
+  height: 0.45rem;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+}
+
+body.besoiu-admin-2026 .sys-err-channel-bar__fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #059669, #34d399);
+}
+
+body.besoiu-admin-2026 .sys-err-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+body.besoiu-admin-2026 .sys-err-tab {
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+body.besoiu-admin-2026 .sys-err-tab.is-active {
+  background: #059669;
+  border-color: #059669;
+  color: #fff;
+}
+
+body.besoiu-admin-2026 .sys-err-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+body.besoiu-admin-2026 .sys-err-toolbar__select {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+body.besoiu-admin-2026 .sys-err-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: opacity 0.12s;
+}
+
+body.besoiu-admin-2026 .sys-err-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+body.besoiu-admin-2026 .sys-err-btn--primary {
+  background: #059669;
+  color: #fff;
+  border-color: #059669;
+}
+
+body.besoiu-admin-2026 .sys-err-btn--ghost {
+  background: #fff;
+  color: #334155;
+  border-color: #e2e8f0;
+}
+
+body.besoiu-admin-2026 .sys-err-btn--danger {
+  background: #dc2626;
+  color: #fff;
+  border-color: #dc2626;
+}
+
+body.besoiu-admin-2026 .sys-err-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+body.besoiu-admin-2026 .sys-err-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.85rem;
+  align-items: start;
+  padding: 0.9rem 1rem;
+  border-radius: 0.85rem;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  border-left: 4px solid #94a3b8;
+}
+
+body.besoiu-admin-2026 .sys-err-card--critical,
+body.besoiu-admin-2026 .sys-err-card--error {
+  border-left-color: #dc2626;
+  background: linear-gradient(90deg, #fef2f2 0%, #fff 12%);
+}
+
+body.besoiu-admin-2026 .sys-err-card--warning {
+  border-left-color: #d97706;
+  background: linear-gradient(90deg, #fffbeb 0%, #fff 12%);
+}
+
+body.besoiu-admin-2026 .sys-err-card--info {
+  border-left-color: #14b8a6;
+}
+
+body.besoiu-admin-2026 .sys-err-card--resolved {
+  opacity: 0.72;
+  border-left-color: #059669;
+}
+
+body.besoiu-admin-2026 .sys-err-card__check {
+  margin-top: 0.25rem;
+  width: 1rem;
+  height: 1rem;
+}
+
+body.besoiu-admin-2026 .sys-err-card__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.35rem;
+}
+
+body.besoiu-admin-2026 .sys-err-pill {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+body.besoiu-admin-2026 .sys-err-pill--level-error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+body.besoiu-admin-2026 .sys-err-pill--level-warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+body.besoiu-admin-2026 .sys-err-pill--level-info {
+  background: #ccfbf1;
+  color: #0f766e;
+}
+
+body.besoiu-admin-2026 .sys-err-pill--channel {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+body.besoiu-admin-2026 .sys-err-pill--open {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+body.besoiu-admin-2026 .sys-err-pill--done {
+  background: #d1fae5;
+  color: #047857;
+}
+
+body.besoiu-admin-2026 .sys-err-card__time {
+  font-size: 0.72rem;
+  color: #94a3b8;
+}
+
+body.besoiu-admin-2026 .sys-err-card__msg {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #334155;
+  word-break: break-word;
+}
+
+body.besoiu-admin-2026 .sys-err-card__msg.is-collapsed {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+body.besoiu-admin-2026 .sys-err-card__source {
+  margin-top: 0.35rem;
+  font-size: 0.68rem;
+  color: #94a3b8;
+  word-break: break-all;
+}
+
+body.besoiu-admin-2026 .sys-err-card__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: flex-end;
+}
+
+body.besoiu-admin-2026 .sys-err-empty {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: #64748b;
+  font-size: 0.88rem;
+}
+
+body.besoiu-admin-2026 .sys-err-meta {
+  margin-top: 0.75rem;
+  font-size: 0.72rem;
+  color: #94a3b8;
+}
+
+body.besoiu-admin-2026 .sys-err-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}

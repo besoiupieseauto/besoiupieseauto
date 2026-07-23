@@ -1,0 +1,48 @@
+[
+    {
+        "id": "job_6a4680e93053d_7193",
+        "queue": "import",
+        "class": "Besoiu\\Jobs\\ImportProcessJob",
+        "payload": {
+            "file_id": "test_file_001",
+            "batch_size": 50,
+            "enable_tecdoc_enrichment": false
+        },
+        "options": {
+            "priority": "high",
+            "delay": 0,
+            "timeout": 300,
+            "max_retries": 3,
+            "retry_delay": 60
+        },
+        "status": "pending",
+        "created_at": 1783005417,
+        "scheduled_at": 1783005477,
+        "attempts": 1,
+        "max_attempts": 4,
+        "error": "Import file not found: test_file_001"
+    },
+    {
+        "id": "job_6a46811d6282a_6630",
+        "queue": "import",
+        "class": "Besoiu\\Jobs\\ImportProcessJob",
+        "payload": {
+            "file_id": "test_file_001",
+            "batch_size": 50,
+            "enable_tecdoc_enrichment": false
+        },
+        "options": {
+            "priority": "high",
+            "delay": 0,
+            "timeout": 300,
+            "max_retries": 3,
+            "retry_delay": 60
+        },
+        "status": "pending",
+        "created_at": 1783005469,
+        "scheduled_at": 1783005529,
+        "attempts": 1,
+        "max_attempts": 4,
+        "error": "Import file not found: test_file_001"
+    }
+]

@@ -1,0 +1,40 @@
+{
+    "id": "scraper_web",
+    "name": "Scraper Web",
+    "version": "1.0.0",
+    "type": "optional",
+    "enabled": true,
+    "description": "Hub scraping web (ePiesa, eMAG, Autodoc, TecDoc) — motor în app/Import/Scraper.",
+    "entry": "Besoiu\\Modules\\ScraperWeb\\ScraperWebModule",
+    "dependencies": [],
+    "permissions": [
+        "module.scraper_web",
+        "automatizare.scraper_web"
+    ],
+    "workspace": "ai",
+    "nav_section": {
+        "group_label": "AUTOMATIZARE"
+    },
+    "nav": [
+        {
+            "id": "scraper-web",
+            "label": "Scraper web",
+            "href": "/admin/scraper-web",
+            "icon": "globe",
+            "group": "AUTOMATIZARE"
+        }
+    ],
+    "provides": {
+        "folder": "scraper_web",
+        "slugs": ["scraper-web"],
+        "paths": [
+            "/admin/scraper-web",
+            "/admin/public/scraper-web",
+            "/admin/public/api/scraper_web_endpoint.php"
+        ],
+        "crud_key": "scraper_web",
+        "api_scripts": ["scraper_web_endpoint.php"],
+        "quick_actions": ["scraper-web"]
+    },
+    "migrations": []
+}

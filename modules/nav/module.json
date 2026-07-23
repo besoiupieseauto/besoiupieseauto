@@ -1,0 +1,47 @@
+{
+    "id": "nav",
+    "name": "Navigație",
+    "version": "1.0.0",
+    "type": "optional",
+    "enabled": true,
+    "description": "Editor meniu sidebar — registry JSON + sync automat din module.json.",
+    "entry": "Besoiu\\Modules\\Nav\\NavModule",
+    "dependencies": [],
+    "permissions": [
+        "optional.nav",
+        "sistem.navigation",
+        "module.nav"
+    ],
+    "workspace": "company",
+    "nav_section": {
+        "group_label": "NAVIGAȚIE ADMIN"
+    },
+    "nav": [
+        {
+            "id": "nav-editor",
+            "label": "Editor meniu sidebar",
+            "href": "/admin/nav",
+            "icon": "menu",
+            "group": "NAVIGAȚIE ADMIN"
+        }
+    ],
+    "provides": {
+        "folder": "nav",
+        "slugs": [
+            "nav"
+        ],
+        "paths": [
+            "/admin/nav",
+            "/admin/public/nav",
+            "/admin/public/api/nav_registry_endpoint.php"
+        ],
+        "api_scripts": [
+            "nav_registry_endpoint.php"
+        ],
+        "quick_actions": [
+            "nav"
+        ],
+        "crud_key": null
+    },
+    "migrations": []
+}

@@ -1,0 +1,117 @@
+{
+    "generated_at": "2026-07-14T05:10:37+00:00",
+    "tool": "performance_validation",
+    "read_only": true,
+    "global_configuration_changed": false,
+    "settings": {
+        "runs": 2,
+        "warmup_runs": 1,
+        "timeout_ms_per_query": 1500
+    },
+    "async_handlers": {
+        "demo.progress": "Besoiu\\Async\\Handlers\\DemoProgressJobHandler",
+        "import.publish_bulk": "Besoiu\\Async\\Handlers\\ImportPublishBulkJobHandler",
+        "import.process_step": "Besoiu\\Async\\Handlers\\ImportProcessStepJobHandler",
+        "images.audit_batch": "Besoiu\\Async\\Handlers\\ImagesAuditBatchJobHandler",
+        "tecdoc.merge": "Besoiu\\Async\\Handlers\\TecdocMergeJobHandler",
+        "products.reapply_markup": "Besoiu\\Async\\Handlers\\ProductsReapplyMarkupJobHandler"
+    },
+    "mysql_tuning": {
+        "example_config": "admin\/config\/mysql_tuning.laragon.example.ini",
+        "documentation": "admin\/docs\/MYSQL_OBSERVABILITY.md",
+        "manual_steps": [
+            "Editare my.ini (Laragon: Menu → MySQL → my.ini)",
+            "Set innodb_buffer_pool_size din buffer_pool_recommendation",
+            "Activare slow_query_log temporar",
+            "Restart MySQL"
+        ],
+        "buffer_pool_recommendation": {
+            "profile": "shared_web_development",
+            "ram_bytes": 25678495744,
+            "ratio": 0.35,
+            "recommended_bytes": 8858370048,
+            "note": "Recomandare de configurare; instrumentul nu modifică my.ini și nu execută SET GLOBAL."
+        }
+    },
+    "legacy_parts_catalog_pk": {
+        "table": "parts_catalog",
+        "connection": "legacy",
+        "available": true,
+        "has_primary_key": false,
+        "id_column_exists": true,
+        "null_ids": 0,
+        "duplicate_ids": 0,
+        "pk_ready": true,
+        "apply_command": "php admin\/migrations\/run_075_legacy_parts_catalog_indexes.php --validate --maintenance-window --backup-confirmed && php admin\/migrations\/run_075_legacy_parts_catalog_indexes.php --apply-primary --maintenance-window --backup-confirmed"
+    },
+    "diagnostics": {
+        "admin": {
+            "available": true,
+            "connection_latency_ms": 0.944,
+            "database": "besoiupieseauto.ro",
+            "variables": {
+                "innodb_buffer_pool_size": "134217728",
+                "long_query_time": "10.000000",
+                "slow_query_log": "OFF",
+                "version": "8.4.3"
+            }
+        },
+        "legacy": {
+            "available": true,
+            "connection_latency_ms": 0.772,
+            "database": "caietcom_comenzilv",
+            "variables": {
+                "innodb_buffer_pool_size": "134217728",
+                "long_query_time": "10.000000",
+                "slow_query_log": "OFF",
+                "version": "8.4.3"
+            }
+        }
+    },
+    "benchmarks": {
+        "admin": {
+            "available": true,
+            "connection_latency_ms": 0.589,
+            "benchmarks": {
+                "admin_products_recent": {
+                    "ok": true,
+                    "median_ms": 0.178,
+                    "p95_ms": 0.236
+                },
+                "supplier_stats": {
+                    "ok": true,
+                    "median_ms": 0.209,
+                    "p95_ms": 0.272
+                },
+                "tecdoc_lookup": {
+                    "ok": true,
+                    "median_ms": 0.196,
+                    "p95_ms": 0.251
+                }
+            }
+        },
+        "legacy": {
+            "available": true,
+            "connection_latency_ms": 0.508,
+            "benchmarks": {
+                "legacy_products_recent": {
+                    "ok": true,
+                    "median_ms": 0.184,
+                    "p95_ms": 0.249
+                }
+            }
+        }
+    },
+    "summary": {
+        "checks": {
+            "async_handlers_registered": true,
+            "parts_catalog_pk": true,
+            "buffer_pool_adequate": false,
+            "slow_query_log_enabled": false,
+            "benchmarks_within_threshold": true
+        },
+        "passed": 3,
+        "total": 5,
+        "status": "warn"
+    }
+}

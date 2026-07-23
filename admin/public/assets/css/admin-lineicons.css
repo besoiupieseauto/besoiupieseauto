@@ -1,0 +1,58 @@
+/**
+ * Lineicons — admin Besoiu (https://lineicons.com/icons)
+ */
+.lni {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  vertical-align: middle;
+  font-style: normal;
+  font-weight: normal;
+  speak: never;
+}
+
+.rubick .side-menu .side-menu__link__icon.lni {
+  font-size: 1.35rem;
+  min-width: 1.35rem;
+  color: #ffffff;
+}
+
+.rubick .side-menu .side-menu__link:hover .side-menu__link__icon.lni,
+.rubick .side-menu .side-menu__link--active .side-menu__link__icon.lni {
+  color: #ffffff !important;
+}
+
+.rubick .side-menu .side-menu__link__chevron.lni {
+  font-size: 1rem;
+  min-width: 1rem;
+  margin-left: auto;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.admin-content .lni.text-primary,
+.admin-content .lni.text-success {
+  color: var(--besoiu-green-bright, #059669) !important;
+}
+
+.admin-content .lni.text-warning {
+  color: #d97706 !important;
+}
+
+.admin-content .lni.text-danger {
+  color: #dc2626 !important;
+}
+
+#dashboard-kpi-panel .lni {
+  font-size: 2rem;
+}
+
+.admin-kpi-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.admin-btn-icon {
+  font-size: 1rem;
+  margin-right: 0.35rem;
+}

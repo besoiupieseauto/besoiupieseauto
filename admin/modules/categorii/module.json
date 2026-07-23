@@ -1,0 +1,21 @@
+﻿{
+    "id": "categorii",
+    "name": "Categorii",
+    "version": "1.0.0",
+    "type": "optional",
+    "enabled": true,
+    "description": "Taxonomie CMS — categorii, marci, modele, motorizari.",
+    "entry": "Besoiu\\Modules\\Categorii\\CategoriiModule",
+    "dependencies": [],
+    "permissions": [
+        "module.categorii",
+        "categorii.manage"
+    ],
+    "workspace": "suppliers",
+    "nav_section": {
+        "group_label": "PRODUSE"
+    },
+    "nav": [{"id":"categorii","label":"Categorii","href":"/admin/categorii","icon":"folder-tree","group":"PRODUSE"}],
+    "provides": {"folder":"categorii","slugs":["categorii"],"paths":["/admin/categorii","/admin/public/categorii","/admin/crudcategorii","/admin/public/crudcategorii","/admin/public/api/categorii_endpoint.php"],"crud_key":"categorii","api_scripts":["categorii_endpoint.php"],"quick_actions":["categorii"]},
+    "migrations": ["002_besoiu_category_tree.sql"]
+}

@@ -1,0 +1,14 @@
+action,id,randomn_id,pCode,pBrand,pName,pSubcategory,resolved_art_name,resolved_norm,resolved_source,has_image
+prune,7,f5681b5a48f3185a,1942000,OPEL,"Ulei Motor Opel 1942000","Ulei Motor Opel 1942000","Ulei Motor Opel 1942000","ulei motor opel 1942000",pSubcategory,1
+prune,8,55ebf53ac3a3bcae,170333,"FEBI BILSTEIN","Vas de Expansiune Lichid de Racire Febi Bilstein 170333","Vas de Expansiune Lichid de Racire","Vas de Expansiune Lichid de Racire","vas de expansiune lichid de racire",pSubcategory,1
+prune,9,ebd4162dd83faab1,455018,NRF,"Vas de Expansiune Lichid de Racire Nrf 455018","Vas de Expansiune Lichid de Racire Nrf 455018","Vas de Expansiune Lichid de Racire Nrf 455018","vas de expansiune lichid de racire nrf 455018",pSubcategory,1
+prune,10,94a600143d4d9894,0020MO5W301,INA,"Ulei Motor 5W30 Mazda Ultra Benzina 1L","Ulei Motor 5W30 Mazda Ultra Benzina 1L","Ulei Motor 5W30 Mazda Ultra Benzina 1L","ulei motor 5w30 mazda ultra benzina 1l",pSubcategory,1
+prune,11,5aeda6ebe65d21a1,0020MO5W305,INA,"Ulei Motor 5W30 Mazda Ultra Benzina 5L","Ulei Motor 5W30 Mazda Ultra Benzina 5L","Ulei Motor 5W30 Mazda Ultra Benzina 5L","ulei motor 5w30 mazda ultra benzina 5l",pSubcategory,1
+prune,46,9fc2d1efa25d3b64,TE01520,"MTR - MECANICA","Toba Esapament Intermediara Mtr - Mecanica TE01520","Toba Esapament Intermediara","Toba Esapament Intermediara","toba esapament intermediara",pSubcategory,1
+prune,47,861379705ebac4c3,24097G,SPIDAN,"Valoare Piesa Veche la Schimb Spidan 24097G","Valoare Piesa Veche la Schimb","Valoare Piesa Veche la Schimb","valoare piesa veche la schimb",pSubcategory,1
+prune,48,041ade242f4a2add,21731G,SPIDAN,"Valoare Piesa Veche la Schimb Spidan 21731G","Valoare Piesa Veche la Schimb","Valoare Piesa Veche la Schimb","valoare piesa veche la schimb",pSubcategory,1
+prune,49,23d50ca2b88d0d5a,714520849G,DRI,"Valoare Piesa Veche la Schimb Dri 714520849G","Valoare Piesa Veche la Schimb","Valoare Piesa Veche la Schimb","valoare piesa veche la schimb",pSubcategory,1
+prune,50,58eabb295a880848,TEST001,"TEST BRAND","Ulei Motor Test 5W30 1L Test Brand TEST001","Ulei Motor Test 5W30 1L","Ulei Motor Test 5W30 1L","ulei motor test 5w30 1l",pSubcategory,
+prune,51,0ac1aeb7e56b6d07,1987479113,BOSCH,"Lichid de Frana Bosch 1 987 479 113","Lichid de Frana","Lichid de Frana","lichid de frana",pSubcategory,
+prune,52,92ab4d53d37705a4,0140206100,SACHS,"Ulei Hidraulic Sachs 0 140 206 100","Ulei Hidraulic","Ulei Hidraulic","ulei hidraulic",pSubcategory,
+prune,53,044bb1d34e05ab6e,YT0699,YAT,"Bol de 7 L pentru Ulei Yat YT0699","Bol de 7 L pentru Ulei","Bol de 7 L pentru Ulei","bol de 7 l pentru ulei",pSubcategory,

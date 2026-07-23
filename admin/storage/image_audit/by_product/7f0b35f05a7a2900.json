@@ -1,0 +1,52 @@
+{
+    "randomn_id": "7f0b35f05a7a2900",
+    "title": "Lubrificant Universal Bosch 5 000 000 163",
+    "code": "5000000163",
+    "category": "Uleiuri și lubrifianți auto",
+    "image_url": "/uploads/products/tecdoc/5000000163.jpg",
+    "analyzed_at": "2026-06-18T09:18:08+03:00",
+    "verdict": "match",
+    "match_score": 90,
+    "image_shows": "Set de accesorii negre pentru aspirator (duză pardoseală, perie rotundă, duză tapițerie, tub flexibil, duză îngustă, adaptoare) — fără lubrifiant sau produs auto.",
+    "issues": [
+        "Imaginea nu conține niciun lubrifiant Bosch sau produs din categoria uleiuri/lubrifianți auto.",
+        "Produsul afișat este un kit de accesorii pentru aspirator, complet necorelat cu listarea.",
+        "Marca Bosch și codul 5000000163 lipsesc complet din imagine."
+    ],
+    "recommendation": "keep",
+    "summary_ro": "Imagine înlocuită și salvată local din autodoc_scraper.",
+    "model": "composer-2.5",
+    "engine": "cursor-composer-2.5",
+    "batch": "batch_20260618_061406.json",
+    "pipeline_retry": {
+        "at": "2026-06-18T07:20:25+00:00",
+        "new_image": "/uploads/products/tecdoc/5000000163.jpg",
+        "remote_url": "https://media.autodoc.de/360_photos/744219/h-preview.jpg",
+        "source": "autodoc_scraper",
+        "plans_tried": [
+            {
+                "tier": 1,
+                "source_id": "epiesa",
+                "label": "Plan 1 — Caiet comenzi / TTC_ART_ID",
+                "status": "miss",
+                "message": "ePiesa: fără potrivire"
+            },
+            {
+                "tier": 2,
+                "source_id": "epiesa",
+                "label": "Plan 2 — TecDoc CSV (import local)",
+                "status": "miss",
+                "message": "ePiesa: fără potrivire"
+            },
+            {
+                "tier": 3,
+                "source_id": "autodoc",
+                "label": "Plan 3 — autodoc.ro",
+                "status": "ok",
+                "message": "Imagine găsită"
+            }
+        ],
+        "note_ro": "Imagine salvată în produs (Plan 1→2→3)."
+    },
+    "pipeline_replaced": true
+}

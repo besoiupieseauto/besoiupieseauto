@@ -1,0 +1,29 @@
+{
+    "id": "__MODULE_ID__",
+    "name": "__MODULE_NAME__",
+    "version": "1.0.0",
+    "type": "optional",
+    "enabled": true,
+    "description": "__DESCRIPTION__",
+    "entry": "Besoiu\\Modules\\__STUDLY__\\__STUDLY__Module",
+    "dependencies": [],
+    "permissions": [
+        "module.__MODULE_ID__",
+        "__MODULE_ID__.manage"
+    ],
+    "workspace": "__WORKSPACE__",
+    "nav": [],
+    "provides": {
+        "folder": "__MODULE_ID__",
+        "slugs": ["__URL_SLUG__"],
+        "paths": [
+            "/admin/__URL_SLUG__",
+            "/admin/public/__URL_SLUG__",
+            "/admin/public/api/__MODULE_ID___endpoint.php"
+        ],
+        "crud_key": "__MODULE_ID__",
+        "api_scripts": ["__MODULE_ID___endpoint.php"],
+        "quick_actions": ["__URL_SLUG__"]
+    },
+    "migrations": []
+}

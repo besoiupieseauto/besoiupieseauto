@@ -1,0 +1,191 @@
+{
+    "title": "Sinonime căutare Besoiu",
+    "source": "categorii_tree_final.xlsx",
+    "exported_at": "2026-07-18T06:10:43+00:00",
+    "items": [
+        {
+            "term": "lamele stergator",
+            "target_art_name": "Set stergatoare, curatare parbriz"
+        },
+        {
+            "term": "lamela stergator",
+            "target_art_name": "Set stergatoare, curatare parbriz"
+        },
+        {
+            "term": "stergatoare",
+            "target_art_name": "Set stergatoare, curatare parbriz"
+        },
+        {
+            "term": "ferodouri",
+            "target_art_name": "set placute frana,frana disc"
+        },
+        {
+            "term": "placute frana",
+            "target_art_name": "set placute frana,frana disc"
+        },
+        {
+            "term": "kit distributie",
+            "target_art_name": "Set curea de distributie"
+        },
+        {
+            "term": "kit lant distributie",
+            "target_art_name": "chit lant de distributie"
+        },
+        {
+            "term": "curea accesorii",
+            "target_art_name": "Curea transmisie cu caneluri"
+        },
+        {
+            "term": "curea alternator",
+            "target_art_name": "Curea transmisie cu caneluri"
+        },
+        {
+            "term": "kit ambreiaj",
+            "target_art_name": "Set ambreiaj"
+        },
+        {
+            "term": "flansa amortizor",
+            "target_art_name": "Rulment sarcina amortizor"
+        },
+        {
+            "term": "bieleta antiruliu",
+            "target_art_name": "Brat\/bieleta suspensie, stabilizator"
+        },
+        {
+            "term": "pivot",
+            "target_art_name": "Articulatie sarcina\/ghidare"
+        },
+        {
+            "term": "cap planetara",
+            "target_art_name": "Articulatie, planetara"
+        },
+        {
+            "term": "burduf planetara",
+            "target_art_name": "Ansamblu burduf, articulatie planetara"
+        },
+        {
+            "term": "demaror",
+            "target_art_name": "starter"
+        },
+        {
+            "term": "electromotor",
+            "target_art_name": "starter"
+        },
+        {
+            "term": "alternator",
+            "target_art_name": "Generator \/ Alternator"
+        },
+        {
+            "term": "turbina",
+            "target_art_name": "Compresor,sistem de supraalimentare"
+        },
+        {
+            "term": "turbosuflanta",
+            "target_art_name": "Compresor,sistem de supraalimentare"
+        },
+        {
+            "term": "senzor vibrochen",
+            "target_art_name": "Senzor impulsuri, arbore cotit"
+        },
+        {
+            "term": "senzor abs",
+            "target_art_name": "senzor,turatie roata"
+        },
+        {
+            "term": "debitmetru",
+            "target_art_name": "senzor debit aer"
+        },
+        {
+            "term": "senzor map",
+            "target_art_name": "Senzor, presiune galerie admisie"
+        },
+        {
+            "term": "filtru polen",
+            "target_art_name": "Filtru, aer habitaclu"
+        },
+        {
+            "term": "filtru habitaclu",
+            "target_art_name": "Filtru, aer habitaclu"
+        },
+        {
+            "term": "radiator clima",
+            "target_art_name": "Condensator, climatizare"
+        },
+        {
+            "term": "radiator ac",
+            "target_art_name": "Condensator, climatizare"
+        },
+        {
+            "term": "calorifer habitaclu",
+            "target_art_name": "Schimbator caldura, incalzire habitaclu"
+        },
+        {
+            "term": "radiator incalzire",
+            "target_art_name": "Schimbator caldura, incalzire habitaclu"
+        },
+        {
+            "term": "gmv",
+            "target_art_name": "Ventilator, radiator"
+        },
+        {
+            "term": "electroventilator",
+            "target_art_name": "Ventilator, radiator"
+        },
+        {
+            "term": "aeroterma",
+            "target_art_name": "Ventilator, habitaclu"
+        },
+        {
+            "term": "compresor clima",
+            "target_art_name": "Compresor, climatizare"
+        },
+        {
+            "term": "compresor ac",
+            "target_art_name": "Compresor, climatizare"
+        },
+        {
+            "term": "pompa servodirectie",
+            "target_art_name": "Pompa hidraulica, sistem de directie"
+        },
+        {
+            "term": "macara geam",
+            "target_art_name": "Mecanism actionare geam"
+        },
+        {
+            "term": "broasca usa",
+            "target_art_name": "incuietoare usa"
+        },
+        {
+            "term": "butuc contact",
+            "target_art_name": "cilindru de inchidere,aprindere"
+        },
+        {
+            "term": "tampon motor",
+            "target_art_name": "Suport motor"
+        },
+        {
+            "term": "bujii diesel",
+            "target_art_name": "Bujie incandescenta"
+        },
+        {
+            "term": "senzor oxigen",
+            "target_art_name": "Sonda Lambda"
+        },
+        {
+            "term": "pompa apa",
+            "target_art_name": "Pompă de apă, răcire motor"
+        },
+        {
+            "term": "kit rulment roata",
+            "target_art_name": "Set rulment roata"
+        },
+        {
+            "term": "senzor presiune roti",
+            "target_art_name": "senzor, sistem de control al presiunii pneuri"
+        },
+        {
+            "term": "valve tpms",
+            "target_art_name": "senzor, sistem de control al presiunii pneuri"
+        }
+    ]
+}

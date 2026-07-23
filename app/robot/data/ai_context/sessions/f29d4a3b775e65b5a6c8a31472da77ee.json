@@ -1,0 +1,57 @@
+{
+    "session_id": "cmrl4ibi5yls8bvuf",
+    "updated_at": "2026-07-14T20:49:47+00:00",
+    "first_seen_at": "2026-07-14T20:48:15+00:00",
+    "last_page": "\/",
+    "pages": [
+        "\/"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-14T20:48:15+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-14T20:49:09+00:00",
+            "action": "scroll",
+            "subject": "25% · \/"
+        },
+        {
+            "at": "2026-07-14T20:49:35+00:00",
+            "action": "scroll",
+            "subject": "50% · \/"
+        },
+        {
+            "at": "2026-07-14T20:49:39+00:00",
+            "action": "scroll",
+            "subject": "75% · \/"
+        },
+        {
+            "at": "2026-07-14T20:49:42+00:00",
+            "action": "time_on_page",
+            "subject": "90s pe \/"
+        },
+        {
+            "at": "2026-07-14T20:49:43+00:00",
+            "action": "time_on_page",
+            "subject": "90s pe \/"
+        },
+        {
+            "at": "2026-07-14T20:49:45+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-14T20:49:47+00:00",
+            "action": "time_on_page",
+            "subject": "5s pe \/"
+        },
+        {
+            "at": "2026-07-14T20:49:47+00:00",
+            "action": "time_on_page",
+            "subject": "5s pe \/"
+        }
+    ],
+    "event_count": 9
+}

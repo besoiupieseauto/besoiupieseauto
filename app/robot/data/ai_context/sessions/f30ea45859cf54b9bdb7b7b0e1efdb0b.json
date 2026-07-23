@@ -1,0 +1,32 @@
+{
+    "session_id": "cmrnrz15871fr724q",
+    "updated_at": "2026-07-16T17:21:27+00:00",
+    "first_seen_at": "2026-07-16T17:20:39+00:00",
+    "last_page": "\/",
+    "pages": [
+        "\/"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-16T17:20:39+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T17:20:44+00:00",
+            "action": "scroll",
+            "subject": "25% · \/"
+        },
+        {
+            "at": "2026-07-16T17:20:57+00:00",
+            "action": "scroll",
+            "subject": "50% · \/"
+        },
+        {
+            "at": "2026-07-16T17:21:27+00:00",
+            "action": "scroll",
+            "subject": "75% · \/"
+        }
+    ],
+    "event_count": 4
+}

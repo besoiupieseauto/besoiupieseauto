@@ -1,0 +1,17 @@
+{
+    "import_id": 707,
+    "at": "2026-07-05T10:18:55+00:00",
+    "verdict": "partial",
+    "confidence": 0.81,
+    "corrections": {
+        "pOem": "714520849G"
+    },
+    "issues": [
+        "brand_looks_like_catalog_label",
+        "generic_category"
+    ],
+    "reasoning_ro": "Explicație scurtă în română.",
+    "apply_recommended": true,
+    "llm_error": null,
+    "duration_ms": 84201
+}

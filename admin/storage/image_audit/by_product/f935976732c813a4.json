@@ -1,0 +1,20 @@
+{
+  "randomn_id": "f935976732c813a4",
+  "title": "Bara Directie TRW 5003325",
+  "code": "5003325",
+  "category": "Caroserie",
+  "image_url": "",
+  "verdict": "no_image",
+  "match_score": 0,
+  "image_shows": "Nicio imagine disponibilă — câmpurile image_url și local_image_path sunt goale, image_source=missing.",
+  "issues": [
+    "Produsul nu are imagine încărcată în catalog.",
+    "Nu se poate efectua comparația vizuală cu titlul «Bara Directie TRW 5003325».",
+    "Nu se poate confirma bara de direcție TRW cod 5003325 din categoria Caroserie."
+  ],
+  "recommendation": "replace",
+  "summary_ro": "Produs fără imagine. Audit vizual imposibil; se recomandă găsirea și încărcarea unei fotografii corecte pentru bara de direcție TRW 5003325 din categoria Caroserie.",
+  "analyzed_at": "2026-06-19T12:57:56.077501+00:00",
+  "engine": "cursor-composer-2.5",
+  "model": "composer-2.5"
+}

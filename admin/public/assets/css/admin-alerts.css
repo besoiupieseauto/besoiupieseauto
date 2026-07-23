@@ -1,0 +1,284 @@
+/* Pagina /admin/alerts — extinde tema Besoiu (hero + subpanel ca dashboard) */
+
+body.besoiu-admin-2026 .admin-alerts-kpis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+body.besoiu-admin-2026 .admin-alerts-kpi {
+  min-width: 4.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.75rem;
+  text-align: center;
+  background: #fff;
+  border: 2px solid var(--b26-line, #e2e8f0);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+body.besoiu-admin-2026 .admin-alerts-kpi__num {
+  display: block;
+  font-size: 1.45rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--b26-navy, #0f172a);
+}
+
+body.besoiu-admin-2026 .admin-alerts-kpi__lbl {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+
+body.besoiu-admin-2026 .admin-alerts-kpi--critical .admin-alerts-kpi__num {
+  color: #dc2626;
+}
+
+body.besoiu-admin-2026 .admin-alerts-kpi--warning .admin-alerts-kpi__num {
+  color: #d97706;
+}
+
+body.besoiu-admin-2026 .admin-alerts-kpi--total .admin-alerts-kpi__num {
+  color: #059669;
+}
+
+body.besoiu-admin-2026 #alerts-status-badge.is-critical {
+  background: #dc2626 !important;
+}
+
+body.besoiu-admin-2026 #alerts-status-badge.is-warning {
+  background: #d97706 !important;
+}
+
+body.besoiu-admin-2026 #alerts-status-badge.is-ok {
+  background: var(--b26-emerald-mid, #059669) !important;
+}
+
+body.besoiu-admin-2026 .admin-alerts-loading__spinner {
+  width: 2rem;
+  height: 2rem;
+  margin: 0 auto 0.75rem;
+  border: 3px solid #e2e8f0;
+  border-top-color: #059669;
+  border-radius: 50%;
+  animation: admin-alerts-spin 0.8s linear infinite;
+}
+
+@keyframes admin-alerts-spin {
+  to { transform: rotate(360deg); }
+}
+
+body.besoiu-admin-2026 .admin-alerts-ok {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  color: #065f46;
+}
+
+body.besoiu-admin-2026 .admin-alerts-ok__icon {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #059669;
+  color: #fff;
+  font-weight: 900;
+}
+
+body.besoiu-admin-2026 .admin-alerts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  body.besoiu-admin-2026 .admin-alerts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+body.besoiu-admin-2026 .admin-alert-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.1rem;
+  border-radius: 0.85rem;
+  border: 2px solid var(--b26-line, #e2e8f0);
+  background: #fff;
+  transition: box-shadow 0.15s, transform 0.12s;
+}
+
+body.besoiu-admin-2026 .admin-alert-card:hover {
+  box-shadow: var(--b26-shadow, 0 8px 24px rgba(15, 23, 42, 0.08));
+  transform: translateY(-1px);
+}
+
+body.besoiu-admin-2026 .admin-alert-card--critical {
+  border-color: #fecaca;
+  background: linear-gradient(145deg, #fff 0%, #fef2f2 100%);
+  border-left: 4px solid #dc2626;
+}
+
+body.besoiu-admin-2026 .admin-alert-card--warning {
+  border-color: #fde68a;
+  background: linear-gradient(145deg, #fff 0%, #fffbeb 100%);
+  border-left: 4px solid #d97706;
+}
+
+body.besoiu-admin-2026 .admin-alert-card--info {
+  border-color: #99f6e4;
+  background: linear-gradient(145deg, #fff 0%, #f0fdfa 100%);
+  border-left: 4px solid #14b8a6;
+}
+
+body.besoiu-admin-2026 .admin-alert-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+}
+
+body.besoiu-admin-2026 .admin-alert-card__title {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--b26-navy, #0f172a);
+  line-height: 1.3;
+}
+
+body.besoiu-admin-2026 .admin-alert-card--critical .admin-alert-card__title {
+  color: #991b1b;
+}
+
+body.besoiu-admin-2026 .admin-alert-card--warning .admin-alert-card__title {
+  color: #92400e;
+}
+
+body.besoiu-admin-2026 .admin-alert-card__code {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+body.besoiu-admin-2026 .admin-alert-card__problem {
+  margin: 0 0 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+body.besoiu-admin-2026 .admin-alert-card__detail {
+  margin: 0;
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: #64748b;
+  flex: 1;
+}
+
+body.besoiu-admin-2026 .admin-alert-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+body.besoiu-admin-2026 .admin-alert-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: flex-end;
+}
+
+body.besoiu-admin-2026 .admin-alert-card__fix {
+  background: #059669 !important;
+  border-color: #059669 !important;
+  color: #fff !important;
+  cursor: pointer;
+}
+
+body.besoiu-admin-2026 .admin-alert-card__fix:hover:not(:disabled) {
+  background: #047857 !important;
+  border-color: #047857 !important;
+}
+
+body.besoiu-admin-2026 .admin-alert-card__fix:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+body.besoiu-admin-2026 .admin-alert-card--critical .admin-alert-card__fix {
+  background: #dc2626 !important;
+  border-color: #dc2626 !important;
+}
+
+body.besoiu-admin-2026 .admin-alert-card--critical .admin-alert-card__fix:hover:not(:disabled) {
+  background: #b91c1c !important;
+  border-color: #b91c1c !important;
+}
+
+body.besoiu-admin-2026 .besoiu-red-flag__btn--ghost {
+  background: #fff !important;
+  color: #334155 !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+body.besoiu-admin-2026 .admin-alert-card--fixed-out {
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 0.35s, transform 0.35s;
+}
+
+body.besoiu-admin-2026 .admin-alert-card__time {
+  font-size: 0.65rem;
+  color: #94a3b8;
+}
+
+body.besoiu-admin-2026 .admin-alerts-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+body.besoiu-admin-2026 .admin-alerts-footer__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+body.besoiu-admin-2026 .admin-alerts-footer__time {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  margin-left: 0.25rem;
+}
+
+body.besoiu-admin-2026 .admin-alert-card .besoiu-red-flag__btn {
+  font-size: 0.72rem;
+  padding: 0.35rem 0.75rem;
+}
+
+body.besoiu-admin-2026 .admin-alert-card--critical .besoiu-red-flag__btn {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: #fff;
+}
+
+body.besoiu-admin-2026 .admin-alert-card--critical .besoiu-red-flag__btn:hover {
+  background: #b91c1c;
+  border-color: #b91c1c;
+}

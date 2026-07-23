@@ -1,0 +1,17 @@
+{
+    "session_id": "cmrp3kybebo7v96x3",
+    "updated_at": "2026-07-17T15:33:29+00:00",
+    "first_seen_at": "2026-07-17T15:33:29+00:00",
+    "last_page": "\/",
+    "pages": [
+        "\/"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-17T15:33:29+00:00",
+            "action": "time_on_page",
+            "subject": "7s pe \/"
+        }
+    ],
+    "event_count": 1
+}

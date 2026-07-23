@@ -1,0 +1,232 @@
+.nav-mod { max-width: 1280px; }
+.is-hidden { display: none !important; }
+
+.nav-mod__head { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+.nav-mod__head-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.nav-mod__tabs { display: flex; gap: .5rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(0,0,0,.08); padding-bottom: .5rem; }
+.nav-mod__tab { border: 0; background: transparent; padding: .35rem .75rem; border-radius: .375rem; cursor: pointer; opacity: .7; }
+.nav-mod__tab.is-active { background: rgba(26,188,156,.12); color: #148f77; opacity: 1; font-weight: 600; }
+.nav-mod__panel { display: none; }
+.nav-mod__panel.is-active { display: block; }
+.nav-mod__toolbar { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin-bottom: .75rem; flex-wrap: wrap; }
+.nav-mod__count { font-size: .85rem; opacity: .75; }
+.nav-mod__json { width: 100%; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; line-height: 1.45; padding: .75rem; border: 1px solid rgba(0,0,0,.12); border-radius: .5rem; min-height: 420px; }
+
+.nav-mod__panel-head { margin-bottom: 1rem; }
+.nav-mod__search-wrap { position: relative; margin-bottom: 1rem; }
+.nav-mod__search { width: 100%; max-width: 520px; }
+.nav-mod__search-results {
+    position: absolute;
+    z-index: 20;
+    left: 0;
+    top: calc(100% + 4px);
+    width: min(100%, 520px);
+    max-height: 280px;
+    overflow: auto;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, .12);
+    padding: .35rem;
+}
+.nav-mod__search-hit {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .15rem;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    padding: .55rem .65rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font: inherit;
+}
+.nav-mod__search-hit:hover { background: rgba(26, 188, 156, .08); }
+.nav-mod__search-hit-label { font-weight: 600; font-size: .88rem; color: #0f172a; }
+.nav-mod__search-hit-label em { font-style: normal; opacity: .65; font-weight: 500; }
+.nav-mod__search-hit-meta { font-size: .75rem; color: #64748b; }
+.nav-mod__search-empty { margin: .5rem; font-size: .85rem; opacity: .75; }
+.nav-mod__row-flash { animation: nav-mod-flash 1.8s ease; }
+@keyframes nav-mod-flash {
+    0%, 100% { background: transparent; }
+    20%, 60% { background: rgba(26, 188, 156, .15); }
+}
+.nav-mod__ws-grid { margin-top: .25rem; }
+
+/* Card ca portal workspace — buton full width */
+.nav-mod button.besoiu-ws-card {
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    appearance: none;
+}
+
+.nav-mod button.besoiu-ws-card.is-inactive {
+    opacity: .72;
+}
+
+.nav-mod .besoiu-ws-card__btn {
+    pointer-events: none;
+}
+
+.nav-mod .besoiu-ws-card__icon svg {
+    width: 32px !important;
+    height: 32px !important;
+}
+
+/* Detaliu zonă */
+.nav-mod__detail-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    margin-bottom: .85rem;
+}
+
+.nav-mod__back {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    border-radius: 8px;
+    padding: .45rem .75rem;
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: #64748b;
+}
+
+.nav-mod__back:hover { border-color: #1abc9c; color: #0d9488; }
+
+.nav-mod__detail-hero {
+    margin-bottom: 1rem;
+}
+
+.nav-mod__detail-hero .besoiu-ws-card {
+    cursor: default;
+    pointer-events: none;
+}
+
+.nav-mod__block {
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 1rem 1.1rem;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(15,23,42,.04);
+}
+
+.nav-mod__block-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    justify-content: space-between;
+    margin-bottom: .85rem;
+    padding-bottom: .75rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.nav-mod__block-title { font-weight: 700; margin: 0; font-size: 1rem; color: #0f172a; }
+.nav-mod__block-meta { font-size: .8rem; color: #64748b; margin: .2rem 0 0; }
+.nav-mod__block-actions { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+
+/* Zone detail — subsecțiuni în interiorul unei super-categorii */
+.nav-mod__zone-block {
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 1rem 1.1rem 1.1rem;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(15,23,42,.04);
+    margin-bottom: 1rem;
+}
+
+.nav-mod__zone-block-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    justify-content: space-between;
+    margin-bottom: .75rem;
+    padding-bottom: .65rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.nav-mod__zone-block-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.nav-mod__zone-block-meta {
+    margin: .2rem 0 0;
+    font-size: .78rem;
+    color: #64748b;
+}
+
+.nav-mod__zone-block-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem;
+    align-items: center;
+}
+
+.nav-mod__pill {
+    display: inline-block;
+    padding: .1rem .45rem;
+    border-radius: 999px;
+    font-size: .68rem;
+    font-weight: 600;
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.nav-mod__row-off {
+    opacity: .55;
+}
+
+.nav-mod__row-actions {
+    white-space: nowrap;
+    display: flex;
+    gap: .35rem;
+    justify-content: flex-end;
+}
+
+.nav-mod__btn-danger {
+    color: #b91c1c !important;
+    border-color: #fecaca !important;
+}
+
+.nav-mod__btn-danger:hover {
+    background: #fef2f2 !important;
+}
+
+.nav-mod__toast {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 9999;
+    padding: .65rem 1rem;
+    border-radius: 10px;
+    font-size: .85rem;
+    font-weight: 600;
+    box-shadow: 0 8px 24px rgba(15,23,42,.15);
+    background: #0f172a;
+    color: #fff;
+}
+
+.nav-mod__toast.is-error { background: #b91c1c; }
+.nav-mod__toast.is-ok { background: #0d9488; }
+
+/* Icon workspace suplimentar */
+.besoiu-ws-card--navigatie .besoiu-ws-card__icon {
+    background: rgba(14, 165, 233, 0.12);
+    border-color: rgba(2, 132, 199, 0.22);
+}
+
+.besoiu-ws-card--navigatie:hover {
+    border-color: #0ea5e9;
+    box-shadow: 0 10px 28px rgba(14, 165, 233, 0.15);
+}

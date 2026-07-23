@@ -1,0 +1,20 @@
+{
+  "randomn_id": "7b436fb214ba3c7c",
+  "title": "Pivot TRW 5042520",
+  "code": "5042520",
+  "category": "Suspensie",
+  "image_url": "",
+  "verdict": "no_image",
+  "match_score": 0,
+  "image_shows": "Nicio imagine disponibilă — câmpurile image_url și local_image_path sunt goale, image_source=missing.",
+  "issues": [
+    "Produsul nu are imagine încărcată în catalog.",
+    "Nu se poate efectua comparația vizuală cu titlul «Pivot TRW 5042520».",
+    "Nu se poate confirma pivotul TRW cod 5042520 din categoria Suspensie."
+  ],
+  "recommendation": "replace",
+  "summary_ro": "Produs fără imagine. Audit vizual imposibil; se recomandă găsirea și încărcarea unei fotografii corecte pentru pivot TRW 5042520 din categoria Suspensie.",
+  "analyzed_at": "2026-06-19T12:58:17.946778+00:00",
+  "engine": "cursor-composer-2.5",
+  "model": "composer-2.5"
+}

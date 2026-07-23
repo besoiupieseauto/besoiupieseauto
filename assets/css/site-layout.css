@@ -1,0 +1,334 @@
+/**
+ * Besoiu Piese Auto — shell comun (header, footer, drawer mobil)
+ * Conform layout-04 / layout-10 / layout-11
+ */
+
+.hdr-icon {
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.hdr-icon-lg {
+  width: 26px;
+  height: 26px;
+}
+
+.footer-social-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.footer-contact-icon {
+  width: 14px;
+  height: 14px;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+.footer-contact a,
+.sp-side-contact a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.footer-contact a:hover,
+.sp-side-contact a:hover {
+  color: var(--green);
+}
+
+/* Iconițe filterbar / vehicul — înlocuiește style inline */
+.ui-icon-22 {
+  width: 22px;
+  height: 22px;
+}
+
+.ui-icon-20 {
+  width: 20px;
+  height: 20px;
+}
+
+.ui-icon-14 {
+  width: 14px;
+  height: 14px;
+}
+
+.ui-icon-28 {
+  width: 28px;
+  height: 28px;
+}
+
+/* Filterbar homepage — iconițe mai vizibile */
+.filterbar .ui-icon-22 {
+  width: 26px;
+  height: 26px;
+}
+
+.filterbar .ui-icon-20 {
+  width: 28px;
+  height: 28px;
+}
+
+.filterbar .vehicle-item .vico {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+}
+
+.filterbar .vehicle-item {
+  gap: 16px;
+}
+
+.filterbar .cat-badge img {
+  width: 24px;
+  height: 24px;
+}
+
+.ui-icon--on-dark {
+  filter: brightness(10);
+}
+
+.ui-icon--chevron-auto {
+  filter: brightness(10);
+  margin-left: auto;
+}
+
+.vehicle-item select._product-input {
+  height: auto;
+  border: 0;
+  padding: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.vehicle-item-field {
+  flex: 1;
+}
+
+.vehicle-item--last {
+  border-right: 0;
+}
+
+.vehicle-item[hidden] {
+  display: none !important;
+}
+
+/* Drawer mobil — critic pentru first paint */
+@media (min-width: 1101px) {
+  #mobile-nav,
+  #mobile-nav-overlay {
+    display: none !important;
+  }
+}
+
+#mobile-nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 9998;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s, visibility 0.25s;
+}
+
+body.mobile-nav-open #mobile-nav-overlay {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+#mobile-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: min(320px, 88vw);
+  height: 100vh;
+  height: 100dvh;
+  background: #fff;
+  z-index: 9999;
+  margin: 0;
+  padding: 18px 0 24px;
+  transform: translateX(-105%);
+  transition: transform 0.28s ease;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 8px 0 40px rgba(15, 23, 42, 0.12);
+  overflow: auto;
+  list-style: none;
+}
+
+body.mobile-nav-open #mobile-nav {
+  transform: translateX(0);
+}
+
+.sp-blog-item--link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.sp-cta-full {
+  width: 100%;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+/* Homepage — utilitare (înlocuiește style inline) */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+.loader-piese {
+  padding: 20px;
+  text-align: center;
+}
+
+.loader-piese:not(.is-hidden) {
+  display: block;
+}
+
+.loader-piese__spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--line);
+  border-top: 4px solid var(--green);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+.loader-piese__text {
+  margin-top: 12px;
+  color: var(--muted);
+}
+
+.product-results-count {
+  color: var(--green);
+  font-weight: 900;
+}
+
+.product-debug-status {
+  margin-top: 14px;
+  padding: 14px 18px;
+  border-radius: 8px;
+  background: var(--green-soft);
+  color: var(--green-dark);
+  font-size: 14px;
+}
+
+#_product-empty-state:not(.is-hidden),
+.product-empty-state:not(.is-hidden) {
+  display: block;
+  pointer-events: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.product-debug-status:not(.is-hidden) {
+  display: block;
+}
+
+.product-empty-state {
+  padding: 30px 20px;
+  border-radius: 12px;
+  background: #f8f9fa;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 16px;
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.debug-entry-time {
+  color: #888;
+}
+
+._product-card-image--bg {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+._product-grid-toolbar {
+  grid-column: 1 / -1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+._product-grid-toolbar__title {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+._product-btn--back {
+  width: auto;
+  padding: 10px 14px;
+}
+
+._product-card-image--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eaf7f1;
+}
+
+._product-card-image--placeholder span {
+  font-size: 42px;
+  color: var(--green);
+}
+
+._product-card-btn--full {
+  width: 100%;
+  border-radius: 7px;
+}
+
+.category-card-icon {
+  width: 44px;
+  height: 44px;
+}
+
+._product-vehicle-banner {
+  grid-column: 1 / -1;
+  margin: 0 0 12px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: #ecfdf5;
+  border: 1px solid #6ee7b7;
+  color: #065f46;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+._product-notice {
+  grid-column: 1 / -1;
+  margin: 0 0 12px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: #fff7ed;
+  border: 1px solid #fdba74;
+  color: #9a3412;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+._product-card-image--clickable {
+  cursor: pointer;
+}

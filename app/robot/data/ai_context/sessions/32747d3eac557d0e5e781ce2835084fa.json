@@ -1,0 +1,57 @@
+{
+    "session_id": "cmrnh5zn0u8oiupvl",
+    "updated_at": "2026-07-16T14:58:06+00:00",
+    "first_seen_at": "2026-07-16T12:18:08+00:00",
+    "last_page": "\/",
+    "pages": [
+        "\/"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-16T12:18:08+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T12:18:18+00:00",
+            "action": "scroll",
+            "subject": "25% · \/"
+        },
+        {
+            "at": "2026-07-16T12:18:18+00:00",
+            "action": "scroll",
+            "subject": "50% · \/"
+        },
+        {
+            "at": "2026-07-16T12:18:18+00:00",
+            "action": "scroll",
+            "subject": "75% · \/"
+        },
+        {
+            "at": "2026-07-16T12:18:22+00:00",
+            "action": "scroll",
+            "subject": "100% · \/"
+        },
+        {
+            "at": "2026-07-16T13:03:20+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T14:47:06+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T14:55:42+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T14:58:06+00:00",
+            "action": "time_on_page",
+            "subject": "9600s pe \/"
+        }
+    ],
+    "event_count": 9
+}

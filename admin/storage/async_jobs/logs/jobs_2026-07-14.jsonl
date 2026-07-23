@@ -1,0 +1,71 @@
+{"ts":"2026-07-14T05:56:06+00:00","event":"worker_start","pid":6960,"context":{"queue":"products","consumer":"dev-1","pid":6960}}
+{"ts":"2026-07-14T05:59:48+00:00","event":"job_created","pid":2180,"context":{"job_id":"2eb38525-7b92-4673-a4a7-95938bbad390","type":"demo.progress","queue":"products","priority":"normal"}}
+{"ts":"2026-07-14T05:59:48+00:00","event":"worker_start","pid":12176,"context":{"queue":"products","consumer":"smoke-2180","pid":12176}}
+{"ts":"2026-07-14T05:59:48+00:00","event":"job_processing","pid":12176,"context":{"job_id":"2eb38525-7b92-4673-a4a7-95938bbad390"}}
+{"ts":"2026-07-14T05:59:48+00:00","event":"job_progress","pid":12176,"context":{"job_id":"2eb38525-7b92-4673-a4a7-95938bbad390","progress":33,"message":"Pas 1/3"}}
+{"ts":"2026-07-14T05:59:48+00:00","event":"job_progress","pid":12176,"context":{"job_id":"2eb38525-7b92-4673-a4a7-95938bbad390","progress":67,"message":"Pas 2/3"}}
+{"ts":"2026-07-14T05:59:49+00:00","event":"job_progress","pid":12176,"context":{"job_id":"2eb38525-7b92-4673-a4a7-95938bbad390","progress":100,"message":"Pas 3/3"}}
+{"ts":"2026-07-14T05:59:49+00:00","event":"job_done","pid":12176,"context":{"job_id":"2eb38525-7b92-4673-a4a7-95938bbad390"}}
+{"ts":"2026-07-14T05:59:49+00:00","event":"worker_stop","pid":12176,"context":{"queue":"products","processed":1,"shutdown":false}}
+{"ts":"2026-07-14T05:59:49+00:00","event":"job_failed","pid":2180,"context":{"job_id":"smoke-stale-3cf9b045","error":"timeout_pending_no_worker"}}
+{"ts":"2026-07-14T05:59:49+00:00","event":"stale_job_swept","pid":2180,"context":{"job_id":"smoke-stale-3cf9b045","status":"pending","reason":"timeout_pending_no_worker"}}
+{"ts":"2026-07-14T06:02:31+00:00","event":"job_created","pid":13460,"context":{"job_id":"6f29c76a-fda0-4717-b5ac-d2381146d252","type":"demo.progress","queue":"products","priority":"normal"}}
+{"ts":"2026-07-14T06:02:31+00:00","event":"job_processing","pid":6960,"context":{"job_id":"6f29c76a-fda0-4717-b5ac-d2381146d252"}}
+{"ts":"2026-07-14T06:02:31+00:00","event":"job_progress","pid":6960,"context":{"job_id":"6f29c76a-fda0-4717-b5ac-d2381146d252","progress":33,"message":"Pas 1/3"}}
+{"ts":"2026-07-14T06:02:31+00:00","event":"worker_start","pid":252,"context":{"queue":"products","consumer":"smoke-13460","pid":252}}
+{"ts":"2026-07-14T06:02:32+00:00","event":"job_progress","pid":6960,"context":{"job_id":"6f29c76a-fda0-4717-b5ac-d2381146d252","progress":67,"message":"Pas 2/3"}}
+{"ts":"2026-07-14T06:02:32+00:00","event":"job_progress","pid":6960,"context":{"job_id":"6f29c76a-fda0-4717-b5ac-d2381146d252","progress":100,"message":"Pas 3/3"}}
+{"ts":"2026-07-14T06:02:33+00:00","event":"job_done","pid":6960,"context":{"job_id":"6f29c76a-fda0-4717-b5ac-d2381146d252"}}
+{"ts":"2026-07-14T06:02:33+00:00","event":"worker_stop","pid":6960,"context":{"queue":"products","processed":1,"shutdown":false}}
+{"ts":"2026-07-14T06:04:53+00:00","event":"worker_start","pid":16752,"context":{"queue":"products","consumer":"manual-test","pid":16752}}
+{"ts":"2026-07-14T06:05:38+00:00","event":"job_created","pid":11628,"context":{"job_id":"cef1f5e3-b7a4-4727-b664-d8af95d8d299","type":"demo.progress","queue":"products","priority":"normal"}}
+{"ts":"2026-07-14T06:05:38+00:00","event":"job_processing","pid":16752,"context":{"job_id":"cef1f5e3-b7a4-4727-b664-d8af95d8d299"}}
+{"ts":"2026-07-14T06:05:38+00:00","event":"job_progress","pid":16752,"context":{"job_id":"cef1f5e3-b7a4-4727-b664-d8af95d8d299","progress":33,"message":"Pas 1/3"}}
+{"ts":"2026-07-14T06:05:39+00:00","event":"worker_start","pid":13896,"context":{"queue":"products","consumer":"smoke-11628","pid":13896}}
+{"ts":"2026-07-14T06:05:39+00:00","event":"job_progress","pid":16752,"context":{"job_id":"cef1f5e3-b7a4-4727-b664-d8af95d8d299","progress":67,"message":"Pas 2/3"}}
+{"ts":"2026-07-14T06:05:39+00:00","event":"job_progress","pid":16752,"context":{"job_id":"cef1f5e3-b7a4-4727-b664-d8af95d8d299","progress":100,"message":"Pas 3/3"}}
+{"ts":"2026-07-14T06:05:40+00:00","event":"job_done","pid":16752,"context":{"job_id":"cef1f5e3-b7a4-4727-b664-d8af95d8d299"}}
+{"ts":"2026-07-14T06:05:40+00:00","event":"worker_stop","pid":16752,"context":{"queue":"products","processed":1,"shutdown":false}}
+{"ts":"2026-07-14T06:05:47+00:00","event":"worker_idle_exit","pid":13896,"context":{"queue":"products","consumer":"smoke-11628","max_jobs":1,"idle_sec":8}}
+{"ts":"2026-07-14T06:05:47+00:00","event":"worker_stop","pid":13896,"context":{"queue":"products","processed":0,"shutdown":false}}
+{"ts":"2026-07-14T06:05:47+00:00","event":"job_failed","pid":11628,"context":{"job_id":"smoke-stale-a0cba727","error":"timeout_pending_no_worker"}}
+{"ts":"2026-07-14T06:05:47+00:00","event":"stale_job_swept","pid":11628,"context":{"job_id":"smoke-stale-a0cba727","status":"pending","reason":"timeout_pending_no_worker"}}
+{"ts":"2026-07-14T06:05:59+00:00","event":"job_created","pid":16404,"context":{"job_id":"9a6fd472-b967-4b63-b3db-5a8d1e6e9f2a","type":"demo.progress","queue":"products","priority":"normal"}}
+{"ts":"2026-07-14T06:05:59+00:00","event":"job_processing","pid":252,"context":{"job_id":"9a6fd472-b967-4b63-b3db-5a8d1e6e9f2a"}}
+{"ts":"2026-07-14T06:05:59+00:00","event":"job_progress","pid":252,"context":{"job_id":"9a6fd472-b967-4b63-b3db-5a8d1e6e9f2a","progress":33,"message":"Pas 1/3"}}
+{"ts":"2026-07-14T06:05:59+00:00","event":"worker_start","pid":16044,"context":{"queue":"products","consumer":"smoke-16404","pid":16044}}
+{"ts":"2026-07-14T06:05:59+00:00","event":"job_progress","pid":252,"context":{"job_id":"9a6fd472-b967-4b63-b3db-5a8d1e6e9f2a","progress":67,"message":"Pas 2/3"}}
+{"ts":"2026-07-14T06:06:00+00:00","event":"job_progress","pid":252,"context":{"job_id":"9a6fd472-b967-4b63-b3db-5a8d1e6e9f2a","progress":100,"message":"Pas 3/3"}}
+{"ts":"2026-07-14T06:06:00+00:00","event":"job_done","pid":252,"context":{"job_id":"9a6fd472-b967-4b63-b3db-5a8d1e6e9f2a"}}
+{"ts":"2026-07-14T06:06:00+00:00","event":"worker_stop","pid":252,"context":{"queue":"products","processed":1,"shutdown":false}}
+{"ts":"2026-07-14T06:06:00+00:00","event":"job_failed","pid":13460,"context":{"job_id":"smoke-stale-134520b9","error":"timeout_pending_no_worker"}}
+{"ts":"2026-07-14T06:06:00+00:00","event":"stale_job_swept","pid":13460,"context":{"job_id":"smoke-stale-134520b9","status":"pending","reason":"timeout_pending_no_worker"}}
+{"ts":"2026-07-14T06:06:07+00:00","event":"worker_idle_exit","pid":16044,"context":{"queue":"products","consumer":"smoke-16404","max_jobs":1,"idle_sec":8}}
+{"ts":"2026-07-14T06:06:07+00:00","event":"worker_stop","pid":16044,"context":{"queue":"products","processed":0,"shutdown":false}}
+{"ts":"2026-07-14T06:06:07+00:00","event":"job_failed","pid":16404,"context":{"job_id":"smoke-stale-b2eb7978","error":"timeout_pending_no_worker"}}
+{"ts":"2026-07-14T06:06:07+00:00","event":"stale_job_swept","pid":16404,"context":{"job_id":"smoke-stale-b2eb7978","status":"pending","reason":"timeout_pending_no_worker"}}
+{"ts":"2026-07-14T06:06:07+00:00","event":"worker_start","pid":3192,"context":{"queue":"products","consumer":"runall-492","pid":3192}}
+{"ts":"2026-07-14T06:06:15+00:00","event":"worker_idle_exit","pid":3192,"context":{"queue":"products","consumer":"runall-492","max_jobs":1,"idle_sec":8}}
+{"ts":"2026-07-14T06:06:15+00:00","event":"worker_stop","pid":3192,"context":{"queue":"products","processed":0,"shutdown":false}}
+{"ts":"2026-07-14T06:06:28+00:00","event":"job_created","pid":12076,"context":{"job_id":"a797d324-fc54-48c4-9ab3-3a7e6f726321","type":"demo.progress","queue":"products","priority":"normal"}}
+{"ts":"2026-07-14T06:06:28+00:00","event":"worker_start","pid":14004,"context":{"queue":"products","consumer":"smoke-12076","pid":14004}}
+{"ts":"2026-07-14T06:06:28+00:00","event":"job_processing","pid":14004,"context":{"job_id":"a797d324-fc54-48c4-9ab3-3a7e6f726321"}}
+{"ts":"2026-07-14T06:06:28+00:00","event":"job_progress","pid":14004,"context":{"job_id":"a797d324-fc54-48c4-9ab3-3a7e6f726321","progress":33,"message":"Pas 1/3"}}
+{"ts":"2026-07-14T06:06:28+00:00","event":"job_progress","pid":14004,"context":{"job_id":"a797d324-fc54-48c4-9ab3-3a7e6f726321","progress":67,"message":"Pas 2/3"}}
+{"ts":"2026-07-14T06:06:29+00:00","event":"job_progress","pid":14004,"context":{"job_id":"a797d324-fc54-48c4-9ab3-3a7e6f726321","progress":100,"message":"Pas 3/3"}}
+{"ts":"2026-07-14T06:06:29+00:00","event":"job_done","pid":14004,"context":{"job_id":"a797d324-fc54-48c4-9ab3-3a7e6f726321"}}
+{"ts":"2026-07-14T06:06:29+00:00","event":"worker_stop","pid":14004,"context":{"queue":"products","processed":1,"shutdown":false}}
+{"ts":"2026-07-14T06:06:29+00:00","event":"job_failed","pid":12076,"context":{"job_id":"smoke-stale-0ccce86f","error":"timeout_pending_no_worker"}}
+{"ts":"2026-07-14T06:06:29+00:00","event":"stale_job_swept","pid":12076,"context":{"job_id":"smoke-stale-0ccce86f","status":"pending","reason":"timeout_pending_no_worker"}}
+{"ts":"2026-07-14T06:06:29+00:00","event":"job_created","pid":15356,"context":{"job_id":"14124b00-048b-4c14-9ba1-29d1ecf97a81","type":"demo.progress","queue":"products","priority":"normal"}}
+{"ts":"2026-07-14T06:06:29+00:00","event":"worker_start","pid":14908,"context":{"queue":"products","consumer":"runall-15356","pid":14908}}
+{"ts":"2026-07-14T06:06:29+00:00","event":"job_processing","pid":14908,"context":{"job_id":"14124b00-048b-4c14-9ba1-29d1ecf97a81"}}
+{"ts":"2026-07-14T06:06:29+00:00","event":"job_progress","pid":14908,"context":{"job_id":"14124b00-048b-4c14-9ba1-29d1ecf97a81","progress":50,"message":"Pas 1/2"}}
+{"ts":"2026-07-14T06:06:30+00:00","event":"job_progress","pid":14908,"context":{"job_id":"14124b00-048b-4c14-9ba1-29d1ecf97a81","progress":100,"message":"Pas 2/2"}}
+{"ts":"2026-07-14T06:06:30+00:00","event":"job_done","pid":14908,"context":{"job_id":"14124b00-048b-4c14-9ba1-29d1ecf97a81"}}
+{"ts":"2026-07-14T06:06:30+00:00","event":"worker_stop","pid":14908,"context":{"queue":"products","processed":1,"shutdown":false}}
+{"ts":"2026-07-14T06:06:34+00:00","event":"worker_start","pid":14688,"context":{"queue":"products","consumer":"products-bg-1","pid":14688}}
+{"ts":"2026-07-14T06:06:34+00:00","event":"worker_start","pid":17120,"context":{"queue":"products","consumer":"products-bg-2","pid":17120}}
+{"ts":"2026-07-14T06:06:34+00:00","event":"worker_start","pid":11308,"context":{"queue":"import","consumer":"import-bg-1","pid":11308}}
+{"ts":"2026-07-14T06:06:34+00:00","event":"worker_start","pid":14300,"context":{"queue":"images","consumer":"images-bg-1","pid":14300}}
+{"ts":"2026-07-14T06:06:35+00:00","event":"worker_start","pid":17016,"context":{"queue":"tecdoc","consumer":"tecdoc-bg-1","pid":17016}}

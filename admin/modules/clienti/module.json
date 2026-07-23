@@ -1,0 +1,100 @@
+{
+
+    "id": "clienti",
+
+    "name": "Clienți CRM",
+
+    "version": "1.0.0",
+
+    "type": "optional",
+
+    "enabled": true,
+
+    "description": "Modul plug-in CRM clienți magazin (modules/clienti/).",
+
+    "entry": "Besoiu\\Modules\\Clienti\\ClientiModule",
+
+    "dependencies": [],
+
+    "permissions": [
+
+        "clienti.list",
+
+        "clienti.manage",
+
+        "module.clienti"
+
+    ],
+
+    "workspace": "orders",
+
+    "nav_section": {
+        "group_label": "COMENZI"
+    },
+
+    "nav": [
+        {
+            "id": "clienti",
+            "label": "Clienți CRM",
+            "href": "/admin/clienti",
+            "icon": "users",
+            "group": "COMENZI"
+        }
+    ],
+
+    "provides": {
+
+        "folder": "clienti",
+
+        "slugs": [
+
+            "clienti",
+
+            "customers",
+
+            "customer",
+
+            "addclienti",
+
+            "profileclienti"
+
+        ],
+
+        "paths": [
+
+            "/admin/clienti",
+
+            "/admin/addclienti",
+
+            "/admin/profileclienti",
+
+            "/admin/public/clienti",
+
+            "/admin/public/addclienti",
+
+            "/admin/public/profileclienti",
+
+            "/admin/public/api/clienti_endpoint.php"
+
+        ],
+
+        "crud_key": "clienti",
+
+        "api_scripts": [
+
+            "clienti_endpoint.php"
+
+        ],
+
+        "quick_actions": [
+
+            "clienti"
+
+        ]
+
+    },
+
+    "migrations": []
+
+}
+

@@ -1,0 +1,32 @@
+{
+    "session_id": "cmrke2c9kkdmw971v",
+    "updated_at": "2026-07-14T08:28:31+00:00",
+    "first_seen_at": "2026-07-14T08:28:00+00:00",
+    "last_page": "\/",
+    "pages": [
+        "\/"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-14T08:28:00+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-14T08:28:30+00:00",
+            "action": "time_on_page",
+            "subject": "32s pe \/"
+        },
+        {
+            "at": "2026-07-14T08:28:30+00:00",
+            "action": "time_on_page",
+            "subject": "32s pe \/"
+        },
+        {
+            "at": "2026-07-14T08:28:31+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        }
+    ],
+    "event_count": 4
+}

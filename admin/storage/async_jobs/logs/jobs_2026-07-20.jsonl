@@ -1,0 +1,1 @@
+{"ts":"2026-07-20T10:40:54+00:00","event":"job_created","pid":11772,"context":{"job_id":"883bf8b9-0267-4222-83bc-71a887d7f12f","type":"import.publish_bulk","queue":"import","priority":"normal"}}

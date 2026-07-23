@@ -1,0 +1,485 @@
+/* Besoiu Admin — pagină login (izolată de shell admin) */
+
+:root {
+  --bl-bg: #f1f5f9;
+  --bl-card: #ffffff;
+  --bl-ink: #0f172a;
+  --bl-muted: #64748b;
+  --bl-border: #e2e8f0;
+  --bl-emerald: #059669;
+  --bl-emerald-dark: #047857;
+  --bl-emerald-ink: #064e3b;
+  --bl-emerald-glow: #34d399;
+  --bl-danger: #dc2626;
+  --bl-danger-bg: #fef2f2;
+  --bl-success: #047857;
+  --bl-success-bg: #ecfdf5;
+  --bl-radius: 16px;
+  --bl-font: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body.besoiu-login-page {
+  margin: 0;
+  min-height: 100%;
+  font-family: var(--bl-font);
+  color: var(--bl-ink);
+  background: var(--bl-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+.besoiu-login-page .page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  pointer-events: none;
+}
+
+.besoiu-login-page .page-loader.opacity-0,
+.besoiu-login-page .page-loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.besoiu-login-page .loader-spinner {
+  width: 3rem;
+  height: 3rem;
+  border: 3px solid #d1fae5;
+  border-top-color: var(--bl-emerald);
+  border-radius: 50%;
+  animation: bl-spin 0.7s linear infinite;
+}
+
+@keyframes bl-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.besoiu-login {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 1024px) {
+  .besoiu-login {
+    grid-template-columns: minmax(380px, 44%) 1fr;
+  }
+}
+
+/* ── Panou brand (stânga) ── */
+.besoiu-login__brand {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.75rem 2.5rem;
+  color: #fff;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 0%, rgba(52, 211, 153, 0.35), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 100% 100%, rgba(16, 185, 129, 0.2), transparent 50%),
+    linear-gradient(165deg, #065f46 0%, #047857 38%, #064e3b 100%);
+  overflow: hidden;
+}
+
+.besoiu-login__brand::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+}
+
+.besoiu-login__brand-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  max-width: 28rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.besoiu-login__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+}
+
+.besoiu-login__logo-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.besoiu-login__logo-mark svg {
+  width: 1.35rem;
+  height: 1.35rem;
+  stroke: #fff;
+}
+
+.besoiu-login__logo span {
+  opacity: 0.75;
+  font-weight: 600;
+}
+
+.besoiu-login__hero {
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 2.5rem 0 1.5rem;
+}
+
+.besoiu-login__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #d1fae5;
+}
+
+.besoiu-login__title {
+  margin: 1.25rem 0 0;
+  font-size: clamp(1.85rem, 4vw, 2.65rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+
+.besoiu-login__subtitle {
+  margin: 1rem 0 0;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 26rem;
+}
+
+.besoiu-login__features {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.besoiu-login__feature {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.besoiu-login__feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 8px;
+  background: rgba(52, 211, 153, 0.25);
+  flex-shrink: 0;
+}
+
+.besoiu-login__feature-icon svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  stroke: #a7f3d0;
+}
+
+.besoiu-login__brand-foot {
+  margin-top: 2rem;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* ── Panou formular (dreapta) ── */
+.besoiu-login__panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem;
+  background:
+    radial-gradient(ellipse 60% 40% at 80% 0%, rgba(16, 185, 129, 0.06), transparent 50%),
+    var(--bl-bg);
+}
+
+.besoiu-login__card {
+  width: 100%;
+  max-width: 26rem;
+  padding: 2rem 1.75rem 1.75rem;
+  background: var(--bl-card);
+  border: 1px solid var(--bl-border);
+  border-radius: calc(var(--bl-radius) + 4px);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 16px 48px rgba(15, 23, 42, 0.08);
+}
+
+.besoiu-login__card-head {
+  margin-bottom: 1.75rem;
+}
+
+.besoiu-login__card-head h1 {
+  margin: 0;
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--bl-ink);
+}
+
+.besoiu-login__card-head p {
+  margin: 0.5rem 0 0;
+  font-size: 0.92rem;
+  color: var(--bl-muted);
+  line-height: 1.5;
+}
+
+.besoiu-login__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.besoiu-login__field label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #334155;
+  letter-spacing: 0.02em;
+}
+
+.besoiu-login__input-wrap {
+  position: relative;
+}
+
+.besoiu-login__input-icon {
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  pointer-events: none;
+  color: #94a3b8;
+}
+
+.besoiu-login__input-icon svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.besoiu-login__input {
+  display: block;
+  width: 100%;
+  height: 3rem;
+  padding: 0 2.75rem 0 2.65rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--bl-ink);
+  background: #f8fafc;
+  border: 2px solid var(--bl-border);
+  border-radius: 12px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.besoiu-login__input::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+.besoiu-login__input:hover {
+  border-color: #cbd5e1;
+}
+
+.besoiu-login__input:focus {
+  background: #fff;
+  border-color: var(--bl-emerald);
+  box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.12);
+}
+
+.besoiu-login__toggle-pass {
+  position: absolute;
+  right: 0.35rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.besoiu-login__toggle-pass:hover {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.besoiu-login__toggle-pass svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.besoiu-login__status {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.besoiu-login__status.is-visible {
+  display: flex;
+}
+
+.besoiu-login__status--idle {
+  background: #f8fafc;
+  color: var(--bl-muted);
+  border: 1px solid var(--bl-border);
+}
+
+.besoiu-login__status--loading {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.besoiu-login__status--error {
+  background: var(--bl-danger-bg);
+  color: var(--bl-danger);
+  border: 1px solid #fecaca;
+}
+
+.besoiu-login__status--success {
+  background: var(--bl-success-bg);
+  color: var(--bl-success);
+  border: 1px solid #a7f3d0;
+}
+
+.besoiu-login__submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: 3rem;
+  margin-top: 0.25rem;
+  padding: 0 1.25rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #fff;
+  background: linear-gradient(180deg, #10b981 0%, #059669 45%, #047857 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(5, 150, 105, 0.35);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+}
+
+.besoiu-login__submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(5, 150, 105, 0.42);
+}
+
+.besoiu-login__submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.besoiu-login__submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.besoiu-login__submit svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.besoiu-login__foot {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--bl-border);
+  font-size: 0.78rem;
+  color: var(--bl-muted);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.besoiu-login__mobile-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--bl-emerald-dark);
+}
+
+@media (min-width: 1024px) {
+  .besoiu-login__mobile-brand {
+    display: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .besoiu-login__brand {
+    display: none;
+  }
+
+  .besoiu-login__panel {
+    min-height: 100vh;
+    align-items: flex-start;
+    padding-top: 2.5rem;
+  }
+}

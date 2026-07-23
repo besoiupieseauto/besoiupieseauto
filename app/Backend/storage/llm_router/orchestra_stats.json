@@ -1,0 +1,153 @@
+{
+    "runs": [
+        {
+            "ts": "2026-07-02T11:15:37+00:00",
+            "ok": 10,
+            "fail": 0,
+            "skip": 0
+        },
+        {
+            "ts": "2026-07-02T11:10:42+00:00",
+            "ok": 9,
+            "fail": 1,
+            "skip": 0
+        },
+        {
+            "ts": "2026-07-02T11:07:41+00:00",
+            "ok": 4,
+            "fail": 6,
+            "skip": 0
+        },
+        {
+            "ts": "2026-07-02T11:05:33+00:00",
+            "ok": 5,
+            "fail": 5,
+            "skip": 0
+        }
+    ],
+    "last_full_test": {
+        "ts": "2026-07-02T11:15:37+00:00",
+        "summary": {
+            "total": 10,
+            "ok": 10,
+            "fail": 0,
+            "skip": 0
+        }
+    },
+    "modules": [
+        {
+            "module": "router_readiness",
+            "label": "Pas 1 — Router Metro LLM",
+            "zone": "core",
+            "ok": true,
+            "message": "Router configurat — groq (mod: ollama_first)",
+            "detail": {
+                "router_mode": "ollama_first",
+                "ollama_ready": false,
+                "fallback_chain": [
+                    "ollama",
+                    "groq",
+                    "gemini",
+                    "openrouter",
+                    "cursor"
+                ]
+            }
+        },
+        {
+            "module": "provider_chain",
+            "label": "Pas 2 — Lanț cloud free",
+            "zone": "core",
+            "ok": true,
+            "message": "Provideri OK: groq, gemini, openrouter",
+            "detail": {
+                "ok": [
+                    "groq",
+                    "gemini",
+                    "openrouter"
+                ],
+                "fail": []
+            }
+        },
+        {
+            "module": "chat_widget",
+            "label": "Pas 3 — Chat widget site",
+            "zone": "comunicare",
+            "ok": true,
+            "message": "OK chat widget orchestra.",
+            "routed_via": "groq",
+            "model": "llama-3.3-70b-versatile"
+        },
+        {
+            "module": "chat_decode",
+            "label": "Pas 4 — Decoder mesaje chat",
+            "zone": "comunicare",
+            "ok": true,
+            "message": "Decoder OK — {\"marca\":\"BMW\",\"tip_componenta\":\"discuri frana\",\"intent\":\"ca",
+            "routed_via": "groq",
+            "model": "llama-3.3-70b-versatile"
+        },
+        {
+            "module": "section_assistant",
+            "label": "Pas 5 — Asistent secțiune",
+            "zone": "comunicare",
+            "ok": true,
+            "message": "Sunt un asistent virtual și răspund la întrebările tale, oferind informații și a",
+            "routed_via": "groq",
+            "model": "llama-3.3-70b-versatile"
+        },
+        {
+            "module": "image_audit",
+            "label": "Pas 6 — Audit imagini (heuristic)",
+            "zone": "imagini",
+            "ok": true,
+            "message": "AI heuristic: OK (99\/100)",
+            "score": 99,
+            "verdict": "match"
+        },
+        {
+            "module": "import_image_gate",
+            "label": "Pas 7 — Poartă imagini import",
+            "zone": "import",
+            "ok": true,
+            "message": "AI heuristic: OK (99\/100)",
+            "score": 99,
+            "verdict": "match"
+        },
+        {
+            "module": "import_pipeline",
+            "label": "Pas 8 — Pipeline import etape",
+            "zone": "import",
+            "ok": true,
+            "message": "Etape catalog: 9 (include image\/gate)",
+            "detail": [
+                "fixture",
+                "price",
+                "enrich",
+                "image",
+                "image_gate",
+                "epiesa",
+                "staging",
+                "critical",
+                "publish"
+            ]
+        },
+        {
+            "module": "scraper_analyze",
+            "label": "Pas 9 — Scraper AI (Metro bridge)",
+            "zone": "import",
+            "ok": true,
+            "message": "Bridge OK — via groq",
+            "routed_via": "groq"
+        },
+        {
+            "module": "ai_supervisor",
+            "label": "Pas 10 — Supervizor AI",
+            "zone": "agent",
+            "ok": true,
+            "message": "Sistemul funcționează corect, toate componentele sunt operaționale și gata să ră",
+            "routed_via": "groq",
+            "model": "llama-3.3-70b-versatile"
+        }
+    ],
+    "updated_at": "2026-07-02T11:15:37+00:00"
+}

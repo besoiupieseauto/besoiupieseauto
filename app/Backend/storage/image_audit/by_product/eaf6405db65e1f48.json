@@ -1,0 +1,21 @@
+{
+    "randomn_id": "eaf6405db65e1f48",
+    "title": "Aditiv Ulei Hidraulic 5135",
+    "code": "5135",
+    "category": "Uleiuri și lubrifianți auto",
+    "image_url": "/uploads/products/tecdoc/5135.jpg",
+    "analyzed_at": "2026-06-18T09:17:39+03:00",
+    "verdict": "partial",
+    "match_score": 52,
+    "image_shows": "Cutie metalică Liqui Moly Hydro-Stößel-Additiv — aditiv pentru tacheți hidraulici de motor (etichetă RO: «Aditiv pentru tacheti hidraulici»).",
+    "issues": [
+        "Titlul și descrierea spun «Aditiv ulei hidraulic», iar produsul din imagine este aditiv pentru tacheți hidraulici de motor — terminologie diferită.",
+        "Marca Liqui Moly și denumirea Hydro-Stößel-Additiv nu apar în titlu.",
+        "Codul 5135 nu este vizibil pe eticheta din imagine."
+    ],
+    "recommendation": "review",
+    "summary_ro": "Imaginea pare corectă pentru codul 5135 (Liqui Moly tacheți hidraulici), dar titlul/descrierea folosesc «ulei hidraulic» în loc de «tacheți hidraulici»; recomandat corectare metadata, nu neapărat înlocuire imagine.",
+    "model": "composer-2.5",
+    "engine": "cursor-composer-2.5",
+    "batch": "batch_20260618_061406.json"
+}

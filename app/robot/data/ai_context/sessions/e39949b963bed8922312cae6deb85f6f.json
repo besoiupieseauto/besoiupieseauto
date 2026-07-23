@@ -1,0 +1,17 @@
+{
+    "session_id": "cmrktv1z6k28eyben",
+    "updated_at": "2026-07-14T15:50:17+00:00",
+    "first_seen_at": "2026-07-14T15:50:17+00:00",
+    "last_page": "\/",
+    "pages": [
+        "\/"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-14T15:50:17+00:00",
+            "action": "time_on_page",
+            "subject": "6s pe \/"
+        }
+    ],
+    "event_count": 1
+}

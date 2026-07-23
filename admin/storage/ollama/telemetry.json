@@ -1,0 +1,40 @@
+{
+    "import": {
+        "module": "import",
+        "url": "http:\/\/127.0.0.1:11434",
+        "model": "qwen2.5:7b",
+        "vision_model": "",
+        "last_ok": true,
+        "last_at": "2026-07-19T12:57:48+00:00",
+        "last_latency_ms": 98918,
+        "last_error": "",
+        "latency_samples": [
+            55182,
+            98918
+        ],
+        "avg_latency_ms": 77050
+    },
+    "erp": {
+        "module": "erp",
+        "url": "http:\/\/127.0.0.1:11434",
+        "model": "qwen2.5:7b",
+        "vision_model": "llava:7b",
+        "last_ok": false,
+        "last_at": "2026-07-22T09:01:51+00:00",
+        "last_latency_ms": 45010,
+        "last_error": "Ollama indisponibil",
+        "latency_samples": [
+            35271,
+            42583,
+            38371,
+            33584,
+            31147,
+            42986,
+            32370,
+            24396,
+            46717,
+            45010
+        ],
+        "avg_latency_ms": 37244
+    }
+}

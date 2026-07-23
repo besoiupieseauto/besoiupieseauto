@@ -1,0 +1,27 @@
+{
+    "session_id": "cmrnt96mxzjcszdy5",
+    "updated_at": "2026-07-16T17:57:04+00:00",
+    "first_seen_at": "2026-07-16T17:56:34+00:00",
+    "last_page": "\/",
+    "pages": [
+        "\/"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-16T17:56:34+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T17:56:58+00:00",
+            "action": "scroll",
+            "subject": "25% · \/"
+        },
+        {
+            "at": "2026-07-16T17:57:04+00:00",
+            "action": "scroll",
+            "subject": "50% · \/"
+        }
+    ],
+    "event_count": 3
+}

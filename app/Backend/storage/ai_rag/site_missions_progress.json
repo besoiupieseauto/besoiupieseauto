@@ -1,0 +1,42 @@
+{
+    "status": "done",
+    "started_at": "2026-07-19T08:15:09+00:00",
+    "total": 2,
+    "done": 2,
+    "ok_count": 2,
+    "fail_count": 0,
+    "fragments_total": 2,
+    "log": [
+        {
+            "at": "2026-07-19T08:21:07+00:00",
+            "slot": 1,
+            "ok": true,
+            "message": "epiesa 1: +1 fragmente RAG"
+        },
+        {
+            "at": "2026-07-19T08:24:21+00:00",
+            "slot": 2,
+            "ok": true,
+            "message": "autodoct: +1 fragmente RAG"
+        }
+    ],
+    "results": [
+        {
+            "slot": 1,
+            "name": "epiesa 1",
+            "url": "https:\/\/www.epiesa.ro\/gmtn1:auto\/gmtn2:uleiuri-si-lubrifianti-auto\/",
+            "ok": true,
+            "fragments": 1,
+            "mission": "Seo Pagini"
+        },
+        {
+            "slot": 2,
+            "name": "autodoct",
+            "url": "https:\/\/www.autodoc24.ro\/",
+            "ok": true,
+            "fragments": 1,
+            "mission": "SeoPagina"
+        }
+    ],
+    "finished_at": "2026-07-19T08:24:21+00:00"
+}

@@ -1,0 +1,15 @@
+{
+    "import_id": 660,
+    "at": "2026-07-05T11:06:14+00:00",
+    "verdict": "partial",
+    "confidence": 0.81,
+    "corrections": [],
+    "issues": [
+        "brand_looks_like_catalog_label",
+        "generic_category"
+    ],
+    "reasoning_ro": "Explicație scurtă în română.",
+    "apply_recommended": false,
+    "llm_error": null,
+    "duration_ms": 53557
+}

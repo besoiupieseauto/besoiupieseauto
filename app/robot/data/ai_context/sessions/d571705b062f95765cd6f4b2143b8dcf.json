@@ -1,0 +1,37 @@
+{
+    "session_id": "cmqtscuhlotp7zpp2",
+    "updated_at": "2026-07-16T17:17:44+00:00",
+    "first_seen_at": "2026-07-14T11:48:57+00:00",
+    "last_page": "\/",
+    "pages": [
+        "\/"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-14T11:48:57+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-14T11:49:02+00:00",
+            "action": "time_on_page",
+            "subject": "7s pe \/"
+        },
+        {
+            "at": "2026-07-14T11:49:02+00:00",
+            "action": "time_on_page",
+            "subject": "7s pe \/"
+        },
+        {
+            "at": "2026-07-14T17:53:07+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T17:17:44+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        }
+    ],
+    "event_count": 5
+}

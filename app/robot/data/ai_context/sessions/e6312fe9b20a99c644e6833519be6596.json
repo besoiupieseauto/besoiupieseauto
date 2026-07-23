@@ -1,0 +1,99 @@
+{
+    "session_id": "cmrn2yyf6ys83md51",
+    "updated_at": "2026-07-16T05:45:21+00:00",
+    "first_seen_at": "2026-07-16T05:40:45+00:00",
+    "last_page": "\/",
+    "pages": [
+        "\/"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-16T05:40:45+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T05:41:05+00:00",
+            "action": "scroll",
+            "subject": "25% · \/"
+        },
+        {
+            "at": "2026-07-16T05:42:55+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T05:42:58+00:00",
+            "action": "search",
+            "subject": "A2023303607"
+        },
+        {
+            "at": "2026-07-16T05:43:04+00:00",
+            "action": "scroll",
+            "subject": "50% · \/"
+        },
+        {
+            "at": "2026-07-16T05:43:13+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T05:43:19+00:00",
+            "action": "search",
+            "subject": "A2023303007"
+        },
+        {
+            "at": "2026-07-16T05:43:23+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T05:43:27+00:00",
+            "action": "search",
+            "subject": "A2023303007"
+        },
+        {
+            "at": "2026-07-16T05:43:44+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T05:43:49+00:00",
+            "action": "search",
+            "subject": "A2023304807"
+        },
+        {
+            "at": "2026-07-16T05:44:00+00:00",
+            "action": "scroll",
+            "subject": "75% · \/"
+        },
+        {
+            "at": "2026-07-16T05:44:00+00:00",
+            "action": "scroll",
+            "subject": "100% · \/"
+        },
+        {
+            "at": "2026-07-16T05:44:08+00:00",
+            "action": "search",
+            "subject": "2023304807"
+        },
+        {
+            "at": "2026-07-16T05:45:18+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T05:45:21+00:00",
+            "action": "time_on_page",
+            "subject": "278s pe \/"
+        }
+    ],
+    "event_count": 16,
+    "intent": "browse",
+    "searches": [
+        "A2023303607",
+        "A2023303007",
+        "A2023304807",
+        "2023304807"
+    ]
+}

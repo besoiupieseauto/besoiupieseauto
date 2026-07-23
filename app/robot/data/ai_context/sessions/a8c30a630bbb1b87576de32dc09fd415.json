@@ -1,0 +1,196 @@
+{
+    "session_id": "cmrne6a5cijfdr0ee",
+    "updated_at": "2026-07-16T10:58:03+00:00",
+    "first_seen_at": "2026-07-16T10:54:23+00:00",
+    "last_page": "\/",
+    "pages": [
+        "\/",
+        "\/catalog"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-16T10:54:23+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T10:54:35+00:00",
+            "action": "time_on_page",
+            "subject": "15s pe \/"
+        },
+        {
+            "at": "2026-07-16T10:54:35+00:00",
+            "action": "time_on_page",
+            "subject": "15s pe \/"
+        },
+        {
+            "at": "2026-07-16T10:54:39+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T10:55:12+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T10:55:24+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T10:55:34+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T10:55:47+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T10:55:54+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T10:56:00+00:00",
+            "action": "scroll",
+            "subject": "25% · \/"
+        },
+        {
+            "at": "2026-07-16T10:56:21+00:00",
+            "action": "search",
+            "subject": "Vf3ddnfp0dj552231"
+        },
+        {
+            "at": "2026-07-16T10:56:21+00:00",
+            "action": "time_on_page",
+            "subject": "105s pe \/"
+        },
+        {
+            "at": "2026-07-16T10:56:22+00:00",
+            "action": "time_on_page",
+            "subject": "105s pe \/"
+        },
+        {
+            "at": "2026-07-16T10:56:27+00:00",
+            "action": "page_view",
+            "subject": "\/catalog"
+        },
+        {
+            "at": "2026-07-16T10:56:27+00:00",
+            "action": "product_view",
+            "subject": "CATALOG PIESE AUTO"
+        },
+        {
+            "at": "2026-07-16T10:56:27+00:00",
+            "action": "scroll",
+            "subject": "25% · \/catalog"
+        },
+        {
+            "at": "2026-07-16T10:56:30+00:00",
+            "action": "scroll",
+            "subject": "50% · \/catalog"
+        },
+        {
+            "at": "2026-07-16T10:56:30+00:00",
+            "action": "scroll",
+            "subject": "75% · \/catalog"
+        },
+        {
+            "at": "2026-07-16T10:56:30+00:00",
+            "action": "scroll",
+            "subject": "100% · \/catalog"
+        },
+        {
+            "at": "2026-07-16T10:56:35+00:00",
+            "action": "time_on_page",
+            "subject": "10s pe \/catalog"
+        },
+        {
+            "at": "2026-07-16T10:56:36+00:00",
+            "action": "time_on_page",
+            "subject": "11s pe \/catalog"
+        },
+        {
+            "at": "2026-07-16T10:56:39+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T10:56:39+00:00",
+            "action": "scroll",
+            "subject": "25% · \/"
+        },
+        {
+            "at": "2026-07-16T10:56:56+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T10:57:09+00:00",
+            "action": "search",
+            "subject": "9683750580"
+        },
+        {
+            "at": "2026-07-16T10:57:19+00:00",
+            "action": "scroll",
+            "subject": "50% · \/"
+        },
+        {
+            "at": "2026-07-16T10:57:22+00:00",
+            "action": "scroll",
+            "subject": "75% · \/"
+        },
+        {
+            "at": "2026-07-16T10:57:40+00:00",
+            "action": "time_on_page",
+            "subject": "64s pe \/"
+        },
+        {
+            "at": "2026-07-16T10:57:40+00:00",
+            "action": "time_on_page",
+            "subject": "64s pe \/"
+        },
+        {
+            "at": "2026-07-16T10:57:43+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-16T10:57:43+00:00",
+            "action": "scroll",
+            "subject": "25% · \/"
+        },
+        {
+            "at": "2026-07-16T10:57:43+00:00",
+            "action": "scroll",
+            "subject": "50% · \/"
+        },
+        {
+            "at": "2026-07-16T10:57:53+00:00",
+            "action": "search",
+            "subject": "9683750580"
+        },
+        {
+            "at": "2026-07-16T10:58:03+00:00",
+            "action": "time_on_page",
+            "subject": "23s pe \/"
+        },
+        {
+            "at": "2026-07-16T10:58:03+00:00",
+            "action": "time_on_page",
+            "subject": "23s pe \/"
+        }
+    ],
+    "event_count": 35,
+    "intent": "browse",
+    "searches": [
+        "Vf3ddnfp0dj552231",
+        "9683750580"
+    ],
+    "products_viewed": [
+        "CATALOG PIESE AUTO"
+    ]
+}

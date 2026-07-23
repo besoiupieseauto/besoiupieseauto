@@ -1,0 +1,675 @@
+STRUCTURA CATEGORII MAGAZIN PIESE AUTO
+Ordine grupe = Filtre primul, apoi ordinea din grupe.subgrupe.familii.produse.txt
+Frunză (ultimul nivel) = ART_NAME exact din nume produse.xlsx
+Format: [ID] Nume
+
+A. Grupe principale
+
+1. [1] Filtre
+2. [6] Motor
+3. [108] Alimentare combustibil
+4. [143] Admisie aer și turbo
+5. [175] Evacuare
+6. [200] Răcire motor
+7. [225] Aprindere
+8. [231] Transmisie
+9. [273] Ambreiaj
+10. [287] Frânare
+11. [327] Direcție
+12. [348] Suspensie
+13. [395] Roți și butuci
+14. [408] Electrică și senzori
+15. [481] Iluminare
+16. [512] Climatizare și încălzire
+17. [546] Caroserie
+18. [614] Ștergere și spălare
+
+B. Subgrupe și produse (frunze = denumiri din baza de date)
+
+
+[1] Filtre
+├── [2] Filtru, aer habitaclu
+├── [3] Filtru ulei
+├── [4] Filtru aer
+└── [5] filtru combustibil
+
+[6] Motor
+├── [7] Arbore cotit și came
+│   ├── [8] Ax cu came
+│   ├── [9] supapa comanda, poz. arbore cu came
+│   ├── [10] Regulator ax cu came
+│   ├── [11] Magnet central, poz. arbore cu came
+│   ├── [12] Supapa principala, poz. arbore cu came
+│   ├── [13] Roata dintata, arbore cotit
+│   ├── [14] Roata dintata, ax cu came
+│   ├── [15] Bucsi ax cu came
+│   └── [16] Set ax cu came
+├── [17] Bloc, chiulasă, pistoane
+│   ├── [18] Set surub, chiulasa
+│   ├── [19] Set segmenti piston
+│   ├── [20] Cuzineti biela
+│   ├── [21] Set lagar biela
+│   ├── [22] Set rulemt arbore cotit
+│   ├── [23] Cuzineti, arbore cotit
+│   ├── [24] Piston
+│   ├── [25] Biela
+│   ├── [26] Chiulasa
+│   └── [27] buson,bloc motor
+├── [28] Curele auxiliare
+│   ├── [29] Curea transmisie cu caneluri
+│   ├── [30] Rola ghidare/conducere, curea transmisie
+│   ├── [31] Fulie curea, arbore cotit
+│   ├── [32] Set curea transmisie cu caneluri
+│   ├── [33] rola intinzator,curea transmisie
+│   ├── [34] Set fulie, arbore cotit
+│   ├── [35] intinzator,curea transmisie
+│   ├── [36] Curea transmisie
+│   ├── [37] Amortizor vibratii, curea transmisie cu caneluri
+│   └── [38] Rola ghidare/conducere, transmisie
+├── [39] Distribuție
+│   ├── [40] chit lant de distributie
+│   ├── [41] Set pompa apa + curea dintata
+│   ├── [42] Intinzator curea, curea distributie
+│   ├── [43] Set curea de distributie
+│   ├── [44] Curea de distributie
+│   ├── [45] Rola ghidare/conducere, curea distributie
+│   ├── [46] rola intinzator,curea distributie
+│   ├── [47] lant distributie
+│   ├── [48] Ghidaje, lant distributie
+│   ├── [49] intinzator,lant distributie
+│   ├── [50] Garnitura, distributie
+│   ├── [51] Garnitura capac, distributie
+│   ├── [52] Sina intindere, lant distributie
+│   ├── [53] capac distributie,bloc motor
+│   ├── [54] Mecanism tensionare, curea distributie
+│   ├── [55] Set garnituri, carcasa distributie
+│   ├── [56] carcasa distributie
+│   ├── [57] Amortizor vibratii, curea distributie
+│   └── [58] Diuza ulei, lant distributie
+├── [59] Etanșare motor
+│   ├── [60] Simering, arbore cotit
+│   ├── [61] Garnitura, capac supape
+│   ├── [62] Garnitura, chiulasa
+│   ├── [63] Set garnituri, ax supape
+│   ├── [64] Set garnituri, chiulasa
+│   ├── [65] Simering, ax cu came
+│   ├── [66] Set garnituri, Capac supape
+│   ├── [67] Garnitura baie ulei
+│   ├── [68] Set garnituri, carter
+│   ├── [69] Garnitura, pompa vacuum
+│   └── [70] Set garnituri complet, motor
+├── [71] Lubrifiere
+│   ├── [72] surub de golire,baia de ulei
+│   ├── [73] Radiator ulei, ulei motor
+│   ├── [74] Pompa ulei
+│   ├── [75] Baie ulei
+│   ├── [76] buson,umplere ulei
+│   ├── [77] Set garnituri, radiator ulei
+│   ├── [78] Locas filtru ulei
+│   ├── [79] conducta ulei, incarcare
+│   ├── [80] Garnituri, carcasa filtru ulei
+│   ├── [81] Lant, angrenare pompa ulei
+│   ├── [82] Joja ulei
+│   ├── [83] Set lant, antrenare pompa ulei
+│   ├── [84] Supapa presiune ulei
+│   ├── [85] Supapa reglare, presiune ulei
+│   ├── [86] Palnie, joja ulei
+│   ├── [87] termostat,racire ulei
+│   ├── [88] Intinzator lant, antrenare pompa ulei
+│   ├── [89] simering ,pompa ulei
+│   └── [90] Ghidaj, lant antrenare pompa ulei
+├── [91] Supape și tren supape
+│   ├── [92] Etansare, supape
+│   ├── [93] culbutor supapa
+│   ├── [94] Culbutor, tren supape
+│   ├── [95] Capac culbutor
+│   ├── [96] Supapa evacuare
+│   └── [97] Supapa admisie
+├── [98] Suporturi și carenaje motor
+│   ├── [99] Suport motor
+│   ├── [100] Acoperire motor
+│   ├── [101] Scut motor
+│   ├── [102] Material amortizare zgomot, nisa motor
+│   └── [103] Tampon, suport motor
+└── [104] Ventilație carter
+    ├── [105] furtun,aerisire bloc motor
+    ├── [106] ventil, aerisire carter
+    └── [107] Furtun, aerisire chiulasa
+
+[108] Alimentare combustibil
+├── [109] AdBlue / aditivi regenerare
+│   ├── [110] Modul dozare, injectie aditiv
+│   ├── [111] Modul de livrare, injectie aditiv
+│   ├── [112] Conducta aditiv
+│   └── [113] Unitate rezervor, injectie aditiv
+├── [114] Aerisire rezervor / EVAP
+│   ├── [115] supapa,filtru carbon activ
+│   └── [116] Filtru carbune activ, aerisire rezervor
+├── [117] Comandă accelerație
+│   ├── [118] Pedala acceleratie
+│   └── [119] Cablu acceleratie
+├── [120] Conducte și etanșări
+│   ├── [121] furtun,supracurgere combustibil
+│   ├── [122] Set garnituri etansare, injectoare
+│   ├── [123] Set raparat cabluri, injector
+│   ├── [124] Surub, suport injector
+│   ├── [125] scut protectie termica, inst. injectie
+│   └── [126] Set conducte scurgeri combustibil
+├── [127] Pompe și injectoare
+│   ├── [128] Sistem alimentare cu combustibil
+│   ├── [129] Injector
+│   ├── [130] pompa de inalta presiune
+│   ├── [131] Pompa combustibil
+│   ├── [132] chit reparatie, injectoare
+│   ├── [133] Set reparatie,sistem common-rail
+│   ├── [134] Modul alimentare combustibil
+│   ├── [135] Set reparatie, pompa combustibil
+│   ├── [136] chit reparatie,unitate pompa-diuza
+│   └── [137] unitate pompa-diuza
+└── [138] Supape combustibil
+    ├── [139] Supapa control presiune, sistem - Common-Rail
+    ├── [140] Supapa suprapresiune, rezervor combustibil
+    ├── [141] Supapa reglaj, cantitate combustibil (Sistem Common-Rail)
+    └── [142] Supapa control, presiune combustibil
+
+[143] Admisie aer și turbo
+├── [144] Admisie
+│   ├── [145] Garnitura, galerie admisie
+│   ├── [146] Carcasa clapeta
+│   ├── [147] Element de reglare, clapeta carburator
+│   ├── [148] Modul conducta admisie
+│   ├── [149] Set garnituri, galerie admisie
+│   ├── [150] Palnie, filtru de aer
+│   ├── [151] Furtun, alimentare aer
+│   ├── [152] Element reglaj, clapeta (galerie admisie)
+│   ├── [153] clapeta control,admisie aer
+│   ├── [154] Carcasa, galerie admisie
+│   ├── [155] supapa reglaj mers in gol,admisie aer
+│   └── [156] Element reglaj, clapeta comutare (galerie admisie)
+├── [157] EGR
+│   ├── [158] Supapa EGR
+│   ├── [159] Garnitura, ventil AGR
+│   ├── [160] Radiator, recirculare gaze de esapament
+│   ├── [161] Garnitura, conducta supapa-AGR
+│   ├── [162] Supapă AGR, comanda gazelor de eșapament
+│   ├── [163] supapa,recirculare gaze de esapament
+│   ├── [164] Modul-EGR
+│   └── [165] Conducta tubulara, Supapa-AGR
+└── [166] Turbo și intercooler
+    ├── [167] Furtun ear supraalimentare
+    ├── [168] Intercooler, compresor
+    ├── [169] Set montaj, turbocompresor
+    ├── [170] Compresor,sistem de supraalimentare
+    ├── [171] Convertor de presiune, turbocompresor
+    ├── [172] Convertor presiune
+    ├── [173] supapa,sistem supraalimentare
+    └── [174] Radiator temperatura scazuta, intercooler
+
+[175] Evacuare
+├── [176] Catalizatoare și DPF
+│   ├── [177] Catalizator
+│   ├── [178] Filtru funingine/particule, sist.de esapament
+│   └── [179] Catalizator SCR
+├── [180] Garnituri și racorduri
+│   ├── [181] Garnitura, galerie evacuare
+│   ├── [182] Garnitura, racord evacuare
+│   ├── [183] Racord evacuare
+│   ├── [184] Conector teava, sistem de esapament
+│   ├── [185] Colier, sistem de esapament
+│   └── [186] Set garnituri, galerie evacuare
+├── [187] Sistem aer secundar
+│   ├── [188] supapa,sistem de introducere aer suplimentar
+│   ├── [189] Supapa, ventilatie secundara
+│   └── [190] Pompa aer secundara
+├── [191] Suporturi eșapament
+│   ├── [192] Suport, sistem de esapament
+│   └── [193] Suport toba de esapament
+├── [194] Tobe eșapament
+│   ├── [195] Toba esapament finala
+│   ├── [196] Toba esapamet intermediara
+│   └── [197] Toba esapament primara
+├── [198] Sonda Lambda
+└── [199] Convertor presiune, esapament
+
+[200] Răcire motor
+├── [201] Pompe apă
+│   ├── [202] Pompă de apă, răcire motor
+│   ├── [203] Pompă de apă suplimentară (circuitul apei de răcire)
+│   ├── [204] Pompa apa + Set curea transmisie cu caneluri
+│   └── [205] Fulie, pompa apa
+├── [206] Radiatoare
+│   ├── [207] Radiator, racire motor
+│   ├── [208] Furtun radiator
+│   └── [209] Suport radiator
+├── [210] Termostate și flanșe
+│   ├── [211] termostat,lichid racire
+│   ├── [212] Flansa lichid racire
+│   ├── [213] carcasa termostat
+│   └── [214] Teava de legatura, conducte de racire
+├── [215] Vase și capace
+│   ├── [216] buson,vas expansiune
+│   ├── [217] Vas de expansiune, racire
+│   ├── [218] buson,radiator
+│   └── [219] Rezervor apa, radiator
+├── [220] Ventilatoare
+│   ├── [221] Ventilator, radiator
+│   ├── [222] Comutator temperatura, ventilator radiator
+│   └── [223] Comutator temperatura, racire
+└── [224] senzor,nivel lichid de racire
+
+[225] Aprindere
+├── [226] bobina de inductie
+├── [227] Bujii
+├── [228] Bujie incandescenta
+├── [229] unitate de control,bujii incandescente
+└── [230] Set cablaj aprinder
+
+[231] Transmisie
+├── [232] Cardan și axe
+│   ├── [233] Suport, ax cardanic
+│   ├── [234] Ax cardanic, antrenarea arborelui
+│   ├── [235] lagar central,cardan
+│   ├── [236] Simering, ax cardanic
+│   └── [237] Rulment, ax cardanic
+├── [238] Cutie viteze
+│   ├── [239] Filtru hidraulic, cutie de viteze automata
+│   ├── [240] Set piese, schimb de ulei cutie de viteze automată
+│   ├── [241] set filtre hidraulice, cutie e vit.automata
+│   ├── [242] Suport, transmisie automata
+│   ├── [243] Baie ulei, cutie viteze automata
+│   ├── [244] cablu,transmisie manuala
+│   ├── [245] Radiator racire ulei, cutie de viteze automata
+│   ├── [246] Suport, transmisie manuala
+│   ├── [247] Set reparatie, levier cutie de viteze
+│   ├── [248] Maciulie maneta schimbat.vit.
+│   ├── [249] Supapa comutator, transmisie automata
+│   ├── [250] Set garnituri, transmisie automata
+│   ├── [251] levier de schimbare viteze
+│   ├── [252] Set reparatie, transmisie manuala
+│   ├── [253] unitate de contol,cutie de viteze automatica
+│   └── [254] Mechatronic, cutie automata
+├── [255] Diferențial și simeringuri
+│   ├── [256] simering, diferential
+│   ├── [257] Simering, cutie automata
+│   ├── [258] Simering, transmisie automata
+│   ├── [259] Rulment, diferential
+│   ├── [260] simering, cutie de transfer
+│   ├── [261] Simering, cutie de viteze manuala
+│   └── [262] Simering, cutie de viteze automata
+├── [263] Planetare
+│   ├── [264] Ansamblu burduf, articulatie planetara
+│   ├── [265] Planetara
+│   ├── [266] Set articulatie, planetara
+│   └── [267] Articulatie, planetara
+├── [268] Senzori transmisie
+│   ├── [269] Senzor turatie, cutie de viteza automata
+│   ├── [270] Sensor, Modul schimbare viteze
+│   └── [271] Senzor turatie, cutie de viteza manuala
+└── [272] Pompă, cuplaj lamelar (tracțiune integrală)
+
+[273] Ambreiaj
+├── [274] Volantă
+│   ├── [275] Volanta
+│   └── [276] Set surub, volanta
+├── [277] Pompa centrala, ambreiaj
+├── [278] Set ambreiaj
+├── [279] Cilindru receptor ambreiaj
+├── [280] Rulment de presiune, ambreiaj
+├── [281] Rulment de presiune
+├── [282] Comutator, actionare ambreiaj (Tempomat)
+├── [283] Rulment priza directa, ambreiaj
+├── [284] Cablu ambreiaj
+├── [285] Kit de modificare, ambreiaj
+└── [286] Senzor pozitie pedala de ambreiaj
+
+[287] Frânare
+├── [288] Comutatoare frână
+│   ├── [289] Comutator lumini frana
+│   ├── [290] Comutator, actionare frana de parcare
+│   ├── [291] Comutator presiune, hidraulica frana
+│   └── [292] Senzor pozitie pedala de frana
+├── [293] Conducte și cabluri
+│   ├── [294] Furtun frana
+│   ├── [295] Cablu, frana de parcare
+│   └── [296] Conducte frana
+├── [297] Discuri și plăcuțe
+│   ├── [298] set placute frana,frana disc
+│   ├── [299] Disc frana
+│   ├── [300] protectie stropire,disc frana
+│   ├── [301] senzor de avertizare,uzura placute de frana
+│   └── [302] Set accesorii, placute frana
+├── [303] Etriere și cilindri
+│   ├── [304] Etrier frana
+│   ├── [305] Set bucsi de ghidaj, etrier frana
+│   ├── [306] Set reparatie, etrier
+│   ├── [307] Cilindru receptor frana
+│   ├── [308] Suport,etrier
+│   ├── [309] Piston, etrier frana
+│   ├── [310] Element actionare. etrier frana de parcare
+│   ├── [311] Set accesorii, etrier frana
+│   └── [312] Set garnituri, Etrier frana
+├── [313] Pompe și servo
+│   ├── [314] Pompa centrala, frana
+│   ├── [315] pompa vacuum,sistem de franare
+│   ├── [316] Amplificare frane
+│   ├── [317] Senzor presiune, amplificare frane
+│   └── [318] Regulator putere de franare
+├── [319] Tamburi și saboți
+│   ├── [320] Set saboti frana
+│   ├── [321] Set saboti frana, frana de mana
+│   ├── [322] Tambur frana
+│   ├── [323] set accesorii, saboti frana parcare
+│   ├── [324] Set accesorii, sabot de frana
+│   └── [325] Set frana, frana tambur
+└── [326] Vas de expansiune, lichid frana
+
+[327] Direcție
+├── [328] Capete și bare
+│   ├── [329] Cap de bara
+│   ├── [330] Articulatie axiala, cap de bara
+│   ├── [331] Ansamblu burduf, directie
+│   ├── [332] bara directie
+│   ├── [333] Articulatie directie, suspensie roata
+│   └── [334] Bieleta, directie
+├── [335] Casete și coloane
+│   ├── [336] Caseta directie
+│   ├── [337] Comutator coloana directie
+│   ├── [338] Arc spirala, Airbag
+│   ├── [339] Coloana directie
+│   └── [340] Articulatie, coloana de directie
+├── [341] Servo direcție
+│   ├── [342] Pompa hidraulica, sistem de directie
+│   ├── [343] Furtun hidraulic, sistem de directie
+│   ├── [344] Vas de expansiune, ulei hidraulic (servodirecție)
+│   ├── [345] comutator presiune ulei, servodirectie
+│   └── [346] Fulie, pompa servo
+└── [347] Blocaj volan
+
+[348] Suspensie
+├── [349] Amortizoare
+│   ├── [350] amortizor
+│   ├── [351] chit protectie praf,amortizor
+│   ├── [352] Set reparatie, rulment sarcina amortizor
+│   ├── [353] Rulment sarcina amortizor
+│   └── [354] Bucsa, amortizor
+├── [355] Arcuri
+│   ├── [356] Rulment sarcina suport arc
+│   ├── [357] Arc spiral
+│   ├── [358] Bucsa arc foi
+│   ├── [359] Bucsa arc
+│   ├── [360] Pachet arc cu foi
+│   ├── [361] Arc foi
+│   └── [362] Brida arc
+├── [363] Brațe și trapez
+│   ├── [364] Brat, suspensie roata
+│   ├── [365] suport,trapez
+│   ├── [366] Articulatie sarcina/ghidare
+│   ├── [367] Brat/bieleta, suspensie roata
+│   ├── [368] Set, suspensie roata
+│   └── [369] Set montare, legatura
+├── [370] Stabilizatoare
+│   ├── [371] Brat/bieleta suspensie, stabilizator
+│   ├── [372] Bucsa, bara stabilizatoare
+│   ├── [373] cuzinet, stabilizator
+│   ├── [374] Set reparatie, bara stabilizatoare
+│   ├── [375] bara stabilizatoare,suspensie
+│   ├── [376] Set reparatie, bucsa bara stabilizatoare
+│   └── [377] suport,bara stabilizatoare
+├── [378] Suporturi și bucșe punte
+│   ├── [379] suport, ax
+│   ├── [380] Lagar, suport ax
+│   ├── [381] Set reparatie, corp ax
+│   └── [382] Lagar, fixare ax
+├── [383] Suspensie pneumatică
+│   ├── [384] Compresor, instalatie aer comprimat
+│   ├── [385] Brat arc pneumatic
+│   ├── [386] Burduf, suspensie pneumatica
+│   ├── [387] Supapă magnetică, suspensie pneumatică
+│   ├── [388] Set de reparație, compresor aer comprimat
+│   └── [389] Senzor, reglare nivel
+└── [390] Tampoane și suporturi
+    ├── [391] tampon
+    ├── [392] Tampon cauciuc, suspensie
+    ├── [393] suport,tampon
+    └── [394] Set reparatie, suspensie
+
+[395] Roți și butuci
+├── [396] Butuci și rulmenți roată
+│   ├── [397] Set rulment roata
+│   ├── [398] Butuc roata
+│   ├── [399] Rulment roata
+│   ├── [400] Rulment, corp rulment roata
+│   ├── [401] Set rulmenti, corp axa
+│   └── [402] simering, butuc roata
+├── [403] Șuruburi și piulițe roată
+│   ├── [404] surub roata
+│   └── [405] Piulita roata
+├── [406] senzor, sistem de control al presiunii pneuri
+└── [407] Janta
+
+[408] Electrică și senzori
+├── [409] Alternator și starter
+│   ├── [410] Generator / Alternator
+│   ├── [411] starter
+│   ├── [412] Sistem roata libera, generator
+│   ├── [413] Regulator, alternator
+│   ├── [414] Pinion electromotor
+│   ├── [415] Fulie, alternator
+│   ├── [416] Suport perii
+│   └── [417] Perie, electromotor
+├── [418] Comutatoare și contacte
+│   ├── [419] comutator,macara geam
+│   ├── [420] comutator pornire
+│   ├── [421] Comutator, deschidere haion
+│   ├── [422] Comutator, sistem inchidere
+│   ├── [423] cilindru de inchidere,aprindere
+│   ├── [424] comutator,inchidere usi
+│   ├── [425] Buton pornire/oprire
+│   ├── [426] Intrerupator, control automat al vitezei
+│   └── [427] Comutator, contact portiera
+├── [428] Module și unități control
+│   ├── [429] releu,instalatia de comanda bujii incandescente
+│   └── [430] Unitate de control, geamuri electrice
+├── [431] Senzori ABS și roată
+│   ├── [432] senzor,turatie roata
+│   └── [433] senzor,acceleratie longitudinala
+├── [434] Senzori admisie / evacuare
+│   ├── [435] senzor debit aer
+│   ├── [436] Senzor, temperatura gaze evacuare
+│   ├── [437] Senzor, presiune gaze evacuare
+│   ├── [438] Senzor, presiune galerie admisie
+│   ├── [439] senzor,presiune supraalimentare
+│   ├── [440] senzor presiune aer
+│   ├── [441] senzor,temperatura aer admisie
+│   ├── [442] Senzor NOx, injectie aditiv
+│   ├── [443] Senzor NOx, Catalizator NOx
+│   ├── [444] Senzor, pozitie clapeta acceleratie
+│   ├── [445] Senzor flux aer
+│   ├── [446] Senzor, clapeta conducta aspiratie
+│   └── [447] Senzor particule
+├── [448] Senzori alți
+│   ├── [449] senzor,viteza
+│   ├── [450] senzor,viteza/turatie
+│   ├── [451] Senzor, pedala acceleratie
+│   ├── [452] Senzor unghi bracaj
+│   ├── [453] Senzor de ploaie
+│   ├── [454] senzor,odometru
+│   └── [455] Senzor, management baterie
+├── [456] Senzori combustibil
+│   ├── [457] Senzor, presiune combustibil
+│   ├── [458] senzor,rezervor combustibil
+│   └── [459] senzor,temperatura combustibil
+├── [460] Senzori motor
+│   ├── [461] senzor,temperatura lichid de racire
+│   ├── [462] Senzor impulsuri, arbore cotit
+│   ├── [463] senzor,pozitie ax cu came
+│   ├── [464] Senzor presiune ulei
+│   ├── [465] Senor batai
+│   ├── [466] senzor,temperatura ulei
+│   ├── [467] senzor,nivel ulei motor
+│   ├── [468] Senzor, turație motor
+│   ├── [469] senzor,presiune ulei
+│   ├── [470] senzor,impulsuri aprindere
+│   └── [471] Senzor, temperatura chiulasa
+├── [472] Senzori parcare și asistență
+│   ├── [473] Sensor, ajutor parcare
+│   ├── [474] Senzor, tempomat de reglare a distanței
+│   └── [475] Unitate control, sistem asistare schimbarea benzii de mers
+└── [476] Senzori temperatură habitaclu
+    ├── [477] senzor,temperatura exterioara
+    ├── [478] senzor,temperatura interioara
+    ├── [479] Senzor calitate aer
+    └── [480] Senzor antiaburire
+
+[481] Iluminare
+├── [482] Comutatoare iluminare
+│   ├── [483] Comutator, lampa marsalier
+│   ├── [484] Comutator, far
+│   ├── [485] unitate de control,lumini
+│   └── [486] comutator ,lumini de avarie
+├── [487] Faruri
+│   ├── [488] Far
+│   ├── [489] Senzor, reglare faruri
+│   ├── [490] Element reglare, reglare faruri
+│   ├── [491] suport far
+│   ├── [492] unitate de comanda,lampa cu descarcare pe gaz
+│   ├── [493] Suport, far
+│   ├── [494] Unitate de control, far curba (AFS)
+│   └── [495] Faruri de curba (AFS)
+├── [496] Iluminare auxiliară
+│   ├── [497] Iluminare numar de circulatie
+│   ├── [498] Bloc lumini de control
+│   └── [499] Lumini interioare
+├── [500] Proiectoare și DRL
+│   ├── [501] Proiector ceata
+│   ├── [502] Reflector
+│   ├── [503] Lumini de zi
+│   └── [504] Rama, proiector ceata
+└── [505] Stopuri și semnalizări
+    ├── [506] Semnalizator
+    ├── [507] Lampa spate
+    ├── [508] Stop suplimentar
+    ├── [509] Dispersor, lampa spate
+    ├── [510] Lampa laterala
+    └── [511] Lampa mers inapoi
+
+[512] Climatizare și încălzire
+├── [513] Compresor AC
+│   ├── [514] Compresor, climatizare
+│   ├── [515] Supapa regulatoare, compresor
+│   ├── [516] Cupla magnetica, compresor climatizare
+│   ├── [517] Supapa reglare presiune compresor
+│   ├── [518] Disc antrenor, cuplaj magnetic (compresor)
+│   └── [519] Bobină, cuplaj magnetic (compresor)
+├── [520] Conducte AC
+│   ├── [521] conducta inalta presiune,aer conditionat
+│   ├── [522] conducta presiune variabila,aer conditionat
+│   └── [523] conducta joasa presiune,aer conditionat
+├── [524] Control climatizare
+│   ├── [525] Comutator presiune, aer conditionat
+│   ├── [526] Supapa expansiune, clima
+│   ├── [527] Supapa control, agent frigorific
+│   ├── [528] unitate de control,incalzire/ventilatie
+│   ├── [529] Injectoare, supapa expansiune
+│   └── [530] unitate de control,aer conditionat
+├── [531] Schimbătoare de căldură AC
+│   ├── [532] Condensator, climatizare
+│   ├── [533] uscator,aer conditionat
+│   └── [534] Evaporator, aer conditionat
+├── [535] Ventilație habitaclu
+│   ├── [536] Ventilator, habitaclu
+│   ├── [537] Rezistor, ventilator habitaclu
+│   ├── [538] Reglaj, suflanta de interior
+│   └── [539] Ventil comutare, clapete ventilatie
+└── [540] Încălzire habitaclu și auxiliară
+    ├── [541] Schimbator caldura, incalzire habitaclu
+    ├── [542] furtun încălzire
+    ├── [543] pompa de apa,instalatia de incalzire independenta
+    ├── [544] Bujie incandescenta, incalzire auxiliara
+    └── [545] Pompă de apă suplimentară (circuitul apei de încălzire)
+
+[546] Caroserie
+├── [547] Alte caroserie
+│   ├── [548] Punct de sprijin, cric
+│   └── [549] Traversa
+├── [550] Aripi și panouri
+│   ├── [551] Aripa
+│   ├── [552] carenaj,cpasaj roata
+│   ├── [553] Elemente decorative/protectie, aripa
+│   ├── [554] Panou lateral
+│   ├── [555] Elemente decorative/protectie, panou lateral
+│   └── [556] Panou spate
+├── [557] Bare și spoilere
+│   ├── [558] Grila ventilatie, bara protectie
+│   ├── [559] Suport, bara protectie
+│   ├── [560] Acoperire fata
+│   ├── [561] spoiler
+│   ├── [562] Acoperire, bara protectie
+│   ├── [563] Amortizor soc, bara protectie
+│   └── [564] acoperire spoiler fata
+├── [565] Capotă, hayon și portbagaj
+│   ├── [566] Amortizor portbagaj
+│   ├── [567] Incuietoare haion
+│   ├── [568] Amortizor capota
+│   ├── [569] Capota motor
+│   ├── [570] Inchizator capota motor
+│   ├── [571] Balama, capota motor
+│   ├── [572] Miner haion
+│   ├── [573] Maner, inchidere capota motor
+│   ├── [574] Maner, capota portbagaj
+│   ├── [575] Cablu, capota motor
+│   ├── [576] Amortizor, luneta
+│   ├── [577] Incuietoare, capota portbagaj
+│   └── [578] Perna aer, podea de incarcare (portbagaj)
+├── [579] Geamuri și macarale
+│   ├── [580] Mecanism actionare geam
+│   ├── [581] Set reparat, macara geam
+│   └── [582] manivela geam
+├── [583] Grile și ornamente
+│   ├── [584] Placă de prag
+│   ├── [585] Grila radiator
+│   ├── [586] Elemente decorative/protectie, portiera
+│   └── [587] Elemente decorative/protectie, parbriz
+├── [588] Oglinzi
+│   ├── [589] Oglinda exterioara
+│   ├── [590] Sticla oglinda, oglinda retrovizoare exterioara
+│   ├── [591] Acoperire oglinda exterioara
+│   ├── [592] Carcasa, oglinda exterioara
+│   ├── [593] Comutator, reglarea oglinzilor exterioare
+│   └── [594] element reglaj,oglinda exterioara
+├── [595] Remorcare
+│   ├── [596] Ansamblu electric, bara de remorcare
+│   ├── [597] Modul tractare
+│   ├── [598] Capac carlig remorcare
+│   └── [599] Cârlig de remorcare
+└── [600] Uși și încuietori
+    ├── [601] incuietoare usa
+    ├── [602] Mânerul exterior al ușii
+    ├── [603] Maner usa, echipare interioara
+    ├── [604] Fixare usa
+    ├── [605] ghidaj cu role, usa glisanta
+    ├── [606] element reglaj,inchidere centralizata
+    ├── [607] balama usa
+    ├── [608] Cilindru inchidere
+    ├── [609] Cablu, deblocare usi
+    ├── [610] Usa, caroserie
+    ├── [611] Element de reglare, clapetă rezervor
+    ├── [612] Încuietoare ușă spate
+    └── [613] Broască ușă culisantă
+
+[614] Ștergere și spălare
+├── [615] Spălare parbriz și faruri
+│   ├── [616] pompa de apa,spalare parbriz
+│   ├── [617] pompa de apa,spalare faruri
+│   ├── [618] diuza,spalare faruri
+│   ├── [619] diuza,spalare parbriz
+│   ├── [620] rezervor apa,spalare parbriz
+│   ├── [621] Senzor, nivel apa spalare geam
+│   └── [622] buson,rezervor lichid de spalare parbriz
+└── [623] Ștergătoare
+    ├── [624] motor stergator
+    ├── [625] Legaturi stergator parbriz
+    ├── [626] brat stergator, parbriz
+    ├── [627] Set stergatoare, curatare parbriz
+    ├── [628] comutator stergator
+    └── [629] mecanism stergator, parbriz

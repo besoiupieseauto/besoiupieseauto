@@ -1,0 +1,103 @@
+# Besoiu — structura compacta (3 foldere + fisiere root)
+RewriteEngine On
+RewriteBase /
+
+RewriteRule ^favicon\.ico$ admin/public/assets/favicon.svg [L]
+
+RewriteRule ^robots\.txt$ robots.php [L]
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
+RewriteRule ^sitemap-pages\.xml$ app/Storage/seo/sitemap-pages.xml [L]
+RewriteRule ^sitemap-products\.xml$ app/Storage/seo/sitemap-products.xml [L]
+RewriteRule ^sitemap-seo-products\.xml$ app/Storage/seo/sitemap-seo-products.xml [L]
+
+# ── Admin: front controller (CORE shell, fără module opționale în admin/modules/) ──
+RewriteRule ^admin/modules/(.*)$ modules/$1 [L]
+RewriteRule ^admin/assets/(.*)$ admin/public/assets/$1 [L]
+RewriteRule ^admin/api/module/([a-z0-9_-]+)/([a-zA-Z0-9_.-]+\.php)$ admin/public/api/module_endpoint.php?module=$1&script=$2 [L,QSA]
+RewriteRule ^admin/api/(.*)$ admin/public/api/$1 [L]
+RewriteRule ^admin/logout/?$ admin/public/logout.php [L,QSA]
+# Imagini produs (proxy Poze/Autopartner) — publice, fără login / fără strip /public
+RewriteRule ^admin/import-pro/_proxy/(.*)$ admin/public/import-pro/_proxy/$1 [END,QSA]
+RewriteCond %{THE_REQUEST} \s/admin/public/([^\s?]*) [NC]
+RewriteCond %{THE_REQUEST} !\s/admin/public/import-pro/_proxy/ [NC]
+RewriteRule ^admin/public/(.*)$ /admin/%1 [R=301,L,QSA]
+RewriteCond %{REQUEST_URI} ^/admin/
+RewriteCond %{REQUEST_URI} !^/admin/public/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^admin/(.*)$ admin/public/index.php [L,QSA]
+RewriteRule ^admin/?$ admin/public/index.php [L,QSA]
+
+# Compat URL vechi
+RewriteRule ^img/(.*)$ assets/img/$1 [L]
+RewriteRule ^uploads/((.*))$ app/Storage/uploads/$1 [L]
+RewriteRule ^seo/(.*)$ app/Storage/seo/$1 [L]
+
+RewriteRule ^tecdoc_proxy\.php$ api/tecdoc_proxy.php [L,QSA]
+RewriteRule ^robot/chat_widget_api\.php$ app/robot/chat_widget_api.php [L,QSA]
+RewriteRule ^api_categorii\.php$ api/api_categorii.php [L,QSA]
+RewriteRule ^api/events/?$ api/events_endpoint.php [L,QSA]
+RewriteRule ^api/search/?$ api/search_endpoint.php [L,QSA]
+RewriteRule ^api/(.*)$ api/$1 [L,QSA]
+
+RewriteRule ^feeds/baselinker\.xml$ api/baselinker-feed.php?format=xml [L,QSA]
+RewriteRule ^feeds/baselinker\.json$ api/baselinker-feed.php?format=json [L,QSA]
+RewriteRule ^baselinker\.php$ api/baselinker-shop-integration.php [L,QSA]
+
+RewriteRule ^assets/ - [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/app/
+RewriteRule ^ index.php [L,QSA]
+
+DirectoryIndex index.php
+
+AddDefaultCharset UTF-8
+<IfModule mod_headers.c>
+  <FilesMatch "\.txt$">
+    Header set Content-Type "text/plain; charset=UTF-8"
+  </FilesMatch>
+</IfModule>
+
+# ── Fișiere sensibile (secrete .env, config local, log-uri, dump-uri) — deny direct access ──
+<FilesMatch "(^|\.)(env|local\.php|ini|log|sh|bak|sql)$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+<Files .htaccess>
+  Order allow,deny
+  Deny from all
+</Files>
+
+# ── Compresie gzip ──
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json application/xml image/svg+xml
+</IfModule>
+
+# ── Cache assets + imagini statice ──
+<IfModule mod_headers.c>
+  SetEnvIf Request_URI "^/assets/.*\.(css|js)(\?|$)" besoiu_versioned_asset_cache=1
+  Header set Cache-Control "public, max-age=31536000, immutable" env=besoiu_versioned_asset_cache
+  Header set CDN-Cache-Control "max-age=31536000" env=besoiu_versioned_asset_cache
+
+  SetEnvIf Request_URI "^/assets/.*\.(png|jpe?g|webp|gif|svg|ico|woff2?)(\?|$)" besoiu_static_image_cache=1
+  Header set Cache-Control "public, max-age=31536000, immutable" env=besoiu_static_image_cache
+  Header set CDN-Cache-Control "max-age=31536000" env=besoiu_static_image_cache
+
+  SetEnvIf Request_URI "^/uploads/.*\.(png|jpe?g|webp|gif)(\?|$)" besoiu_upload_image_cache=1
+  Header set Cache-Control "public, max-age=604800" env=besoiu_upload_image_cache
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>

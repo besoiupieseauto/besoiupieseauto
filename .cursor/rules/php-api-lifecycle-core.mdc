@@ -1,0 +1,51 @@
+---
+description: Lifecycle PHP pentru API admin/CORE — timeout, sesiune, cleanup, JSON la fatal
+globs: app/Backend/**/*.php,admin/public/api/**/*.php,app/Legacy/api_automation_guard.php
+alwaysApply: false
+---
+
+# Lifecycle API PHP (CORE)
+
+## Problema
+
+Request-uri lungi (curl_multi, scan, import) care **nu termină** blochează worker-ul PHP, țin lock pe sesiune și pot lăsa procese „zombie”. Frontend-ul arată „Failed to fetch”.
+
+## Obligatoriu la endpoint JSON admin
+
+1. **`ApiBootstrap::bootJsonApi()`** — header JSON + erori safe.
+2. **`ApiBootstrap::registerJsonFatalGuard('context')`** — răspuns JSON la fatal, nu HTML gol.
+3. **`ApiBootstrap::requireAuthenticatedSession()`** — verifică login.
+4. **`ApiBootstrap::beginBoundedJsonWork($sec)`** — `set_time_limit`, eliberare sesiune **după auth** (nu blochează alte tab-uri admin).
+5. **`try/catch (Throwable)`** + `ApiBootstrap::respondInternalError()` — niciodată output necontrolat.
+
+```php
+$config = ApiBootstrap::bootJsonApi();
+ApiBootstrap::registerJsonFatalGuard('my_endpoint');
+
+try {
+    ApiBootstrap::requireAuthenticatedSession();
+    ApiBootstrap::beginBoundedJsonWork(45);
+    // ...
+    ApiBootstrap::json($result);
+} catch (Throwable $e) {
+    ApiBootstrap::respondInternalError('my_endpoint', $e);
+}
+```
+
+## HTTP paralel (curl_multi)
+
+- **Nu** folosi `do { curl_multi_exec; curl_multi_select } while ($running > 0)` fără deadline.
+- Folosește **`Besoiu\Core\Http\CurlMultiPool::run($handles, $deadlineSec, 0.25, $results)`**.
+- Citește body din `$results` **înainte** de `curl_close` pe handle.
+- **`finally`**: închide fiecare handle (`curl_close`) indiferent de succes/timeout.
+- Limitează numărul de request-uri paralele (chunk size, max items).
+
+## API automation guard
+
+Acțiuni declanșate explicit de operator (căutare furnizori, coș, import manual) trebuie în allowlist-ul `besoiu_api_is_manual_on_demand_request()` din `api_automation_guard.php`, altfel cu „API oprit” / strict manual returnează blocaj sau refuz.
+
+## Frontend (admin)
+
+- `fetch` cu **`AbortSignal.timeout(ms)`** aliniat la `beginBoundedJsonWork`.
+- Mesaje distincte: timeout vs „Failed to fetch” vs HTTP 503 API oprit.
+- Parse JSON din `response.text()` cu mesaj clar dacă serverul nu returnează JSON.

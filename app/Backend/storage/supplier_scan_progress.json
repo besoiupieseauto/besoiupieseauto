@@ -1,0 +1,13 @@
+{
+    "running": false,
+    "pct": 0,
+    "phase": "stopped",
+    "phase_label": "Oprit",
+    "message": "Scan întrerupt — apasă «Scanează furnizori» din nou.",
+    "supplier": "",
+    "supplier_index": 0,
+    "supplier_total": 0,
+    "updated_at": "2026-07-07T09:54:37+00:00",
+    "product_code": "079025830",
+    "product_brand": ""
+}

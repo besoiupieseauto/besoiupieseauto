@@ -1,0 +1,47 @@
+---
+description: Lifecycle PHP pentru module admin — Handler API, curl, cleanup garantat
+globs: modules/**/Handler/*.php,modules/**/Service/*.php,modules/**/pages/*.php
+alwaysApply: false
+---
+
+# Lifecycle API PHP (module)
+
+Modulele admin expun logică prin `Handler/*` și `Service/*`. Aceleași reguli ca în CORE — **modulul trebuie să termine mereu request-ul**.
+
+## Handler modul (template)
+
+```php
+public static function handle(): void
+{
+    $config = ApiBootstrap::bootJsonApi();
+    ApiBootstrap::registerJsonFatalGuard('nume_modul');
+
+    try {
+        ApiBootstrap::requireAuthenticatedSession();
+        ApiBootstrap::beginBoundedJsonWork(45); // după auth — eliberează lock sesiune
+        // logică...
+        ApiBootstrap::json($result);
+    } catch (Throwable $e) {
+        ApiBootstrap::respondInternalError('nume_modul', $e);
+    }
+}
+```
+
+## Service cu apeluri externe
+
+- Folosește **`CurlMultiPool`** din CORE, nu buclă infinită curl_multi.
+- Setează `CURLOPT_TIMEOUT` + `CURLOPT_CONNECTTIMEOUT` pe fiecare handle.
+- Cap la număr request-uri (ex: Autonet max 100 items, Autototal max 8).
+- Erori per furnizor în payload (`errors`), nu fatal PHP — căutarea continuă pentru ceilalți.
+
+## UI modul (JS inline sau assets)
+
+- Timeout fetch = deadline PHP + 5s buffer.
+- Nu lăsa butonul „Se caută...” blocat — `finally` restore UI.
+- Endpoint modul înregistrat în `module.json` + allowlist guard dacă e acțiune manuală.
+
+## Anti-pattern
+
+- ❌ `curl_multi` fără deadline pe Windows
+- ❌ Ținere sesiune deschisă în timpul căutării paralele
+- ❌ Proces PHP care așteaptă la infinit un furnizor fără credențiale (fail fast cu mesaj în JSON)

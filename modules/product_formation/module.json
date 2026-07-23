@@ -1,0 +1,42 @@
+{
+    "id": "product_formation",
+    "name": "Formare carte produs",
+    "version": "1.0.0",
+    "type": "optional",
+    "enabled": true,
+    "description": "Reguli dinamice titlu produs per canal și tab-uri descriere pe pagina produs.",
+    "entry": "Besoiu\\Modules\\ProductFormation\\ProductFormationModule",
+    "dependencies": ["produse"],
+    "permissions": [
+        "module.product_formation",
+        "product_formation.manage",
+        "produse.list"
+    ],
+    "workspace": "suppliers",
+    "nav_section": {
+        "group_label": "PRODUSE"
+    },
+    "nav": [
+        {
+            "id": "product-formation",
+            "label": "Formare carte",
+            "href": "/admin/product-formation",
+            "icon": "layout-template",
+            "group": "PRODUSE"
+        }
+    ],
+    "provides": {
+        "folder": "product_formation",
+        "slugs": ["product-formation", "produse-formare"],
+        "paths": [
+            "/admin/product-formation",
+            "/admin/produse-formare",
+            "/admin/public/product-formation",
+            "/admin/public/api/product_card_formation_endpoint.php"
+        ],
+        "crud_key": "product_formation",
+        "api_scripts": ["product_card_formation_endpoint.php"],
+        "quick_actions": ["product-formation"]
+    },
+    "migrations": []
+}

@@ -1,0 +1,53 @@
+/**
+ * tm_026 — Notificări tehnice: ascunse pe vitrina publică (html.besoiu-public-storefront).
+ * Vizibile doar pentru operator admin autentificat (html.besoiu-admin-ctx).
+ * Rezolvă conflicte display / z-index / pointer-events când JS sau markup residual le expune.
+ */
+html.besoiu-public-storefront #_debug-panel,
+html.besoiu-public-storefront #_debug-toggle,
+html.besoiu-public-storefront #_debug-log,
+html.besoiu-public-storefront .home-vitrina-warn,
+html.besoiu-public-storefront .home-list-toolbar,
+html.besoiu-public-storefront .product-debug-status,
+html.besoiu-public-storefront #_product-debug-status,
+html.besoiu-public-storefront #stock-loc-modules,
+html.besoiu-public-storefront .stock-loc-modules,
+html.besoiu-public-storefront ._product-notice--technical,
+html.besoiu-public-storefront .catalog-notice--technical {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  z-index: -9999 !important;
+  position: absolute !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  border: 0 !important;
+}
+
+html.besoiu-admin-ctx #_debug-toggle {
+  display: block;
+  pointer-events: auto;
+  z-index: 9998;
+}
+
+html.besoiu-admin-ctx #_debug-panel {
+  pointer-events: auto;
+  z-index: 9999;
+}
+
+html.besoiu-admin-ctx .product-debug-status:not(.is-hidden),
+html.besoiu-admin-ctx #_product-debug-status:not(.is-hidden) {
+  display: block;
+  pointer-events: auto;
+  position: relative;
+  z-index: 1;
+}
+
+html.besoiu-public-storefront .catalog-notice--warn:empty {
+  display: none !important;
+}

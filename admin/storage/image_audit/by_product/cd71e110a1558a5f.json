@@ -1,0 +1,20 @@
+{
+  "randomn_id": "cd71e110a1558a5f",
+  "title": "Olej Gm Opel 15W40 5L Olg Opel 1942050",
+  "code": "1942050",
+  "category": "Uleiuri și lubrifianți auto",
+  "image_url": "",
+  "verdict": "no_image",
+  "match_score": 0,
+  "image_shows": "Nicio imagine disponibilă — câmpurile image_url și local_image_path sunt goale, image_source=missing.",
+  "issues": [
+    "Produsul nu are imagine încărcată în catalog.",
+    "Nu se poate efectua comparația vizuală cu titlul «Olej Gm Opel 15W40 5L Olg Opel 1942050».",
+    "Nu se poate confirma uleiul GM Opel 15W40 5L cod 1942050 din categoria Uleiuri și lubrifianți auto."
+  ],
+  "recommendation": "replace",
+  "summary_ro": "Produs fără imagine. Audit vizual imposibil; se recomandă găsirea și încărcarea unei fotografii corecte pentru ulei GM Opel 15W40 5L cod 1942050 din categoria Uleiuri și lubrifianți auto.",
+  "analyzed_at": "2026-06-19T12:58:29.784058+00:00",
+  "engine": "cursor-composer-2.5",
+  "model": "composer-2.5"
+}

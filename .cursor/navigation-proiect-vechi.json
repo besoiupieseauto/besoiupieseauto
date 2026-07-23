@@ -1,0 +1,436 @@
+{
+  "meta": {
+    "titlu": "Hartă navigare admin — proiect vechi (țintă integrare)",
+    "sursa_veche": "F:/bakapbesoiu/besoiupieseauto.ro/besoiupieseauto.ro/admin/storage/navigation/registry.json",
+    "sursa_portal": "app/Backend/src/Core/Auth/AdminWorkspaceCatalog.php",
+    "sursa_sectiuni": "app/Backend/src/Core/Auth/AdminPermissionCatalog.php",
+    "generat_la": "2026-07-15T19:15:00+03:00",
+    "schema": "besoiu_navigation_map_v2"
+  },
+  "portal": [
+    {
+      "id": "orders",
+      "titlu": "Clienți și Comenzi",
+      "descriere": "Comenzi, clienți, facturi și furnizori B2B — flux comercial complet.",
+      "actiune": "Intră",
+      "url_intrare": "/admin/dashboard?section=mod_furnizori",
+      "sectiuni": [
+        {
+          "section_key": "mod_furnizori",
+          "titlu": "Furnizori B2B",
+          "descriere": "Furnizori, credențiale și comparare.",
+          "group_label": null,
+          "blocuri": [
+            { "label": "Dashboard", "url": "/admin/dashboard?section=mod_furnizori" },
+            { "label": "Comparare furnizori", "url": "/admin/suppliers?tab=compare" },
+            { "label": "Lista furnizori", "url": "/admin/furnizori" },
+            { "label": "Profil furnizor", "url": "/admin/profilefurnizori" },
+            { "label": "Adaugă furnizor", "url": "/admin/addfurnizori" }
+          ]
+        },
+        {
+          "section_key": "core_comenzi",
+          "titlu": "Comenzi",
+          "descriere": "Flux comercial și livrări.",
+          "group_label": null,
+          "blocuri": [
+            { "label": "Dashboard", "url": "/admin/dashboard?section=core_comenzi" },
+            { "label": "Toate comenzile", "url": "/admin/orders" },
+            { "label": "Comandă nouă", "url": "/admin/order-create" },
+            { "label": "Coș abandonat", "url": "/admin/abandoned-carts" },
+            { "label": "Facturi", "url": "/admin/facturi" },
+            { "label": "Livrare / AWB", "url": "/admin/livrare" }
+          ],
+          "sub_navigare": [
+            "Site (magazin)",
+            "ERP TM",
+            "ERP UTVIN",
+            "ERP externe"
+          ]
+        },
+        {
+          "section_key": "mod_supplier_search",
+          "titlu": "Supplier Search B2B",
+          "descriere": "Căutare paralelă furnizori și coș.",
+          "group_label": null,
+          "blocuri": [
+            { "label": "Dashboard", "url": "/admin/dashboard?section=mod_supplier_search" },
+            { "label": "Supplier Search", "url": "/admin/supplier-search" },
+            { "label": "Coș furnizori", "url": "/admin/supplier-cart" },
+            { "label": "Căutare legacy", "url": "/admin/searching" }
+          ]
+        },
+        {
+          "section_key": "mod_clienti",
+          "titlu": "Clienți CRM",
+          "descriere": "Clienți magazin și profiluri.",
+          "group_label": null,
+          "blocuri": [
+            { "label": "Dashboard", "url": "/admin/dashboard?section=mod_clienti" },
+            { "label": "Lista clienți", "url": "/admin/clienti" }
+          ]
+        },
+        {
+          "section_key": "core_clienti",
+          "titlu": "Clienți",
+          "descriere": "CRM clienți magazin (legacy sidebar).",
+          "group_label": null,
+          "nota": "În proiectul vechi era secțiune separată; în proiectul nou e mod_clienti",
+          "blocuri": [
+            { "label": "Clienți", "url": "/admin/clienti" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "suppliers",
+      "titlu": "Produse Furnizori",
+      "descriere": "Zona de lucru — dashboard și administrare conturi.",
+      "actiune": "Intră",
+      "url_intrare": "/admin/dashboard?section=core_produse",
+      "sectiuni": [
+        {
+          "section_key": "core_produse",
+          "titlu": "Produse",
+          "descriere": "Catalog, vitrină și stoc.",
+          "group_label": "ADMIN PANEL",
+          "blocuri": [
+            { "label": "Dashboard", "url": "/admin/dashboard?section=core_produse" },
+            { "label": "Lista produse", "url": "/admin/product" },
+            { "label": "Formare carte", "url": "/admin/product-formation" },
+            { "label": "Vitrina homepage", "url": "/admin/vitrina" },
+            { "label": "Produse scanate ePiesa", "url": "/admin/scanned" },
+            { "label": "Caiet comenzi — produse ERP", "url": "/admin/caiet-produse" },
+            { "label": "Adaugă produs", "url": "/admin/addproduse" },
+            { "label": "Categorii CMS", "url": "/admin/categorii" },
+            { "label": "Adaos comercial", "url": "/admin/adaoscomercial" }
+          ],
+          "sub_navigare": [
+            "Lista produse",
+            "Formare carte",
+            "Vetrina homepage",
+            "Produse scanate ePiesa",
+            "Caiet comenzi"
+          ]
+        },
+        {
+          "section_key": "core_furnizori",
+          "titlu": "Furnizori",
+          "descriere": "Comparare și listă furnizori import.",
+          "group_label": null,
+          "blocuri": [
+            { "label": "Comparare furnizori", "url": "/admin/suppliers?tab=compare" },
+            { "label": "Lista furnizori", "url": "/admin/suppliers" }
+          ]
+        },
+        {
+          "section_key": "mod_import",
+          "titlu": "Import produse",
+          "descriere": "Upload, procesare și coadă import.",
+          "group_label": null,
+          "blocuri": [
+            { "label": "Import produse", "url": "/admin/import-system" },
+            { "label": "Produse generate", "url": "/admin/import-cards" },
+            { "label": "Base TecDoc", "url": "/admin/import-bovsoft" },
+            { "label": "Import CSV / Excel", "url": "/admin/import" },
+            { "label": "Coadă import", "url": "/admin/importreview" }
+          ]
+        },
+        {
+          "section_key": "mod_calculator",
+          "titlu": "Calculator preț",
+          "descriere": "Net × TVA × Adaos.",
+          "group_label": null,
+          "blocuri": [
+            { "label": "Calculator preț", "url": "/admin/calculator" }
+          ]
+        },
+        {
+          "section_key": "core_analiza",
+          "titlu": "Analiză",
+          "descriere": "Rapoarte și echivalențe.",
+          "group_label": "ANALIZĂ",
+          "blocuri": [
+            { "label": "Dashboard", "url": "/admin/dashboard?section=core_analiza" },
+            { "label": "Echivalențe OEM", "url": "/admin/cross-reference" },
+            { "label": "Rapoarte", "url": "/admin/reports" }
+          ]
+        },
+        {
+          "section_key": "mod_searchlogs",
+          "titlu": "Search Logs",
+          "descriere": "VIN/OEM negăsite.",
+          "group_label": null,
+          "blocuri": [
+            { "label": "Search Logs (sistem)", "url": "/admin/searchlogs-system" },
+            { "label": "Search logs", "url": "/admin/search-logs" }
+          ]
+        },
+        {
+          "section_key": "mod_garantie",
+          "titlu": "Garantie",
+          "descriere": "Modul garanție.",
+          "group_label": null,
+          "blocuri": [
+            { "label": "Garantie", "url": "/admin/garantie" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ai",
+      "titlu": "AI, agenți și robotică",
+      "descriere": "Zona de lucru — dashboard și administrare conturi.",
+      "actiune": "Intră",
+      "url_intrare": "/admin/dashboard?section=core_automatizare",
+      "sectiuni": [
+        {
+          "section_key": "core_automatizare",
+          "titlu": "Automatizare",
+          "descriere": "Export, cron și integrări.",
+          "group_label": "AUTOMATIZARE",
+          "blocuri": [
+            { "label": "Dashboard", "url": "/admin/dashboard?section=core_automatizare" },
+            { "label": "Export catalog", "url": "/admin/export" },
+            { "label": "Cron Sync", "url": "/admin/cron" }
+          ]
+        },
+        {
+          "section_key": "mod_ai",
+          "titlu": "AI System",
+          "descriere": "Boți, agent și tokeni.",
+          "group_label": null,
+          "blocuri": [
+            { "label": "AI System", "url": "/admin/ai-system" },
+            { "label": "Roboți AI", "url": "/admin/bots" },
+            { "label": "AI Agent", "url": "/admin/ai-agent" },
+            { "label": "AI Tokens", "url": "/admin/ai-tokens" }
+          ]
+        },
+        {
+          "section_key": "mod_scraper",
+          "titlu": "Scraping",
+          "descriere": "Hub imagini și pipeline scraper.",
+          "group_label": null,
+          "blocuri": [
+            { "label": "Scraper Hub import", "url": "/admin/scraper-import" },
+            { "label": "Pipeline scraper", "url": "/admin/scraper" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "social",
+      "titlu": "Comunicare & Socializare",
+      "descriere": "Zona de lucru — dashboard și administrare conturi.",
+      "actiune": "Intră",
+      "url_intrare": "/admin/dashboard?section=core_comunicare",
+      "sectiuni": [
+        {
+          "section_key": "core_comunicare",
+          "titlu": "Comunicare",
+          "descriere": "Mesaje și canale.",
+          "group_label": "COMUNICARE & SOCIALIZARE",
+          "blocuri": [
+            { "label": "Dashboard", "url": "/admin/dashboard?section=core_comunicare" },
+            { "label": "Hub comunicare", "url": "/admin/comunicare" },
+            { "label": "Template-uri răspuns", "url": "/admin/reply-templates" },
+            { "label": "Chat — antrenare RAG", "url": "/admin/comunicare-chat" },
+            { "label": "Răspunsuri rapide", "url": "/admin/reply-templates?tab=quick" },
+            { "label": "Canale comunicare", "url": "/admin/comunicare-canale" },
+            { "label": "Lead-uri contact", "url": "/admin/comunicare-leads" },
+            { "label": "Broadcast mesaje", "url": "/admin/comunicare-broadcast" },
+            { "label": "Arhivă conversații", "url": "/admin/comunicare-archive" }
+          ]
+        },
+        {
+          "section_key": "mod_messages",
+          "titlu": "Messages",
+          "descriere": "Inbox unificat clienți.",
+          "group_label": null,
+          "blocuri": [
+            { "label": "Messages (sistem)", "url": "/admin/messages-system" },
+            { "label": "Mesagerie / Chat", "url": "/admin/messages" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "marketing",
+      "titlu": "Marketing și promovare",
+      "descriere": "Zona de lucru — dashboard și administrare conturi.",
+      "actiune": "Intră",
+      "url_intrare": "/admin/dashboard?section=core_marketing",
+      "sectiuni": [
+        {
+          "section_key": "core_marketing",
+          "titlu": "Marketing",
+          "descriere": "Promovare și planner.",
+          "group_label": "MARKETING ȘI PROMOVARE",
+          "blocuri": [
+            { "label": "Dashboard", "url": "/admin/dashboard?section=core_marketing" },
+            { "label": "Planner", "url": "/admin/planner" },
+            { "label": "Marketing Hub", "url": "/admin/marketing" },
+            { "label": "Calendar postări", "url": "/admin/marketing-calendar" },
+            { "label": "Reclame plătite", "url": "/admin/marketing-paid" },
+            { "label": "Studio materiale", "url": "/admin/marketing-studio" }
+          ],
+          "sub_navigare": [
+            "Rezultat",
+            "Probleme",
+            "Plan",
+            "Execuție",
+            "Dovezi"
+          ],
+          "sub_tab_execuție": [
+            "Pipeline acțiuni",
+            "Calendar postări",
+            "Reclame plătite",
+            "Studio materiale"
+          ]
+        },
+        {
+          "section_key": "mod_marketplace",
+          "titlu": "Marketplace",
+          "descriere": "PieseAuto.ro și integrări.",
+          "group_label": null,
+          "blocuri": [
+            { "label": "Marketplace", "url": "/admin/marketplace" },
+            { "label": "Marketplace PieseAuto", "url": "/admin/marketplace-pieseauto" },
+            { "label": "BaseLinker", "url": "/admin/marketplace-baselinker" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shop",
+      "titlu": "Produse Besoiupieseauto",
+      "descriere": "Zona de lucru — dashboard și administrare conturi.",
+      "actiune": "Intră",
+      "url_intrare": "/admin/dashboard?section=core_website",
+      "sectiuni": [
+        {
+          "section_key": "core_website",
+          "titlu": "Web site",
+          "descriere": "CMS și pagini publice.",
+          "group_label": "WEB SITE",
+          "blocuri": [
+            { "label": "Dashboard", "url": "/admin/dashboard?section=core_website" },
+            {
+              "label": "Web site (submenu)",
+              "tip": "submenu",
+              "sub_blocuri": [
+                { "label": "Acasă (index)", "url": "/admin/website?tab=home" },
+                { "label": "Header & Footer", "url": "/admin/website?tab=global&mode=form" },
+                { "label": "Catalog", "url": "/admin/website?tab=catalog" },
+                { "label": "Cum comand", "url": "/admin/website?tab=cum-comand" },
+                { "label": "Livrare și plată", "url": "/admin/website?tab=livrare-plata" },
+                { "label": "Retur și garanție", "url": "/admin/website?tab=retur-garantie" },
+                { "label": "Întrebări frecvente", "url": "/admin/website?tab=intrebari-frecvente" },
+                { "label": "Termeni și condiții", "url": "/admin/website?tab=termeni-conditii" },
+                { "label": "Politica confidențialitate", "url": "/admin/website?tab=politica-confidentialitate" },
+                { "label": "Politica cookies", "url": "/admin/website?tab=politica-cookies" },
+                { "label": "Cariere", "url": "/admin/website?tab=cariere" },
+                { "label": "Blog (CMS)", "url": "/admin/website?tab=blog" },
+                { "label": "Despre noi", "url": "/admin/website?tab=about" },
+                { "label": "Contact", "url": "/admin/website?tab=contact" },
+                { "label": "Gestionează pagini", "url": "/admin/website?view=pages" }
+              ]
+            }
+          ]
+        },
+        {
+          "section_key": "mod_blog",
+          "titlu": "Blog",
+          "descriere": "Articole și editor.",
+          "group_label": null,
+          "blocuri": [
+            { "label": "Blog (sistem)", "url": "/admin/blog-system" },
+            { "label": "Blog", "url": "/admin/blog" },
+            { "label": "Articol nou", "url": "/admin/addblog" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "company",
+      "titlu": "Company Settings",
+      "descriere": "Setări centrale, utilizatori și acces admin.",
+      "actiune": "Intră",
+      "url_intrare": "/admin/dashboard?section=core_dashboard",
+      "sectiuni": [
+        {
+          "section_key": "core_dashboard",
+          "titlu": "Dashboard",
+          "descriere": "Panou central admin.",
+          "group_label": "ADMIN PANEL",
+          "blocuri": [
+            { "label": "Dashboard", "url": "/admin/dashboard" }
+          ]
+        },
+        {
+          "section_key": "core_sistem",
+          "titlu": "Sistem",
+          "descriere": "Utilizatori, alerte și setări.",
+          "group_label": "SISTEM",
+          "blocuri": [
+            { "label": "Dashboard", "url": "/admin/dashboard?section=core_sistem" },
+            { "label": "Setări sistem", "url": "/admin/settings" },
+            { "label": "Backup", "url": "/admin/backup" },
+            { "label": "Alerte", "url": "/admin/alerts" },
+            { "label": "Jurnal erori sistem", "url": "/admin/system-errors" }
+          ],
+          "sub_navigare": [
+            "Utilizatori",
+            "Consum live",
+            "Tokeni API",
+            "Chei secrete",
+            "Module",
+            "Navigație admin →"
+          ]
+        },
+        {
+          "section_key": "utilizatori",
+          "titlu": "Utilizatori admin",
+          "descriere": "Gestiune echipă și delegare.",
+          "group_label": null,
+          "blocuri": [
+            { "label": "Gestiune utilizatori", "url": "/admin/users" },
+            { "label": "Adaugă utilizator", "url": "/admin/addusers" },
+            { "label": "Profil utilizator", "url": "/admin/profileusers" }
+          ]
+        },
+        {
+          "section_key": "mod_backup",
+          "titlu": "Backup",
+          "descriere": "Copii de siguranță BD.",
+          "group_label": null,
+          "blocuri": [
+            { "label": "Backup", "url": "/admin/backup" }
+          ]
+        },
+        {
+          "section_key": "core_navigatie",
+          "titlu": "Navigație admin",
+          "descriere": "Editor meniu sidebar.",
+          "group_label": "NAVIGAȚIE ADMIN",
+          "blocuri": [
+            { "label": "Editor meniu sidebar", "url": "/admin/nav" },
+            { "label": "Registru JSON", "url": "/admin/nav#json" }
+          ]
+        },
+        {
+          "section_key": "mod_mvp_kit",
+          "titlu": "MVP Kit (șablon modul)",
+          "descriere": "Șablon dezvoltare module.",
+          "group_label": null,
+          "nota": "Doar dev — proiect vechi",
+          "blocuri": [
+            { "label": "MVP Kit", "url": "/admin/mvp-kit" }
+          ]
+        }
+      ]
+    }
+  ],
+  "preview_text": "═══ PORTAL ADMIN — 7 DEPARTAMENTE ═══\n\n▸ Clienți și Comenzi\n  Comenzi, clienți, facturi și furnizori B2B — flux comercial complet.\n  [Intră] → /admin/dashboard?section=mod_furnizori\n  Secțiuni:\n    • Furnizori B2B — Dashboard, Comparare furnizori, Lista furnizori\n    • Comenzi — Dashboard, Toate comenzile, Comandă nouă, Coș abandonat, Facturi, Livrare/AWB\n      Tab-uri: Site (magazin) | ERP TM | ERP UTVIN | ERP externe\n    • Supplier Search B2B — Dashboard, Supplier Search, Coș furnizori\n    • Clienți CRM — Dashboard, Lista clienți\n\n▸ Produse Furnizori\n  Zona de lucru — dashboard și administrare conturi.\n  [Intră] → /admin/dashboard?section=core_produse\n  Secțiuni:\n    • Produse — Lista, Formare carte, Vitrina, Scanate, Caiet ERP, Categorii, Adaos\n    • Furnizori — Comparare, Lista\n    • Import produse — Import, Generate, TecDoc, CSV/Excel, Coadă\n    • Calculator preț\n    • Analiză — Echivalențe OEM, Rapoarte\n    • Search Logs\n    • Garantie\n\n▸ AI, agenți și robotică\n  Zona de lucru — dashboard și administrare conturi.\n  [Intră] → /admin/dashboard?section=core_automatizare\n  Secțiuni:\n    • Automatizare — Export, Cron Sync\n    • AI System — AI System, Roboți AI, AI Agent, AI Tokens\n    • Scraping — Scraper Hub, Pipeline scraper\n\n▸ Comunicare & Socializare\n  Zona de lucru — dashboard și administrare conturi.\n  [Intră] → /admin/dashboard?section=core_comunicare\n  Secțiuni:\n    • Comunicare — Hub, Template-uri, Chat RAG, Răspunsuri rapide, Canale, Lead-uri, Broadcast, Arhivă\n    • Messages — Mesagerie / Chat\n\n▸ Marketing și promovare\n  Zona de lucru — dashboard și administrare conturi.\n  [Intră] → /admin/dashboard?section=core_marketing\n  Secțiuni:\n    • Marketing — Planner, Marketing Hub, Calendar, Reclame, Studio\n    • Marketplace — PieseAuto, BaseLinker\n\n▸ Produse Besoiupieseauto\n  Zona de lucru — dashboard și administrare conturi.\n  [Intră] → /admin/dashboard?section=core_website\n  Secțiuni:\n    • Web site — 14 pagini CMS + Gestionează pagini\n    • Blog — Articole, Editor\n\n▸ Company Settings\n  Setări centrale, utilizatori și acces admin.\n  [Intră] → /admin/dashboard\n  Secțiuni:\n    • Dashboard\n    • Sistem — Setări, Backup, Alerte, Jurnal erori\n    • Utilizatori admin\n    • Navigație admin — Editor meniu, Registru JSON"
+}

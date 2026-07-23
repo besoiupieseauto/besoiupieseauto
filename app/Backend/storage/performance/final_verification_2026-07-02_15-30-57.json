@@ -1,0 +1,23 @@
+{
+    "summary": {
+        "execution_time": 18.27,
+        "memory_usage": 2097152,
+        "memory_peak": 4194304,
+        "active_timers": [],
+        "total_metrics": 1
+    },
+    "metrics": {
+        "complete_verification": {
+            "name": "complete_verification",
+            "duration": 18.18,
+            "memory_used": 2097152,
+            "memory_peak": 4194304
+        }
+    },
+    "system_info": {
+        "php_version": "8.3.30",
+        "memory_limit": "512M",
+        "max_execution_time": "0",
+        "server_load": "N\/A (Windows)"
+    }
+}

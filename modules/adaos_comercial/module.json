@@ -1,0 +1,21 @@
+﻿{
+    "id": "adaos_comercial",
+    "name": "Adaos comercial",
+    "version": "1.0.0",
+    "type": "optional",
+    "enabled": true,
+    "description": "Reguli adaos comercial, TVA, rotunjire pret.",
+    "entry": "Besoiu\\Modules\\AdaosComercial\\AdaosComercialModule",
+    "dependencies": ["produse"],
+    "permissions": [
+        "module.adaos_comercial",
+        "adaos_comercial.manage"
+    ],
+    "workspace": "suppliers",
+    "nav_section": {
+        "group_label": "PRODUSE"
+    },
+    "nav": [{"id":"adaos-comercial","label":"Adaos comercial","href":"/admin/adaoscomercial","icon":"badge-percent","group":"PRODUSE"}],
+    "provides": {"folder":"adaos_comercial","slugs":["adaoscomercial","adaos-comercial"],"paths":["/admin/adaoscomercial","/admin/adaos-comercial","/admin/public/adaoscomercial","/admin/crudadaoscomercial","/admin/public/crudadaoscomercial","/admin/public/api/adaos_comercial_endpoint.php"],"crud_key":"adaos_comercial","api_scripts":["adaos_comercial_endpoint.php"],"quick_actions":["adaoscomercial"]},
+    "migrations": []
+}

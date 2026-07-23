@@ -1,0 +1,132 @@
+{
+    "title": "Categorii secundare Besoiu",
+    "source": "categorii_tree_final.xlsx",
+    "exported_at": "2026-07-18T06:10:43+00:00",
+    "items": [
+        {
+            "art_name": "senzor,turatie roata",
+            "category_tree_id": 287,
+            "category_name": "Frânare"
+        },
+        {
+            "art_name": "Sonda Lambda",
+            "category_tree_id": 434,
+            "category_name": "Electrică și senzori > Senzori admisie \/ evacuare"
+        },
+        {
+            "art_name": "Senzor, temperatura gaze evacuare",
+            "category_tree_id": 175,
+            "category_name": "Evacuare"
+        },
+        {
+            "art_name": "Senzor, presiune gaze evacuare",
+            "category_tree_id": 175,
+            "category_name": "Evacuare"
+        },
+        {
+            "art_name": "Senzor NOx, Catalizator NOx",
+            "category_tree_id": 175,
+            "category_name": "Evacuare"
+        },
+        {
+            "art_name": "Senzor particule",
+            "category_tree_id": 175,
+            "category_name": "Evacuare"
+        },
+        {
+            "art_name": "Senzor NOx, injectie aditiv",
+            "category_tree_id": 109,
+            "category_name": "Alimentare combustibil > AdBlue \/ aditivi regenerare"
+        },
+        {
+            "art_name": "senzor,temperatura lichid de racire",
+            "category_tree_id": 200,
+            "category_name": "Răcire motor"
+        },
+        {
+            "art_name": "senzor,nivel lichid de racire",
+            "category_tree_id": 460,
+            "category_name": "Electrică și senzori > Senzori motor"
+        },
+        {
+            "art_name": "Senzor, presiune galerie admisie",
+            "category_tree_id": 144,
+            "category_name": "Admisie aer și turbo > Admisie"
+        },
+        {
+            "art_name": "senzor,presiune supraalimentare",
+            "category_tree_id": 166,
+            "category_name": "Admisie aer și turbo > Turbo și intercooler"
+        },
+        {
+            "art_name": "Senzor, pedala acceleratie",
+            "category_tree_id": 117,
+            "category_name": "Alimentare combustibil > Comandă accelerație"
+        },
+        {
+            "art_name": "releu,instalatia de comanda bujii incandescente",
+            "category_tree_id": 225,
+            "category_name": "Aprindere"
+        },
+        {
+            "art_name": "unitate de control,bujii incandescente",
+            "category_tree_id": 428,
+            "category_name": "Electrică și senzori > Module și unități control"
+        },
+        {
+            "art_name": "Arc spirala, Airbag",
+            "category_tree_id": 428,
+            "category_name": "Electrică și senzori > Module și unități control"
+        },
+        {
+            "art_name": "Comutator lumini frana",
+            "category_tree_id": 482,
+            "category_name": "Iluminare > Comutatoare iluminare"
+        },
+        {
+            "art_name": "Comutator, actionare ambreiaj (Tempomat)",
+            "category_tree_id": 418,
+            "category_name": "Electrică și senzori > Comutatoare și contacte"
+        },
+        {
+            "art_name": "Senzor pozitie pedala de frana",
+            "category_tree_id": 448,
+            "category_name": "Electrică și senzori > Senzori alți"
+        },
+        {
+            "art_name": "Senzor pozitie pedala de ambreiaj",
+            "category_tree_id": 448,
+            "category_name": "Electrică și senzori > Senzori alți"
+        },
+        {
+            "art_name": "comutator,macara geam",
+            "category_tree_id": 579,
+            "category_name": "Caroserie > Geamuri și macarale"
+        },
+        {
+            "art_name": "pompa de apa,instalatia de incalzire independenta",
+            "category_tree_id": 201,
+            "category_name": "Răcire motor > Pompe apă"
+        },
+        {
+            "art_name": "Pompă de apă suplimentară (circuitul apei de încălzire)",
+            "category_tree_id": 201,
+            "category_name": "Răcire motor > Pompe apă"
+        },
+        {
+            "art_name": "Schimbator caldura, incalzire habitaclu",
+            "category_tree_id": 206,
+            "category_name": "Răcire motor > Radiatoare"
+        },
+        {
+            "art_name": "furtun încălzire",
+            "category_tree_id": 206,
+            "category_name": "Răcire motor > Radiatoare"
+        },
+        {
+            "art_name": "Bujie incandescenta, incalzire auxiliara",
+            "category_tree_id": 225,
+            "category_name": "Aprindere"
+        }
+    ]
+}

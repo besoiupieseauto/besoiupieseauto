@@ -1,0 +1,147 @@
+{
+    "search_streaks": {
+        "oem:26060BR00A": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-14T10:29:58+00:00"
+        },
+        "oem:2012320152": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-14T10:30:09+00:00"
+        },
+        "oem:0580313117": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-15T08:34:01+00:00"
+        },
+        "oem:PERIIELECTROMOTORVALEO": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-15T13:15:27+00:00"
+        },
+        "oem:802648": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-15T14:12:18+00:00"
+        },
+        "oem:A2023303607": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-16T05:42:56+00:00"
+        },
+        "oem:A2023303007": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-16T05:43:17+00:00"
+        },
+        "oem:A2023304807": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-16T05:43:46+00:00"
+        },
+        "oem:2023304807": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-16T05:44:06+00:00"
+        },
+        "vin:VF3DDNFP0DJ552231": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-16T10:56:00+00:00"
+        },
+        "oem:9683750580": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-16T10:57:09+00:00"
+        },
+        "oem:COMPRESOR": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-18T06:13:17+00:00"
+        },
+        "oem:0580314016": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-18T10:51:51+00:00"
+        },
+        "oem:CRLIGREMORCAREBMWX3E83": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-18T14:50:07+00:00"
+        },
+        "oem:CRLIGREMORCAREBMWX3": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-18T14:50:39+00:00"
+        },
+        "oem:CRLIGREMORCAREBMW": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-18T14:50:45+00:00"
+        },
+        "oem:CRLIGREMORCARE": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-18T14:50:49+00:00"
+        },
+        "oem:BMWX3": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-18T14:51:02+00:00"
+        },
+        "oem:X3E83": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-19T06:23:37+00:00"
+        },
+        "oem:2182E2": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-20T07:17:35+00:00"
+        },
+        "oem:9683750480": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-20T07:17:57+00:00"
+        },
+        "oem:09C17411": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-20T10:37:56+00:00"
+        },
+        "vin:WDD1690311J875947": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-20T10:38:08+00:00"
+        },
+        "oem:WDB1240401C2712183": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-21T07:33:47+00:00"
+        },
+        "oem:STOP": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-21T12:21:23+00:00"
+        },
+        "oem:6X0959455A": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-22T09:17:26+00:00"
+        },
+        "oem:KIASPORTAGE": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-22T10:22:30+00:00"
+        },
+        "vin:KNEJE55155K073926": {
+            "found": 0,
+            "not_found": 1,
+            "last_not_found_at": "2026-07-22T10:22:57+00:00"
+        }
+    },
+    "resolved": [],
+    "admin_counts": [],
+    "updated_at": "2026-07-22T10:22:57+00:00"
+}

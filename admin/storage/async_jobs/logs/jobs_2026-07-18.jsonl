@@ -1,0 +1,2 @@
+{"ts":"2026-07-18T06:53:19+00:00","event":"job_created","pid":10940,"context":{"job_id":"469e767f-7ee1-4443-8823-ebfa661e4816","type":"tecdoc.merge","queue":"tecdoc","priority":"normal"}}
+{"ts":"2026-07-18T13:12:18+00:00","event":"job_created","pid":10940,"context":{"job_id":"2e1c4805-c78f-46d3-b1e0-ec86e3b38afc","type":"import.queue_row_action","queue":"import","priority":"normal"}}

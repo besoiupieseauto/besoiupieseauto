@@ -1,0 +1,87 @@
+{
+    "id": "import",
+    "name": "Import produse",
+    "version": "1.2.0",
+    "type": "optional",
+    "enabled": false,
+    "description": "DEPRECATED — înlocuit de import_pro (/admin/import-pro). Păstrat doar ca referință; nu activa.",
+    "entry": "Besoiu\\Modules\\Import\\ImportModule",
+    "dependencies": ["coada_import", "produse"],
+    "permissions": [
+        "produse.import",
+        "module.import"
+    ],
+    "workspace": "suppliers",
+    "nav_section": {
+        "group_label": "IMPORT"
+    },
+    "nav": [
+        {
+            "id": "import-system",
+            "label": "Import System",
+            "href": "/admin/import-system",
+            "icon": "cpu",
+            "group": "IMPORT"
+        },
+        {
+            "id": "import-cards",
+            "label": "Produse generate",
+            "href": "/admin/import-cards",
+            "icon": "layout-grid",
+            "group": "IMPORT"
+        },
+        {
+            "id": "import-bovsoft",
+            "label": "Base TecDoc",
+            "href": "/admin/import-bovsoft",
+            "icon": "database",
+            "group": "IMPORT"
+        },
+        {
+            "id": "import",
+            "label": "Import CSV / Excel",
+            "href": "/admin/import",
+            "icon": "upload",
+            "group": "IMPORT"
+        }
+    ],
+    "provides": {
+        "folder": "import",
+        "slugs": [
+            "import-system",
+            "import-cards",
+            "import-bovsoft",
+            "import",
+            "importproduse"
+        ],
+        "paths": [
+            "/admin/import-system",
+            "/admin/public/import-system",
+            "/admin/import-cards",
+            "/admin/public/import-cards",
+            "/admin/import-bovsoft",
+            "/admin/public/import-bovsoft",
+            "/admin/import",
+            "/admin/public/import",
+            "/admin/importproduse",
+            "/admin/public/importproduse",
+            "/admin/public/bovsoft-import",
+            "/admin/public/api/import_endpoint.php",
+            "/admin/public/api/import_bridge_endpoint.php",
+            "/admin/public/api/supplier_sync_endpoint.php"
+        ],
+        "crud_key": "import",
+        "api_scripts": [
+            "import_endpoint.php",
+            "import_bridge_endpoint.php",
+            "supplier_sync_endpoint.php"
+        ],
+        "quick_actions": [
+            "import-system",
+            "import-cards",
+            "import-bovsoft",
+            "import"
+        ]
+    },
+    "migrations": []
+}

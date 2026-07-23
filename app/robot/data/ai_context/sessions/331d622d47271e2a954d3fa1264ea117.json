@@ -1,0 +1,63 @@
+{
+    "session_id": "cmrltpnwdga0luceu",
+    "updated_at": "2026-07-15T08:34:18+00:00",
+    "first_seen_at": "2026-07-15T08:33:49+00:00",
+    "last_page": "\/catalog",
+    "pages": [
+        "\/",
+        "\/catalog"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-15T08:33:49+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-15T08:34:01+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-15T08:34:01+00:00",
+            "action": "search",
+            "subject": "0580313117"
+        },
+        {
+            "at": "2026-07-15T08:34:01+00:00",
+            "action": "scroll",
+            "subject": "25% · \/"
+        },
+        {
+            "at": "2026-07-15T08:34:09+00:00",
+            "action": "search",
+            "subject": "0 580 313 117"
+        },
+        {
+            "at": "2026-07-15T08:34:15+00:00",
+            "action": "time_on_page",
+            "subject": "29s pe \/"
+        },
+        {
+            "at": "2026-07-15T08:34:16+00:00",
+            "action": "time_on_page",
+            "subject": "29s pe \/"
+        },
+        {
+            "at": "2026-07-15T08:34:18+00:00",
+            "action": "page_view",
+            "subject": "\/catalog"
+        },
+        {
+            "at": "2026-07-15T08:34:18+00:00",
+            "action": "scroll",
+            "subject": "25% · \/catalog"
+        }
+    ],
+    "event_count": 9,
+    "intent": "browse",
+    "searches": [
+        "0580313117",
+        "0 580 313 117"
+    ]
+}

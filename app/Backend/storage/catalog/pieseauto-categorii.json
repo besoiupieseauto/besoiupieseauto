@@ -1,0 +1,459 @@
+{
+    "source": "https:\/\/www.pieseauto.ro\/catalog-piese-auto\/",
+    "title": "Catalog piese auto",
+    "categories": [
+        {
+            "name": "Admisie aer și turbo",
+            "href": "https:\/\/www.pieseauto.ro\/admisie-aer-si-turbo-143\/",
+            "title": "Admisie aer și turbo",
+            "slug": "admisie-aer-si-turbo-143",
+            "count": 0,
+            "items": [],
+            "db_id": 4388,
+            "source": "besoiu_tree",
+            "tecdoc_id": null
+        },
+        {
+            "name": "Alimentare combustibil",
+            "href": "https:\/\/www.pieseauto.ro\/alimentare-combustibil-108\/",
+            "title": "Alimentare combustibil",
+            "slug": "alimentare-combustibil-108",
+            "count": 0,
+            "items": [],
+            "db_id": 4387,
+            "source": "besoiu_tree",
+            "tecdoc_id": null
+        },
+        {
+            "name": "Ambreiaj",
+            "href": "https:\/\/www.pieseauto.ro\/ambreiaj-273\/",
+            "title": "Ambreiaj",
+            "slug": "ambreiaj-273",
+            "count": 10,
+            "items": [
+                {
+                    "name": "Cablu ambreiaj",
+                    "href": "https:\/\/www.pieseauto.ro\/cablu-ambreiaj-284\/",
+                    "title": "Cablu ambreiaj",
+                    "slug": "cablu-ambreiaj-284",
+                    "db_id": 4508,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                },
+                {
+                    "name": "Cilindru receptor ambreiaj",
+                    "href": "https:\/\/www.pieseauto.ro\/cilindru-receptor-ambreiaj-279\/",
+                    "title": "Cilindru receptor ambreiaj",
+                    "slug": "cilindru-receptor-ambreiaj-279",
+                    "db_id": 4463,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                },
+                {
+                    "name": "Comutator, acționare ambreiaj (Tempomat)",
+                    "href": "https:\/\/www.pieseauto.ro\/comutator-actionare-ambreiaj-tempomat-282\/",
+                    "title": "Comutator, acționare ambreiaj (Tempomat)",
+                    "slug": "comutator-actionare-ambreiaj-tempomat-282",
+                    "db_id": 4498,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                },
+                {
+                    "name": "Kit de modificare, ambreiaj",
+                    "href": "https:\/\/www.pieseauto.ro\/kit-de-modificare-ambreiaj-285\/",
+                    "title": "Kit de modificare, ambreiaj",
+                    "slug": "kit-de-modificare-ambreiaj-285",
+                    "db_id": 4511,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                },
+                {
+                    "name": "Pompă centrală, ambreiaj",
+                    "href": "https:\/\/www.pieseauto.ro\/pompa-centrala-ambreiaj-277\/",
+                    "title": "Pompă centrală, ambreiaj",
+                    "slug": "pompa-centrala-ambreiaj-277",
+                    "db_id": 4429,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                },
+                {
+                    "name": "Rulment de presiune",
+                    "href": "https:\/\/www.pieseauto.ro\/rulment-de-presiune-281\/",
+                    "title": "Rulment de presiune",
+                    "slug": "rulment-de-presiune-281",
+                    "db_id": 4490,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                },
+                {
+                    "name": "Rulment de presiune, ambreiaj",
+                    "href": "https:\/\/www.pieseauto.ro\/rulment-de-presiune-ambreiaj-280\/",
+                    "title": "Rulment de presiune, ambreiaj",
+                    "slug": "rulment-de-presiune-ambreiaj-280",
+                    "db_id": 4478,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                },
+                {
+                    "name": "Rulment priză directă, ambreiaj",
+                    "href": "https:\/\/www.pieseauto.ro\/rulment-priza-directa-ambreiaj-283\/",
+                    "title": "Rulment priză directă, ambreiaj",
+                    "slug": "rulment-priza-directa-ambreiaj-283",
+                    "db_id": 4504,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                },
+                {
+                    "name": "Senzor poziție pedală de ambreiaj",
+                    "href": "https:\/\/www.pieseauto.ro\/senzor-pozitie-pedala-de-ambreiaj-286\/",
+                    "title": "Senzor poziție pedală de ambreiaj",
+                    "slug": "senzor-pozitie-pedala-de-ambreiaj-286",
+                    "db_id": 4513,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                },
+                {
+                    "name": "Set ambreiaj",
+                    "href": "https:\/\/www.pieseauto.ro\/set-ambreiaj-278\/",
+                    "title": "Set ambreiaj",
+                    "slug": "set-ambreiaj-278",
+                    "db_id": 4447,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                }
+            ],
+            "db_id": 4393,
+            "source": "besoiu_tree",
+            "tecdoc_id": null
+        },
+        {
+            "name": "Aprindere",
+            "href": "https:\/\/www.pieseauto.ro\/aprindere-225\/",
+            "title": "Aprindere",
+            "slug": "aprindere-225",
+            "count": 5,
+            "items": [
+                {
+                    "name": "Bobină de inducție",
+                    "href": "https:\/\/www.pieseauto.ro\/bobina-de-inductie-226\/",
+                    "title": "Bobină de inducție",
+                    "slug": "bobina-de-inductie-226",
+                    "db_id": 4409,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                },
+                {
+                    "name": "Bujie incandescentă",
+                    "href": "https:\/\/www.pieseauto.ro\/bujie-incandescenta-228\/",
+                    "title": "Bujie incandescentă",
+                    "slug": "bujie-incandescenta-228",
+                    "db_id": 4445,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                },
+                {
+                    "name": "Bujii",
+                    "href": "https:\/\/www.pieseauto.ro\/bujii-227\/",
+                    "title": "Bujii",
+                    "slug": "bujii-227",
+                    "db_id": 4427,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                },
+                {
+                    "name": "Set cablaj aprindere",
+                    "href": "https:\/\/www.pieseauto.ro\/set-cablaj-aprinder-230\/",
+                    "title": "Set cablaj aprindere",
+                    "slug": "set-cablaj-aprinder-230",
+                    "db_id": 4476,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                },
+                {
+                    "name": "Unitate de control, bujii incandescente",
+                    "href": "https:\/\/www.pieseauto.ro\/unitate-de-control-bujii-incandescente-229\/",
+                    "title": "Unitate de control, bujii incandescente",
+                    "slug": "unitate-de-control-bujii-incandescente-229",
+                    "db_id": 4461,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                }
+            ],
+            "db_id": 4391,
+            "source": "besoiu_tree",
+            "tecdoc_id": null
+        },
+        {
+            "name": "Caroserie",
+            "href": "https:\/\/www.pieseauto.ro\/caroserie-546\/",
+            "title": "Caroserie",
+            "slug": "caroserie-546",
+            "count": 0,
+            "items": [],
+            "db_id": 4401,
+            "source": "besoiu_tree",
+            "tecdoc_id": null
+        },
+        {
+            "name": "Climatizare și încălzire",
+            "href": "https:\/\/www.pieseauto.ro\/climatizare-si-incalzire-512\/",
+            "title": "Climatizare și încălzire",
+            "slug": "climatizare-si-incalzire-512",
+            "count": 0,
+            "items": [],
+            "db_id": 4400,
+            "source": "besoiu_tree",
+            "tecdoc_id": null
+        },
+        {
+            "name": "Direcție",
+            "href": "https:\/\/www.pieseauto.ro\/directie-327\/",
+            "title": "Direcție",
+            "slug": "directie-327",
+            "count": 1,
+            "items": [
+                {
+                    "name": "Blocaj volan",
+                    "href": "https:\/\/www.pieseauto.ro\/blocaj-volan-347\/",
+                    "title": "Blocaj volan",
+                    "slug": "blocaj-volan-347",
+                    "db_id": 4465,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                }
+            ],
+            "db_id": 4395,
+            "source": "besoiu_tree",
+            "tecdoc_id": null
+        },
+        {
+            "name": "Electrică și senzori",
+            "href": "https:\/\/www.pieseauto.ro\/electrica-si-senzori-408\/",
+            "title": "Electrică și senzori",
+            "slug": "electrica-si-senzori-408",
+            "count": 0,
+            "items": [],
+            "db_id": 4398,
+            "source": "besoiu_tree",
+            "tecdoc_id": null
+        },
+        {
+            "name": "Evacuare",
+            "href": "https:\/\/www.pieseauto.ro\/evacuare-175\/",
+            "title": "Evacuare",
+            "slug": "evacuare-175",
+            "count": 2,
+            "items": [
+                {
+                    "name": "Convertor presiune, eșapament",
+                    "href": "https:\/\/www.pieseauto.ro\/convertor-presiune-esapament-199\/",
+                    "title": "Convertor presiune, eșapament",
+                    "slug": "convertor-presiune-esapament-199",
+                    "db_id": 4497,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                },
+                {
+                    "name": "Sondă Lambda",
+                    "href": "https:\/\/www.pieseauto.ro\/sonda-lambda-198\/",
+                    "title": "Sondă Lambda",
+                    "slug": "sonda-lambda-198",
+                    "db_id": 4487,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                }
+            ],
+            "db_id": 4389,
+            "source": "besoiu_tree",
+            "tecdoc_id": null
+        },
+        {
+            "name": "Filtre",
+            "href": "https:\/\/www.pieseauto.ro\/filtre-1\/",
+            "title": "Filtre",
+            "slug": "filtre-1",
+            "count": 4,
+            "items": [
+                {
+                    "name": "Filtru aer",
+                    "href": "https:\/\/www.pieseauto.ro\/filtru-aer-4\/",
+                    "title": "Filtru aer",
+                    "slug": "filtru-aer-4",
+                    "db_id": 4439,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                },
+                {
+                    "name": "Filtru combustibil",
+                    "href": "https:\/\/www.pieseauto.ro\/filtru-combustibil-5\/",
+                    "title": "Filtru combustibil",
+                    "slug": "filtru-combustibil-5",
+                    "db_id": 4456,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                },
+                {
+                    "name": "Filtru ulei",
+                    "href": "https:\/\/www.pieseauto.ro\/filtru-ulei-3\/",
+                    "title": "Filtru ulei",
+                    "slug": "filtru-ulei-3",
+                    "db_id": 4421,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                },
+                {
+                    "name": "Filtru, aer habitaclu",
+                    "href": "https:\/\/www.pieseauto.ro\/filtru-aer-habitaclu-2\/",
+                    "title": "Filtru, aer habitaclu",
+                    "slug": "filtru-aer-habitaclu-2",
+                    "db_id": 4403,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                }
+            ],
+            "db_id": 4385,
+            "source": "besoiu_tree",
+            "tecdoc_id": null
+        },
+        {
+            "name": "Frânare",
+            "href": "https:\/\/www.pieseauto.ro\/franare-287\/",
+            "title": "Frânare",
+            "slug": "franare-287",
+            "count": 1,
+            "items": [
+                {
+                    "name": "Vas de expansiune, lichid frână",
+                    "href": "https:\/\/www.pieseauto.ro\/vas-de-expansiune-lichid-frana-326\/",
+                    "title": "Vas de expansiune, lichid frână",
+                    "slug": "vas-de-expansiune-lichid-frana-326",
+                    "db_id": 4499,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                }
+            ],
+            "db_id": 4394,
+            "source": "besoiu_tree",
+            "tecdoc_id": null
+        },
+        {
+            "name": "Iluminare",
+            "href": "https:\/\/www.pieseauto.ro\/iluminare-481\/",
+            "title": "Iluminare",
+            "slug": "iluminare-481",
+            "count": 0,
+            "items": [],
+            "db_id": 4399,
+            "source": "besoiu_tree",
+            "tecdoc_id": null
+        },
+        {
+            "name": "Motor",
+            "href": "https:\/\/www.pieseauto.ro\/motor-6\/",
+            "title": "Motor",
+            "slug": "motor-6",
+            "count": 0,
+            "items": [],
+            "db_id": 4386,
+            "source": "besoiu_tree",
+            "tecdoc_id": null
+        },
+        {
+            "name": "Roți și butuci",
+            "href": "https:\/\/www.pieseauto.ro\/roti-si-butuci-395\/",
+            "title": "Roți și butuci",
+            "slug": "roti-si-butuci-395",
+            "count": 2,
+            "items": [
+                {
+                    "name": "Jantă",
+                    "href": "https:\/\/www.pieseauto.ro\/janta-407\/",
+                    "title": "Jantă",
+                    "slug": "janta-407",
+                    "db_id": 4467,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                },
+                {
+                    "name": "Senzor, sistem de control al presiunii pneuri",
+                    "href": "https:\/\/www.pieseauto.ro\/senzor-sistem-de-control-al-presiunii-pneuri-406\/",
+                    "title": "Senzor, sistem de control al presiunii pneuri",
+                    "slug": "senzor-sistem-de-control-al-presiunii-pneuri-406",
+                    "db_id": 4451,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                }
+            ],
+            "db_id": 4397,
+            "source": "besoiu_tree",
+            "tecdoc_id": null
+        },
+        {
+            "name": "Răcire motor",
+            "href": "https:\/\/www.pieseauto.ro\/racire-motor-200\/",
+            "title": "Răcire motor",
+            "slug": "racire-motor-200",
+            "count": 1,
+            "items": [
+                {
+                    "name": "Senzor, nivel lichid de răcire",
+                    "href": "https:\/\/www.pieseauto.ro\/senzor-nivel-lichid-de-racire-224\/",
+                    "title": "Senzor, nivel lichid de răcire",
+                    "slug": "senzor-nivel-lichid-de-racire-224",
+                    "db_id": 4488,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                }
+            ],
+            "db_id": 4390,
+            "source": "besoiu_tree",
+            "tecdoc_id": null
+        },
+        {
+            "name": "Suspensie",
+            "href": "https:\/\/www.pieseauto.ro\/suspensie-348\/",
+            "title": "Suspensie",
+            "slug": "suspensie-348",
+            "count": 0,
+            "items": [],
+            "db_id": 4396,
+            "source": "besoiu_tree",
+            "tecdoc_id": null
+        },
+        {
+            "name": "Transmisie",
+            "href": "https:\/\/www.pieseauto.ro\/transmisie-231\/",
+            "title": "Transmisie",
+            "slug": "transmisie-231",
+            "count": 1,
+            "items": [
+                {
+                    "name": "Pompă, cuplaj lamelar (tracțiune integrală)",
+                    "href": "https:\/\/www.pieseauto.ro\/pompa-cuplaj-lamelar-tractiune-integrala-272\/",
+                    "title": "Pompă, cuplaj lamelar (tracțiune integrală)",
+                    "slug": "pompa-cuplaj-lamelar-tractiune-integrala-272",
+                    "db_id": 4489,
+                    "source": "besoiu_tree",
+                    "tecdoc_id": null
+                }
+            ],
+            "db_id": 4392,
+            "source": "besoiu_tree",
+            "tecdoc_id": null
+        },
+        {
+            "name": "Ștergere și spălare",
+            "href": "https:\/\/www.pieseauto.ro\/stergere-si-spalare-614\/",
+            "title": "Ștergere și spălare",
+            "slug": "stergere-si-spalare-614",
+            "count": 0,
+            "items": [],
+            "db_id": 4402,
+            "source": "besoiu_tree",
+            "tecdoc_id": null
+        }
+    ],
+    "total_categories": 18,
+    "total_subcategories": 27,
+    "parsed_at": ""
+}

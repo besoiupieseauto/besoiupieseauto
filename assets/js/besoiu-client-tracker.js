@@ -1,0 +1,363 @@
+/**
+ * Besoiu — tracking evenimente AI Intelligence (magazin).
+ * Trimite semnale agregabile via sendBeacon → POST /api/events (coadă Redis, fără blocare UI).
+ */
+(function () {
+  'use strict';
+
+  if (window.__besoiuEventTracker) return;
+  window.__besoiuEventTracker = true;
+
+  var ENDPOINT = '/api/events';
+  var FLUSH_MS = 2500;
+  var SCROLL_STEPS = [25, 50, 75, 100];
+  var ALLOWED = {
+    page_view: true,
+    search_query: true,
+    search_result_click: true,
+    product_view: true,
+    add_to_cart: true,
+    purchase: true,
+    recommendation_click: true,
+    filter_applied: true,
+    ui_click: true
+  };
+
+  var queue = [];
+  var flushTimer = null;
+  var pageStart = Date.now();
+  var scrollMarks = {};
+  var sessionId = '';
+
+  function uuid() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0;
+      var v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
+  function sid() {
+    if (sessionId) return sessionId;
+    try {
+      sessionId = localStorage.getItem('besoiu_intel_sid') || localStorage.getItem('besoiu_client_sid') || '';
+      if (!sessionId || sessionId.length > 36) {
+        sessionId = uuid();
+        localStorage.setItem('besoiu_intel_sid', sessionId);
+      }
+    } catch (e) {
+      sessionId = uuid();
+    }
+    return sessionId;
+  }
+
+  function pagePath() {
+    return window.location.pathname + window.location.search;
+  }
+
+  function pageTitle() {
+    return (document.title || '').slice(0, 120);
+  }
+
+  function hashKey(prefix, value) {
+    var v = String(value || '').toLowerCase().trim();
+    if (!v) return prefix + '_unknown';
+    var h = 0;
+    for (var i = 0; i < v.length; i++) h = ((h << 5) - h + v.charCodeAt(i)) | 0;
+    return prefix + '_' + Math.abs(h).toString(36);
+  }
+
+  function track(eventType, entityType, entityId, metadata) {
+    if (!ALLOWED[eventType]) return;
+    queue.push({
+      event_type: eventType,
+      entity_type: entityType || null,
+      entity_id: entityId || null,
+      metadata: metadata || {},
+      ts: new Date().toISOString()
+    });
+    scheduleFlush();
+  }
+
+  function scheduleFlush() {
+    if (flushTimer) return;
+    flushTimer = setTimeout(flush, FLUSH_MS);
+  }
+
+  function clientContext() {
+    var lang = (navigator.language || '').slice(0, 16);
+    var tz = '';
+    try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) { /* */ }
+    var screen = window.screen ? (window.screen.width + 'x' + window.screen.height) : '';
+    var platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '';
+    return {
+      timezone: tz,
+      language: lang,
+      screen: screen,
+      platform: String(platform).slice(0, 80),
+      referrer: (document.referrer || '').slice(0, 180)
+    };
+  }
+
+  function flush(useBeacon) {
+    flushTimer = null;
+    if (!queue.length) return;
+
+    var batch = queue.splice(0, 40);
+    var body = JSON.stringify({
+      session_id: sid(),
+      user_id: null,
+      source: 'web',
+      client_context: clientContext(),
+      events: batch
+    });
+
+    if (useBeacon && navigator.sendBeacon) {
+      try {
+        navigator.sendBeacon(ENDPOINT, new Blob([body], { type: 'application/json' }));
+      } catch (e) { /* ignore */ }
+      return;
+    }
+
+    fetch(ENDPOINT, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: body,
+      keepalive: true
+    }).catch(function () { /* silent */ });
+  }
+
+  function scrollDepth() {
+    var doc = document.documentElement;
+    var scrollTop = window.pageYOffset || doc.scrollTop || 0;
+    var height = Math.max(doc.scrollHeight, doc.offsetHeight) - window.innerHeight;
+    if (height <= 0) return 100;
+    return Math.min(100, Math.round((scrollTop / height) * 100));
+  }
+
+  function bindScroll() {
+    var ticking = false;
+    window.addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        ticking = false;
+        var depth = scrollDepth();
+        SCROLL_STEPS.forEach(function (step) {
+          if (depth >= step && !scrollMarks[step]) scrollMarks[step] = true;
+        });
+      });
+    }, { passive: true });
+  }
+
+  function productFromCard(el) {
+    var card = el.closest('._product-card, .product-card, [data-product-id]');
+    if (!card) return null;
+    var nameEl = card.querySelector('._product-card-title, .product-title, h3, h4');
+    var name = nameEl ? (nameEl.textContent || '').trim() : '';
+    var id = card.getAttribute('data-product-id') || '';
+    var oem = card.querySelector('[data-oem], .oem, ._product-oem');
+    return { name: name, id: id, oem: oem ? (oem.textContent || '').trim() : '' };
+  }
+
+  function elementDescriptor(el) {
+    if (!el || !el.tagName) return null;
+    var tag = el.tagName.toLowerCase();
+    var text = (el.innerText || el.textContent || el.getAttribute('aria-label') || '').replace(/\s+/g, ' ').trim();
+    if (text.length > 80) text = text.slice(0, 80);
+    var href = el.getAttribute('href') || '';
+    var id = el.id || '';
+    var cls = (el.className && typeof el.className === 'string') ? el.className.split(/\s+/).slice(0, 3).join('.') : '';
+    var selector = tag + (id ? '#' + id : '') + (cls ? '.' + cls : '');
+    return { tag: tag, text: text, href: href, selector: selector };
+  }
+
+  function bindUiClicks() {
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      if (!t || !t.closest) return;
+      if (t.closest('.btn_addtoccard, .add-cart, .prod-add-cart')) return;
+      if (t.closest('.product_detal, ._product-card-title a, .related-card, [data-recommendation-slot]')) return;
+
+      var el = t.closest('a, button, [role="button"], input[type="submit"], .ai-hub-btn, .catalog-search-btn, nav a');
+      if (!el) return;
+      var desc = elementDescriptor(el);
+      if (!desc || (!desc.text && !desc.href)) return;
+
+      track('ui_click', 'ui', hashKey('ui', desc.selector + desc.href + desc.text), {
+        tag: desc.tag,
+        element_text: desc.text,
+        href: desc.href,
+        selector: desc.selector,
+        page: pagePath()
+      });
+    }, true);
+  }
+
+  function bindClicks() {
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      if (!t || !t.closest) return;
+      if (t.closest('.btn_addtoccard, .add-cart')) return;
+
+      var det = t.closest('.product_detal, ._product-card-title a, .product-card a');
+      if (det) {
+        var p = productFromCard(det);
+        if (p && p.id) {
+          track('search_result_click', 'product', p.id, {
+            subject: p.name,
+            sku: p.oem || '',
+            page: pagePath()
+          });
+        }
+        return;
+      }
+
+      var reco = t.closest('[data-recommendation-slot], .related-card[data-product-id]');
+      if (reco) {
+        var pr = productFromCard(reco);
+        if (!pr || !pr.id) {
+          pr = {
+            id: reco.getAttribute('data-product-id') || '',
+            name: (reco.querySelector('.card-name, ._product-card-name') || {}).textContent || '',
+            oem: ''
+          };
+        }
+        if (pr && pr.id) {
+          track('recommendation_click', 'product', pr.id, {
+            recommendation_slot: reco.getAttribute('data-recommendation-slot') || 'related',
+            subject: pr.name
+          });
+        }
+      }
+    }, true);
+  }
+
+  function bindSearch() {
+    document.addEventListener('click', function (e) {
+      var btn = e.target && e.target.closest ? e.target.closest('#_home-search-btn, .catalog-search-btn, [data-search-submit]') : null;
+      if (!btn) return;
+      var form = btn.closest('form') || document;
+      var input = form.querySelector('#_home-product-name, [type="search"], input[name="q"]');
+      var q = input ? (input.value || '').trim() : '';
+      if (q) {
+        track('search_query', 'search', hashKey('q', q), {
+          query: q,
+          query_normalized: q.toLowerCase(),
+          source: btn.id || 'search_btn'
+        });
+      }
+    }, true);
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter') return;
+      var input = e.target;
+      if (!input || !input.matches || !input.matches('#_home-product-name, [type="search"]')) return;
+      var q = (input.value || '').trim();
+      if (q) {
+        track('search_query', 'search', hashKey('q', q), {
+          query: q,
+          query_normalized: q.toLowerCase(),
+          source: 'enter'
+        });
+      }
+    });
+  }
+
+  function trackProductPage() {
+    var details = document.querySelector('.prod-details[data-product-id], .product-single-details[data-product-id]');
+    if (!details) return;
+    var titleEl = document.querySelector('.product-title, h1.product-title');
+    var title = titleEl ? (titleEl.textContent || '').trim() : '';
+    var pid = details.getAttribute('data-product-id') || '';
+    if (!pid) return;
+    track('product_view', 'product', pid, {
+      subject: title,
+      page: pagePath()
+    });
+  }
+
+  function trackCartPage() {
+    if (!/\/cart\b/i.test(window.location.pathname)) return;
+    track('page_view', 'page', '/cart', {
+      path: pagePath(),
+      title: pageTitle(),
+      page_kind: 'cart'
+    });
+  }
+
+  function bindCartEvents() {
+    window.addEventListener('besoiu:product-added', function (e) {
+      var p = e.detail || {};
+      var pid = p.product_id || p.id || '';
+      if (!pid) return;
+      track('add_to_cart', 'product', String(pid), {
+        subject: p.product_name || p.name || '',
+        oem: p.oem || '',
+        price_ron: p.price,
+        qty: p.quantity || 1
+      });
+    });
+
+    window.addEventListener('besoiu:order-completed', function (e) {
+      var o = e.detail || {};
+      track('purchase', 'order', String(o.order_id || o.id || ''), {
+        order_id: String(o.order_id || o.id || ''),
+        total_ron: o.total,
+        product_ids: o.product_ids || [],
+        item_count: o.item_count || 0
+      });
+    });
+  }
+
+  function bindFilters() {
+    document.addEventListener('change', function (e) {
+      var el = e.target;
+      if (!el || !el.matches) return;
+      if (el.matches('[data-catalog-filter], .catalog-filter, select[name="brand"], select[name="category"]')) {
+        track('filter_applied', 'page', pagePath(), {
+          filter_name: el.name || el.id || 'filter',
+          filter_value: el.value,
+          path: pagePath()
+        });
+      }
+    });
+  }
+
+  function init() {
+    track('page_view', 'page', pagePath(), {
+      path: pagePath(),
+      title: pageTitle(),
+      referrer: (document.referrer || '').slice(0, 180)
+    });
+    trackProductPage();
+    trackCartPage();
+    bindScroll();
+    bindClicks();
+    bindUiClicks();
+    bindSearch();
+    bindCartEvents();
+    bindFilters();
+    window.addEventListener('pagehide', function () {
+      if (Object.keys(scrollMarks).length) {
+        track('page_view', 'page', pagePath(), { scroll_depth: scrollMarks, page_kind: 'scroll_summary' });
+      }
+      flush(true);
+    });
+    window.addEventListener('beforeunload', function () { flush(true); });
+  }
+
+  window.BesoiuIntel = {
+    track: track,
+    flush: function (useBeacon) { flush(!!useBeacon); },
+    sessionId: sid
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();

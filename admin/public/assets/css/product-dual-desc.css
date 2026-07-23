@@ -1,0 +1,64 @@
+/* Descrieri duale produs — admin tabs Website vs Marketplace */
+
+.dual-desc-tabs {
+    width: 100%;
+}
+
+.dual-desc-tabs__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.12);
+    margin-bottom: 1rem;
+}
+
+.dual-desc-tab {
+    appearance: none;
+    border: 1px solid transparent;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    color: rgba(15, 23, 42, 0.65);
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    margin-bottom: -1px;
+    padding: 0.625rem 0.875rem;
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.dual-desc-tab:hover {
+    color: rgba(15, 23, 42, 0.9);
+}
+
+.dual-desc-tab.is-active {
+    background: rgba(59, 130, 246, 0.08);
+    border-color: rgba(59, 130, 246, 0.25);
+    border-bottom-color: rgb(59, 130, 246);
+    color: rgb(29, 78, 216);
+}
+
+.dual-desc-panel[hidden] {
+    display: none !important;
+}
+
+.dual-desc-panel__hint {
+    color: rgba(15, 23, 42, 0.65);
+    font-size: 0.75rem;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+}
+
+.dual-desc-panel textarea {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    min-height: 11rem;
+}
+
+@media (max-width: 767px) {
+    .dual-desc-tab {
+        flex: 1 1 calc(50% - 0.5rem);
+        text-align: center;
+    }
+}

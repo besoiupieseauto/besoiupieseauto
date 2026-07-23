@@ -1,0 +1,106 @@
+{
+
+    "id": "furnizori",
+
+    "name": "Furnizori B2B",
+
+    "version": "1.0.0",
+
+    "type": "optional",
+
+    "enabled": true,
+
+    "description": "Modul plug-in independent (modules/furnizori/). Dezactivare: state.json furnizori=false. CORE păstrează fallback DB pentru import.",
+
+    "entry": "Besoiu\\Modules\\Furnizori\\FurnizoriModule",
+
+    "dependencies": [],
+
+    "permissions": [
+
+        "furnizori.manage",
+
+        "module.furnizori"
+
+    ],
+
+    "workspace": "orders",
+
+    "nav_section": {
+        "group_label": "COMENZI"
+    },
+
+    "nav": [
+        {
+            "id": "furnizori",
+            "label": "Furnizori B2B",
+            "href": "/admin/suppliers",
+            "icon": "truck",
+            "group": "COMENZI"
+        }
+    ],
+
+    "provides": {
+
+        "folder": "furnizori",
+
+        "slugs": [
+
+            "furnizori",
+
+            "suppliers",
+
+            "supplier",
+
+            "addfurnizori",
+
+            "profilefurnizori"
+
+        ],
+
+        "paths": [
+
+            "/admin/furnizori",
+
+            "/admin/suppliers",
+
+            "/admin/supplier",
+
+            "/admin/addfurnizori",
+
+            "/admin/profilefurnizori",
+
+            "/admin/public/furnizori",
+
+            "/admin/public/suppliers",
+
+            "/admin/public/addfurnizori",
+
+            "/admin/public/profilefurnizori",
+
+            "/admin/public/api/furnizori_endpoint.php"
+
+        ],
+
+        "crud_key": "furnizori",
+
+        "api_scripts": [
+
+            "furnizori_endpoint.php"
+
+        ],
+
+        "quick_actions": [
+
+            "suppliers",
+
+            "furnizori"
+
+        ]
+
+    },
+
+    "migrations": []
+
+}
+

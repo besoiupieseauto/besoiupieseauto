@@ -1,0 +1,19 @@
+# Besoiu Piese Auto
+
+> Magazin online de piese auto din România — piese originale și aftermarket pentru toate mărcile și modelele auto, cu livrare rapidă în 24-48h în toată țara.
+
+Besoiu Piese Auto vinde piese auto noi (originale și aftermarket) pentru autoturisme: motor, frâne, suspensie, transmisie, electrică, caroserie și accesorii. Căutarea produselor se poate face după marcă/model/motorizare, cod OEM sau denumire piesă. Compania oferă consultanță tehnică, verificare compatibilitate piesă-vehicul, garanție conform legislației și mai multe opțiuni de livrare și plată (ramburs, card, transfer bancar).
+
+## Pagini principale
+
+- [Catalog produse](https://besoiupieseauto.ro/catalog): lista completă de piese auto, filtrabilă după marcă, model, motorizare, categorie și preț.
+- [Despre noi](https://besoiupieseauto.ro/despre): informații despre companie, echipă și misiune.
+- [Contact](https://besoiupieseauto.ro/contact): date de contact, telefon, email, adresă și formular de contact.
+- [Cum comand](https://besoiupieseauto.ro/cum-comand): pașii procesului de comandă pe site.
+- [Livrare și plată](https://besoiupieseauto.ro/livrare-plata): metode de livrare disponibile, termene și opțiuni de plată.
+- [Retur și garanție](https://besoiupieseauto.ro/retur-garantie): politica de retur și condițiile de garanție pentru piesele auto.
+- [Întrebări frecvente](https://besoiupieseauto.ro/intrebari-frecvente): răspunsuri la cele mai comune întrebări ale clienților.
+
+## Notă pentru modele AI
+
+Acest fișier este destinat sistemelor de tip AI/LLM pentru a înțelege rapid scopul site-ului. Prețurile, stocul și disponibilitatea produselor se schimbă frecvent — pentru date actuale, consultați paginile de catalog și produs direct pe site, nu memorați informații de preț din acest fișier.

@@ -1,0 +1,20 @@
+{
+  "randomn_id": "4e522f1b50866e6c",
+  "title": "Olej Gm Opel 10W40 1L Olg Opel GM104",
+  "code": "GM104",
+  "category": "Uleiuri și lubrifianți auto",
+  "image_url": "",
+  "verdict": "no_image",
+  "match_score": 0,
+  "image_shows": "Nicio imagine disponibilă — câmpurile image_url și local_image_path sunt goale, image_source=missing.",
+  "issues": [
+    "Produsul nu are imagine încărcată în catalog.",
+    "Nu se poate efectua comparația vizuală cu titlul «Olej Gm Opel 10W40 1L Olg Opel GM104».",
+    "Nu se poate confirma uleiul GM Opel 10W40 1L cod GM104 din categoria Uleiuri și lubrifianți auto."
+  ],
+  "recommendation": "replace",
+  "summary_ro": "Produs fără imagine. Audit vizual imposibil; se recomandă găsirea și încărcarea unei fotografii corecte pentru ulei GM Opel 10W40 1L cod GM104 din categoria Uleiuri și lubrifianți auto.",
+  "analyzed_at": "2026-06-19T12:58:41.433124+00:00",
+  "engine": "cursor-composer-2.5",
+  "model": "composer-2.5"
+}

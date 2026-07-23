@@ -1,0 +1,157 @@
+{
+    "generated_at": "2026-07-04T15:06:21+00:00",
+    "products": {
+        "active": 6,
+        "without_image": 6,
+        "categories": 3
+    },
+    "import": {
+        "staging_pending": 50,
+        "conflict_live": 0
+    },
+    "chat": {
+        "escalations_open": 0,
+        "search_miss_top": [
+            {
+                "query_type": "name",
+                "query_value": "piesa_test_smoke_xyz_123",
+                "miss_count": 6,
+                "last_at": "2026-07-04 18:06:03"
+            },
+            {
+                "query_type": "name",
+                "query_value": "filtru",
+                "miss_count": 2,
+                "last_at": "2026-07-02 15:33:03"
+            },
+            {
+                "query_type": "oem",
+                "query_value": "34116761244",
+                "miss_count": 1,
+                "last_at": "2026-07-04 17:45:32"
+            },
+            {
+                "query_type": "oem",
+                "query_value": "A6429050100",
+                "miss_count": 1,
+                "last_at": "2026-06-30 10:51:25"
+            },
+            {
+                "query_type": "oem",
+                "query_value": "SUSPENSIESPATEGOLF5",
+                "miss_count": 1,
+                "last_at": "2026-06-29 13:28:37"
+            },
+            {
+                "query_type": "oem",
+                "query_value": "432000978R",
+                "miss_count": 1,
+                "last_at": "2026-06-29 12:49:03"
+            },
+            {
+                "query_type": "oem",
+                "query_value": "CATALIZATORBOSAL",
+                "miss_count": 1,
+                "last_at": "2026-06-29 07:48:08"
+            },
+            {
+                "query_type": "oem",
+                "query_value": "CATALIZATORBO",
+                "miss_count": 1,
+                "last_at": "2026-06-29 07:48:07"
+            }
+        ],
+        "supervisor": [],
+        "orders_week": 2
+    },
+    "ollama": {
+        "ollama": {
+            "enabled": true,
+            "reachable": true,
+            "model": "qwen2.5:3b",
+            "model_installed": true,
+            "ready": true,
+            "base_url": "http:\/\/127.0.0.1:11434"
+        },
+        "vision": {
+            "enabled": true,
+            "reachable": true,
+            "model": "llava:7b",
+            "model_installed": true,
+            "ready": true,
+            "base_url": "http:\/\/127.0.0.1:11434"
+        },
+        "agents": [
+            {
+                "slug": "agent-imagini",
+                "name": "Agent Imagini",
+                "installed": true,
+                "model": "llava:7b",
+                "ready": true,
+                "vision": true,
+                "task": "agent_imagini",
+                "last_run_at": null
+            },
+            {
+                "slug": "agent-produse",
+                "name": "Agent Produse",
+                "installed": true,
+                "model": "qwen2.5:3b",
+                "ready": true,
+                "vision": false,
+                "task": "agent_produse",
+                "last_run_at": null
+            },
+            {
+                "slug": "agent-clienti",
+                "name": "Agent Clienți",
+                "installed": true,
+                "model": "qwen2.5:3b",
+                "ready": true,
+                "vision": false,
+                "task": "agent_clienti",
+                "last_run_at": null
+            },
+            {
+                "slug": "agent-statistici",
+                "name": "Agent Statistici",
+                "installed": true,
+                "model": "qwen2.5:3b",
+                "ready": true,
+                "vision": false,
+                "task": "agent_statistici",
+                "last_run_at": null
+            }
+        ],
+        "router_mode": "ollama_first",
+        "besoiu_model": {
+            "model_name": "besoiu-llama",
+            "installed": false,
+            "use_enabled": true,
+            "active_for_agents": false,
+            "gguf_found": false,
+            "gguf_path": null,
+            "modelfile_path": "F:\\laragon\\www\\besoiupieseauto.ro\/finetuning\/deploy\/Modelfile",
+            "deploy_dir": "F:\\laragon\\www\\besoiupieseauto.ro\/finetuning\/deploy",
+            "ollama_ready": true,
+            "recommended_env": {
+                "OLLAMA_MODEL": "besoiu-llama",
+                "OLLAMA_MODEL_PRODUSE": "besoiu-llama",
+                "OLLAMA_MODEL_CLIENTI": "besoiu-llama",
+                "OLLAMA_USE_BESOIU_MODEL": "1"
+            }
+        }
+    },
+    "followup": {
+        "chat_followups_pending": 0,
+        "chat_followups_sent_7d": 0,
+        "cart_abandon_open": 0,
+        "whatsapp_sent_log_hits": 0,
+        "whatsapp_configured": false,
+        "whatsapp_send_enabled": false,
+        "sms_configured": false,
+        "sms_followup_enabled": false,
+        "sms_escalation_enabled": false,
+        "sms_sent_log_hits": 0
+    }
+}

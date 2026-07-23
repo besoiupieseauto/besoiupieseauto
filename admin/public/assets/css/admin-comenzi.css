@@ -1,0 +1,991 @@
+/* Besoiu Admin — Comenzi (organic, contrast clar 2026) */
+
+.comenzi-admin-page {
+  --bco-accent: #1a9b6e;
+  --bco-accent2: #0d7a56;
+  --bco-ink: #1a3d2e;
+  --bco-cream: #f6faf7;
+  --bco-border: #d4e8dc;
+  --bco-glow: color-mix(in srgb, var(--bco-accent) 22%, transparent);
+}
+
+/* ── Hero deschis (fără bandă închisă) ── */
+.comenzi-admin-page .bco-page-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  border-radius: 24px;
+  border: 1px solid var(--bco-border);
+  background:
+    radial-gradient(ellipse 80% 100% at 0% 0%, color-mix(in srgb, var(--bco-accent) 12%, #fff), transparent 55%),
+    linear-gradient(165deg, #fff 0%, var(--bco-cream) 100%);
+  box-shadow: 0 12px 40px rgba(26, 61, 46, 0.07);
+  color: var(--bco-ink);
+}
+
+.comenzi-admin-page .bco-page-hero h1 {
+  margin: 10px 0 0;
+  font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--bco-ink) !important;
+}
+
+.comenzi-admin-page .bco-page-hero__subtitle {
+  margin: 10px 0 0;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #5a7a6a;
+  max-width: 38rem;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  background: none !important;
+  padding: 0 !important;
+  opacity: 1 !important;
+}
+
+.comenzi-admin-page .bco-page-hero__subtitle::before {
+  display: none !important;
+}
+
+.comenzi-admin-page .bco-scope-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: linear-gradient(135deg, var(--bco-accent), var(--bco-accent2));
+  color: #fff;
+}
+
+.comenzi-admin-page .bco-page-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.comenzi-admin-page .bco-btn .fa-solid,
+.comenzi-admin-page .bco-btn .fa-regular,
+.comenzi-admin-page .besoiu-action-btn .fa-solid,
+.comenzi-admin-page .bco-act-item .fa-solid,
+.comenzi-admin-page .bco-tag .fa-solid,
+.comenzi-admin-page .bco-tab .fa-solid,
+.comenzi-admin-page .bco-filter-bar__ico.fa-solid,
+.comenzi-admin-page .bco-kpi__icon .fa-solid,
+.comenzi-admin-page .bco-scope-badge .fa-solid,
+.comenzi-admin-page .bco-filter-deck__title .fa-solid {
+  font-size: 0.95em;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.comenzi-admin-page .bco-btn--sm .fa-solid {
+  font-size: 0.88em;
+}
+
+.comenzi-admin-page .bco-tab__icon.fa-solid {
+  font-size: 1rem;
+}
+
+.comenzi-admin-page .bco-filter-bar__ico.fa-solid {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #8aa89a;
+  pointer-events: none;
+  font-size: 0.95rem;
+}
+
+.comenzi-admin-page .bco-filter-deck__title .fa-solid {
+  color: var(--bco-accent);
+}
+
+.comenzi-admin-page .bco-filter-search .fa-solid {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #8aa89a;
+  pointer-events: none;
+}
+
+.comenzi-admin-page .besoiu-action-btn .fa-solid {
+  font-size: 0.9em;
+}
+
+/* ── Butoane universale (text + icon, contrast) ── */
+.comenzi-admin-page .bco-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--bco-border);
+  background: #fff;
+  color: var(--bco-ink);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+  white-space: nowrap;
+}
+
+.comenzi-admin-page .bco-btn--lg {
+  padding: 11px 20px;
+  font-size: 0.85rem;
+}
+
+.comenzi-admin-page .bco-btn--sm {
+  padding: 6px 12px;
+  font-size: 0.72rem;
+  border-radius: 10px;
+}
+
+.comenzi-admin-page .bco-btn--primary {
+  background: linear-gradient(135deg, var(--bco-accent), var(--bco-accent2));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 14px var(--bco-glow);
+}
+
+.comenzi-admin-page .bco-btn--primary:hover {
+  filter: brightness(1.06);
+  color: #fff;
+}
+
+.comenzi-admin-page .bco-btn--outline {
+  background: #fff;
+  border-color: var(--bco-border);
+  color: var(--bco-ink);
+}
+
+.comenzi-admin-page .bco-btn--outline:hover {
+  border-color: var(--bco-accent);
+  color: var(--bco-accent2);
+  background: var(--bco-cream);
+}
+
+.comenzi-admin-page .bco-btn--success {
+  background: #059669;
+  border-color: #059669;
+  color: #fff;
+}
+
+.comenzi-admin-page .bco-btn--success:hover {
+  background: #047857;
+  color: #fff;
+}
+
+.comenzi-admin-page .bco-btn--danger {
+  background: #fff;
+  border-color: #fecaca;
+  color: #dc2626;
+}
+
+.comenzi-admin-page .bco-btn--danger:hover {
+  background: #fef2f2;
+  border-color: #f87171;
+  color: #b91c1c;
+}
+
+/* ── KPI: strict 2×50% (4 carduri în 2 rânduri) ── */
+.comenzi-admin-page .bco-kpi-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 20px;
+}
+
+.comenzi-admin-page .bco-kpi-grid--legacy-thirds {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 768px) {
+  .comenzi-admin-page .bco-kpi-grid,
+  .comenzi-admin-page .bco-kpi-grid--legacy-thirds {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.comenzi-admin-page .bco-kpi {
+  position: relative;
+  padding: 20px;
+  border-radius: 18px;
+  border: 1px solid var(--bco-border);
+  background: #fff;
+  box-shadow: 0 4px 18px rgba(26, 61, 46, 0.05);
+  overflow: hidden;
+}
+
+.comenzi-admin-page .bco-kpi::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--bco-accent), var(--bco-accent2));
+}
+
+.comenzi-admin-page .bco-kpi--amber::after { background: linear-gradient(90deg, #f59e0b, #d97706); }
+.comenzi-admin-page .bco-kpi--sky::after { background: linear-gradient(90deg, #5eead4, #14b8a6); }
+.comenzi-admin-page .bco-kpi--violet::after { background: linear-gradient(90deg, #2dd4bf, #0d9488); }
+
+.comenzi-admin-page .bco-kpi__icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  background: color-mix(in srgb, var(--bco-accent) 12%, #fff);
+  color: var(--bco-accent2);
+}
+
+.comenzi-admin-page .bco-kpi__label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8aa89a;
+}
+
+.comenzi-admin-page .bco-kpi__value {
+  margin-top: 6px;
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--bco-ink);
+  line-height: 1.1;
+}
+
+.comenzi-admin-page .bco-kpi__value--sm {
+  font-size: 1rem;
+}
+
+/* ── Taburi ── */
+.comenzi-admin-page .bco-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px;
+  margin-bottom: 20px;
+  border-radius: 18px;
+  border: 1px solid var(--bco-border);
+  background: var(--bco-cream);
+}
+
+.comenzi-admin-page .bco-tab,
+.comenzi-admin-page .comenzi-tab-btn.bco-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 18px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #5a7a6a;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.comenzi-admin-page .bco-tab__icon {
+  width: 16px;
+  height: 16px;
+}
+
+.comenzi-admin-page .bco-tab:hover,
+.comenzi-admin-page .comenzi-tab-btn.bco-tab:hover {
+  background: #fff;
+  border-color: var(--bco-border);
+  color: var(--bco-ink);
+}
+
+.comenzi-admin-page .bco-tab.is-active,
+.comenzi-admin-page .comenzi-tab-btn.bco-tab.is-active,
+.comenzi-admin-page .comenzi-tab-btn.bco-tab[data-active="1"] {
+  background: linear-gradient(135deg, var(--bco-accent), var(--bco-accent2));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 16px var(--bco-glow);
+}
+
+.comenzi-admin-page .bco-tab.is-active .bco-tab__icon,
+.comenzi-admin-page .comenzi-tab-btn.bco-tab[data-active="1"] .bco-tab__icon {
+  color: #fff;
+}
+
+/* ── Filtre ── */
+.comenzi-admin-page .bco-filter-deck {
+  padding: 22px 24px;
+  margin-bottom: 18px;
+  border-radius: 20px;
+  border: 1px solid var(--bco-border);
+  background: #fff;
+  box-shadow: 0 6px 24px rgba(26, 61, 46, 0.04);
+}
+
+.comenzi-admin-page .bco-filter-deck__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.comenzi-admin-page .bco-filter-deck__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--bco-ink);
+}
+
+.comenzi-admin-page .bco-filter-deck__title i {
+  color: var(--bco-accent);
+}
+
+.comenzi-admin-page .bco-filter-search {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+  max-width: 400px;
+}
+
+.comenzi-admin-page .bco-filter-search input {
+  width: 100%;
+  padding: 12px 16px 12px 42px;
+  border-radius: 12px;
+  border: 1px solid var(--bco-border);
+  background: var(--bco-cream);
+  color: var(--bco-ink);
+  font-size: 0.88rem;
+}
+
+.comenzi-admin-page .bco-filter-search input:focus {
+  outline: none;
+  border-color: var(--bco-accent);
+  background: #fff;
+  box-shadow: 0 0 0 3px var(--bco-glow);
+}
+
+.comenzi-admin-page .bco-filter-search i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #8aa89a;
+  pointer-events: none;
+}
+
+.comenzi-admin-page .bco-filter-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.comenzi-admin-page .bco-filter-grid--halves {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.comenzi-admin-page .bco-filter-grid--thirds {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.comenzi-admin-page .bco-filter-grid + .bco-filter-grid {
+  margin-top: 14px;
+}
+
+@media (max-width: 768px) {
+  .comenzi-admin-page .bco-filter-grid--halves,
+  .comenzi-admin-page .bco-filter-grid--thirds {
+    grid-template-columns: 1fr;
+  }
+}
+
+.comenzi-admin-page .bco-field__label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #8aa89a;
+}
+
+.comenzi-admin-page .bco-field select,
+.comenzi-admin-page .bco-field input[type="date"] {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--bco-border);
+  background: #fff;
+  color: var(--bco-ink);
+  font-size: 0.88rem;
+}
+
+.comenzi-admin-page .bco-period {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 10px;
+  align-items: end;
+}
+
+.comenzi-admin-page .bco-period__sep {
+  padding-bottom: 12px;
+  font-size: 0.75rem;
+  color: #8aa89a;
+}
+
+.comenzi-admin-page .bco-filter-reset {
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1px dashed var(--bco-border);
+  background: #fff;
+  color: #5a7a6a;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.comenzi-admin-page .bco-filter-reset:hover {
+  border-color: var(--bco-accent);
+  color: var(--bco-accent2);
+}
+
+.comenzi-admin-page .bco-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--bco-accent) 10%, #fff);
+  border: 1px solid var(--bco-border);
+  color: var(--bco-accent2);
+}
+
+.comenzi-admin-page .bco-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.comenzi-admin-page .bco-filter-chips:empty {
+  display: none;
+}
+
+/* ── Tabel ── */
+.comenzi-admin-page .bco-table-card {
+  border-radius: 20px;
+  border: 1px solid var(--bco-border);
+  background: #fff;
+  box-shadow: 0 8px 32px rgba(26, 61, 46, 0.06);
+  overflow: hidden;
+}
+
+.comenzi-admin-page .bco-table-card__head {
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--bco-border);
+  background: var(--bco-cream);
+}
+
+.comenzi-admin-page .bco-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: var(--bco-ink);
+  color: #fff;
+}
+
+.comenzi-admin-page .bco-counter__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #6ee7b7;
+  animation: bco-pulse 2s ease infinite;
+}
+
+@keyframes bco-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+.comenzi-admin-page .bco-data-table thead th {
+  background: var(--bco-ink);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 14px 16px;
+  border: none;
+}
+
+.comenzi-admin-page .bco-data-table tbody tr:hover {
+  background: color-mix(in srgb, var(--bco-accent) 6%, #fff);
+}
+
+.comenzi-admin-page .bco-data-table tbody td {
+  padding: 16px;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--bco-border);
+  color: var(--bco-ink);
+}
+
+.comenzi-admin-page .bco-empty,
+.comenzi-admin-page .besoiu-empty {
+  padding: 28px;
+  text-align: center;
+  color: #8aa89a;
+}
+
+/* Celule */
+.comenzi-admin-page .bco-client {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.comenzi-admin-page .bco-client__avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(135deg, var(--bco-accent), var(--bco-accent2));
+}
+
+.comenzi-admin-page .bco-client__name {
+  font-weight: 700;
+  color: var(--bco-ink);
+}
+
+.comenzi-admin-page .bco-client__meta {
+  margin-top: 3px;
+  font-size: 0.78rem;
+  color: #6b8a7a;
+}
+
+.comenzi-admin-page .bco-order-id {
+  font-weight: 800;
+  color: var(--bco-ink);
+}
+
+.comenzi-admin-page .bco-order-date {
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: #8aa89a;
+}
+
+.comenzi-admin-page .bco-product {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.comenzi-admin-page .bco-product__img {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid var(--bco-border);
+}
+
+.comenzi-admin-page .bco-product__placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bco-cream);
+  color: #8aa89a;
+  font-size: 0.65rem;
+}
+
+.comenzi-admin-page .bco-product__name {
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+
+.comenzi-admin-page .bco-product__meta {
+  font-size: 0.75rem;
+  color: #6b8a7a;
+}
+
+.comenzi-admin-page .bco-channel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--bco-cream);
+  color: var(--bco-accent2);
+  border: 1px solid var(--bco-border);
+}
+
+/* Tag-uri status — contrast clar */
+.comenzi-admin-page .bco-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.comenzi-admin-page .bco-tag--ok {
+  background: #059669;
+  color: #fff;
+}
+
+.comenzi-admin-page .bco-tag--warn {
+  background: #d97706;
+  color: #fff;
+}
+
+.comenzi-admin-page .bco-tag--danger {
+  background: #dc2626;
+  color: #fff;
+}
+
+.comenzi-admin-page .bco-tag--info {
+  background: #0e7490;
+  color: #fff;
+}
+
+.comenzi-admin-page .bco-tag--muted {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+/* ── Filter bar compact ── */
+.comenzi-admin-page .bco-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: 18px;
+  border: 1px solid var(--bco-border);
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(26, 61, 46, 0.05);
+  margin-bottom: 10px;
+}
+
+.comenzi-admin-page .bco-filter-bar__search {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.comenzi-admin-page .bco-filter-bar__search .bco-filter-bar__ico {
+  position: absolute;
+  left: 12px;
+  width: 16px;
+  height: 16px;
+  color: #8aa89a;
+  pointer-events: none;
+}
+
+.comenzi-admin-page .bco-filter-bar__search input {
+  width: 100%;
+  padding: 10px 14px 10px 38px;
+  border-radius: 12px;
+  border: 1px solid var(--bco-border);
+  background: var(--bco-cream);
+  font-size: 0.875rem;
+  color: var(--bco-ink);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.comenzi-admin-page .bco-filter-bar__search input:focus {
+  border-color: var(--bco-accent);
+  box-shadow: 0 0 0 3px var(--bco-glow);
+  background: #fff;
+}
+
+.comenzi-admin-page .bco-filter-bar__controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.comenzi-admin-page .bco-filter-toggle {
+  gap: 7px;
+}
+
+.comenzi-admin-page .bco-filter-toggle--active {
+  border-color: var(--bco-accent);
+  color: var(--bco-accent2);
+}
+
+.comenzi-admin-page .bco-filter-toggle--open .bco-filter-toggle__chevron {
+  transform: rotate(180deg);
+}
+
+.comenzi-admin-page .bco-filter-toggle__chevron {
+  transition: transform 0.2s ease;
+  opacity: 0.6;
+}
+
+.comenzi-admin-page .bco-filter-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--bco-accent);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+.comenzi-admin-page .bco-btn--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: #dc2626;
+  font-size: 0.78rem;
+}
+
+.comenzi-admin-page .bco-btn--ghost:hover {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+/* ── Collapsible filter panel ── */
+.comenzi-admin-page .bco-filter-panel {
+  padding: 18px 20px;
+  border-radius: 16px;
+  border: 1px solid var(--bco-border);
+  background: var(--bco-cream);
+  margin-bottom: 14px;
+  animation: bcoFadeSlide 0.18s ease;
+}
+
+@keyframes bcoFadeSlide {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.comenzi-admin-page .bco-filter-panel__grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+
+@media (max-width: 1100px) {
+  .comenzi-admin-page .bco-filter-panel__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .comenzi-admin-page .bco-filter-panel__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .comenzi-admin-page .bco-filter-bar {
+    flex-wrap: wrap;
+  }
+}
+
+/* ── Acțiuni rând (nou: Edit + dropdown) ── */
+.comenzi-admin-page .bco-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+}
+
+.comenzi-admin-page .bco-act-menu {
+  position: relative;
+}
+
+.comenzi-admin-page .bco-act-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 200;
+  min-width: 160px;
+  border-radius: 14px;
+  border: 1px solid var(--bco-border);
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(26, 61, 46, 0.12);
+  overflow: hidden;
+  padding: 6px 0;
+}
+
+.comenzi-admin-page .bco-act-dropdown.is-open {
+  display: block;
+  animation: bcoFadeSlide 0.15s ease;
+}
+
+.comenzi-admin-page .bco-act-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 16px;
+  background: transparent;
+  border: none;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--bco-ink);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s;
+}
+
+.comenzi-admin-page .bco-act-item:hover {
+  background: var(--bco-cream);
+  color: var(--bco-accent2);
+}
+
+.comenzi-admin-page .bco-act-item--success {
+  color: #059669;
+}
+
+.comenzi-admin-page .bco-act-item--success:hover {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.comenzi-admin-page .bco-act-item--danger {
+  color: #dc2626;
+}
+
+.comenzi-admin-page .bco-act-item--danger:hover {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.comenzi-admin-page .bco-act-sep {
+  height: 1px;
+  background: var(--bco-border);
+  margin: 5px 0;
+}
+
+/* Acțiuni rând vechi (păstrat pentru legacy tabs) */
+.comenzi-admin-page .bco-action-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.comenzi-admin-page .bco-fulfillment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.comenzi-admin-page .bco-pagination {
+  padding: 16px 22px;
+  border-top: 1px solid var(--bco-border);
+  background: var(--bco-cream);
+}
+
+/* Legacy panels */
+.comenzi-admin-page .besoiu-legacy-panel .besoiu-filters.box {
+  border-radius: 20px;
+  border: 1px solid var(--bco-border);
+  background: #fff;
+  padding: 22px;
+}
+
+.comenzi-admin-page .besoiu-legacy-panel .besoiu-table-wrap {
+  border-radius: 20px;
+  border: 1px solid var(--bco-border);
+  overflow: hidden;
+}
+
+@media (max-width: 900px) {
+  .comenzi-admin-page .bco-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .comenzi-admin-page .bco-data-table {
+    min-width: 980px;
+  }
+
+  .comenzi-admin-page .bco-page-hero {
+    padding: 20px;
+  }
+}
+
+/* Override admin-pages.css !important pe tab-uri comenzi */
+.comenzi-admin-page .comenzi-tab-btn.bco-tab {
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  border: 1px solid transparent !important;
+  border-radius: 14px !important;
+  padding: 11px 18px !important;
+  background: transparent !important;
+  color: #5a7a6a !important;
+}
+
+.comenzi-admin-page .comenzi-tab-btn.bco-tab[data-active="1"],
+.comenzi-admin-page .comenzi-tab-btn.bco-tab.is-active {
+  background: linear-gradient(135deg, var(--bco-accent), var(--bco-accent2)) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+  box-shadow: 0 4px 16px var(--bco-glow) !important;
+}
+
+.comenzi-admin-page .comenzi-tab-btn.bco-tab:not([data-active="1"]):not(.is-active) {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: #5a7a6a !important;
+}
+
+.comenzi-admin-page .comenzi-tab-btn.bco-tab:not([data-active="1"]):not(.is-active):hover {
+  background: #fff !important;
+  border-color: var(--bco-border) !important;
+  color: var(--bco-ink) !important;
+}

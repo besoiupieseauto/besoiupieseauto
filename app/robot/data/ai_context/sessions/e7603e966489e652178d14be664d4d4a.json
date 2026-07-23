@@ -1,0 +1,72 @@
+{
+    "session_id": "cmrkiemwt6b0f9sh5",
+    "updated_at": "2026-07-14T11:16:06+00:00",
+    "first_seen_at": "2026-07-14T10:29:33+00:00",
+    "last_page": "\/",
+    "pages": [
+        "\/"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-14T10:29:33+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-14T10:29:53+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-14T10:29:58+00:00",
+            "action": "search",
+            "subject": "26060BR00A"
+        },
+        {
+            "at": "2026-07-14T10:29:58+00:00",
+            "action": "scroll",
+            "subject": "25% · \/"
+        },
+        {
+            "at": "2026-07-14T10:30:08+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-14T10:30:11+00:00",
+            "action": "search",
+            "subject": "2012320152"
+        },
+        {
+            "at": "2026-07-14T10:31:59+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-14T11:09:36+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-14T11:16:06+00:00",
+            "action": "time_on_page",
+            "subject": "2796s pe \/"
+        },
+        {
+            "at": "2026-07-14T11:16:06+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-14T11:16:06+00:00",
+            "action": "time_on_page",
+            "subject": "2796s pe \/"
+        }
+    ],
+    "event_count": 11,
+    "intent": "browse",
+    "searches": [
+        "26060BR00A",
+        "2012320152"
+    ]
+}

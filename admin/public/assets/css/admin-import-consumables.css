@@ -1,0 +1,122 @@
+/**
+ * Import consumabile — /admin/import
+ * Fix vizibilitate: progres, jurnal, listă produse (display / z-index / pointer-events).
+ */
+
+#besoiu-import-consumables {
+  position: relative;
+  z-index: 5;
+  isolation: isolate;
+  pointer-events: auto;
+}
+
+#besoiu-import-consumables button,
+#besoiu-import-consumables input,
+#besoiu-import-consumables select,
+#besoiu-import-consumables label,
+#besoiu-import-consumables a {
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
+#besoiu-import-consumables.besoiu-consumable--busy #consumable-status,
+#besoiu-import-consumables.besoiu-consumable--busy #consumable-job-progress-wrap,
+#besoiu-import-consumables.besoiu-consumable--busy #consumable-log-wrap {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+#besoiu-import-consumables.besoiu-consumable--has-preview #consumable-preview-wrap {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+#consumable-status {
+  position: relative;
+  z-index: 2;
+}
+
+#consumable-status[data-type="error"] {
+  border: 1px solid #fecaca;
+}
+
+#consumable-status[data-type="warn"] {
+  border: 1px solid #fed7aa;
+}
+
+#consumable-job-progress-wrap {
+  position: relative;
+  z-index: 2;
+}
+
+#consumable-job-progress-bar {
+  min-width: 0;
+  transition: width 0.25s ease;
+}
+
+#besoiu-import-consumables.besoiu-consumable--busy #consumable-job-progress-bar {
+  min-width: 8px;
+}
+
+#besoiu-import-consumables.besoiu-consumable-progress--pulse #consumable-job-progress-bar {
+  min-width: 12%;
+  animation: besoiuConsumableProgressPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes besoiuConsumableProgressPulse {
+  0% { opacity: 0.55; }
+  50% { opacity: 1; }
+  100% { opacity: 0.55; }
+}
+
+#consumable-log-wrap {
+  position: relative;
+  z-index: 2;
+}
+
+#consumable-log {
+  pointer-events: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+#consumable-preview-wrap {
+  position: relative;
+  z-index: 1;
+}
+
+#consumable-preview-wrap .consumable-table-scroll {
+  pointer-events: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+#consumableTable thead {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: #f8fafc;
+}
+
+#consumableTable .consumable-cb {
+  width: 16px;
+  height: 16px;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+@media (max-width: 767px) {
+  #besoiu-import-consumables {
+    overflow: visible;
+  }
+
+  #consumable-preview-wrap .consumable-table-scroll {
+    max-height: 280px;
+  }
+
+  #consumable-log {
+    max-height: 140px;
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "source": "PLAN-STRATEGIC-MARKETING-BESOIU.md v2.0 · iulie 2026",
+  "sourceDocs": "besoiupieseimport/docs/PLAN-STRATEGIC-MARKETING-BESOIU.md",
+  "templates": [
+    {
+      "slot": "strategic_faza1_2026",
+      "name": "Faza 1 — Fundație (L1–L3)",
+      "meta": {
+        "name": "Faza 1 — Fundație (L1–L3)",
+        "periodStart": "2026-07-01",
+        "periodEnd": "2026-09-30",
+        "assumptions": "Din plan strategic §7 Faza 1: test, învățare, primele comenzi. Țintă luna 3: ≥10.000 vizite/lună, ≥150 comenzi/lună. Buget Ads 1.000–2.000 RON/lună. KPI: 8k+ vizite, conversie plan conservator 2%, coș mediu 200 RON.",
+        "type": "strategic"
+      },
+      "expenses": [
+        { "id": "exp_meta_ads", "label": "Meta Ads (FB) — test 15–25 RON/zi", "value": 750 },
+        { "id": "exp_hosting", "label": "Hosting + domenii", "value": 50 },
+        { "id": "exp_tools", "label": "Unelte (TecDoc API, analytics, Canva)", "value": 150 }
+      ],
+      "income": [
+        { "id": "inc_shop_base", "label": "Magazin online — bază recurentă", "value": 2500 },
+        { "id": "inc_marketplace", "label": "Marketplace (PieseAuto.ro)", "value": 800 }
+      ],
+      "scenario": [
+        { "id": "sc_users", "label": "Vizite/lună (țintă luna 3)", "value": 10000, "calcKey": "target_users", "step": "1", "min": 0 },
+        { "id": "sc_conv", "label": "Rată conversie (%)", "value": 2, "calcKey": "conversion_rate", "step": "0.1", "min": 0, "max": 100 },
+        { "id": "sc_price", "label": "Preț mediu comandă (RON)", "value": 200, "calcKey": "avg_price", "step": "0.01", "min": 0 }
+      ],
+      "investments": [
+        { "id": "inv_content", "label": "Pachete conținut pilot (5 OEM + QA)", "value": 0 }
+      ]
+    },
+    {
+      "slot": "strategic_an1_conservator",
+      "name": "An 1 — Conservator",
+      "meta": {
+        "name": "An 1 — Conservator",
+        "periodStart": "2026-07-01",
+        "periodEnd": "2027-06-30",
+        "assumptions": "Scenariu conservator plan strategic: ~15.000 vizite/lună la luna 12, conversie 2%, coș 200 RON → ~60.000 RON venit brut/lună. Venit cumulat An 1 orientativ: 0,2–0,6M RON.",
+        "type": "strategic"
+      },
+      "expenses": [
+        { "id": "exp_meta_ads", "label": "Meta Ads", "value": 800 },
+        { "id": "exp_google_ads", "label": "Google Ads Search (OEM)", "value": 500 },
+        { "id": "exp_hosting", "label": "Hosting + domeniu satelit", "value": 50 },
+        { "id": "exp_tools", "label": "Unelte SEO / AI", "value": 100 }
+      ],
+      "income": [
+        { "id": "inc_shop", "label": "Magazin online — venit stabil", "value": 4000 },
+        { "id": "inc_b2b", "label": "B2B ateliere (pilot de la luna 5)", "value": 2000 }
+      ],
+      "scenario": [
+        { "id": "sc_users", "label": "Vizite/lună (luna 12)", "value": 15000, "calcKey": "target_users", "step": "1", "min": 0 },
+        { "id": "sc_conv", "label": "Rată conversie (%)", "value": 2, "calcKey": "conversion_rate", "step": "0.1", "min": 0, "max": 100 },
+        { "id": "sc_price", "label": "Preț mediu comandă (RON)", "value": 200, "calcKey": "avg_price", "step": "0.01", "min": 0 }
+      ],
+      "investments": [
+        { "id": "inv_satellite", "label": "Site satelit ghiduri (lansare luna 4)", "value": 5000 },
+        { "id": "inv_launch", "label": "Campanii lansare Faza 2", "value": 3000 }
+      ]
+    },
+    {
+      "slot": "strategic_an1_realist",
+      "name": "An 1 — Realist",
+      "meta": {
+        "name": "An 1 — Realist",
+        "periodStart": "2026-07-01",
+        "periodEnd": "2027-06-30",
+        "assumptions": "Scenariu realist plan strategic §1: ~35.000 vizite/lună la luna 12, 2% conversie, 200 RON → ~140.000 RON/lună. Organic ~45% la luna 12. Buget Ads An 1 total ~16.000–25.000 RON. KPI luna 12: ≥30k vizite, 40%+ organic.",
+        "type": "strategic"
+      },
+      "expenses": [
+        { "id": "exp_meta_ads", "label": "Meta Ads (FB + retargeting)", "value": 1000 },
+        { "id": "exp_google_ads", "label": "Google Ads Search OEM", "value": 900 },
+        { "id": "exp_hosting", "label": "Hosting + domeniu satelit", "value": 50 },
+        { "id": "exp_tools", "label": "Unelte SEO / AI / Serper", "value": 100 }
+      ],
+      "income": [
+        { "id": "inc_shop", "label": "Magazin online — venit stabil", "value": 6000 },
+        { "id": "inc_marketplace", "label": "Marketplace (PieseAuto.ro)", "value": 2500 },
+        { "id": "inc_b2b", "label": "B2B ateliere partenere", "value": 4000 }
+      ],
+      "scenario": [
+        { "id": "sc_users", "label": "Vizite/lună (luna 12)", "value": 35000, "calcKey": "target_users", "step": "1", "min": 0 },
+        { "id": "sc_conv", "label": "Rată conversie (%)", "value": 2, "calcKey": "conversion_rate", "step": "0.1", "min": 0, "max": 100 },
+        { "id": "sc_price", "label": "Preț mediu comandă (RON)", "value": 200, "calcKey": "avg_price", "step": "0.01", "min": 0 }
+      ],
+      "investments": [
+        { "id": "inv_satellite", "label": "Site satelit ghiduri (SSR)", "value": 5000 },
+        { "id": "inv_launch", "label": "Promovare lansare multi-canal", "value": 5000 }
+      ]
+    },
+    {
+      "slot": "strategic_an1_optimist",
+      "name": "An 1 — Optimist",
+      "meta": {
+        "name": "An 1 — Optimist",
+        "periodStart": "2026-07-01",
+        "periodEnd": "2027-06-30",
+        "assumptions": "Scenariu optimist plan strategic: ~55.000 vizite/lună la luna 12, 2% conversie, 200 RON → ~220.000 RON/lună. Venit cumulat An 1 orientativ: 1–2M RON. Necesită execuție foarte bună pe toate canalele.",
+        "type": "strategic"
+      },
+      "expenses": [
+        { "id": "exp_meta_ads", "label": "Meta Ads (scale)", "value": 1500 },
+        { "id": "exp_google_ads", "label": "Google Ads Search OEM", "value": 1200 },
+        { "id": "exp_hosting", "label": "Hosting + domenii", "value": 75 },
+        { "id": "exp_tools", "label": "Unelte SEO / AI", "value": 150 }
+      ],
+      "income": [
+        { "id": "inc_shop", "label": "Magazin online — venit stabil", "value": 8000 },
+        { "id": "inc_marketplace", "label": "Marketplace", "value": 4000 },
+        { "id": "inc_b2b", "label": "B2B ateliere", "value": 6000 }
+      ],
+      "scenario": [
+        { "id": "sc_users", "label": "Vizite/lună (luna 12)", "value": 55000, "calcKey": "target_users", "step": "1", "min": 0 },
+        { "id": "sc_conv", "label": "Rată conversie (%)", "value": 2, "calcKey": "conversion_rate", "step": "0.1", "min": 0, "max": 100 },
+        { "id": "sc_price", "label": "Preț mediu comandă (RON)", "value": 200, "calcKey": "avg_price", "step": "0.01", "min": 0 }
+      ],
+      "investments": [
+        { "id": "inv_satellite", "label": "Site satelit + al doilea canal", "value": 8000 },
+        { "id": "inv_launch", "label": "Campanii lansare agresive", "value": 7000 }
+      ]
+    },
+    {
+      "slot": "strategic_plan_36luni",
+      "name": "Plan 36 luni — Realist (run-rate An 3)",
+      "meta": {
+        "name": "Plan 36 luni — Realist (run-rate An 3)",
+        "periodStart": "2026-07-01",
+        "periodEnd": "2029-06-30",
+        "assumptions": "Orizont 36 luni din plan strategic §1: run-rate An 3 cu 50.000–80.000 vizite/lună, 2% conversie, 200 RON. Investiție marketing 3 ani ~60.000–120.000 RON Ads. Venit cumulat realist 3 ani: 3–6M RON. Țintă aspiratională ~1M EUR/an necesită coș mediu crescut + B2B.",
+        "type": "strategic"
+      },
+      "expenses": [
+        { "id": "exp_meta_ads", "label": "Meta Ads (matur)", "value": 2000 },
+        { "id": "exp_google_ads", "label": "Google Ads", "value": 1500 },
+        { "id": "exp_team", "label": "Echipă marketing (part-time / externalizat)", "value": 3000 },
+        { "id": "exp_hosting", "label": "Hosting + infrastructură", "value": 100 },
+        { "id": "exp_tools", "label": "Unelte SEO / AI / analytics", "value": 200 }
+      ],
+      "income": [
+        { "id": "inc_shop", "label": "Magazin online — venit stabil", "value": 15000 },
+        { "id": "inc_marketplace", "label": "Marketplace + canale", "value": 8000 },
+        { "id": "inc_b2b", "label": "B2B ateliere (15–30 parteneri)", "value": 12000 }
+      ],
+      "scenario": [
+        { "id": "sc_users", "label": "Vizite/lună (run-rate An 3)", "value": 65000, "calcKey": "target_users", "step": "1", "min": 0 },
+        { "id": "sc_conv", "label": "Rată conversie (%)", "value": 2, "calcKey": "conversion_rate", "step": "0.1", "min": 0, "max": 100 },
+        { "id": "sc_price", "label": "Preț mediu comandă (RON)", "value": 200, "calcKey": "avg_price", "step": "0.01", "min": 0 }
+      ],
+      "investments": [
+        { "id": "inv_satellites", "label": "Site-uri satelit (2 nișe)", "value": 12000 },
+        { "id": "inv_erp", "label": "Optimizări platformă / ERP", "value": 15000 },
+        { "id": "inv_stock", "label": "Rezervă cashflow stoc (orientativ)", "value": 50000 }
+      ]
+    }
+  ]
+}

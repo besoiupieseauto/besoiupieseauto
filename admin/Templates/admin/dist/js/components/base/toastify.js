@@ -1,0 +1,1 @@
+(()=>{$(".toast").each(function(){let o=Function('"use strict";return ('+$(this).data("config")+")")(),t=this;o.triggerId&&$(o.triggerId).on("click",function(){console.log($(t).clone().removeClass("hide")[0]),Toastify({node:$(t).clone().removeClass("hide")[0],duration:-1,newWindow:!0,close:!0,gravity:"top",position:"right",stopOnFocus:!0,...o}).showToast()})});})();

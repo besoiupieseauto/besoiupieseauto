@@ -1,0 +1,23 @@
+# Reguli custom normalizare denumiri (prioritare față de denumiri produse.txt)
+# Format: alias TecDoc | alias alternativ#Denumire magazin
+#
+# Exemple utile — editează sau adaugă din /admin/importreview?view=normalize
+
+Generator / Alternator#Alternator
+Electromotor, demaror#Electromotor
+Set placute frana, frana disc#Set placute frana
+Set placute frana| Placute frana, frana disc#Set placute frana
+Senzor impulsuri, arbore cotit#Senzor arbore cotit
+Senzor, temperatura lichid racire#Senzor temperatura lichid racire
+Pompa apa, racire motor#Pompa apa
+Pompa de apa, racire motor#Pompa apa
+Compresor, climatizare#Compresor clima
+Compresor, aer conditionat#Compresor clima
+Filtru, aer habitaclu#Filtru habitaclu
+Filtru polen, habitaclu#Filtru habitaclu
+Mecanism actionare geam#Motoras geam
+Incuietoare usa#Incuietoare usa
+Suport motor#Suport motor
+Bujie incandescenta#Bujie incandescenta
+Sonda lambda#Sonda Lambda
+Set rulment roata#Set rulment roata

@@ -1,0 +1,15 @@
+{
+  "id": "catalog",
+  "name": "Catalog produse",
+  "version": "1.0.0",
+  "enabled": true,
+  "controller": "Storefront\\Modules\\Catalog\\CatalogController",
+  "cms_slug": "catalog",
+  "seo": {
+    "path": "/catalog",
+    "title": "Catalog piese auto",
+    "description": "Catalog piese auto — caută după categorie, marcă sau cod OEM.",
+    "changefreq": "daily",
+    "priority": "0.9"
+  }
+}

@@ -1,0 +1,100 @@
+/* Import Pro — overlay AI (Modul 1, 2, 6) */
+.ai-cron-summary-panel {
+    margin-top: 16px;
+    border: 1px solid #c4b5fd;
+    border-radius: 10px;
+    overflow: hidden;
+    background: linear-gradient(180deg, #faf5ff 0%, #fff 100%);
+}
+.ai-cron-summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #5b21b6;
+    border-bottom: 1px solid #e9d5ff;
+}
+.ai-cron-summary-body {
+    padding: 12px 14px 14px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+.ai-cron-summary-body ul {
+    margin: 8px 0 0;
+    padding-left: 18px;
+}
+.ai-cron-summary-loading {
+    color: #6b7280;
+    font-style: italic;
+}
+.ai-import-overlay {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px dashed #c4b5fd;
+    background: #faf5ff;
+}
+.ai-import-overlay-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #6d28d9;
+}
+.ai-import-candidates {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 8px 0;
+}
+.ai-import-candidate {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    background: #fff;
+    border: 1px solid #e9d5ff;
+    font-size: 12px;
+}
+.ai-import-candidate strong { font-weight: 600; }
+.ai-import-candidate .score { color: #7c3aed; white-space: nowrap; }
+.ai-import-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+.ai-import-actions .btn-ai {
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btn-ai-purple { background: #7c3aed; color: #fff; }
+.btn-ai-green { background: #16a34a; color: #fff; }
+.btn-ai-gray { background: #e5e7eb; color: #374151; }
+.btn-ai:disabled { opacity: 0.55; cursor: wait; }
+.ai-normalize-preview {
+    margin-top: 8px;
+    padding: 8px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 12px;
+}
+.ai-normalize-preview pre {
+    margin: 6px 0 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 11px;
+    color: #374151;
+}

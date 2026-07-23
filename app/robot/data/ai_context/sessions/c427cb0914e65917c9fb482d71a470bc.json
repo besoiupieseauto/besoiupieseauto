@@ -1,0 +1,71 @@
+{
+    "session_id": "cmrq8ww1jl59hpmjd",
+    "updated_at": "2026-07-18T10:57:45+00:00",
+    "first_seen_at": "2026-07-18T10:50:25+00:00",
+    "last_page": "\/",
+    "pages": [
+        "\/"
+    ],
+    "actions": [
+        {
+            "at": "2026-07-18T10:50:25+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-18T10:51:45+00:00",
+            "action": "idle_return",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-18T10:51:53+00:00",
+            "action": "search",
+            "subject": "0580314016"
+        },
+        {
+            "at": "2026-07-18T10:51:53+00:00",
+            "action": "scroll",
+            "subject": "25% · \/"
+        },
+        {
+            "at": "2026-07-18T10:51:59+00:00",
+            "action": "search",
+            "subject": "0580314016"
+        },
+        {
+            "at": "2026-07-18T10:52:01+00:00",
+            "action": "time_on_page",
+            "subject": "99s pe \/"
+        },
+        {
+            "at": "2026-07-18T10:52:01+00:00",
+            "action": "time_on_page",
+            "subject": "99s pe \/"
+        },
+        {
+            "at": "2026-07-18T10:57:39+00:00",
+            "action": "page_view",
+            "subject": "\/"
+        },
+        {
+            "at": "2026-07-18T10:57:45+00:00",
+            "action": "scroll",
+            "subject": "25% · \/"
+        },
+        {
+            "at": "2026-07-18T10:57:45+00:00",
+            "action": "time_on_page",
+            "subject": "8s pe \/"
+        },
+        {
+            "at": "2026-07-18T10:57:45+00:00",
+            "action": "time_on_page",
+            "subject": "8s pe \/"
+        }
+    ],
+    "event_count": 11,
+    "intent": "browse",
+    "searches": [
+        "0580314016"
+    ]
+}

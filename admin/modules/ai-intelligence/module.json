@@ -1,0 +1,29 @@
+{
+    "id": "ai-intelligence",
+    "name": "AI Intelligence — tracking & search",
+    "version": "1.0.0",
+    "type": "optional",
+    "enabled": true,
+    "description": "Tracking evenimente agregate, hybrid search și orchestrator AI pentru magazin.",
+    "entry": "Besoiu\\Modules\\AiIntelligence\\AiIntelligenceModule",
+    "dependencies": [],
+    "permissions": [
+        "module.ai_intelligence",
+        "ai.intelligence.view",
+        "ai.intelligence.manage"
+    ],
+    "workspace": "system",
+    "nav": [],
+    "provides": {
+        "folder": "ai-intelligence",
+        "slugs": [],
+        "paths": [],
+        "crud_key": null,
+        "api_scripts": [],
+        "quick_actions": []
+    },
+    "migrations": [
+        "migrations/001_events_tracking.sql",
+        "migrations/002_session_visitor_context.sql"
+    ]
+}

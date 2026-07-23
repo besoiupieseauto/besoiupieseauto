@@ -1,0 +1,21 @@
+﻿{
+    "id": "coada_import",
+    "name": "Coada import",
+    "version": "1.0.0",
+    "type": "optional",
+    "enabled": true,
+    "description": "Coada import staging — review, publicare, reprocesare.",
+    "entry": "Besoiu\\Modules\\CoadaImport\\CoadaImportModule",
+    "dependencies": ["produse", "categorii", "adaos_comercial"],
+    "permissions": [
+        "module.coada_import",
+        "coada_import.manage"
+    ],
+    "workspace": "suppliers",
+    "nav_section": {
+        "group_label": "IMPORT"
+    },
+    "nav": [{"id":"coada-import","label":"Coada import","href":"/admin/importreview","icon":"list-checks","group":"IMPORT"}],
+    "provides": {"folder":"coada_import","slugs":["importreview","import-review"],"paths":["/admin/importreview","/admin/import-review","/admin/public/importreview","/admin/public/api/coada_import_endpoint.php","/admin/public/api/import_action_endpoint.php"],"crud_key":"coada_import","api_scripts":["coada_import_endpoint.php","import_action_endpoint.php"],"quick_actions":["importreview"]},
+    "migrations": []
+}

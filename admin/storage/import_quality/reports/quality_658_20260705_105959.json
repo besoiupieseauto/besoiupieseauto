@@ -1,0 +1,14 @@
+{
+    "import_id": 658,
+    "at": "2026-07-05T10:59:59+00:00",
+    "verdict": "reject",
+    "confidence": 1,
+    "corrections": [],
+    "issues": [
+        "non_product_line"
+    ],
+    "reasoning_ro": "Titlul „Pivot TRW 5042520” nu descrie o piesă clară (filtru, disc, etc.) — probabil linie administrativă sau date corupte din feed.",
+    "apply_recommended": false,
+    "llm_error": null,
+    "duration_ms": 56441
+}

@@ -1,0 +1,40 @@
+{
+    "id": "import_pro",
+    "name": "Import & Matching Pro",
+    "version": "1.0.0",
+    "type": "optional",
+    "enabled": true,
+    "description": "Import CSV furnizori, matching TecDoc, carduri complete — motor app/Import/MatchingPro.",
+    "entry": "Besoiu\\Modules\\ImportPro\\ImportProModule",
+    "dependencies": ["scraper_web", "coada_import", "produse"],
+    "permissions": [
+        "module.import_pro",
+        "import_pro.manage"
+    ],
+    "workspace": "suppliers",
+    "nav_section": {
+        "group_label": "FURNIZORI"
+    },
+    "nav": [
+        {
+            "id": "import-pro",
+            "label": "Import & Matching Pro",
+            "href": "/admin/import-pro",
+            "icon": "upload",
+            "group": "FURNIZORI"
+        }
+    ],
+    "provides": {
+        "folder": "import_pro",
+        "slugs": ["import-pro"],
+        "paths": [
+            "/admin/import-pro",
+            "/admin/public/import-pro",
+            "/admin/public/api/import_pro_endpoint.php"
+        ],
+        "crud_key": "import_pro",
+        "api_scripts": ["import_pro_endpoint.php"],
+        "quick_actions": ["import-pro"]
+    },
+    "migrations": []
+}

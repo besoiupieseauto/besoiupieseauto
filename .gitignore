@@ -1,0 +1,83 @@
+# --- Mediu / secrete (NU comite niciodată) ---
+.env
+.env.*
+!.env.example
+*.local.php
+!*.example.php
+admin/storage/rclone/
+admin/storage/rclone/rclone.conf
+app/Backend/storage/rclone/
+
+# --- Dependențe (Composer / Python venv) ---
+admin/vendor/
+app/Backend/vendor/
+tools/stealth-browser-mcp/venv/
+tools/stealth-browser-mcp/.git/
+node_modules/
+
+# --- Cache / runtime / logs (regenerabile) ---
+app/Storage/cache/*
+!app/Storage/cache/.gitkeep
+app/Storage/uploads/*
+!app/Storage/uploads/.gitkeep
+app/Backend/storage/cache/*
+!app/Backend/storage/cache/.gitkeep
+app/Backend/storage/logs/*
+!app/Backend/storage/logs/.gitkeep
+app/Backend/storage/queue/*
+!app/Backend/storage/queue/.gitkeep
+app/Backend/storage/rate_limits/
+app/Backend/storage/imports/*
+!app/Backend/storage/imports/.gitkeep
+app/Backend/storage/async_jobs/
+admin/storage/cache/*
+!admin/storage/cache/.gitkeep
+admin/storage/logs/*
+!admin/storage/logs/.gitkeep
+
+# --- Backup-uri DB/aplicație (nu se versionează) ---
+app/Backend/storage/backups/
+*.sql
+*.sql.gz
+!admin/migrations/*.sql
+!SQL/*.sql
+
+# --- Fișiere temporare / editor ---
+*.bak
+*.bak_*
+*.backup
+*.old
+*.swp
+*.swo
+*~
+.vscode/
+
+# --- OS ---
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# --- Runtime / cache grele (nu pe GitHub) ---
+admin/storage/imports/
+admin/storage/supplier_feeds/
+admin/storage/ai_rag/
+admin/storage/ai_intelligence/
+admin/storage/ai_work/
+app/Backend/storage/supplier_feeds/
+app/Backend/storage/ttc_image_library/
+app/Import/modulOrchestr/storage/cache/
+storage/scraper/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.crdownload
+*.part
+*.tflite
+
+app/Backend/storage/tecdoc/
+app/Import/
+
+
+admin/storage/tecdoc/
+admin/storage/ttc_image_library/
+

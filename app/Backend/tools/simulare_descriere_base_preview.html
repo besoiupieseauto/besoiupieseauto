@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>Previzualizare descriere Base — format htmlviewer</title>
+<style>
+  body {
+    margin: 0;
+    padding: 24px;
+    font-family: "Times New Roman", Times, serif;
+    background: #f8fafc;
+    color: #111;
+  }
+  h1 { font-family: "Segoe UI", sans-serif; font-size: 1.2rem; margin: 0 0 8px; }
+  .lead { font-family: "Segoe UI", sans-serif; color: #64748b; margin: 0 0 20px; max-width: 70ch; }
+  .panel {
+    max-width: 720px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: 0 8px 24px rgba(15,23,42,.06);
+  }
+  .label {
+    font-family: "Segoe UI", sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: #047857;
+    margin-bottom: 12px;
+  }
+  /* Exact ca .product-card-description din Procesare fisier import Base.html */
+  .product-card-description {
+    font-size: 13px;
+    color: #374151;
+    max-height: 70vh;
+    overflow-y: auto;
+    border-top: 1px solid #f3f4f6;
+    padding-top: 10px;
+  }
+  .product-card-description p { margin: 0.55em 0 0.25em; }
+  .product-card-description p:first-child { margin-top: 0; }
+  .product-card-description ul {
+    margin: 6px 0 0 18px;
+    padding: 0;
+    list-style-type: disc;
+  }
+  .product-card-description ul ul { list-style-type: circle; }
+  .product-card-description ul ul ul { list-style-type: square; }
+  .product-card-description li { margin: 0 0 0.35em; }
+</style>
+</head>
+<body>
+  <h1>Format descriere produs (referință client)</h1>
+  <p class="lead">
+    HTML identic cu <code>htmlviewer.html.txt</code> + formatarea din
+    <code>Procesare fisier import Base.html</code> (generateDescription).
+    Așa trebuie să arate blocul de descriere în Import Review / Marketplace.
+  </p>
+  <div class="panel">
+    <div class="label">Simulare cartă — Piston NURAL</div>
+    <div class="product-card-description" id="desc"></div>
+  </div>
+<script>
+document.getElementById('desc').innerHTML = String.raw`<p><b>Piston NURAL</b> (Cod: 8710150000)</p><p><b>Specificatii tehnice:</b></p><ul><li>Adancime oala 1 [mm]: 17,8</li><li>Adancime scaun supapa 1 [mm]: 0,75</li><li>Alezaj piston [mm]: 80</li><li>Articol completare/Info suplimentar 2: cu segment piston</li><li>Articol completare/Info suplimentar 2: pentru biela trapez</li><li>Diametru bolt [mm]: 28</li><li>Diametru oala [mm]: 38</li><li>Dimensiune standard (STD): </li><li>Inaltime compresie [mm]: 47,06</li><li>Inaltime [mm]: 77</li><li>Joc al pistonului [mm]: 0,06</li><li>Lungime bolt [mm]: 60</li><li>Numar componente: 08-101500-00</li><li>Prelucrat mecanic: cu degajare/decupare pentru diuza ulei</li></ul><p><b>Compatibil cu urmatoarele modele auto:</b></p><ul><li><b>NISSAN</b><ul><li><b>INTERSTAR bus (X70)</b> dCi 80 60 KW (2002-2006)</li><li><b>INTERSTAR caroserie (X70)</b> dCi 80 60 KW (2002-2006)</li><li><b>PRIMASTAR bus (X83)</b><ul><li>dCi 80 60 KW (2001-Prezent)</li><li>dCi 100 74 KW (2001-Prezent)</li></ul></li><li><b>PRIMASTAR caroserie (X83)</b><ul><li>1.9 dCi 80 60 KW (2002-Prezent)</li><li>1.9 dCi 100 74 KW (2002-Prezent)</li></ul></li><li><b>PRIMASTAR platou / sasiu (X83)</b><ul><li>1.9 dCi 100 74 KW (2002-2006)</li><li>1.9 dCi 80 60 KW (2002-2006)</li></ul></li></ul></li><li><b>OPEL</b><ul><li><b>MOVANO A bus (X70)</b><ul><li>1.9 DTI (JD) 59 KW (2000-2001)</li><li>1.9 DTI (JD) 60 KW (2001-Prezent)</li></ul></li><li><b>MOVANO A caroserie (X70)</b><ul><li>1.9 DTI (FD) 59 KW (2000-2001)</li><li>1.9 DTI (FD) 60 KW (2001-Prezent)</li></ul></li><li><b>VIVARO A bus (X83)</b><ul><li>1.9 DI (F7, J7, A07) 60 KW (2001-2006)</li><li>1.9 DTI (F7, J7, A07) 74 KW (2001-2014)</li></ul></li><li><b>VIVARO A caroserie (X83)</b><ul><li>1.9 DI (F7) 60 KW (2001-2006)</li><li>1.9 DTI (F7) 74 KW (2001-2014)</li></ul></li><li><b>VIVARO A platou / sasiu (X83)</b><ul><li>1.9 Di 60 KW (2001-2014)</li><li>1.9 DTI 74 KW (2001-2010)</li></ul></li></ul></li><li><b>RENAULT</b><ul><li><b>CLIO II (BB_, CB_)</b> 1.9 dTi (B/CB0U) 59 KW (2000-2005)</li><li><b>CLIO II Caseta/ Hatchback (SB0/1/2_)</b> 1.9 DTi (SB0U) 59 KW (2000-2001)</li><li><b>KANGOO (KC0/1_)</b><ul><li>1.9 dTi (KC0U) 59 KW (2000-Prezent)</li><li>1.9 dCi 4x4 (KC0V) 59 KW (2001-Prezent)</li><li>1.9 dCi 4x4 62 KW (2003-Prezent)</li></ul></li><li><b>KANGOO Express (FC0/1_)</b> (2000 - 2026)<br><i>Motorizari:</i> 1.9 dCi, 1.9 dCi 4x4, 1.9 dTi</li><li><b>LAGUNA I (B56_, 556_)</b><ul><li>1.9 dTi (B56J) 72 KW (2000-2001)</li><li>1.9 dCi (B56W) 79 KW (2000-2001)</li></ul></li><li><b>LAGUNA I Grandtour (K56_)</b><ul><li>1.9 dTi (K56J) 72 KW (2000-2001)</li><li>1.9 dCi (K56W) 79 KW (2000-2001)</li></ul></li><li><b>LAGUNA II (BG0/1_)</b><ul><li>1.9 dCI (BG0E) 77 KW (2001-2005)</li><li>1.9 dCi (BG0R, BG0E) 74 KW (2001-2005)</li><li>1.9 dCi 79 KW (2001-2007)</li></ul></li><li><b>LAGUNA II Grandtour (KG0/1_)</b><ul><li>1.9 dCI (KG0E) 77 KW (2001-2005)</li><li>1.9 dCi (KG0E, KG0R) 74 KW (2001-2005)</li><li>1.9 dCi 79 KW (2001-2007)</li></ul></li><li><b>MASTER II bus (JD)</b><ul><li>1.9 dTI (JD0L, JD1L) 59 KW (2000-2002)</li><li>1.9 dCi 80 (JD0P, JD1P) 60 KW (2001-2006)</li></ul></li><li><b>MASTER II caroserie (FD)</b><ul><li>1.9 dTI (FD0L) 59 KW (2000-2002)</li><li>1.9 dCi 80 (FD0P) 60 KW (2001-2006)</li></ul></li><li><b>MEGANE I (BA0/1_)</b> (2000 - 2003)<br><i>Motorizari:</i> 1.9 DCi, 1.9 DTi, 1.9 dCi, 1.9 dTi</li><li><b>MEGANE I Classic (LA0/1_)</b> (2000 - 2003)<br><i>Motorizari:</i> 1.9 dCi, 1.9 dTi</li><li><b>MEGANE I Coach (DA0/1_)</b><ul><li>1.9 dTi (DA0N) 72 KW (2000-2001)</li><li>1.9 dCi (DA05, DA1F) 75 KW (2001-2003)</li><li>1.9 DCi 77 KW (2000-2000)</li></ul></li><li><b>MEGANE I Grandtour (KA0/1_)</b> (2000 - 2003)<br><i>Motorizari:</i> 1.9 dCi, 1.9 dTi</li><li><b>MEGANE I Hatchback Van (SA0/1_)</b> 1.9 dCi 59 KW (2000-2003)</li><li><b>Megane I Kombi van (KA_)</b><ul><li>1.9 DTI (KA1U) 59 KW (2001-2003)</li><li>1.9 dCi (KA05) 75 KW (2001-2003)</li><li>1.9 dCi (KA05) 77 KW (2001-2003)</li></ul></li><li><b>SCENIC I VAN (FA0_, JA0/1_)</b> 1.9 DTi (JA0N) 72 KW (2000-2001)</li><li><b>SCENIC I microbus (JA0/1_, FA0_)</b> (2000 - 2003)<br><i>Motorizari:</i> 1.9 dCi, 1.9 dCi RX4, 1.9 dTi</li><li><b>TRAFIC II bus (JL)</b> (2001 - 2018)<br><i>Motorizari:</i> 1.9 dCI 100, 1.9 dCI 80, 1.9 dCi</li><li><b>TRAFIC II caroserie (FL)</b> (2001 - 2026)<br><i>Motorizari:</i> 1.9 dCi, 1.9 dCi 100, 1.9 dCi 80</li><li><b>TRAFIC II platou / sasiu (EL)</b><ul><li>1.9 dCi 80 (EL0B) 60 KW (2001-2006)</li><li>1.9 dCi 100 (EL0C) 74 KW (2001-2006)</li><li>1.9 dCi (EL0B) 59 KW (2001-2003)</li></ul></li></ul></li><li><b>VOLVO</b><ul><li><b>S40 I (644)</b><ul><li>1.9 DI 75 KW (2000-2003)</li><li>1.9 DI 85 KW (2000-2003)</li></ul></li><li><b>V40 combi (645)</b><ul><li>1.9 DI 75 KW (2000-2004)</li><li>1.9 DI 85 KW (2000-2004)</li></ul></li></ul></li></ul><p><b>Coduri OE echivalente:</b></p><ul><li>AE : A350550STD</li><li>KOLBENSCHMIDT : 99561600</li><li>MAHLE : 0215800</li><li>RENAULT : 7701472833</li><li>RENAULT : 7701472834</li><li>RENAULT : 7701472835</li></ul>`;
+</script>
+</body>
+</html>

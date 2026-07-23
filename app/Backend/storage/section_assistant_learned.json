@@ -1,0 +1,19 @@
+{
+    "patterns": [
+        {
+            "id": "80694aa19134",
+            "phrase_norm": "cite comenzi sunt acuma in sistema",
+            "keywords": [
+                "cite",
+                "comenzi",
+                "sistema"
+            ],
+            "handler": "orders_summary",
+            "created_at": "2026-06-27T06:10:39+00:00",
+            "updated_at": "2026-06-27T06:10:39+00:00",
+            "hits": 2,
+            "last_hit_at": "2026-06-27T06:11:00+00:00"
+        }
+    ],
+    "updated_at": "2026-06-27T06:11:00+00:00"
+}

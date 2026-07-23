@@ -1,0 +1,33 @@
+{
+    "schema": "product_image_audit_v1",
+    "created_at": "2026-06-18T10:53:21+00:00",
+    "project": "besoiupieseauto.ro",
+    "agent": "image-audit",
+    "composer_model": "composer-2.5",
+    "meta": {
+        "source": "admin_crud",
+        "ids": [
+            "4d9e8186b2ddda29"
+        ],
+        "engine": "cursor-composer-2.5",
+        "save_results_to": "admin/storage/image_audit/by_product/{randomn_id}.json"
+    },
+    "instructions": "Deschide fiecare local_image_path cu Read; compară vizual cu title și description_excerpt.",
+    "products": [
+        {
+            "id": 209,
+            "randomn_id": "4d9e8186b2ddda29",
+            "title": "Cap Bara TRW 5034724",
+            "code": "5034724",
+            "brand": "TRW",
+            "category": "Caroserie",
+            "subcategory": "Cap Bara",
+            "description_excerpt": "DescriereaDescrierea:CAP DE BARAProducătorul:TRWNumăr articol:5034724Condiție:Nou",
+            "image_url": "",
+            "image_source": "missing",
+            "local_image_path": "",
+            "image_readable_by_agent": false,
+            "vitrina": false
+        }
+    ]
+}
