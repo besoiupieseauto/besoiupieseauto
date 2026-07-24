@@ -9,10 +9,15 @@ declare(strict_types=1);
 if (defined('SCRAPER_MODULE_BOOTED')) {
     return;
 }
-// Dacă motorul Import/Scraper a încărcat deja clasele omonime, nu reincărca Lib/.
+// Dacă motorul Import/Scraper a încărcat deja clasele omonime, nu reincărca tot Lib/.
+// Totuși asigură EpiesaCatalog (necesar pe home) — Import/ poate încărca doar Paths/Logger.
 if (class_exists('ScraperPaths', false) || class_exists('ScraperLogger', false)) {
     if (!defined('SCRAPER_MODULE_BOOTED')) {
         define('SCRAPER_MODULE_BOOTED', true);
+    }
+    $scraperLibEarly = __DIR__;
+    if (!class_exists('EpiesaCatalog', false) && is_file($scraperLibEarly . '/EpiesaCatalog.php')) {
+        require_once $scraperLibEarly . '/EpiesaCatalog.php';
     }
 
     return;
