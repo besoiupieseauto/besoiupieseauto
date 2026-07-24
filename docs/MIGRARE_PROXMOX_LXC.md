@@ -20,10 +20,10 @@ Scripturi: [`scripts/proxmox/`](../scripts/proxmox/)
 
 ```powershell
 cd C:\laragon\www\besoiupieseauto.ro\scripts\proxmox
-.\Prepare-UsbMigrate.ps1 -Destination E:\besoiu-migrate
+.\Prepare-UsbMigrate.ps1 -Destination F:\besoiu-migrate
 ```
 
-4. Verifică pe USB: `MANIFEST.txt`, `*.sql`, `*-*.env`, `deploy-lxc.sh`.
+4. Verifică pe USB/HDD: `F:\besoiu-migrate\` → `MANIFEST.txt`, `*.sql` (~8+ GB), `*.env`, `deploy-lxc.sh`.
 5. Asigură-te că branch-ul e pe GitHub:
 
 ```powershell
@@ -39,7 +39,7 @@ UI: `https://192.168.1.2:8006` → **Create CT**
 | Setare | Valoare recomandată |
 |--------|---------------------|
 | Template | Debian 12 |
-| Disk | ≥ 20 GB |
+| Disk | ≥ **40 GB** (dump `besoiupieseauto.ro.sql` ~8 GB + spațiu import/Apache) |
 | RAM | 2–4 GB |
 | CPU | 2 |
 | Network | `vmbr0`, IP static ex. `192.168.1.50/24`, gateway `192.168.1.1` |
