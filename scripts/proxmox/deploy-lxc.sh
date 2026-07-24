@@ -124,7 +124,8 @@ if [[ -d "$MIGRATE_DIR" ]]; then
 
   if [[ -f "$MIGRATE_DIR/uploads.zip" ]]; then
     log "Dezarhivez uploads.zip"
-    unzip -o -q "$MIGRATE_DIR/uploads.zip" -d "$APP_DIR/app/Storage/uploads/"
+    # Compress-Archive pe Windows poate genera zip cu backslash — nu oprim deploy-ul
+    unzip -o -q "$MIGRATE_DIR/uploads.zip" -d "$APP_DIR/app/Storage/uploads/" || log "uploads.zip: skip/parțial (OK dacă e gol)"
   fi
 else
   log "ATENȚIE: $MIGRATE_DIR lipsește — configurează .env manual."

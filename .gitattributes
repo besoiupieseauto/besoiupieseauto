@@ -1,0 +1,2 @@
+# Shell scripts must keep LF on checkout (Linux deploy)
+*.sh text eol=lf
