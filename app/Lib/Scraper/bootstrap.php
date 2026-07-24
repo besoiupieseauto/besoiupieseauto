@@ -6,25 +6,25 @@ declare(strict_types=1);
  * Încărcare unică a componentelor interne scraper.
  * Nu include din exterior — folosește ScraperModule::boot().
  */
+$scraperLib = __DIR__;
+// EpiesaCatalog e necesar pe home chiar dacă alt bootstrap a marcat deja modulul ca „booted”.
+if (!class_exists('EpiesaCatalog', false) && is_file($scraperLib . '/EpiesaCatalog.php')) {
+    require_once $scraperLib . '/EpiesaCatalog.php';
+}
+
 if (defined('SCRAPER_MODULE_BOOTED')) {
     return;
 }
 // Dacă motorul Import/Scraper a încărcat deja clasele omonime, nu reincărca tot Lib/.
-// Totuși asigură EpiesaCatalog (necesar pe home) — Import/ poate încărca doar Paths/Logger.
 if (class_exists('ScraperPaths', false) || class_exists('ScraperLogger', false)) {
     if (!defined('SCRAPER_MODULE_BOOTED')) {
         define('SCRAPER_MODULE_BOOTED', true);
-    }
-    $scraperLibEarly = __DIR__;
-    if (!class_exists('EpiesaCatalog', false) && is_file($scraperLibEarly . '/EpiesaCatalog.php')) {
-        require_once $scraperLibEarly . '/EpiesaCatalog.php';
     }
 
     return;
 }
 define('SCRAPER_MODULE_BOOTED', true);
 
-$scraperLib = __DIR__;
 $envSettings = dirname(__DIR__, 2) . '/admin/system/env_settings.php';
 if (is_file($envSettings)) {
     require_once $envSettings;
