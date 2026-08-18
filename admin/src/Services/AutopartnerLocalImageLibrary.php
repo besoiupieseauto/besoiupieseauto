@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Besoiu\Services;
 
 /**
- * Imagini locale Autopartner — index SQLite + copiere în uploads/products/autopartner/.
+ * Imagini locale Autopartner — index MySQL (autopartner_images) + fallback SQLite.
  */
 final class AutopartnerLocalImageLibrary
 {
@@ -23,6 +23,8 @@ final class AutopartnerLocalImageLibrary
 
     private ?\PDO $db = null;
 
+    private string $driver = '';
+
     public static function instance(?string $projectRoot = null): self
     {
         if (self::$instance === null) {
@@ -34,14 +36,14 @@ final class AutopartnerLocalImageLibrary
 
     private function __construct(?string $projectRoot = null)
     {
-        $this->projectRoot = $projectRoot ?? dirname(__DIR__, 3);
+        $this->projectRoot = self::detectProjectRoot($projectRoot);
         $this->storageDir = $this->projectRoot . '/uploads/products/autopartner';
         $this->sqlitePath = $this->projectRoot . '/admin/public/bovsoft-import/api/cache/autopartner.sqlite';
     }
 
     public function isAvailable(): bool
     {
-        return is_file($this->sqlitePath) && $this->resolveImagesRoot() !== '';
+        return $this->resolveImagesRoot() !== '' && $this->hasIndex();
     }
 
     public function sqlitePath(): string
@@ -65,7 +67,7 @@ final class AutopartnerLocalImageLibrary
             return null;
         }
 
-        require_once $this->projectRoot . '/system/product-code-normalize.php';
+        $this->requireCodeNormalizer();
 
         $candidates = array_values(array_unique(array_filter(array_merge(
             besoiu_product_code_search_variants($code),
@@ -121,26 +123,7 @@ final class AutopartnerLocalImageLibrary
         }
 
         $db = $this->pdo();
-        $stmt = $db->prepare(
-            'SELECT l.ap_index, i.rel_path
-             FROM lookup l
-             JOIN images i ON i.ap_index = l.ap_index
-             WHERE l.norm_code = :norm
-             LIMIT 3'
-        );
-        $stmt->execute([':norm' => $norm]);
-        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
-
-        if ($rows === []) {
-            $stmt = $db->prepare(
-                "SELECT ap_index, rel_path FROM images
-                 WHERE rel_path LIKE :like OR ap_index = :norm
-                 LIMIT 3"
-            );
-            $stmt->execute([':like' => '%' . $norm . '%', ':norm' => $norm]);
-            $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
-        }
-
+        $rows = $this->queryImageRows($db, $norm);
         if ($rows === []) {
             return null;
         }
@@ -161,6 +144,58 @@ final class AutopartnerLocalImageLibrary
         }
 
         return null;
+    }
+
+    /**
+     * @return list<array{ap_index:string,rel_path:string}>
+     */
+    private function queryImageRows(\PDO $db, string $norm): array
+    {
+        if ($this->driver === 'mysql') {
+            $stmt = $db->prepare(
+                'SELECT i.ap_index, i.rel_path
+                 FROM lookup l
+                 JOIN images i ON i.ap_index_norm = l.ap_index_norm
+                 WHERE l.norm_code = :norm
+                 ORDER BY FIELD(i.folder, \'miesieczne\', \'zdjecia\', \'rooks\', \'root\'), i.seq ASC
+                 LIMIT 3'
+            );
+            $stmt->execute([':norm' => $norm]);
+            $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
+            if ($rows !== []) {
+                return $rows;
+            }
+            $stmt = $db->prepare(
+                'SELECT ap_index, rel_path FROM images
+                 WHERE ap_index_norm = :norm
+                 ORDER BY FIELD(folder, \'miesieczne\', \'zdjecia\', \'rooks\', \'root\'), seq ASC
+                 LIMIT 3'
+            );
+            $stmt->execute([':norm' => $norm]);
+
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
+        }
+
+        $stmt = $db->prepare(
+            'SELECT l.ap_index, i.rel_path
+             FROM lookup l
+             JOIN images i ON i.ap_index = l.ap_index
+             WHERE l.norm_code = :norm
+             LIMIT 3'
+        );
+        $stmt->execute([':norm' => $norm]);
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
+        if ($rows !== []) {
+            return $rows;
+        }
+        $stmt = $db->prepare(
+            'SELECT ap_index, rel_path FROM images
+             WHERE rel_path LIKE :like OR ap_index = :norm
+             LIMIT 3'
+        );
+        $stmt->execute([':like' => '%' . $norm . '%', ':norm' => $norm]);
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
     }
 
     private function publishLocalImage(string $apIndex, string $relPath): string
@@ -195,13 +230,15 @@ final class AutopartnerLocalImageLibrary
         return self::PUBLIC_PREFIX . rawurlencode($safeName . '.' . $ext);
     }
 
-    private function resolveImagesRoot(): string
+    public function resolveImagesRoot(): string
     {
         $candidates = [];
         $env = trim((string) ($_ENV['AUTOPARTNER_IMAGE_DIR'] ?? getenv('AUTOPARTNER_IMAGE_DIR') ?: ''));
         if ($env !== '') {
             $candidates[] = $env;
         }
+        $candidates[] = 'C:/Users/Radu/Desktop/autoparner';
+        $candidates[] = 'C:/Users/Radu/Desktop/autopartner';
         $candidates[] = $this->projectRoot . '/admin/public/bovsoft-import/autoparner';
         $candidates[] = $this->projectRoot . '/admin/public/bovsoft-import/autopartner';
         $candidates[] = 'F:/laragon/www/besoiupieseauto.ro/autoparner';
@@ -219,17 +256,108 @@ final class AutopartnerLocalImageLibrary
         return '';
     }
 
+    private function hasIndex(): bool
+    {
+        try {
+            $db = $this->pdo();
+            $count = (int) $db->query('SELECT COUNT(*) FROM images')->fetchColumn();
+
+            return $count > 0;
+        } catch (\Throwable) {
+            return is_file($this->sqlitePath);
+        }
+    }
+
     private function pdo(): \PDO
     {
         if ($this->db instanceof \PDO) {
             return $this->db;
         }
 
+        $mysql = $this->tryMysql();
+        if ($mysql instanceof \PDO) {
+            $this->db = $mysql;
+            $this->driver = 'mysql';
+
+            return $this->db;
+        }
+
+        if (!is_file($this->sqlitePath)) {
+            throw new \RuntimeException('Index Autopartner indisponibil (MySQL/SQLite).');
+        }
+
         $this->db = new \PDO('sqlite:' . $this->sqlitePath, null, null, [
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
             \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
         ]);
+        $this->driver = 'sqlite';
 
         return $this->db;
+    }
+
+    private function tryMysql(): ?\PDO
+    {
+        $host = trim((string) ($_ENV['DB_HOST'] ?? getenv('DB_HOST') ?: '127.0.0.1'));
+        $user = trim((string) ($_ENV['DB_USER'] ?? getenv('DB_USER') ?: 'root'));
+        $pass = (string) ($_ENV['DB_PASS'] ?? getenv('DB_PASS') ?: '');
+        $name = trim((string) ($_ENV['AUTOPARTNER_IMAGE_DB'] ?? getenv('AUTOPARTNER_IMAGE_DB') ?: 'autopartner_images'));
+        if ($host === '' || $name === '') {
+            return null;
+        }
+
+        try {
+            $pdo = new \PDO(
+                'mysql:host=' . $host . ';dbname=' . $name . ';charset=utf8mb4',
+                $user,
+                $pass,
+                [
+                    \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                    \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+                    \PDO::ATTR_EMULATE_PREPARES => false,
+                ]
+            );
+            $pdo->query('SELECT 1 FROM images LIMIT 1');
+
+            return $pdo;
+        } catch (\Throwable) {
+            return null;
+        }
+    }
+
+    private function requireCodeNormalizer(): void
+    {
+        if (function_exists('besoiu_normalize_product_code')) {
+            return;
+        }
+        $candidates = [
+            $this->projectRoot . '/app/Legacy/product-code-normalize.php',
+            $this->projectRoot . '/system/product-code-normalize.php',
+        ];
+        foreach ($candidates as $path) {
+            if (is_file($path)) {
+                require_once $path;
+                return;
+            }
+        }
+    }
+
+    private static function detectProjectRoot(?string $projectRoot): string
+    {
+        if ($projectRoot !== null && $projectRoot !== '') {
+            return rtrim($projectRoot, '/\\');
+        }
+        $dir = __DIR__;
+        for ($i = 0; $i < 6; $i++) {
+            if (is_file($dir . '/app/Config/config.php') || is_file($dir . '/admin/bootstrap.php')) {
+                return $dir;
+            }
+            $parent = dirname($dir);
+            if ($parent === $dir) {
+                break;
+            }
+            $dir = $parent;
+        }
+
+        return dirname(__DIR__, 3);
     }
 }
