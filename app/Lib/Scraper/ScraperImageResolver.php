@@ -507,7 +507,7 @@ final class ScraperImageResolver
             ]);
         }
 
-        if ($sourceId === 'caietcomenzi' || $sourceId === 'tecdoc_csv' || $sourceId === 'local_ttc_poze' || $sourceId === 'autopartner_local') {
+        if ($sourceId === 'caietcomenzi' || $sourceId === 'tecdoc_csv' || $sourceId === 'local_ttc_poze' || $sourceId === 'autopartner_local' || $sourceId === 'autotal_local') {
             return self::tryLocalImageSources($product, $sourceId);
         }
 
@@ -560,6 +560,27 @@ final class ScraperImageResolver
                 : 'Biblioteca locală goală — importă Poze în uploads/products/ttc_library';
 
             return ['url' => '', 'source' => $sourceId, 'api_error' => $hint];
+        }
+
+        if ($sourceId === 'autotal_local') {
+            $localLib = dirname(__DIR__, 2) . '/admin/src/Controllers/Produse/import_autotal_local_lib.php';
+            if (!is_file($localLib)) {
+                $localLib = dirname(__DIR__, 2) . '/Backend/src/Controllers/Produse/import_autotal_local_lib.php';
+            }
+            if (!is_file($localLib)) {
+                return ['url' => '', 'source' => $sourceId, 'api_error' => 'Autototal local: bridge lipsă'];
+            }
+            require_once $localLib;
+            $hit = import_resolve_autotal_local_image($product);
+            if (is_array($hit) && trim((string) ($hit['url'] ?? '')) !== '') {
+                return $hit;
+            }
+
+            return [
+                'url' => '',
+                'source' => $sourceId,
+                'api_error' => 'Autototal: cod «' . trim((string) ($product['pCode'] ?? '')) . '» negăsit în imagine_autototal',
+            ];
         }
 
         if ($sourceId === 'autopartner_local') {

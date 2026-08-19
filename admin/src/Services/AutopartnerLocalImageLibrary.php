@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Besoiu\Services;
 
 /**
- * Imagini locale Autopartner — index MySQL (autopartner_images) + fallback SQLite.
+ * Imagini locale Autopartner — index MySQL imagine_produse (coloana A/C) + fallback vechi.
  */
 final class AutopartnerLocalImageLibrary
 {
@@ -24,6 +24,8 @@ final class AutopartnerLocalImageLibrary
     private ?\PDO $db = null;
 
     private string $driver = '';
+
+    private string $schema = '';
 
     public static function instance(?string $projectRoot = null): self
     {
@@ -123,7 +125,7 @@ final class AutopartnerLocalImageLibrary
         }
 
         $db = $this->pdo();
-        $rows = $this->queryImageRows($db, $norm);
+        $rows = $this->queryImageRows($db, $norm, $brand);
         if ($rows === []) {
             return null;
         }
@@ -149,8 +151,38 @@ final class AutopartnerLocalImageLibrary
     /**
      * @return list<array{ap_index:string,rel_path:string}>
      */
-    private function queryImageRows(\PDO $db, string $norm): array
+    private function queryImageRows(\PDO $db, string $norm, string $brand = ''): array
     {
+        if ($this->driver === 'mysql' && $this->schema === 'imagine_produse') {
+            $brandTok = imagine_catalog_brand($brand);
+            $sql = 'SELECT disk_name AS ap_index, rel_path FROM images
+                    WHERE code_norm = :norm';
+            $params = [':norm' => $norm];
+            if ($brandTok !== '') {
+                $sql .= ' ORDER BY (brand = :brand) DESC, disk_name ASC LIMIT 3';
+                $params[':brand'] = $brandTok;
+            } else {
+                $sql .= ' ORDER BY disk_name ASC LIMIT 3';
+            }
+            $stmt = $db->prepare($sql);
+            $stmt->execute($params);
+            $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
+            if ($rows !== []) {
+                return $rows;
+            }
+            $stmt = $db->prepare(
+                'SELECT i.disk_name AS ap_index, i.rel_path
+                 FROM products p
+                 JOIN images i ON i.brand = p.brand AND i.code_norm = p.code_norm
+                 WHERE p.a_norm = :norm
+                 ORDER BY i.disk_name ASC
+                 LIMIT 3'
+            );
+            $stmt->execute([':norm' => $norm]);
+
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
+        }
+
         if ($this->driver === 'mysql') {
             $stmt = $db->prepare(
                 'SELECT i.ap_index, i.rel_path
@@ -205,8 +237,14 @@ final class AutopartnerLocalImageLibrary
             return '';
         }
 
-        $sourcePath = $this->resolveImagesRoot() . '/' . ltrim(str_replace('/', DIRECTORY_SEPARATOR, $relPath), DIRECTORY_SEPARATOR);
-        if (!is_file($sourcePath) || (int) filesize($sourcePath) < 512) {
+        $root = $this->resolveImagesRoot();
+        $rel = ltrim(str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $relPath), DIRECTORY_SEPARATOR);
+        $sourcePath = imagine_catalog_first_file([
+            $root . DIRECTORY_SEPARATOR . $rel,
+            $root . DIRECTORY_SEPARATOR . 'IMAGINI_RENUMITE' . DIRECTORY_SEPARATOR . $apIndex,
+            $root . DIRECTORY_SEPARATOR . $apIndex,
+        ]);
+        if ($sourcePath === '') {
             return '';
         }
 
@@ -214,7 +252,7 @@ final class AutopartnerLocalImageLibrary
             mkdir($this->storageDir, 0755, true);
         }
 
-        $safeName = preg_replace('/[^a-zA-Z0-9_-]/', '_', $apIndex) ?: 'ap';
+        $safeName = preg_replace('/[^a-zA-Z0-9_-]/', '_', pathinfo($apIndex, PATHINFO_FILENAME)) ?: 'ap';
         $ext = strtolower(pathinfo($sourcePath, PATHINFO_EXTENSION));
         if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'], true)) {
             $ext = 'jpg';
@@ -297,31 +335,40 @@ final class AutopartnerLocalImageLibrary
 
     private function tryMysql(): ?\PDO
     {
+        require_once $this->projectRoot . '/app/Legacy/imagine-catalog-lookup.php';
+        imagine_catalog_load_env($this->projectRoot);
         $host = trim((string) ($_ENV['DB_HOST'] ?? getenv('DB_HOST') ?: '127.0.0.1'));
         $user = trim((string) ($_ENV['DB_USER'] ?? getenv('DB_USER') ?: 'root'));
         $pass = (string) ($_ENV['DB_PASS'] ?? getenv('DB_PASS') ?: '');
-        $name = trim((string) ($_ENV['AUTOPARTNER_IMAGE_DB'] ?? getenv('AUTOPARTNER_IMAGE_DB') ?: 'autopartner_images'));
-        if ($host === '' || $name === '') {
-            return null;
+
+        foreach ([
+            trim((string) ($_ENV['IMAGINE_PRODUSE_DB'] ?? getenv('IMAGINE_PRODUSE_DB') ?: 'imagine_produse')) => 'imagine_produse',
+            trim((string) ($_ENV['AUTOPARTNER_IMAGE_DB'] ?? getenv('AUTOPARTNER_IMAGE_DB') ?: 'autopartner_images')) => 'legacy',
+        ] as $name => $schema) {
+            if ($name === '') {
+                continue;
+            }
+            try {
+                $pdo = new \PDO(
+                    'mysql:host=' . $host . ';dbname=' . $name . ';charset=utf8mb4',
+                    $user,
+                    $pass,
+                    [
+                        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                        \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+                    ]
+                );
+                $pdo->query('SELECT 1 FROM images LIMIT 1');
+                $hasNorm = $pdo->query("SHOW COLUMNS FROM images LIKE 'code_norm'")->fetch();
+                $this->schema = $hasNorm ? 'imagine_produse' : $schema;
+
+                return $pdo;
+            } catch (\Throwable) {
+                continue;
+            }
         }
 
-        try {
-            $pdo = new \PDO(
-                'mysql:host=' . $host . ';dbname=' . $name . ';charset=utf8mb4',
-                $user,
-                $pass,
-                [
-                    \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                    \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
-                    \PDO::ATTR_EMULATE_PREPARES => false,
-                ]
-            );
-            $pdo->query('SELECT 1 FROM images LIMIT 1');
-
-            return $pdo;
-        } catch (\Throwable) {
-            return null;
-        }
+        return null;
     }
 
     private function requireCodeNormalizer(): void

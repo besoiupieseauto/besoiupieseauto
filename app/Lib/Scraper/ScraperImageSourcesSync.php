@@ -35,6 +35,11 @@ final class ScraperImageSourcesSync
                 'roles' => ['image'],
                 'categories' => ['*'],
             ],
+            'autotal_local' => [
+                'label' => 'Bibliotecă locală Autototal',
+                'roles' => ['image'],
+                'categories' => ['*'],
+            ],
             'tecdoc_csv' => [
                 'label' => 'TecDoc CSV (import local)',
                 'roles' => ['image', 'description'],

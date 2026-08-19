@@ -113,6 +113,11 @@ final class LocalTtcImageLibrary
      */
     public function lookupForProduct(array $product): ?array
     {
+        $fromDb = $this->lookupImaginePozeDb($product);
+        if ($fromDb !== null) {
+            return $fromDb;
+        }
+
         $ttcArtId = $this->extractTtcArtIdFromProduct($product);
         if ($ttcArtId !== '') {
             $url = $this->resolveUrl($ttcArtId);
@@ -162,6 +167,80 @@ final class LocalTtcImageLibrary
         }
 
         return null;
+    }
+
+    /**
+     * Lookup din baza imagine_poze (owner_code / ttc_art_id / aliasuri).
+     *
+     * @param array<string, mixed> $product
+     * @return array<string, mixed>|null
+     */
+    private function lookupImaginePozeDb(array $product): ?array
+    {
+        require_once $this->projectRoot . '/app/Legacy/imagine-catalog-lookup.php';
+        require_once $this->projectRoot . '/app/Legacy/product-code-normalize.php';
+        $dbName = trim((string) ($_ENV['IMAGINE_POZE_DB'] ?? getenv('IMAGINE_POZE_DB') ?: 'imagine_poze'));
+        $pdo = imagine_catalog_pdo($dbName);
+        if (!$pdo instanceof \PDO) {
+            return null;
+        }
+
+        $code = imagine_catalog_norm((string) ($product['pCode'] ?? ''));
+        $brand = imagine_catalog_brand((string) ($product['pBrand'] ?? ''));
+        $ttc = $this->extractTtcArtIdFromProduct($product);
+        $row = null;
+        if ($ttc !== '') {
+            $stmt = $pdo->prepare('SELECT brand, code_norm, disk_name, rel_path, ttc_art_id FROM images WHERE ttc_art_id = :t ORDER BY disk_name LIMIT 1');
+            $stmt->execute([':t' => $ttc]);
+            $row = $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
+        }
+        if (!is_array($row) && $code !== '') {
+            if ($brand !== '') {
+                $stmt = $pdo->prepare('SELECT brand, code_norm, disk_name, rel_path, ttc_art_id FROM images WHERE brand = :b AND code_norm = :c ORDER BY disk_name LIMIT 1');
+                $stmt->execute([':b' => $brand, ':c' => $code]);
+                $row = $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
+            }
+            if (!is_array($row)) {
+                $stmt = $pdo->prepare('SELECT brand, code_norm, disk_name, rel_path, ttc_art_id FROM images WHERE code_norm = :c ORDER BY disk_name LIMIT 1');
+                $stmt->execute([':c' => $code]);
+                $row = $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
+            }
+        }
+        if (!is_array($row) && $code !== '') {
+            $stmt = $pdo->prepare(
+                'SELECT i.brand, i.code_norm, i.disk_name, i.rel_path, i.ttc_art_id
+                 FROM aliases a JOIN images i ON i.brand = a.brand AND i.code_norm = a.code_norm
+                 WHERE a.alias_code_norm = :c
+                 LIMIT 1'
+            );
+            $stmt->execute([':c' => $code]);
+            $row = $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
+        }
+        if (!is_array($row)) {
+            return null;
+        }
+
+        $ren = trim((string) ($_ENV['TTC_POZE_RENAMED_DIR'] ?? getenv('TTC_POZE_RENAMED_DIR') ?: 'C:/laragon/www/besoiupieseimport/Poze_RENUMITE'));
+        $origRoot = trim((string) ($_ENV['TTC_POZE_DIR'] ?? getenv('TTC_POZE_DIR') ?: 'C:/laragon/www/besoiupieseimport/Poze'));
+        $abs = imagine_catalog_first_file([
+            $ren . '/' . $row['brand'] . '/' . $row['disk_name'],
+            dirname($ren) . '/' . str_replace('/', DIRECTORY_SEPARATOR, (string) $row['rel_path']),
+            $origRoot . '/' . str_replace(['Poze/', 'Poze\\'], '', (string) $row['rel_path']),
+        ]);
+        $url = imagine_catalog_publish($abs, $this->storageDir, self::PUBLIC_PREFIX, (string) $row['disk_name']);
+        if ($url === '') {
+            return null;
+        }
+
+        return [
+            'url' => $url,
+            'source' => self::SOURCE_ID,
+            'ttc_art_id' => (string) ($row['ttc_art_id'] ?? ''),
+            'brand' => (string) $row['brand'],
+            'query' => (string) $row['code_norm'],
+            'match_score' => 100,
+            'match_reason' => 'imagine_poze ' . $row['brand'] . '-' . $row['code_norm'],
+        ];
     }
 
     /**
