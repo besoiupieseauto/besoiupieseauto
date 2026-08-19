@@ -125,7 +125,7 @@ function h(string $s): string
 <div class="grid">
 <?php foreach ($rows as $r): ?>
     <article class="card">
-        <img src="imagine-verificare-img.php?src=<?= h($src) ?>&amp;id=<?= (int) $r['id'] ?>" alt="<?= h((string) $r['disk_name']) ?>" loading="lazy">
+        <img src="/admin/imagine-verificare-img.php?src=<?= h($src) ?>&amp;id=<?= (int) $r['id'] ?>" alt="<?= h((string) $r['disk_name']) ?>" loading="lazy">
         <div class="meta">
             <div><b><?= h((string) $r['brand']) ?></b> <?= h((string) $r['disk_name']) ?></div>
             <div>cod: <?= h((string) $r['code_norm']) ?></div>

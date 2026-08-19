@@ -17,6 +17,10 @@ final class ModuleGate
         'login', 'logout', 'alerts', 'system-errors', '403',
         'ai-agent',
         'ai-rag',
+        'imagine-verificare',
+        'imagine_verificare',
+        'imagine-verificare-img.php',
+        'imagine_verificare-img.php',
     ];
 
     private const CORE_API_SCRIPTS = [

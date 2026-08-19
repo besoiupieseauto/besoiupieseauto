@@ -214,6 +214,10 @@ final class HttpApplication
      */
     private function dispatchHttpRequest(): void
     {
+        if ($this->dispatchImagineVerificareIfRequested()) {
+            return;
+        }
+
         // Încarcă rolurile din DB cu cache 300 secunde
         $rolesConfiguration = AppCache::remember(
             'roles_all_v1',
@@ -346,6 +350,25 @@ final class HttpApplication
                 $templateDirectory
             );
         }
+    }
+
+    private function dispatchImagineVerificareIfRequested(): bool
+    {
+        $path = strtolower((string) parse_url((string) ($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH));
+        $path = rtrim($path, '/');
+        $publicDir = dirname(__DIR__, 3) . '/public';
+        if (preg_match('#/(imagine[-_]verificare-img)(\.php)?$#', $path)) {
+            require $publicDir . '/imagine-verificare-img.php';
+
+            return true;
+        }
+        if (preg_match('#/(imagine[-_]verificare)(\.php)?$#', $path)) {
+            require $publicDir . '/imagine-verificare.php';
+
+            return true;
+        }
+
+        return false;
     }
 
     private function renderModuleGateDenied(string $requestPath): void

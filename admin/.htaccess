@@ -36,8 +36,8 @@ RewriteRule ^ - [L]
 RewriteRule ^cron-sync/?$ cron [R=301,L,QSA]
 RewriteRule ^cron/?$ public/index.php [L,QSA]
 RewriteRule ^cron/index\.php$ public/index.php [L,QSA]
-RewriteRule ^imagine-verificare/?$ public/imagine-verificare.php [L,QSA]
-RewriteRule ^imagine-verificare-img\.php$ public/imagine-verificare-img.php [L,QSA]
+RewriteRule ^imagine[-_]verificare/?$ public/imagine-verificare.php [L,QSA]
+RewriteRule ^imagine[-_]verificare-img\.php$ public/imagine-verificare-img.php [L,QSA]
 
 # Nu rescrie dacă există fișier/dir fizic
 RewriteCond %{REQUEST_FILENAME} !-f
