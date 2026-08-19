@@ -33,6 +33,7 @@ $cfg = [
         'sql' => 'SELECT i.id, i.brand, i.code_norm, i.code_raw AS code_a, i.ttc_art_id AS code_c,
                          p.name AS product_name, i.original_path AS orig, i.disk_name
                   FROM images i LEFT JOIN products p USING (brand, code_norm)',
+        'base' => "i.original_path LIKE 'Poze/%' AND i.original_path NOT LIKE '%AP_ZDJECIA%'",
         'where' => 'i.disk_name LIKE :q OR i.code_norm LIKE :q OR i.brand LIKE :q OR i.original_path LIKE :q OR IFNULL(i.code_raw,\'\') LIKE :q OR IFNULL(i.ttc_art_id,\'\') LIKE :q OR IFNULL(p.name,\'\') LIKE :q',
         'hint' => 'Caută owner_code, brand sau TTC id. Ex: CAM749, AE',
     ],

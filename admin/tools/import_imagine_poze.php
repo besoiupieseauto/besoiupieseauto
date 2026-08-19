@@ -108,6 +108,10 @@ while (($row = fgetcsv($in, 0, ';')) !== false) {
     if ($rel === '' || $brand === '' || $code === '') {
         continue;
     }
+    $relNorm = str_replace('\\', '/', $rel);
+    if (!str_starts_with($relNorm, 'Poze/') || str_contains(strtoupper($relNorm), 'AP_ZDJECIA')) {
+        continue;
+    }
     $abs = resolve_poze_path($pozeRoot, $rel);
     if (!is_file($abs) || filesize($abs) < 512) {
         $missing++;

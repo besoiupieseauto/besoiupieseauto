@@ -190,18 +190,18 @@ final class LocalTtcImageLibrary
         $ttc = $this->extractTtcArtIdFromProduct($product);
         $row = null;
         if ($ttc !== '') {
-            $stmt = $pdo->prepare('SELECT brand, code_norm, disk_name, rel_path, ttc_art_id FROM images WHERE ttc_art_id = :t ORDER BY disk_name LIMIT 1');
+            $stmt = $pdo->prepare('SELECT brand, code_norm, disk_name, rel_path, ttc_art_id FROM images WHERE ttc_art_id = :t AND original_path LIKE \'Poze/%\' ORDER BY disk_name LIMIT 1');
             $stmt->execute([':t' => $ttc]);
             $row = $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
         }
         if (!is_array($row) && $code !== '') {
             if ($brand !== '') {
-                $stmt = $pdo->prepare('SELECT brand, code_norm, disk_name, rel_path, ttc_art_id FROM images WHERE brand = :b AND code_norm = :c ORDER BY disk_name LIMIT 1');
+                $stmt = $pdo->prepare('SELECT brand, code_norm, disk_name, rel_path, ttc_art_id FROM images WHERE brand = :b AND code_norm = :c AND original_path LIKE \'Poze/%\' ORDER BY disk_name LIMIT 1');
                 $stmt->execute([':b' => $brand, ':c' => $code]);
                 $row = $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
             }
             if (!is_array($row)) {
-                $stmt = $pdo->prepare('SELECT brand, code_norm, disk_name, rel_path, ttc_art_id FROM images WHERE code_norm = :c ORDER BY disk_name LIMIT 1');
+                $stmt = $pdo->prepare('SELECT brand, code_norm, disk_name, rel_path, ttc_art_id FROM images WHERE code_norm = :c AND original_path LIKE \'Poze/%\' ORDER BY disk_name LIMIT 1');
                 $stmt->execute([':c' => $code]);
                 $row = $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
             }
@@ -210,7 +210,7 @@ final class LocalTtcImageLibrary
             $stmt = $pdo->prepare(
                 'SELECT i.brand, i.code_norm, i.disk_name, i.rel_path, i.ttc_art_id
                  FROM aliases a JOIN images i ON i.brand = a.brand AND i.code_norm = a.code_norm
-                 WHERE a.alias_code_norm = :c
+                 WHERE a.alias_code_norm = :c AND i.original_path LIKE \'Poze/%\'
                  LIMIT 1'
             );
             $stmt->execute([':c' => $code]);
