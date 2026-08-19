@@ -19,23 +19,28 @@ $cfg = [
     'ap' => [
         'label' => 'Autopartner',
         'db' => getenv('IMAGINE_PRODUSE_DB') ?: 'imagine_produse',
-        'sql' => 'SELECT id, brand, code_norm, code_a, code_c, original_file AS orig, disk_name
+        'sql' => 'SELECT i.id, i.brand, i.code_norm, p.code_a, p.code_c, p.name AS product_name,
+                         i.original_file AS orig, i.disk_name
                   FROM images i LEFT JOIN products p USING (brand, code_norm)',
-        'where' => 'disk_name LIKE :q OR code_norm LIKE :q OR brand LIKE :q OR original_file LIKE :q OR IFNULL(code_a,\'\') LIKE :q',
+        'where' => 'i.disk_name LIKE :q OR i.code_norm LIKE :q OR i.brand LIKE :q OR i.original_file LIKE :q OR IFNULL(p.code_a,\'\') LIKE :q OR IFNULL(p.name,\'\') LIKE :q',
         'hint' => 'Caută cod C (TecDoc), coloana A sau brand. Ex: MGA-5562, 110191, BOSCH',
     ],
     'poze' => [
         'label' => 'Poze TTC',
         'db' => getenv('IMAGINE_POZE_DB') ?: 'imagine_poze',
-        'sql' => 'SELECT id, brand, code_norm, code_raw AS code_a, ttc_art_id AS code_c, original_path AS orig, disk_name FROM images',
-        'where' => 'disk_name LIKE :q OR code_norm LIKE :q OR brand LIKE :q OR original_path LIKE :q OR IFNULL(code_raw,\'\') LIKE :q OR IFNULL(ttc_art_id,\'\') LIKE :q',
+        'sql' => 'SELECT i.id, i.brand, i.code_norm, i.code_raw AS code_a, i.ttc_art_id AS code_c,
+                         p.name AS product_name, i.original_path AS orig, i.disk_name
+                  FROM images i LEFT JOIN products p USING (brand, code_norm)',
+        'where' => 'i.disk_name LIKE :q OR i.code_norm LIKE :q OR i.brand LIKE :q OR i.original_path LIKE :q OR IFNULL(i.code_raw,\'\') LIKE :q OR IFNULL(i.ttc_art_id,\'\') LIKE :q OR IFNULL(p.name,\'\') LIKE :q',
         'hint' => 'Caută owner_code, brand sau TTC id. Ex: CAM749, AE',
     ],
     'at' => [
         'label' => 'Autototal',
         'db' => getenv('IMAGINE_AUTOTOTAL_DB') ?: 'imagine_autototal',
-        'sql' => 'SELECT id, brand, code_norm, code_raw AS code_a, \'\' AS code_c, original_url AS orig, disk_name FROM images',
-        'where' => 'disk_name LIKE :q OR code_norm LIKE :q OR brand LIKE :q OR original_url LIKE :q OR IFNULL(code_raw,\'\') LIKE :q',
+        'sql' => 'SELECT i.id, i.brand, i.code_norm, i.code_raw AS code_a, \'\' AS code_c,
+                         p.name AS product_name, i.original_url AS orig, i.disk_name
+                  FROM images i LEFT JOIN products p USING (brand, code_norm)',
+        'where' => 'i.disk_name LIKE :q OR i.code_norm LIKE :q OR i.brand LIKE :q OR i.original_url LIKE :q OR IFNULL(i.code_raw,\'\') LIKE :q OR IFNULL(p.name,\'\') LIKE :q',
         'hint' => 'Caută coloana B (TecDoc) sau SUP_BRAND. Ex: 0001106025, BOSCH',
     ],
 ];
@@ -100,6 +105,7 @@ function h(string $s): string
         .card img { width: 100%; height: 180px; object-fit: contain; background: #fff; }
         .meta { padding: 10px 12px; font-size: 13px; line-height: 1.45; }
         .meta b { color: #93c5fd; }
+        .pname { color: #f8fafc; font-weight: 600; margin: 0 0 6px; }
         .err { color: #fca5a5; padding: 16px 20px; }
         .pager { padding: 0 20px 24px; }
     </style>
@@ -127,6 +133,8 @@ function h(string $s): string
     <article class="card">
         <img src="/admin/imagine-verificare-img.php?src=<?= h($src) ?>&amp;id=<?= (int) $r['id'] ?>" alt="<?= h((string) $r['disk_name']) ?>" loading="lazy">
         <div class="meta">
+            <?php $pname = trim((string) ($r['product_name'] ?? '')); ?>
+            <?php if ($pname !== ''): ?><div class="pname"><?= h($pname) ?></div><?php endif; ?>
             <div><b><?= h((string) $r['brand']) ?></b> <?= h((string) $r['disk_name']) ?></div>
             <div>cod: <?= h((string) $r['code_norm']) ?></div>
             <?php if (trim((string) ($r['code_a'] ?? '')) !== ''): ?><div>sursă: <?= h((string) $r['code_a']) ?></div><?php endif; ?>
