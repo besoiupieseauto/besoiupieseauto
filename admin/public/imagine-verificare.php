@@ -74,7 +74,8 @@ if (!$pdo instanceof PDO) {
         $total = (int) $st->fetchColumn();
         $st = $pdo->prepare($meta['sql'] . ' WHERE ' . $where . ' ORDER BY brand, code_norm, disk_name LIMIT ' . (int) $per . ' OFFSET ' . (int) $offset);
         $st->execute($params);
-        $rows = imagine_rows_with_romanian_names($pdo, $st->fetchAll(PDO::FETCH_ASSOC) ?: []);
+        $fetched = $st->fetchAll(PDO::FETCH_ASSOC) ?: [];
+        $rows = $src === 'poze' ? $fetched : imagine_rows_with_romanian_names($pdo, $fetched);
     } catch (PDOException $e) {
         $error = $e->getMessage();
     }
