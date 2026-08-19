@@ -153,6 +153,10 @@ def import_brand_dir(brand_dir: Path) -> dict[str, int]:
         for p in poze_dir.iterdir()
         if p.is_file() and p.suffix.lower() in {".jpg", ".jpeg", ".png", ".webp"}
     }
+    for stem, path in list(files.items()):
+        extra = re.match(r"^(\d+)[a-z]$", stem, re.I)
+        if extra and extra.group(1) not in files:
+            files[extra.group(1)] = path
 
     products: dict[tuple[str, str], dict] = {}
     matched = 0
