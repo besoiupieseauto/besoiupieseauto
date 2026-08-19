@@ -61,6 +61,16 @@ function file_ok(string $path): bool
     return is_file($path) && filesize($path) >= 512;
 }
 
+function to_utf8(string $s): string
+{
+    if ($s === '') {
+        return '';
+    }
+    $c = @iconv('Windows-1250', 'UTF-8//IGNORE', $s);
+
+    return $c !== false ? $c : $s;
+}
+
 $apBrand = [
     'MAX' => 'MAXGEAR', 'OPT' => 'OPTIMAL', 'BOS' => 'BOSCH', 'FEB' => 'FEBIBILSTEIN',
     'QBK' => 'QUICKBRAKE', 'MEY' => 'MEYLE', 'MAG' => 'MAGNETIMARELLI', 'VAL' => 'VALEO',
