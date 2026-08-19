@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 $root = dirname(__DIR__, 2);
 require_once $root . '/app/Legacy/imagine-catalog-lookup.php';
+require_once $root . '/app/Legacy/imagine-name-ro.php';
 imagine_catalog_load_env($root);
 
 $src = strtolower(trim((string) ($_GET['src'] ?? 'ap')));
@@ -71,7 +72,7 @@ if (!$pdo instanceof PDO) {
         $total = (int) $st->fetchColumn();
         $st = $pdo->prepare($meta['sql'] . ' WHERE ' . $where . ' ORDER BY brand, code_norm, disk_name LIMIT ' . (int) $per . ' OFFSET ' . (int) $offset);
         $st->execute($params);
-        $rows = $st->fetchAll(PDO::FETCH_ASSOC) ?: [];
+        $rows = imagine_rows_with_romanian_names($pdo, $st->fetchAll(PDO::FETCH_ASSOC) ?: []);
     } catch (PDOException $e) {
         $error = $e->getMessage();
     }
