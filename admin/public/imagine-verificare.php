@@ -23,6 +23,7 @@ $cfg = [
         'sql' => 'SELECT i.id, i.brand, i.code_norm, p.code_a, p.code_c, p.name AS product_name,
                          i.original_file AS orig, i.disk_name
                   FROM images i LEFT JOIN products p USING (brand, code_norm)',
+        'base' => "i.brand <> '999' AND i.brand <> ''",
         'where' => 'i.disk_name LIKE :q OR i.code_norm LIKE :q OR i.brand LIKE :q OR i.original_file LIKE :q OR IFNULL(p.code_a,\'\') LIKE :q OR IFNULL(p.name,\'\') LIKE :q',
         'hint' => 'Caută cod C (TecDoc), coloana A sau brand. Ex: MGA-5562, 110191, BOSCH',
     ],
@@ -54,10 +55,10 @@ $pdo = imagine_catalog_pdo((string) $meta['db']);
 if (!$pdo instanceof PDO) {
     $error = 'Nu mă conectez la ' . $meta['db'];
 } else {
-    $where = '1=1';
+    $where = (string) ($meta['base'] ?? '1=1');
     $params = [];
     if ($q !== '') {
-        $where = $meta['where'];
+        $where = '(' . $where . ') AND (' . $meta['where'] . ')';
         $params[':q'] = '%' . str_replace([' ', '-', '.', '/', '_'], '', strtoupper($q)) . '%';
         if (!str_contains($q, ' ') && !str_contains($q, '-')) {
             $params[':q'] = '%' . $q . '%';
