@@ -324,7 +324,7 @@ class FurnizoriService
     /** @param array<string, mixed> $options @return array<string, mixed> */
     private function applyConnectionOverrides(array $furnizor, array $options): array
     {
-        foreach (['conn_host', 'conn_port', 'conn_username', 'conn_remote_path', 'api_base_url', 'connection_type', 'ftp_access_mode'] as $field) {
+        foreach (['conn_host', 'conn_port', 'conn_username', 'conn_remote_path', 'api_base_url', 'connection_type', 'ftp_access_mode', 'api_token'] as $field) {
             if (array_key_exists($field, $options) && trim((string) $options[$field]) !== '') {
                 $furnizor[$field] = trim((string) $options[$field]);
             }

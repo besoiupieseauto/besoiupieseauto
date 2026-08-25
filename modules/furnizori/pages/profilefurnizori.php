@@ -465,6 +465,10 @@ if ($fpProCss !== '') {
                 </label>
                 <input type="hidden" name="api_token" id="furnizor-api-token-json" value="">
               </div>
+              <div class="fp-ftp-actions" id="furnizor-api-actions">
+                <button type="button" id="furnizor-api-test-btn" class="fp-btn fp-btn--primary">Testează conexiunea API</button>
+                <span id="furnizor-api-test-status" class="fp-import-field__hint"></span>
+              </div>
               <div id="furnizor-autopartner-files-hint" class="mt-3 hidden rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
                 <div class="font-semibold text-xs uppercase tracking-wide">Auto Partner — fișiere așteptate</div>
                 <ul class="mt-2 list-disc space-y-1 pl-5 text-xs opacity-90">
@@ -508,7 +512,7 @@ if ($fpProCss !== '') {
                 </label>
               </div>
               <div class="fp-ftp-actions" id="furnizor-ftp-actions">
-                <button type="button" id="furnizor-ftp-connect-btn" class="fp-btn fp-btn--primary">Conectează și arată folderele de la ei</button>
+                <button type="button" id="furnizor-ftp-connect-btn" class="fp-btn fp-btn--primary">Testează — arată folderele de la ei</button>
                 <button type="button" id="furnizor-ftp-download-btn" class="fp-btn fp-btn--ghost">Descarcă fișierele</button>
                 <span id="furnizor-ftp-action-status" class="fp-import-field__hint"></span>
               </div>
@@ -531,9 +535,10 @@ if ($fpProCss !== '') {
                   <span>Previzualizare și copiere în folderul furnizorului</span>
                 </div>
                 <div class="fp-browse-actions">
+                  <button id="furnizor-test-btn" type="button" class="fp-btn fp-btn--primary">Testează</button>
                   <button id="furnizor-mirror-feed" type="button" class="box rounded-lg border bg-white">Copiază local</button>
                   <button id="furnizor-browse-root" type="button" class="box rounded-lg border bg-white">Deschide lista</button>
-                  <button id="furnizor-browse-path" type="button" class="box rounded-lg border bg-primary text-white">Reîncarcă</button>
+                  <button id="furnizor-browse-path" type="button" class="box rounded-lg border bg-white">Reîncarcă</button>
                 </div>
               </div>
               <dl id="furnizor-browse-paths" class="fp-browse-paths fp-folder-path" aria-live="polite">
@@ -825,10 +830,10 @@ function selectFtpAccess(mode,connect){
     document.getElementById('furnizor-panel-ftp')?.scrollIntoView({behavior:'smooth',block:'nearest'});
     const host=String(form.elements.namedItem('conn_host')?.value||'').trim();
     if(connect&&host){
-      connectToTheirFtp();
+      testConnectionAndShowFiles();
     }else if(connect){
       form.elements.namedItem('conn_host')?.focus();
-      showToast('Pune IP-ul, login-ul și parola de la ei, apoi apasă «Conectează și arată folderele».',false);
+      showToast('Pune IP-ul, login-ul și parola de la ei, apoi apasă «Testează».',false);
     }
   }
 }
@@ -873,6 +878,55 @@ async function connectToTheirFtp(){
     showToast(err.message,true);
   }finally{
     if(btn) btn.disabled=false;
+  }
+}
+
+async function testConnectionAndShowFiles(){
+  const type=String(form.elements.namedItem('connection_type')?.value||'api').toLowerCase();
+  const isFtp=type==='ftp'||type==='sftp';
+  const statusBrowse=document.getElementById('furnizor-browse-status');
+  const statusFtp=document.getElementById('furnizor-ftp-action-status');
+  const statusApi=document.getElementById('furnizor-api-test-status');
+  const buttons=[
+    document.getElementById('furnizor-test-btn'),
+    document.getElementById('furnizor-api-test-btn'),
+    document.getElementById('furnizor-ftp-connect-btn')
+  ];
+  const setStatus=(msg)=>{
+    if(statusBrowse) statusBrowse.textContent=msg;
+    if(statusFtp) statusFtp.textContent=msg;
+    if(statusApi) statusApi.textContent=msg;
+  };
+  buttons.forEach((btn)=>{ if(btn) btn.disabled=true; });
+  setStatus('Testez conexiunea…');
+  try{
+    const apiToken=buildApiTokenPayload();
+    const test=await apiCall('testconnection',{
+      randomn_id:randomId,
+      test_target:isFtp?'ftp':'api',
+      ...browseFormContext(),
+      ...(apiToken?{api_token:apiToken}:{})
+    });
+    const ok=test.last_test_status==='success';
+    const testMsg=test.last_test_message||(ok?'Conexiune OK.':'Conexiune eșuată.');
+    if(!ok){
+      setStatus(testMsg);
+      showToast(testMsg,true);
+      return;
+    }
+    setStatus(testMsg+' — încarc fișierele…');
+    const remotePath=String(form.elements.namedItem('conn_remote_path')?.value||'').trim()||'/';
+    await browseRemote(isFtp?remotePath:'/',{includeRemote:isFtp});
+    const n=document.querySelectorAll('#furnizor-browse-list tbody tr').length;
+    const done=testMsg+(n?(' · '+n+' fișier(e)/folder(e) în listă.'):' · lista e mai jos.');
+    setStatus(done);
+    document.getElementById('furnizor-panel-browse')?.scrollIntoView({behavior:'smooth',block:'start'});
+    showToast(done,false);
+  }catch(err){
+    setStatus(err.message);
+    showToast(err.message,true);
+  }finally{
+    buttons.forEach((btn)=>{ if(btn) btn.disabled=false; });
   }
 }
 
@@ -942,7 +996,7 @@ function syncFtpAccessMode(){
   document.getElementById('furnizor-access-we-btn')?.classList.toggle('is-active',ours);
   const connectBtn=document.getElementById('furnizor-ftp-connect-btn');
   const downloadBtn=document.getElementById('furnizor-ftp-download-btn');
-  if(connectBtn) connectBtn.textContent=ours?'Arată fișierele încărcate la noi':'Conectează și arată folderele de la ei';
+  if(connectBtn) connectBtn.textContent=ours?'Arată fișierele încărcate la noi':'Testează — arată folderele de la ei';
   if(downloadBtn) downloadBtn.textContent=ours?'Culege fișierele încărcate':'Descarcă fișierele de la ei';
   updateBrowseHelpFromForm();
 }
@@ -1291,12 +1345,9 @@ document.getElementById('furnizor-profile-delete')?.addEventListener('click',asy
 
 document.getElementById('furnizor-browse-root')?.addEventListener('click',()=>browseRemote('/',{includeRemote:shouldIncludeRemote()}));
 document.getElementById('furnizor-browse-path')?.addEventListener('click',()=>browseRemote(String(form.elements.namedItem('conn_remote_path')?.value||'').trim()||'/',{includeRemote:shouldIncludeRemote()}));
-document.getElementById('furnizor-ftp-connect-btn')?.addEventListener('click',()=>{
-  if(ftpAccessMode()==='they') connectToTheirFtp();
-  else browseRemote('/',{includeRemote:shouldIncludeRemote()}).then(()=>{
-    document.getElementById('furnizor-panel-browse')?.scrollIntoView({behavior:'smooth',block:'start'});
-  }).catch(err=>showToast(err.message,true));
-});
+document.getElementById('furnizor-ftp-connect-btn')?.addEventListener('click',()=>testConnectionAndShowFiles());
+document.getElementById('furnizor-test-btn')?.addEventListener('click',()=>testConnectionAndShowFiles());
+document.getElementById('furnizor-api-test-btn')?.addEventListener('click',()=>testConnectionAndShowFiles());
 document.getElementById('furnizor-ftp-download-btn')?.addEventListener('click',()=>downloadFromFtp());
 document.getElementById('furnizor-mirror-feed')?.addEventListener('click',async()=>{
   try{
