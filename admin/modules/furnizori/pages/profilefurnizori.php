@@ -404,7 +404,7 @@ if ($fpProCss !== '') {
           <header class="fp-import-card__head">
             <div>
               <h3 class="fp-import-card__title"><i data-lucide="plug"></i> Conexiune &amp; import</h3>
-              <p class="fp-import-card__sub">Tip conexiune, credențiale și folderul local unde ajung CSV-urile.</p>
+              <p class="fp-import-card__sub">Furnizorul îți dă IP/host, login și parolă — noi ne conectăm la serverul lui și descărcăm listele la noi.</p>
             </div>
           </header>
           <div class="fp-import-card__body">
@@ -461,27 +461,28 @@ if ($fpProCss !== '') {
 
             <div id="furnizor-panel-ftp" class="conn-panel mt-4 hidden" data-connection-panel="ftp">
               <span class="fp-import-field__label" id="furnizor-ftp-panel-title" style="display:block;margin-bottom:0.65rem">Setări FTP</span>
-              <p class="fp-import-field__hint" id="furnizor-ftp-panel-help" style="margin:-0.35rem 0 0.75rem">Date de logare pentru descărcarea automată a fișierelor.</p>
+              <p class="fp-import-field__hint" id="furnizor-ftp-panel-help" style="margin:-0.35rem 0 0.75rem">Completezi datele pe care ți le dă furnizorul. Noi ne conectăm la serverul LUI și tragem fișierele la noi.</p>
               <div class="fp-import-form-grid">
                 <label class="fp-import-field">
-                  <span class="fp-import-field__label">Server</span>
-                  <input class="box h-10 rounded-md border px-3" type="text" name="conn_host" id="furnizor-sftp-host" placeholder="ftp.exemplu.ro" autocomplete="off">
+                  <span class="fp-import-field__label">IP / host (de la furnizor)</span>
+                  <input class="box h-10 rounded-md border px-3" type="text" name="conn_host" id="furnizor-sftp-host" placeholder="ftp.furnizor.ro sau 185.x.x.x" autocomplete="off">
                 </label>
                 <label class="fp-import-field">
                   <span class="fp-import-field__label">Port</span>
                   <input class="box h-10 rounded-md border px-3" type="number" min="1" max="65535" name="conn_port" id="furnizor-sftp-port" placeholder="21">
                 </label>
                 <label class="fp-import-field">
-                  <span class="fp-import-field__label">Utilizator</span>
+                  <span class="fp-import-field__label">Login (de la furnizor)</span>
                   <input class="box h-10 rounded-md border px-3" type="text" name="conn_username" id="furnizor-sftp-login" autocomplete="off">
                 </label>
                 <label class="fp-import-field">
-                  <span class="fp-import-field__label">Parolă</span>
+                  <span class="fp-import-field__label">Parolă (de la furnizor)</span>
                   <input class="box h-10 rounded-md border px-3" type="password" name="conn_password" id="furnizor-sftp-password" autocomplete="new-password" placeholder="Lasă gol = păstrează">
                 </label>
                 <label class="fp-import-field fp-import-field--full">
-                  <span class="fp-import-field__label">Folder remote</span>
-                  <input class="box h-10 rounded-md border px-3" type="text" name="conn_remote_path" id="furnizor-conn-remote-path" placeholder="/export">
+                  <span class="fp-import-field__label">Folder pe serverul furnizorului</span>
+                  <input class="box h-10 rounded-md border px-3" type="text" name="conn_remote_path" id="furnizor-conn-remote-path" placeholder="/ sau /export">
+                  <p class="fp-import-field__hint">Calea de unde luăm lista (pe serverul lor). Gol = rădăcina contului.</p>
                 </label>
                 <label class="fp-import-field flex items-end">
                   <span class="flex items-center gap-2 text-sm text-slate-600">
@@ -769,8 +770,8 @@ function syncConnectionPanels(){
   const ftpHelp=document.getElementById('furnizor-ftp-panel-help');
   if(ftpTitle) ftpTitle.textContent=isSftp?'Setări SFTP':'Setări FTP';
   if(ftpHelp) ftpHelp.textContent=isSftp
-    ?'Alegi SFTP: salvezi datele de logare (host, port, login, parola). Folderul special de mai sus primeste fisierele dupa sync.'
-    :'Conexiune FTP — datele de logare pentru descarcarea automata a fisierelor.';
+    ?'SFTP: pui IP/host, login și parola de la furnizor. Noi ne conectăm la serverul lui și descărcăm listele în folderul local de mai sus.'
+    :'FTP: pui IP/host, login și parola de la furnizor. Noi ne conectăm la serverul lui și descărcăm listele în folderul local de mai sus.';
   const portEl=form.elements.namedItem('conn_port');
   if(portEl&&isSftp&&String(portEl.value||'').trim()===''){
     portEl.value='22';
@@ -1196,8 +1197,8 @@ function updateBrowsePaths(data){
   remoteEl?.classList.toggle('hidden',!showRemote);
   if(showRemote&&remoteEl){
     remoteEl.textContent=remote
-      ?remote+(host?('  @ '+host):'')+' — fisierele de aici apar in lista (Remote SFTP/FTP)'
-      :'Configureaza «Folder remote (SFTP/FTP)» de mai sus, apoi Salveaza sau Reincarca lista.';
+      ?remote+(host?('  @ '+host):'')+' — folder pe serverul furnizorului (de unde descărcăm)'
+      :'Configurează «Folder pe serverul furnizorului» de mai sus, apoi Salvează sau Reîncarcă lista.';
   }
 }
 
@@ -1210,7 +1211,7 @@ function updateBrowseHelp(data){
   if(type==='sftp'||type==='ftp'){
     help.textContent=remote
       ?`Fisiere din folderul local ${local||'storage/supplier_feeds/{cod}/'} si din ${type.toUpperCase()} ${remote} (dupa sync). Apasa Deschide lista.`
-      :`Fisiere din folderul local ${local||'storage/supplier_feeds/{cod}/'}. Configureaza «Folder remote (SFTP/FTP)» pentru calea de pe server.`;
+      :`Fisiere din folderul local ${local||'storage/supplier_feeds/{cod}/'}. Configurează «Folder pe serverul furnizorului» (calea de la ei).`;
   }else{
     help.textContent='Fișiere din folderul local '+ (local || 'storage/supplier_feeds/{cod}/') + '. Staging import apare doar pentru fișiere necopiate încă în folder.';
   }
