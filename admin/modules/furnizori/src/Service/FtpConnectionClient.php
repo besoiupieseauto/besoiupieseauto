@@ -136,12 +136,27 @@ class FtpConnectionClient
         return $this->download($this->normalizeRemotePath($remotePath), $maxBytes);
     }
 
+    /** Descarca un fisier remote direct pe disc (liste mari CSV, fara incarcare in memorie). */
+    public function downloadFileToPath(string $remotePath, string $localPath): bool
+    {
+        $remotePath = $this->normalizeRemotePath($remotePath);
+        if ($localPath === '') {
+            return false;
+        }
+
+        if ($this->preferCurl()) {
+            return $this->curlDownloadToPath($remotePath, $localPath);
+        }
+
+        return $this->nativeDownloadToPath($remotePath, $localPath);
+    }
+
     /** @return array<int, array<string, mixed>> */
     public function pickRemoteFiles(string $directory, string $pattern = '*.csv'): array
     {
         $listing = $this->listDirectory($directory);
         if (!$listing['success']) {
-            return [];
+            return $this->singleFileCandidate($directory);
         }
 
         $regex = '/^' . str_replace('\*', '.*', preg_quote($pattern, '/')) . '$/i';
@@ -162,6 +177,47 @@ class FtpConnectionClient
         usort($matches, static function (array $a, array $b): int {
             return strcmp((string) ($b['name'] ?? ''), (string) ($a['name'] ?? ''));
         });
+
+        if ($matches === []) {
+            return $this->singleFileCandidate($directory);
+        }
+
+        return $matches;
+    }
+
+    /**
+     * Listele de pret uzuale: CSV / TXT / TSV / XLSX / XML / ZIP.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function pickRemoteFeedFiles(string $directory): array
+    {
+        $listing = $this->listDirectory($directory);
+        if (!$listing['success']) {
+            return $this->singleFileCandidate($directory);
+        }
+
+        $matches = [];
+        foreach ($listing['entries'] as $entry) {
+            if (($entry['type'] ?? '') !== 'file') {
+                continue;
+            }
+            $name = (string) ($entry['name'] ?? '');
+            if ($name === '' || !SupplierFeedFolderService::isFeedFilename($name)) {
+                continue;
+            }
+            $matches[] = $entry + [
+                'remote_path' => rtrim($listing['path'], '/') . '/' . ltrim($name, '/'),
+            ];
+        }
+
+        usort($matches, static function (array $a, array $b): int {
+            return strcmp((string) ($b['name'] ?? ''), (string) ($a['name'] ?? ''));
+        });
+
+        if ($matches === []) {
+            return $this->singleFileCandidate($directory);
+        }
 
         return $matches;
     }
@@ -252,7 +308,7 @@ class FtpConnectionClient
             $options = [
                 CURLOPT_USERPWD => $this->user . ':' . $this->pass,
                 CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_TIMEOUT => 45,
+                CURLOPT_TIMEOUT => $maxBytes > 0 ? 45 : 600,
                 CURLOPT_CONNECTTIMEOUT => 25,
             ] + $strategy['options'];
 
@@ -377,6 +433,96 @@ class FtpConnectionClient
         return $strategies;
     }
 
+    /** @return array<int, array<string, mixed>> */
+    private function singleFileCandidate(string $path): array
+    {
+        $path = $this->normalizeRemotePath($path);
+        $name = basename(str_replace('\\', '/', $path));
+        if ($name === '' || $name === '/' || !SupplierFeedFolderService::isFeedFilename($name)) {
+            return [];
+        }
+
+        return [[
+            'name' => $name,
+            'type' => 'file',
+            'size' => null,
+            'remote_path' => $path,
+        ]];
+    }
+
+    private function curlDownloadToPath(string $remotePath, string $localPath): bool
+    {
+        $url = $this->buildUrl($remotePath, false);
+        $strategies = $this->winningStrategy !== null
+            ? [$this->winningStrategy]
+            : $this->buildCurlStrategies();
+
+        $dir = dirname($localPath);
+        if (!is_dir($dir)) {
+            @mkdir($dir, 0775, true);
+        }
+
+        foreach ($strategies as $strategy) {
+            $handle = fopen($localPath, 'wb');
+            if ($handle === false) {
+                return false;
+            }
+
+            $ch = curl_init($url);
+            if ($ch === false) {
+                fclose($handle);
+                continue;
+            }
+
+            $options = [
+                CURLOPT_USERPWD => $this->user . ':' . $this->pass,
+                CURLOPT_FILE => $handle,
+                CURLOPT_TIMEOUT => 600,
+                CURLOPT_CONNECTTIMEOUT => 30,
+            ] + $strategy['options'];
+
+            curl_setopt_array($ch, $options);
+            $ok = curl_exec($ch);
+            $error = trim((string) curl_error($ch));
+            $httpCode = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+            curl_close($ch);
+            fclose($handle);
+
+            if ($ok === true && $error === '' && is_file($localPath) && (int) filesize($localPath) > 0) {
+                $this->winningStrategy = $strategy;
+
+                return true;
+            }
+
+            @unlink($localPath);
+
+            if ($this->isAuthError($error) || $httpCode === 530 || $httpCode === 531) {
+                break;
+            }
+        }
+
+        return false;
+    }
+
+    private function nativeDownloadToPath(string $remotePath, string $localPath): bool
+    {
+        if (!$this->nativeConnect()) {
+            return false;
+        }
+
+        $dir = dirname($localPath);
+        if (!is_dir($dir)) {
+            @mkdir($dir, 0775, true);
+        }
+
+        $remoteFile = ltrim($remotePath, '/');
+        $mode = defined('FTP_BINARY') ? FTP_BINARY : 2;
+        $ok = @ftp_get($this->nativeConn, $localPath, $remoteFile, $mode);
+        $this->nativeDisconnect();
+
+        return $ok === true && is_file($localPath) && (int) filesize($localPath) > 0;
+    }
+
     private function download(string $remotePath, int $maxBytes = 0): ?string
     {
         $remotePath = $this->normalizeRemotePath($remotePath);
@@ -387,27 +533,21 @@ class FtpConnectionClient
             return $result['success'] ? $result['body'] : null;
         }
 
-        if (!$this->nativeConnect()) {
-            return null;
-        }
-
         $tmp = tempnam(sys_get_temp_dir(), 'ftp_dl_');
         if ($tmp === false) {
-            $this->nativeDisconnect();
+            return null;
+        }
+
+        if (!$this->nativeDownloadToPath($remotePath, $tmp)) {
+            @unlink($tmp);
 
             return null;
         }
 
-        $remoteFile = ltrim($remotePath, '/');
-        $ok = @ftp_get($this->nativeConn, $tmp, $remoteFile, FTP_BINARY);
-        $content = null;
-        if ($ok) {
-            $content = file_get_contents($tmp, false, null, 0, $maxBytes > 0 ? $maxBytes : null) ?: '';
-        }
+        $content = file_get_contents($tmp, false, null, 0, $maxBytes > 0 ? $maxBytes : null);
         @unlink($tmp);
-        $this->nativeDisconnect();
 
-        return $content;
+        return $content !== false ? $content : null;
     }
 
     /** @return array{success:bool,message:string,path:string,entries:array<int,array<string,mixed>>} */

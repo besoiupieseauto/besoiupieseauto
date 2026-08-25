@@ -59,6 +59,14 @@ function admin_cron_tasks_registry(): array
             'note' => 'Copiază liste preț + Base TecDoc din F:/laragon/www/besoiupieseimport în supplier_feeds/ și storage/tecdoc/. Dezactivare: BESOIUPIESEIMPORT_SYNC=0.',
         ],
         [
+            'name' => 'Pull FTP/SFTP furnizori',
+            'category' => 'Furnizori',
+            'url' => 'admin/cron_cli/supplier_ftp_pull.php',
+            'batch' => 'admin/scripts/run_supplier_ftp_pull.bat',
+            'schedule' => 'La 15–60 min (Task Scheduler)',
+            'note' => 'Descarcă listele de pe FTP/SFTP în admin/storage/supplier_feeds/{cod}/. Respectă programul din profilul furnizorului. --force ignoră programul.',
+        ],
+        [
             'name' => 'Sync furnizori (rclone)',
             'category' => 'Furnizori',
             'url' => 'admin/scripts/supplier_sync_agent.php',

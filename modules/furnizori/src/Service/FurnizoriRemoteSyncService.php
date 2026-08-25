@@ -3,15 +3,13 @@ declare(strict_types=1);
 
 namespace Besoiu\Modules\Furnizori\Service;
 
-use Besoiu\Modules\Furnizori\Service\FtpConnectionClient;
-
 /**
- * Descarca fisiere CSV de pe FTP/SFTP si le salveaza in coada de import.
+ * Descarca fisierele de pret de pe FTP/SFTP in folderul local al furnizorului.
  */
 class FurnizoriRemoteSyncService
 {
     private const STATE_FILE = '/storage/supplier_sync_agent_state.json';
-    private const MAX_FILES = 3;
+    private const MAX_FILES = 40;
 
     /**
      * @param array<string, mixed> $furnizor
@@ -19,6 +17,8 @@ class FurnizoriRemoteSyncService
      *   success:bool,
      *   message:string,
      *   files:array<int,array<string,mixed>>,
+     *   skipped:array<int,array<string,mixed>>,
+     *   folder:string,
      *   debug?:array<string,mixed>
      * }
      */
@@ -29,6 +29,7 @@ class FurnizoriRemoteSyncService
 
         $furnizor = import_furnizori_resolve_credentials($furnizor);
         $code = $this->normalizeCode((string) ($furnizor['code'] ?? ''));
+        $randomnId = (int) ($furnizor['randomn_id'] ?? 0);
         $connectionType = strtolower(trim((string) ($furnizor['connection_type'] ?? 'ftp')));
         $port = (int) ($furnizor['conn_port'] ?? ($connectionType === 'sftp' ? 22 : 21));
         $user = trim((string) ($furnizor['conn_username'] ?? ''));
@@ -43,6 +44,8 @@ class FurnizoriRemoteSyncService
             'candidates' => 0,
             'candidate_names' => [],
             'downloaded' => [],
+            'skipped' => [],
+            'folder' => '',
             'elapsed_ms' => 0,
         ];
 
@@ -52,39 +55,40 @@ class FurnizoriRemoteSyncService
 
         $host = (string) $debug['host'];
         if ($host === '') {
-            return $this->fail('Host FTP neconfigurat.', $debug, $started);
+            return $this->fail('Host FTP/SFTP neconfigurat.', $debug, $started);
         }
 
         $remoteDir = trim((string) ($furnizor['conn_remote_path'] ?? ''));
         if ($remoteDir === '') {
-            if ($connectionType === 'sftp') {
-                return $this->fail(
-                    'Cale SFTP neconfigurata — seteaza Folder remote in profil furnizor sau incarca CSV in folderul local.',
-                    $debug,
-                    $started
-                );
-            }
             $remoteDir = '/';
         }
         $debug['remote_dir'] = $remoteDir;
 
+        $folderService = new SupplierFeedFolderService();
+        $folder = $folderService->ensureFolder($code, $randomnId);
+        $debug['folder'] = (string) ($folder['relative'] ?? '');
+        if (empty($folder['exists'])) {
+            return $this->fail('Nu pot crea folderul local ' . $debug['folder'] . '.', $debug, $started);
+        }
+
         $client = (new FtpConnectionClient())->configure($furnizor);
-        $candidates = $client->pickRemoteFiles($remoteDir, '*.csv');
+        $candidates = $client->pickRemoteFeedFiles($remoteDir);
         $debug['candidates'] = count($candidates);
         $debug['candidate_names'] = array_values(array_map(
             static fn (array $c): string => (string) ($c['name'] ?? $c['remote_path'] ?? ''),
-            array_slice($candidates, 0, 8)
+            array_slice($candidates, 0, 12)
         ));
 
         if ($candidates === []) {
             return $this->fail(
-                'Niciun fisier CSV in ' . $remoteDir . ' pe ' . $debug['protocol'] . ' ' . $host . '.',
+                'Niciun fisier de pret in ' . $remoteDir . ' pe ' . $debug['protocol'] . ' ' . $host . '.',
                 $debug,
                 $started
             );
         }
 
         $synced = [];
+        $skipped = [];
         foreach (array_slice($candidates, 0, self::MAX_FILES) as $candidate) {
             $remotePath = trim((string) ($candidate['remote_path'] ?? $candidate['name'] ?? ''));
             if ($remotePath === '') {
@@ -98,49 +102,42 @@ class FurnizoriRemoteSyncService
             }
 
             $downloaded = false;
-            // Clienții noi pot scrie direct în fișier, evitând păstrarea CSV-ului integral în memorie.
-            if (method_exists($client, 'downloadFileToPath')) {
-                try {
-                    $downloaded = $client->downloadFileToPath($remotePath, $tmpPath) === true;
-                } catch (\Throwable $e) {
-                    $downloaded = false;
-                }
-            } else {
-                $binary = $client->downloadFile($remotePath);
-                if ($binary !== null && $binary !== '') {
-                    $downloaded = file_put_contents($tmpPath, $binary, LOCK_EX) !== false;
-                    unset($binary);
-                }
+            try {
+                $downloaded = $client->downloadFileToPath($remotePath, $tmpPath) === true;
+            } catch (\Throwable $e) {
+                $downloaded = false;
             }
             if (!$downloaded || !is_file($tmpPath) || filesize($tmpPath) <= 0) {
                 @unlink($tmpPath);
                 continue;
             }
 
-            $downloadedSize = (int) filesize($tmpPath);
-            $fileId = 'f_' . time() . '_' . bin2hex(random_bytes(4));
+            $saved = $folderService->saveDownloadedFile($code, $randomnId, $tmpPath, $baseName);
+            @unlink($tmpPath);
 
-            try {
-                $meta = save_chunk_upload($fileId, $baseName, 0, 1, $tmpPath, 'supplier');
-            } finally {
-                @unlink($tmpPath);
-            }
+            $entry = [
+                'name' => (string) ($saved['name'] ?? $baseName),
+                'size' => (int) ($saved['size'] ?? 0),
+                'remote_path' => $remotePath,
+                'local_path' => (string) ($saved['path'] ?? ''),
+                'folder' => (string) ($saved['relative'] ?? $debug['folder']),
+            ];
 
-            if (empty($meta['completed'])) {
+            if (!empty($saved['skipped'])) {
+                $skipped[] = $entry;
+                $debug['skipped'][] = $entry['name'] . ' (identic)';
                 continue;
             }
 
-            $entry = [
-                'name' => $baseName,
-                'file_id' => $fileId,
-                'size' => (int) ($meta['size'] ?? $downloadedSize),
-                'remote_path' => $remotePath,
-            ];
+            if (empty($saved['saved'])) {
+                continue;
+            }
+
             $synced[] = $entry;
-            $debug['downloaded'][] = $baseName . ' (' . $this->formatBytes((int) $entry['size']) . ')';
+            $debug['downloaded'][] = $entry['name'] . ' (' . $this->formatBytes((int) $entry['size']) . ')';
         }
 
-        if ($synced === []) {
+        if ($synced === [] && $skipped === []) {
             return $this->fail(
                 'Conexiune OK, dar download esuat pentru ' . count($candidates) . ' fisier(e) gasite.',
                 $debug,
@@ -148,19 +145,32 @@ class FurnizoriRemoteSyncService
             );
         }
 
-        $this->updateAgentState($code, $synced[0]);
+        $this->updateAgentState($code, $synced[0] ?? $skipped[0] ?? [], $debug['folder']);
         $debug['elapsed_ms'] = (int) round((microtime(true) - $started) * 1000);
+
+        $proto = (string) $debug['protocol'];
+        if ($synced !== []) {
+            $message = 'Descarcat ' . count($synced) . ' fisier(e) de pe ' . $proto . ' ' . $host
+                . ' → ' . $debug['folder'];
+            if ($skipped !== []) {
+                $message .= ' · ' . count($skipped) . ' neschimbat(e)';
+            }
+        } else {
+            $message = 'Nimic nou — ' . count($skipped) . ' fisier(e) deja pe server in ' . $debug['folder'];
+        }
 
         return [
             'success' => true,
-            'message' => 'Descarcat ' . count($synced) . ' fisier(e) de pe ' . $debug['protocol'] . ' ' . $host,
+            'message' => $message,
             'files' => $synced,
+            'skipped' => $skipped,
+            'folder' => $debug['folder'],
             'debug' => $debug,
         ];
     }
 
-    /** @param array<string, mixed> $debug @param array<string, mixed> $file */
-    private function updateAgentState(string $code, array $file): void
+    /** @param array<string, mixed> $file */
+    private function updateAgentState(string $code, array $file, string $folder = ''): void
     {
         $path = (defined('BESOIU_ADMIN') ? BESOIU_ADMIN : dirname(__DIR__, 5) . '/admin') . self::STATE_FILE;
         $state = [];
@@ -171,12 +181,7 @@ class FurnizoriRemoteSyncService
             }
         }
 
-        $localPath = '';
-        $fileId = (string) ($file['file_id'] ?? '');
-        if ($fileId !== '' && function_exists('import_temp_file_path')) {
-            $localPath = import_temp_file_path($fileId);
-        }
-
+        $localPath = (string) ($file['local_path'] ?? '');
         $hash = ($localPath !== '' && is_file($localPath)) ? hash_file('sha256', $localPath) : '';
 
         $state[$code] = [
@@ -185,8 +190,10 @@ class FurnizoriRemoteSyncService
             'size' => (int) ($file['size'] ?? 0),
             'source' => 'ftp',
             'remote_path' => (string) ($file['remote_path'] ?? ''),
-            'file_id' => $fileId,
+            'folder' => $folder,
+            'file_id' => '',
             'synced_at' => date('c'),
+            'pulled_at' => date('c'),
         ];
 
         $dir = dirname($path);
@@ -197,7 +204,7 @@ class FurnizoriRemoteSyncService
         file_put_contents($path, json_encode($state, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
 
-  /** @param array<string, mixed> $debug */
+    /** @param array<string, mixed> $debug */
     private function fail(string $message, array $debug, float $started): array
     {
         $debug['elapsed_ms'] = (int) round((microtime(true) - $started) * 1000);
@@ -206,6 +213,8 @@ class FurnizoriRemoteSyncService
             'success' => false,
             'message' => $message,
             'files' => [],
+            'skipped' => [],
+            'folder' => (string) ($debug['folder'] ?? ''),
             'debug' => $debug,
         ];
     }
@@ -226,9 +235,6 @@ class FurnizoriRemoteSyncService
     {
         if (!function_exists('import_furnizori_resolve_credentials')) {
             require_once (defined('BESOIU_BACKEND') ? BESOIU_BACKEND : dirname(__DIR__, 4) . '/app/Backend') . '/src/Controllers/Produse/import_supplier_lib.php';
-        }
-        if (!function_exists('save_chunk_upload')) {
-            require_once (defined('BESOIU_BACKEND') ? BESOIU_BACKEND : dirname(__DIR__, 4) . '/app/Backend') . '/src/Controllers/Produse/import_uploaded_files_lib.php';
         }
     }
 

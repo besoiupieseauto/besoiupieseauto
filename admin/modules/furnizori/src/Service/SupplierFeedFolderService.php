@@ -66,7 +66,7 @@ class SupplierFeedFolderService
     {
         $lower = strtolower(trim($name));
 
-        return $lower !== '' && (bool) preg_match('/\.(csv|txt|tsv|xlsx)$/i', $lower);
+        return $lower !== '' && (bool) preg_match('/\.(csv|txt|tsv|xlsx|xml|zip)$/i', $lower);
     }
 
     /** @return array<int, array<string, mixed>> */
@@ -181,6 +181,58 @@ class SupplierFeedFolderService
             'skipped' => $skipped,
             'folder' => (string) ($folder['relative'] ?? ''),
             'path' => (string) ($folder['path'] ?? ''),
+        ];
+    }
+
+    /**
+     * Salvează un fișier descărcat (FTP/SFTP) în folderul local al furnizorului.
+     *
+     * @return array{saved:bool,skipped:bool,name:string,path:string,size:int,relative:string}
+     */
+    public function saveDownloadedFile(string $code, int $randomnId, string $sourcePath, string $originalName): array
+    {
+        $folder = $this->ensureFolder($code, $randomnId);
+        $safeName = $this->safeFeedFilename($originalName);
+        $dest = ($folder['path'] ?? '') . DIRECTORY_SEPARATOR . $safeName;
+        $empty = [
+            'saved' => false,
+            'skipped' => false,
+            'name' => $safeName,
+            'path' => $dest,
+            'size' => 0,
+            'relative' => (string) ($folder['relative'] ?? ''),
+        ];
+
+        if ($sourcePath === '' || !is_file($sourcePath) || empty($folder['exists'])) {
+            return $empty;
+        }
+
+        $sourceSize = (int) (filesize($sourcePath) ?: 0);
+        if ($sourceSize <= 0) {
+            return $empty;
+        }
+
+        $destSize = is_file($dest) ? (int) (filesize($dest) ?: 0) : 0;
+        if ($destSize > 0 && $destSize === $sourceSize) {
+            $empty['skipped'] = true;
+            $empty['size'] = $destSize;
+
+            return $empty;
+        }
+
+        if (!@copy($sourcePath, $dest)) {
+            return $empty;
+        }
+
+        @touch($dest, filemtime($sourcePath) ?: time());
+
+        return [
+            'saved' => true,
+            'skipped' => false,
+            'name' => $safeName,
+            'path' => $dest,
+            'size' => (int) (filesize($dest) ?: $sourceSize),
+            'relative' => (string) ($folder['relative'] ?? ''),
         ];
     }
 

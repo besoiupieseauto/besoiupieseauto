@@ -355,7 +355,7 @@ if ($fpProCss !== '') {
           <header class="fp-import-card__head">
             <div>
               <h3 class="fp-import-card__title"><i data-lucide="clock"></i> Program sincronizare</h3>
-              <p class="fp-import-card__sub">Când rulează sync automat pentru acest furnizor (agentul respectă setările de mai jos).</p>
+              <p class="fp-import-card__sub">Când se descarcă automat fișierele FTP/SFTP pe server, în <code>admin/storage/supplier_feeds/{cod}/</code>. Job: <code>run_supplier_ftp_pull.bat</code> (Task Scheduler).</p>
             </div>
             <label class="fp-switch">
               <input type="checkbox" name="scan_auto_enabled" value="1" checked>
