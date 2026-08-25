@@ -342,6 +342,67 @@
     padding: 18px 20px 20px;
 }
 
+.fp-pro-ui .fp-access-choice {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.fp-pro-ui .fp-access-choice__btn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    text-align: left;
+    padding: 14px 16px;
+    border: 1px solid var(--fp-border);
+    border-radius: 12px;
+    background: var(--fp-surface);
+    cursor: pointer;
+    color: var(--fp-text);
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+
+.fp-pro-ui .fp-access-choice__btn strong {
+    font-size: 15px;
+}
+
+.fp-pro-ui .fp-access-choice__btn span {
+    font-size: 12px;
+    line-height: 1.4;
+    opacity: 0.75;
+    font-weight: 400;
+}
+
+.fp-pro-ui .fp-access-choice__btn:hover {
+    border-color: #99f6e4;
+    background: #fafbff;
+}
+
+.fp-pro-ui .fp-access-choice__btn.is-active {
+    border-color: var(--fp-primary);
+    background: #eef2ff;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.18);
+}
+
+.fp-pro-ui .fp-ftp-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.fp-pro-ui .fp-ftp-actions .fp-btn {
+    height: 42px;
+}
+
+@media (max-width: 720px) {
+    .fp-pro-ui .fp-access-choice {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Buttons */
 .fp-pro-ui .fp-btn {
     display: inline-flex;

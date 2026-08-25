@@ -4,7 +4,7 @@ use Besoiu\Core\Module\ModuleAssets;
 
 $fpProCss = ModuleAssets::url('furnizori', 'css/furnizori-profile-pro.css');
 if ($fpProCss !== '') {
-    echo '<link rel="stylesheet" href="' . htmlspecialchars($fpProCss . '?v=20260718-layout-v4', ENT_QUOTES, 'UTF-8') . '">';
+    echo '<link rel="stylesheet" href="' . htmlspecialchars($fpProCss . '?v=20260825-ftp-btn', ENT_QUOTES, 'UTF-8') . '">';
 }
 ?>
 <div class="furnizor-profile-page fp-pro-ui">
@@ -422,25 +422,16 @@ if ($fpProCss !== '') {
 
             <div id="furnizor-ftp-access-box" class="conn-panel hidden" style="margin-bottom:1rem">
               <span class="fp-import-field__label" style="display:block;margin-bottom:0.5rem">Cine dă accesul FTP/SFTP?</span>
-              <div class="fp-import-form-grid" style="grid-template-columns:1fr 1fr;gap:0.75rem">
-                <label class="fp-import-field" style="border:1px solid #dbe3ee;border-radius:10px;padding:0.75rem 0.9rem;cursor:pointer">
-                  <span class="flex items-start gap-2 text-sm">
-                    <input type="radio" name="ftp_access_mode" value="they" checked style="margin-top:0.2rem">
-                    <span>
-                      <strong>Ei ne dau acces</strong>
-                      <span class="fp-import-field__hint" style="display:block;margin:0.2rem 0 0">Ne conectăm la serverul lor cu IP, login și parola pe care ni le trimit.</span>
-                    </span>
-                  </span>
-                </label>
-                <label class="fp-import-field" style="border:1px solid #dbe3ee;border-radius:10px;padding:0.75rem 0.9rem;cursor:pointer">
-                  <span class="flex items-start gap-2 text-sm">
-                    <input type="radio" name="ftp_access_mode" value="we" style="margin-top:0.2rem">
-                    <span>
-                      <strong>Noi le dăm acces</strong>
-                      <span class="fp-import-field__hint" style="display:block;margin:0.2rem 0 0">Le creăm cont pe FTP-ul nostru; ei încarcă fișierele, noi le culegem automat.</span>
-                    </span>
-                  </span>
-                </label>
+              <input type="hidden" name="ftp_access_mode" id="furnizor-ftp-access-mode" value="they">
+              <div class="fp-access-choice">
+                <button type="button" id="furnizor-access-they-btn" class="fp-access-choice__btn is-active" data-access="they">
+                  <strong>De la ei</strong>
+                  <span>Pui IP, login și parola de la furnizor. Apasă butonul, ne conectăm și vezi folderele lor.</span>
+                </button>
+                <button type="button" id="furnizor-access-we-btn" class="fp-access-choice__btn" data-access="we">
+                  <strong>De la noi</strong>
+                  <span>Le dăm noi acces; ei încarcă pe FTP-ul nostru, noi culegem fișierele.</span>
+                </button>
               </div>
               <p id="furnizor-ftp-inbox-hint" class="fp-import-field__hint hidden" style="margin-top:0.65rem">Inbox local (unde pot încărca): <code id="furnizor-ftp-inbox-path">storage/supplier_inbox/{cod}/</code></p>
             </div>
@@ -515,6 +506,11 @@ if ($fpProCss !== '') {
                     Mod pasiv (FTP)
                   </span>
                 </label>
+              </div>
+              <div class="fp-ftp-actions" id="furnizor-ftp-actions">
+                <button type="button" id="furnizor-ftp-connect-btn" class="fp-btn fp-btn--primary">Conectează și arată folderele de la ei</button>
+                <button type="button" id="furnizor-ftp-download-btn" class="fp-btn fp-btn--ghost">Descarcă fișierele</button>
+                <span id="furnizor-ftp-action-status" class="fp-import-field__hint"></span>
               </div>
             </div>
           </div>
@@ -739,7 +735,7 @@ async function saveTab(tab){
     productsLoaded=false;
     priceLogicLoaded=false;
     await load();
-    if(tab==='conexiune') browseRemote('/',{includeRemote:false}).catch(()=>{});
+    if(tab==='conexiune') browseRemote('/',{includeRemote:shouldIncludeRemote()}).catch(()=>{});
   }catch(err){showToast(err.message,true)}
 }
 
@@ -808,16 +804,103 @@ function syncConnectionPanels(){
   updateBrowseHelpFromForm();
 }
 form.elements.namedItem('connection_type')?.addEventListener('change',syncConnectionPanels);
-document.querySelectorAll('input[name="ftp_access_mode"]').forEach(el=>{
-  el.addEventListener('change',syncFtpAccessMode);
-});
+document.getElementById('furnizor-access-they-btn')?.addEventListener('click',()=>selectFtpAccess('they',true));
+document.getElementById('furnizor-access-we-btn')?.addEventListener('click',()=>selectFtpAccess('we',false));
 ['conn_remote_path','conn_host'].forEach(name=>{
   form.elements.namedItem(name)?.addEventListener('input',updateBrowseHelpFromForm);
 });
 
 function ftpAccessMode(){
-  const el=form.elements.namedItem('ftp_access_mode');
-  return String(el?.value||'they').toLowerCase()==='we'?'we':'they';
+  return String(form.elements.namedItem('ftp_access_mode')?.value||'they').toLowerCase()==='we'?'we':'they';
+}
+
+function selectFtpAccess(mode,connect){
+  const next=mode==='we'?'we':'they';
+  const hidden=document.getElementById('furnizor-ftp-access-mode');
+  if(hidden) hidden.value=next;
+  document.getElementById('furnizor-access-they-btn')?.classList.toggle('is-active',next==='they');
+  document.getElementById('furnizor-access-we-btn')?.classList.toggle('is-active',next==='we');
+  syncFtpAccessMode();
+  if(next==='they'){
+    document.getElementById('furnizor-panel-ftp')?.scrollIntoView({behavior:'smooth',block:'nearest'});
+    const host=String(form.elements.namedItem('conn_host')?.value||'').trim();
+    if(connect&&host){
+      connectToTheirFtp();
+    }else if(connect){
+      form.elements.namedItem('conn_host')?.focus();
+      showToast('Pune IP-ul, login-ul și parola de la ei, apoi apasă «Conectează și arată folderele».',false);
+    }
+  }
+}
+
+function shouldIncludeRemote(){
+  const type=String(form.elements.namedItem('connection_type')?.value||'').toLowerCase();
+  if(type!=='ftp'&&type!=='sftp') return false;
+  if(ftpAccessMode()==='they') return true;
+  return String(form.elements.namedItem('conn_host')?.value||'').trim()!=='';
+}
+
+async function connectToTheirFtp(){
+  const host=String(form.elements.namedItem('conn_host')?.value||'').trim();
+  const statusEl=document.getElementById('furnizor-ftp-action-status');
+  const btn=document.getElementById('furnizor-ftp-connect-btn');
+  if(host===''){
+    form.elements.namedItem('conn_host')?.focus();
+    showToast('Pune IP-ul / host-ul de la furnizor.',true);
+    return;
+  }
+  if(btn) btn.disabled=true;
+  if(statusEl) statusEl.textContent='Mă conectez la serverul lor…';
+  try{
+    const test=await apiCall('testconnection',{
+      randomn_id:randomId,
+      test_target:'ftp',
+      ftp_access_mode:'they',
+      ...browseFormContext()
+    });
+    const ok=test.last_test_status==='success';
+    if(statusEl) statusEl.textContent=test.last_test_message||(ok?'Conectat.':'Conexiune eșuată.');
+    if(!ok){
+      showToast(test.last_test_message||'Nu m-am putut conecta la serverul lor.',true);
+      return;
+    }
+    const remotePath=String(form.elements.namedItem('conn_remote_path')?.value||'').trim()||'/';
+    await browseRemote(remotePath,{includeRemote:true});
+    document.getElementById('furnizor-panel-browse')?.scrollIntoView({behavior:'smooth',block:'start'});
+    showToast('Conectat. Folderele de la ei sunt în listă.',false);
+  }catch(err){
+    if(statusEl) statusEl.textContent=err.message;
+    showToast(err.message,true);
+  }finally{
+    if(btn) btn.disabled=false;
+  }
+}
+
+async function downloadFromFtp(){
+  const statusEl=document.getElementById('furnizor-ftp-action-status');
+  const btn=document.getElementById('furnizor-ftp-download-btn');
+  if(ftpAccessMode()==='they'&&String(form.elements.namedItem('conn_host')?.value||'').trim()===''){
+    form.elements.namedItem('conn_host')?.focus();
+    showToast('Pune mai întâi IP-ul de la furnizor.',true);
+    return;
+  }
+  if(btn) btn.disabled=true;
+  if(statusEl) statusEl.textContent='Descarc fișierele…';
+  try{
+    const result=await apiCall('syncnow',{
+      randomn_id:randomId,
+      ftp_access_mode:ftpAccessMode(),
+      ...browseFormContext()
+    });
+    if(statusEl) statusEl.textContent=result.message||'Descărcare gata.';
+    showToast(result.message||'Fișierele au fost descărcate.',false);
+    await browseRemote(String(form.elements.namedItem('conn_remote_path')?.value||'').trim()||'/',{includeRemote:shouldIncludeRemote()});
+  }catch(err){
+    if(statusEl) statusEl.textContent=err.message;
+    showToast(err.message,true);
+  }finally{
+    if(btn) btn.disabled=false;
+  }
 }
 
 function syncFtpAccessMode(){
@@ -855,6 +938,12 @@ function syncFtpAccessMode(){
     const code=String(furnizor?.supplier_code||furnizor?.code||'').trim().toLowerCase()||'{cod}';
     inboxPath.textContent='storage/supplier_inbox/'+code+'/';
   }
+  document.getElementById('furnizor-access-they-btn')?.classList.toggle('is-active',!ours);
+  document.getElementById('furnizor-access-we-btn')?.classList.toggle('is-active',ours);
+  const connectBtn=document.getElementById('furnizor-ftp-connect-btn');
+  const downloadBtn=document.getElementById('furnizor-ftp-download-btn');
+  if(connectBtn) connectBtn.textContent=ours?'Arată fișierele încărcate la noi':'Conectează și arată folderele de la ei';
+  if(downloadBtn) downloadBtn.textContent=ours?'Culege fișierele încărcate':'Descarcă fișierele de la ei';
   updateBrowseHelpFromForm();
 }
 
@@ -873,7 +962,7 @@ document.querySelectorAll('.furnizor-tab').forEach(btn=>btn.addEventListener('cl
   if(tabName==='pret') loadPriceLogicSummary().catch(err=>showToast(err.message,true));
   if(tabName==='conexiune'){
     if(window.lucide) window.lucide.createIcons();
-    browseRemote('/',{includeRemote:false}).catch(err=>showToast(err.message,true));
+    browseRemote('/',{includeRemote:shouldIncludeRemote()}).catch(err=>showToast(err.message,true));
   }
 }));
 
@@ -1200,14 +1289,21 @@ document.getElementById('furnizor-profile-delete')?.addEventListener('click',asy
   }catch(err){showToast(err.message,true)}
 });
 
-document.getElementById('furnizor-browse-root')?.addEventListener('click',()=>browseRemote('/',{includeRemote:false}));
-document.getElementById('furnizor-browse-path')?.addEventListener('click',()=>browseRemote('/',{includeRemote:false}));
+document.getElementById('furnizor-browse-root')?.addEventListener('click',()=>browseRemote('/',{includeRemote:shouldIncludeRemote()}));
+document.getElementById('furnizor-browse-path')?.addEventListener('click',()=>browseRemote(String(form.elements.namedItem('conn_remote_path')?.value||'').trim()||'/',{includeRemote:shouldIncludeRemote()}));
+document.getElementById('furnizor-ftp-connect-btn')?.addEventListener('click',()=>{
+  if(ftpAccessMode()==='they') connectToTheirFtp();
+  else browseRemote('/',{includeRemote:shouldIncludeRemote()}).then(()=>{
+    document.getElementById('furnizor-panel-browse')?.scrollIntoView({behavior:'smooth',block:'start'});
+  }).catch(err=>showToast(err.message,true));
+});
+document.getElementById('furnizor-ftp-download-btn')?.addEventListener('click',()=>downloadFromFtp());
 document.getElementById('furnizor-mirror-feed')?.addEventListener('click',async()=>{
   try{
     const result=await apiCall('mirror_feed_files',{randomn_id:randomId});
     const n=Array.isArray(result.copied)?result.copied.length:0;
     showToast(n>0?(n+' fisier(e) copiate in '+String(result.folder||'folder local')):'Fisierele sunt deja in folder sau lipsesc din import.',false);
-    await browseRemote('/',{includeRemote:false});
+    await browseRemote('/',{includeRemote:shouldIncludeRemote()});
   }catch(err){showToast(err.message,true)}
 });
 
@@ -1227,11 +1323,13 @@ function browseSourceLabel(entry){
 function browseFormContext(){
   return {
     connection_type:String(form.elements.namedItem('connection_type')?.value||'').trim(),
+    ftp_access_mode:ftpAccessMode(),
     conn_host:String(form.elements.namedItem('conn_host')?.value||'').trim(),
     conn_port:String(form.elements.namedItem('conn_port')?.value||'').trim(),
     conn_username:String(form.elements.namedItem('conn_username')?.value||'').trim(),
     conn_remote_path:String(form.elements.namedItem('conn_remote_path')?.value||'').trim(),
     conn_password:String(form.elements.namedItem('conn_password')?.value||'').trim(),
+    conn_passive:form.elements.namedItem('conn_passive')?.checked?'1':'0',
   };
 }
 
@@ -1351,7 +1449,7 @@ function renderBrowseResults(data){
         }).join('')+'</tbody></table>';
     }
     tableWrap.classList.remove('hidden');
-    tableWrap.querySelectorAll('[data-browse-path]').forEach(btn=>btn.addEventListener('click',()=>browseRemote(btn.getAttribute('data-browse-path')||'/')));
+    tableWrap.querySelectorAll('[data-browse-path]').forEach(btn=>btn.addEventListener('click',()=>browseRemote(btn.getAttribute('data-browse-path')||'/',{includeRemote:shouldIncludeRemote()})));
     tableWrap.querySelectorAll('[data-preview-path]').forEach(btn=>btn.addEventListener('click',()=>browseRemote(btn.getAttribute('data-preview-path')||'')));
   }
   if(data.preview&&preview){
@@ -1383,7 +1481,7 @@ async function browseRemote(path,options){
 }
 
 switchTab(initialTab);
-if(initialTab==='conexiune')browseRemote('/',{includeRemote:false}).catch(err=>showToast(err.message,true));
+if(initialTab==='conexiune')browseRemote('/',{includeRemote:shouldIncludeRemote()}).catch(err=>showToast(err.message,true));
 load().catch(e=>showToast(e.message,true));
 })();
 </script>
