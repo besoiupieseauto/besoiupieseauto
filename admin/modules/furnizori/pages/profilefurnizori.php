@@ -4,7 +4,7 @@ use Besoiu\Core\Module\ModuleAssets;
 
 $fpProCss = ModuleAssets::url('furnizori', 'css/furnizori-profile-pro.css');
 if ($fpProCss !== '') {
-    echo '<link rel="stylesheet" href="' . htmlspecialchars($fpProCss . '?v=20260825-ftp-btn', ENT_QUOTES, 'UTF-8') . '">';
+    echo '<link rel="stylesheet" href="' . htmlspecialchars($fpProCss . '?v=20260825-test-cta', ENT_QUOTES, 'UTF-8') . '">';
 }
 ?>
 <div class="furnizor-profile-page fp-pro-ui">
@@ -466,8 +466,8 @@ if ($fpProCss !== '') {
                 <input type="hidden" name="api_token" id="furnizor-api-token-json" value="">
               </div>
               <div class="fp-ftp-actions" id="furnizor-api-actions">
-                <button type="button" id="furnizor-api-test-btn" class="fp-btn fp-btn--primary">Testează conexiunea API</button>
-                <span id="furnizor-api-test-status" class="fp-import-field__hint"></span>
+                <button type="button" id="furnizor-api-test-btn" data-furnizor-test="1" class="fp-test-cta" style="display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 22px;border:none;border-radius:10px;background:#14b8a6;color:#fff;font-size:14px;font-weight:800;cursor:pointer">TESTEAZĂ CONEXIUNEA</button>
+                <span id="furnizor-api-test-status" class="fp-import-field__hint">Verifică URL/login și arată fișierele.</span>
               </div>
               <div id="furnizor-autopartner-files-hint" class="mt-3 hidden rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
                 <div class="font-semibold text-xs uppercase tracking-wide">Auto Partner — fișiere așteptate</div>
@@ -512,9 +512,9 @@ if ($fpProCss !== '') {
                 </label>
               </div>
               <div class="fp-ftp-actions" id="furnizor-ftp-actions">
-                <button type="button" id="furnizor-ftp-connect-btn" class="fp-btn fp-btn--primary">Testează — arată folderele de la ei</button>
+                <button type="button" id="furnizor-ftp-connect-btn" data-furnizor-test="1" class="fp-test-cta" style="display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 22px;border:none;border-radius:10px;background:#14b8a6;color:#fff;font-size:14px;font-weight:800;cursor:pointer">TESTEAZĂ CONEXIUNEA</button>
                 <button type="button" id="furnizor-ftp-download-btn" class="fp-btn fp-btn--ghost">Descarcă fișierele</button>
-                <span id="furnizor-ftp-action-status" class="fp-import-field__hint"></span>
+                <span id="furnizor-ftp-action-status" class="fp-import-field__hint">Verifică host/login/parolă și listează fișierele de pe server.</span>
               </div>
             </div>
           </div>
@@ -529,13 +529,17 @@ if ($fpProCss !== '') {
           </header>
           <div class="fp-import-card__body" style="padding-top:0.85rem">
             <div id="furnizor-panel-browse" class="conn-panel" data-supplier-browse-panel="1">
+              <div class="fp-test-bar" id="furnizor-test-bar" style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:0 0 16px;padding:14px 16px;border:2px solid #14b8a6;border-radius:12px;background:#f0fdfa">
+                <button type="button" id="furnizor-test-btn" data-furnizor-test="1" class="fp-test-cta" style="display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 22px;border:none;border-radius:10px;background:#14b8a6;color:#fff;font-size:14px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;cursor:pointer">TESTEAZĂ CONEXIUNEA</button>
+                <p class="fp-test-bar__hint" style="margin:0;flex:1 1 16rem;font-size:13px;line-height:1.45;color:#134e4a">Apasă aici: verifică FTP/SFTP/API și afișează fișierele de pe server. Dacă lista e goală, aici vezi de ce.</p>
+              </div>
               <div class="fp-browse-toolbar">
                 <div class="fp-browse-toolbar__title">
                   <strong id="furnizor-browse-title">Listă fișiere CSV</strong>
                   <span>Previzualizare și copiere în folderul furnizorului</span>
                 </div>
                 <div class="fp-browse-actions">
-                  <button id="furnizor-test-btn" type="button" class="fp-btn fp-btn--primary">Testează</button>
+                  <button type="button" id="furnizor-test-btn-mini" data-furnizor-test="1" class="fp-test-cta fp-test-cta--compact" style="display:inline-flex;align-items:center;justify-content:center;height:36px;padding:0 14px;border:none;border-radius:10px;background:#14b8a6;color:#fff;font-size:12px;font-weight:800;cursor:pointer">Testează</button>
                   <button id="furnizor-mirror-feed" type="button" class="box rounded-lg border bg-white">Copiază local</button>
                   <button id="furnizor-browse-root" type="button" class="box rounded-lg border bg-white">Deschide lista</button>
                   <button id="furnizor-browse-path" type="button" class="box rounded-lg border bg-white">Reîncarcă</button>
@@ -547,8 +551,13 @@ if ($fpProCss !== '') {
                 <dt id="furnizor-browse-remote-label" class="hidden">Cale remote</dt>
                 <dd id="furnizor-browse-remote-path" class="hidden">—</dd>
               </dl>
-              <div id="furnizor-browse-status" class="fp-import-field__hint" style="margin-top:0.65rem">Apasă Deschide lista pentru a vedea fișierele.</div>
-              <div id="furnizor-browse-list" class="mt-3 hidden overflow-x-auto rounded-md border bg-white"></div>
+              <div id="furnizor-browse-status" class="fp-import-field__hint" style="margin-top:0.65rem">Apasă <strong>TESTEAZĂ CONEXIUNEA</strong> ca să vezi fișierele.</div>
+              <div id="furnizor-browse-list" class="mt-3 overflow-x-auto rounded-md border bg-white" style="display:block">
+                <div class="fp-browse-empty" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:140px;padding:24px 16px;text-align:center">
+                  <p style="margin:0;font-size:14px;color:#475569">Nu sunt fișiere în listă.</p>
+                  <button type="button" data-furnizor-test="1" class="fp-test-cta" style="display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 22px;border:none;border-radius:10px;background:#14b8a6;color:#fff;font-size:14px;font-weight:800;cursor:pointer">TESTEAZĂ CONEXIUNEA</button>
+                </div>
+              </div>
               <pre id="furnizor-browse-preview" class="mt-3 hidden max-h-64 overflow-auto rounded-md border bg-slate-900 p-3 text-xs text-slate-100 whitespace-pre-wrap"></pre>
             </div>
           </div>
@@ -888,9 +897,7 @@ async function testConnectionAndShowFiles(){
   const statusFtp=document.getElementById('furnizor-ftp-action-status');
   const statusApi=document.getElementById('furnizor-api-test-status');
   const buttons=[
-    document.getElementById('furnizor-test-btn'),
-    document.getElementById('furnizor-api-test-btn'),
-    document.getElementById('furnizor-ftp-connect-btn')
+    ...document.querySelectorAll('[data-furnizor-test]')
   ];
   const setStatus=(msg)=>{
     if(statusBrowse) statusBrowse.textContent=msg;
@@ -996,7 +1003,7 @@ function syncFtpAccessMode(){
   document.getElementById('furnizor-access-we-btn')?.classList.toggle('is-active',ours);
   const connectBtn=document.getElementById('furnizor-ftp-connect-btn');
   const downloadBtn=document.getElementById('furnizor-ftp-download-btn');
-  if(connectBtn) connectBtn.textContent=ours?'Arată fișierele încărcate la noi':'Testează — arată folderele de la ei';
+  if(connectBtn) connectBtn.textContent='TESTEAZĂ CONEXIUNEA';
   if(downloadBtn) downloadBtn.textContent=ours?'Culege fișierele încărcate':'Descarcă fișierele de la ei';
   updateBrowseHelpFromForm();
 }
@@ -1345,9 +1352,12 @@ document.getElementById('furnizor-profile-delete')?.addEventListener('click',asy
 
 document.getElementById('furnizor-browse-root')?.addEventListener('click',()=>browseRemote('/',{includeRemote:shouldIncludeRemote()}));
 document.getElementById('furnizor-browse-path')?.addEventListener('click',()=>browseRemote(String(form.elements.namedItem('conn_remote_path')?.value||'').trim()||'/',{includeRemote:shouldIncludeRemote()}));
-document.getElementById('furnizor-ftp-connect-btn')?.addEventListener('click',()=>testConnectionAndShowFiles());
-document.getElementById('furnizor-test-btn')?.addEventListener('click',()=>testConnectionAndShowFiles());
-document.getElementById('furnizor-api-test-btn')?.addEventListener('click',()=>testConnectionAndShowFiles());
+document.getElementById('furnizor-profile-form')?.addEventListener('click',(e)=>{
+  if(e.target.closest('[data-furnizor-test]')){
+    e.preventDefault();
+    testConnectionAndShowFiles();
+  }
+});
 document.getElementById('furnizor-ftp-download-btn')?.addEventListener('click',()=>downloadFromFtp());
 document.getElementById('furnizor-mirror-feed')?.addEventListener('click',async()=>{
   try{
@@ -1478,7 +1488,10 @@ function renderBrowseResults(data){
   const preview=document.getElementById('furnizor-browse-preview');
   if(status)status.textContent=data.message||'';
   if(!data.success){
-    tableWrap?.classList.add('hidden');
+    if(tableWrap){
+      tableWrap.classList.remove('hidden');
+      tableWrap.innerHTML='<div class="fp-browse-empty"><p>'+escapeHtml(data.message||'Nu am putut lista fișierele.')+'</p><button type="button" data-furnizor-test="1" class="fp-test-cta">TESTEAZĂ CONEXIUNEA</button></div>';
+    }
     preview?.classList.add('hidden');
     return;
   }
@@ -1487,7 +1500,8 @@ function renderBrowseResults(data){
   const entries=Array.isArray(data.entries)?data.entries:[];
   if(tableWrap){
     if(!entries.length){
-      tableWrap.innerHTML='<div class="p-3 text-sm opacity-70">Director gol sau listare indisponibila. Verifica folderul local si calea SFTP/FTP configurata.</div>';
+      const err=data.remote_list_error?('<p class="fp-browse-empty__err">'+escapeHtml(String(data.remote_list_error))+'</p>'):'';
+      tableWrap.innerHTML='<div class="fp-browse-empty"><p>Nu sunt fișiere în listă.</p>'+err+'<button type="button" data-furnizor-test="1" class="fp-test-cta">TESTEAZĂ CONEXIUNEA</button></div>';
     }else{
       tableWrap.innerHTML='<table class="w-full text-left text-sm"><thead class="border-b text-xs uppercase opacity-60"><tr><th class="p-2">Nume</th><th class="p-2">Sursa</th><th class="p-2">Tip</th><th class="p-2">Marime</th><th class="p-2"></th></tr></thead><tbody>'+
         entries.map(entry=>{
