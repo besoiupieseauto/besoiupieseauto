@@ -53,23 +53,38 @@ class FurnizoriRemoteSyncService
             return $this->fail('Cod furnizor lipsa.', $debug, $started);
         }
 
-        $host = (string) $debug['host'];
-        if ($host === '') {
-            return $this->fail('Host FTP/SFTP neconfigurat.', $debug, $started);
-        }
-
-        $remoteDir = trim((string) ($furnizor['conn_remote_path'] ?? ''));
-        if ($remoteDir === '') {
-            $remoteDir = '/';
-        }
-        $debug['remote_dir'] = $remoteDir;
-
         $folderService = new SupplierFeedFolderService();
         $folder = $folderService->ensureFolder($code, $randomnId);
         $debug['folder'] = (string) ($folder['relative'] ?? '');
         if (empty($folder['exists'])) {
             return $this->fail('Nu pot crea folderul local ' . $debug['folder'] . '.', $debug, $started);
         }
+
+        $accessOurs = FtpAccessMode::isOurs($furnizor);
+        $harvested = $accessOurs
+            ? $folderService->harvestInbox($code, $randomnId, $furnizor)
+            : ['saved' => [], 'skipped' => [], 'inbox' => ''];
+        $debug['inbox'] = (string) ($harvested['inbox'] ?? '');
+
+        $host = (string) $debug['host'];
+        if ($host === '' && $accessOurs) {
+            return $this->finishLocalHarvest($harvested, $folderService, $code, $randomnId, $debug, $started);
+        }
+        if ($host === '') {
+            return $this->fail(
+                $accessOurs
+                    ? 'Host-ul FTP al nostru lipsește — sau lasă-l gol ca să culegem din inbox-ul local.'
+                    : 'Host FTP/SFTP neconfigurat (IP-ul de la furnizor).',
+                $debug,
+                $started
+            );
+        }
+
+        $remoteDir = trim((string) ($furnizor['conn_remote_path'] ?? ''));
+        if ($remoteDir === '' || $this->isLocalFilesystemDir($remoteDir)) {
+            $remoteDir = '/';
+        }
+        $debug['remote_dir'] = $remoteDir;
 
         $client = (new FtpConnectionClient())->configure($furnizor);
         $candidates = $client->pickRemoteFeedFiles($remoteDir);
@@ -80,6 +95,10 @@ class FurnizoriRemoteSyncService
         ));
 
         if ($candidates === []) {
+            if ($accessOurs && ($harvested['saved'] !== [] || $harvested['skipped'] !== [])) {
+                return $this->finishLocalHarvest($harvested, $folderService, $code, $randomnId, $debug, $started);
+            }
+
             return $this->fail(
                 'Niciun fisier de pret in ' . $remoteDir . ' pe ' . $debug['protocol'] . ' ' . $host . '.',
                 $debug,
@@ -137,7 +156,14 @@ class FurnizoriRemoteSyncService
             $debug['downloaded'][] = $entry['name'] . ' (' . $this->formatBytes((int) $entry['size']) . ')';
         }
 
+        $synced = array_merge($harvested['saved'] ?? [], $synced);
+        $skipped = array_merge($harvested['skipped'] ?? [], $skipped);
+
         if ($synced === [] && $skipped === []) {
+            if ($accessOurs) {
+                return $this->finishLocalHarvest($harvested, $folderService, $code, $randomnId, $debug, $started);
+            }
+
             return $this->fail(
                 'Conexiune OK, dar download esuat pentru ' . count($candidates) . ' fisier(e) gasite.',
                 $debug,
@@ -165,6 +191,64 @@ class FurnizoriRemoteSyncService
             'files' => $synced,
             'skipped' => $skipped,
             'folder' => $debug['folder'],
+            'debug' => $debug,
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $harvested
+     * @param array<string, mixed> $debug
+     * @return array<string, mixed>
+     */
+    private function finishLocalHarvest(
+        array $harvested,
+        SupplierFeedFolderService $folderService,
+        string $code,
+        int $randomnId,
+        array $debug,
+        float $started
+    ): array {
+        $synced = is_array($harvested['saved'] ?? null) ? $harvested['saved'] : [];
+        $skipped = is_array($harvested['skipped'] ?? null) ? $harvested['skipped'] : [];
+        $inbox = (string) ($harvested['inbox'] ?? $debug['inbox'] ?? '');
+
+        if ($synced === [] && $skipped === []) {
+            foreach ($folderService->listFeedCsvFiles($code, $randomnId) as $file) {
+                $skipped[] = [
+                    'name' => (string) ($file['name'] ?? ''),
+                    'size' => (int) ($file['size'] ?? 0),
+                    'local_path' => (string) ($file['local_path'] ?? ''),
+                    'folder' => (string) ($debug['folder'] ?? ''),
+                    'source' => 'local_feed',
+                ];
+            }
+        }
+
+        if ($synced === [] && $skipped === []) {
+            return $this->fail(
+                'Așteptăm fișierele încărcate de furnizor'
+                . ($inbox !== '' ? ' în ' . $inbox : ' în inbox-ul local')
+                . ' sau în ' . (string) ($debug['folder'] ?? 'folderul local') . '.',
+                $debug,
+                $started
+            );
+        }
+
+        $this->updateAgentState($code, $synced[0] ?? $skipped[0] ?? [], (string) ($debug['folder'] ?? ''));
+        $debug['elapsed_ms'] = (int) round((microtime(true) - $started) * 1000);
+
+        if ($synced !== []) {
+            $message = 'Preluat ' . count($synced) . ' fisier(e) încărcate de furnizor → ' . (string) ($debug['folder'] ?? '');
+        } else {
+            $message = 'Nimic nou — ' . count($skipped) . ' fisier(e) deja în ' . (string) ($debug['folder'] ?? 'folder local');
+        }
+
+        return [
+            'success' => true,
+            'message' => $message,
+            'files' => $synced,
+            'skipped' => $skipped,
+            'folder' => (string) ($debug['folder'] ?? ''),
             'debug' => $debug,
         ];
     }
@@ -229,6 +313,21 @@ class FurnizoriRemoteSyncService
         }
 
         return round($bytes / 1048576, 1) . ' MB';
+    }
+
+    private function isLocalFilesystemDir(string $path): bool
+    {
+        $path = trim($path);
+        if ($path === '' || $path === '/' || !is_dir($path)) {
+            return false;
+        }
+
+        if (preg_match('/^[A-Za-z]:[\\\\\\/]/', $path) === 1) {
+            return true;
+        }
+
+        return str_contains($path, '\\')
+            || (bool) preg_match('#^/(home|var|mnt|data|ftp|opt)/#', str_replace('\\', '/', $path));
     }
 
     private function bootImportLibrary(): void

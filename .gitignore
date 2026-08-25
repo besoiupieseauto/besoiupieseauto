@@ -62,6 +62,8 @@ Desktop.ini
 # --- Runtime / cache grele (nu pe GitHub) ---
 admin/storage/imports/
 admin/storage/supplier_feeds/
+admin/storage/supplier_inbox/*
+!admin/storage/supplier_inbox/.gitkeep
 admin/storage/ai_rag/
 admin/storage/ai_intelligence/
 admin/storage/ai_work/

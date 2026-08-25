@@ -58,11 +58,12 @@ class SupplierFtpPullService
             }
 
             $host = trim((string) ($furnizor['conn_host'] ?? ''));
-            if ($host === '') {
+            $accessOurs = FtpAccessMode::isOurs($furnizor);
+            if ($host === '' && !$accessOurs) {
                 $rows[] = [
                     'code' => $code,
                     'status' => 'skip',
-                    'message' => 'Host FTP/SFTP lipsa in profil.',
+                    'message' => 'Host FTP/SFTP lipsa in profil (IP-ul de la furnizor).',
                 ];
                 continue;
             }

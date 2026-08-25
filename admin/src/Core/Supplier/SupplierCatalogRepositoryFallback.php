@@ -27,6 +27,7 @@ final class SupplierCatalogRepositoryFallback
         'scan_include_zero_stock',
         'scan_skip_unavailable',
         'connection_type',
+        'ftp_access_mode',
         'scan_interval_minutes',
         'scan_schedule_mode',
         'scan_schedule_time',
@@ -154,6 +155,9 @@ final class SupplierCatalogRepositoryFallback
         if (empty($row['connection_type'])) {
             $row['connection_type'] = 'ftp';
         }
+
+        $mode = strtolower(trim((string) ($row['ftp_access_mode'] ?? '')));
+        $row['ftp_access_mode'] = in_array($mode, ['we', 'ours', 'inbound', 'push'], true) ? 'we' : 'they';
 
         if (empty($row['stock_zero_mode'])) {
             $row['stock_zero_mode'] = 'full';

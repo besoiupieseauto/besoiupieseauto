@@ -275,6 +275,10 @@ class FurnizoriService
 
         $host = trim((string) ($furnizor['conn_host'] ?? ''));
         if ($host === '') {
+            if (FtpAccessMode::isOurs($furnizor)) {
+                return 'OK — inbox local gata. Furnizorul încarcă la noi; jobul culege fișierele în folderul local.';
+            }
+
             return 'Host FTP neconfigurat.';
         }
 
@@ -302,7 +306,7 @@ class FurnizoriService
     private function maybePersistConnectionFields(int $randomId, array $options): void
     {
         $payload = [];
-        foreach (['conn_host', 'conn_port', 'conn_username', 'conn_remote_path'] as $field) {
+        foreach (['conn_host', 'conn_port', 'conn_username', 'conn_remote_path', 'ftp_access_mode'] as $field) {
             if (array_key_exists($field, $options) && trim((string) $options[$field]) !== '') {
                 $payload[$field] = trim((string) $options[$field]);
             }

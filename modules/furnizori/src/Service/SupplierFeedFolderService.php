@@ -236,6 +236,121 @@ class SupplierFeedFolderService
         ];
     }
 
+    public function inboxBaseDir(): string
+    {
+        $dir = (defined('BESOIU_ADMIN') ? BESOIU_ADMIN : dirname(__DIR__, 5) . '/admin') . '/storage/supplier_inbox';
+        if (!is_dir($dir)) {
+            mkdir($dir, 0775, true);
+        }
+
+        return $dir;
+    }
+
+    public function inboxPath(string $code, int $randomnId): string
+    {
+        return $this->inboxBaseDir() . DIRECTORY_SEPARATOR . $this->slugFromSupplier($code, $randomnId);
+    }
+
+    public function inboxRelative(string $code, int $randomnId): string
+    {
+        return 'storage/supplier_inbox/' . $this->slugFromSupplier($code, $randomnId);
+    }
+
+    /** @return array{path:string,relative:string,exists:bool} */
+    public function ensureInbox(string $code, int $randomnId): array
+    {
+        $path = $this->inboxPath($code, $randomnId);
+        if (!is_dir($path)) {
+            @mkdir($path, 0775, true);
+        }
+
+        return [
+            'path' => $path,
+            'relative' => $this->inboxRelative($code, $randomnId),
+            'exists' => is_dir($path),
+        ];
+    }
+
+    /**
+     * Copiază listele încărcate de furnizor (inbox FTP local sau folder de pe disc) în supplier_feeds.
+     *
+     * @param array<string, mixed> $furnizor
+     * @return array{saved:array<int,array<string,mixed>>,skipped:array<int,array<string,mixed>>,inbox:string}
+     */
+    public function harvestInbox(string $code, int $randomnId, array $furnizor = []): array
+    {
+        $sources = [];
+        $inbox = $this->ensureInbox($code, $randomnId);
+        if (!empty($inbox['exists'])) {
+            $sources[] = (string) $inbox['path'];
+        }
+
+        $remote = trim((string) ($furnizor['conn_remote_path'] ?? ''));
+        if ($remote !== '' && $remote !== '/' && is_dir($remote)) {
+            $sources[] = $remote;
+        }
+
+        $saved = [];
+        $skipped = [];
+        $seen = [];
+        foreach ($sources as $dir) {
+            foreach ($this->listDirectoryFeedFiles($dir) as $file) {
+                $name = (string) ($file['name'] ?? '');
+                $full = (string) ($file['local_path'] ?? '');
+                if ($name === '' || $full === '' || isset($seen[$name])) {
+                    continue;
+                }
+                $seen[$name] = true;
+                $result = $this->saveDownloadedFile($code, $randomnId, $full, $name);
+                $entry = [
+                    'name' => (string) ($result['name'] ?? $name),
+                    'size' => (int) ($result['size'] ?? 0),
+                    'remote_path' => $full,
+                    'local_path' => (string) ($result['path'] ?? ''),
+                    'folder' => (string) ($result['relative'] ?? ''),
+                    'source' => 'inbox',
+                ];
+                if (!empty($result['skipped'])) {
+                    $skipped[] = $entry;
+                } elseif (!empty($result['saved'])) {
+                    $saved[] = $entry;
+                }
+            }
+        }
+
+        return [
+            'saved' => $saved,
+            'skipped' => $skipped,
+            'inbox' => (string) ($inbox['relative'] ?? ''),
+        ];
+    }
+
+    /** @return array<int, array<string, mixed>> */
+    private function listDirectoryFeedFiles(string $dir): array
+    {
+        if ($dir === '' || !is_dir($dir)) {
+            return [];
+        }
+
+        $entries = [];
+        foreach (scandir($dir) ?: [] as $name) {
+            if ($name === '.' || $name === '..' || !self::isFeedFilename($name)) {
+                continue;
+            }
+            $full = $dir . DIRECTORY_SEPARATOR . $name;
+            if (!is_file($full)) {
+                continue;
+            }
+            $entries[] = [
+                'name' => $name,
+                'local_path' => $full,
+                'size' => filesize($full) ?: 0,
+            ];
+        }
+
+        return $entries;
+    }
+
     private function safeFeedFilename(string $name): string
     {
         $name = trim(str_replace(['\\', '/'], '_', $name));

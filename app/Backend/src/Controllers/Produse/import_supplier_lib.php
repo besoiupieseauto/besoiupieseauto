@@ -340,6 +340,8 @@ function import_furnizori_row_to_catalog_entry(array $row, array $seed, array $p
         'conn_email_password', 'api_base_url', 'api_token',
         'stock_zero_mode', 'scan_include_zero_stock', 'scan_skip_unavailable',
         'scan_schedule_mode', 'scan_schedule_time', 'scan_window_start', 'scan_window_end', 'scan_auto_enabled',
+        'ftp_access_mode',
+        'ftp_access_mode',
     ] as $field) {
         if (array_key_exists($field, $row) && $row[$field] !== null && trim((string) $row[$field]) !== '') {
             $entry[$field] = $row[$field];

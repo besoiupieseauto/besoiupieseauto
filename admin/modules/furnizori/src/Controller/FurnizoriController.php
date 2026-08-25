@@ -20,6 +20,7 @@ class FurnizoriController
 
     private const ALLOWED_STATUSES = ['active', 'blocked'];
     private const ALLOWED_CONNECTION_TYPES = ['ftp', 'sftp', 'email', 'api'];
+    private const ALLOWED_FTP_ACCESS_MODES = ['they', 'we'];
     private const ALLOWED_MARKUP_TYPES = ['percentage', 'fixed'];
     private const ALLOWED_STOCK_ZERO_MODES = ['hide', 'full', 'out_of_stock'];
 
@@ -166,6 +167,7 @@ class FurnizoriController
         foreach ([
             'status' => self::ALLOWED_STATUSES,
             'connection_type' => self::ALLOWED_CONNECTION_TYPES,
+            'ftp_access_mode' => self::ALLOWED_FTP_ACCESS_MODES,
             'price_markup_type' => self::ALLOWED_MARKUP_TYPES,
             'stock_zero_mode' => self::ALLOWED_STOCK_ZERO_MODES,
         ] as $field => $allowedValues) {
@@ -177,6 +179,7 @@ class FurnizoriController
         if (!$isUpdate) {
             $payload['status'] = $payload['status'] ?? 'active';
             $payload['connection_type'] = $payload['connection_type'] ?? 'api';
+            $payload['ftp_access_mode'] = $payload['ftp_access_mode'] ?? 'they';
             $payload['price_markup_type'] = $payload['price_markup_type'] ?? 'percentage';
             $payload['stock_zero_mode'] = $payload['stock_zero_mode'] ?? 'full';
         }

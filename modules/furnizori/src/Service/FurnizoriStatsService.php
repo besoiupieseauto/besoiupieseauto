@@ -351,6 +351,7 @@ class FurnizoriStatsService
             'conn_host', 'conn_port', 'conn_username', 'conn_password', 'conn_remote_path',
             'conn_passive', 'conn_email', 'conn_email_inbox', 'conn_imap_host', 'conn_imap_port',
             'conn_email_password', 'api_base_url', 'api_token',
+            'ftp_access_mode',
             'price_markup_type', 'price_markup_value',
         ] as $field) {
             if (array_key_exists($field, $definition) && $definition[$field] !== null && $definition[$field] !== '') {

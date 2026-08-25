@@ -420,6 +420,31 @@ if ($fpProCss !== '') {
               </label>
             </div>
 
+            <div id="furnizor-ftp-access-box" class="conn-panel hidden" style="margin-bottom:1rem">
+              <span class="fp-import-field__label" style="display:block;margin-bottom:0.5rem">Cine dă accesul FTP/SFTP?</span>
+              <div class="fp-import-form-grid" style="grid-template-columns:1fr 1fr;gap:0.75rem">
+                <label class="fp-import-field" style="border:1px solid #dbe3ee;border-radius:10px;padding:0.75rem 0.9rem;cursor:pointer">
+                  <span class="flex items-start gap-2 text-sm">
+                    <input type="radio" name="ftp_access_mode" value="they" checked style="margin-top:0.2rem">
+                    <span>
+                      <strong>Ei ne dau acces</strong>
+                      <span class="fp-import-field__hint" style="display:block;margin:0.2rem 0 0">Ne conectăm la serverul lor cu IP, login și parola pe care ni le trimit.</span>
+                    </span>
+                  </span>
+                </label>
+                <label class="fp-import-field" style="border:1px solid #dbe3ee;border-radius:10px;padding:0.75rem 0.9rem;cursor:pointer">
+                  <span class="flex items-start gap-2 text-sm">
+                    <input type="radio" name="ftp_access_mode" value="we" style="margin-top:0.2rem">
+                    <span>
+                      <strong>Noi le dăm acces</strong>
+                      <span class="fp-import-field__hint" style="display:block;margin:0.2rem 0 0">Le creăm cont pe FTP-ul nostru; ei încarcă fișierele, noi le culegem automat.</span>
+                    </span>
+                  </span>
+                </label>
+              </div>
+              <p id="furnizor-ftp-inbox-hint" class="fp-import-field__hint hidden" style="margin-top:0.65rem">Inbox local (unde pot încărca): <code id="furnizor-ftp-inbox-path">storage/supplier_inbox/{cod}/</code></p>
+            </div>
+
             <div id="furnizor-feed-folder-box" class="conn-panel" data-supplier-feed-inbox="1">
               <span class="fp-import-field__label">Folder local furnizor</span>
               <div id="furnizor-feed-folder-path" class="fp-folder-path" data-role="supplier-feed-folder-path">Se încarcă…</div>
@@ -464,7 +489,7 @@ if ($fpProCss !== '') {
               <p class="fp-import-field__hint" id="furnizor-ftp-panel-help" style="margin:-0.35rem 0 0.75rem">Completezi datele pe care ți le dă furnizorul. Noi ne conectăm la serverul LUI și tragem fișierele la noi.</p>
               <div class="fp-import-form-grid">
                 <label class="fp-import-field">
-                  <span class="fp-import-field__label">IP / host (de la furnizor)</span>
+                  <span class="fp-import-field__label" id="furnizor-ftp-host-label">IP / host (de la furnizor)</span>
                   <input class="box h-10 rounded-md border px-3" type="text" name="conn_host" id="furnizor-sftp-host" placeholder="ftp.furnizor.ro sau 185.x.x.x" autocomplete="off">
                 </label>
                 <label class="fp-import-field">
@@ -472,17 +497,17 @@ if ($fpProCss !== '') {
                   <input class="box h-10 rounded-md border px-3" type="number" min="1" max="65535" name="conn_port" id="furnizor-sftp-port" placeholder="21">
                 </label>
                 <label class="fp-import-field">
-                  <span class="fp-import-field__label">Login (de la furnizor)</span>
+                  <span class="fp-import-field__label" id="furnizor-ftp-user-label">Login (de la furnizor)</span>
                   <input class="box h-10 rounded-md border px-3" type="text" name="conn_username" id="furnizor-sftp-login" autocomplete="off">
                 </label>
                 <label class="fp-import-field">
-                  <span class="fp-import-field__label">Parolă (de la furnizor)</span>
+                  <span class="fp-import-field__label" id="furnizor-ftp-pass-label">Parolă (de la furnizor)</span>
                   <input class="box h-10 rounded-md border px-3" type="password" name="conn_password" id="furnizor-sftp-password" autocomplete="new-password" placeholder="Lasă gol = păstrează">
                 </label>
                 <label class="fp-import-field fp-import-field--full">
-                  <span class="fp-import-field__label">Folder pe serverul furnizorului</span>
+                  <span class="fp-import-field__label" id="furnizor-ftp-path-label">Folder pe serverul furnizorului</span>
                   <input class="box h-10 rounded-md border px-3" type="text" name="conn_remote_path" id="furnizor-conn-remote-path" placeholder="/ sau /export">
-                  <p class="fp-import-field__hint">Calea de unde luăm lista (pe serverul lor). Gol = rădăcina contului.</p>
+                  <p class="fp-import-field__hint" id="furnizor-ftp-path-hint">Calea de unde luăm lista (pe serverul lor). Gol = rădăcina contului.</p>
                 </label>
                 <label class="fp-import-field flex items-end">
                   <span class="flex items-center gap-2 text-sm text-slate-600">
@@ -549,7 +574,7 @@ const TAB_SAVE_FIELDS={
   general:['name','code','conn_email','conn_email_inbox','notes'],
   pret:['price_markup_type','price_markup_value','feed_markup_override'],
   scanare:['stock_zero_mode','scan_include_zero_stock','scan_skip_unavailable'],
-  conexiune:['connection_type','scan_auto_enabled','scan_schedule_mode','scan_interval_minutes','scan_schedule_time','scan_window_start','scan_window_end','api_base_url','api_credential_login','api_credential_password','api_credential_token','conn_host','conn_port','conn_username','conn_password','conn_remote_path','conn_passive']
+  conexiune:['connection_type','ftp_access_mode','scan_auto_enabled','scan_schedule_mode','scan_interval_minutes','scan_schedule_time','scan_window_start','scan_window_end','api_base_url','api_credential_login','api_credential_password','api_credential_token','conn_host','conn_port','conn_username','conn_password','conn_remote_path','conn_passive']
 };
 const TAB_SAVE_LABELS={
   general:'General',
@@ -761,6 +786,7 @@ function syncConnectionPanels(){
   const isSftp=type==='sftp';
   document.getElementById('furnizor-panel-api')?.classList.toggle('hidden',!isApi);
   document.getElementById('furnizor-panel-ftp')?.classList.toggle('hidden',!isFtp);
+  document.getElementById('furnizor-ftp-access-box')?.classList.toggle('hidden',!isFtp);
   const ftpPanel=document.getElementById('furnizor-panel-ftp');
   if(ftpPanel){
     ftpPanel.dataset.connectionPanel=isSftp?'sftp':'ftp';
@@ -778,12 +804,59 @@ function syncConnectionPanels(){
   }else if(portEl&&type==='ftp'&&String(portEl.value||'').trim()===''){
     portEl.value='21';
   }
+  syncFtpAccessMode();
   updateBrowseHelpFromForm();
 }
 form.elements.namedItem('connection_type')?.addEventListener('change',syncConnectionPanels);
+document.querySelectorAll('input[name="ftp_access_mode"]').forEach(el=>{
+  el.addEventListener('change',syncFtpAccessMode);
+});
 ['conn_remote_path','conn_host'].forEach(name=>{
   form.elements.namedItem(name)?.addEventListener('input',updateBrowseHelpFromForm);
 });
+
+function ftpAccessMode(){
+  const el=form.elements.namedItem('ftp_access_mode');
+  return String(el?.value||'they').toLowerCase()==='we'?'we':'they';
+}
+
+function syncFtpAccessMode(){
+  const ours=ftpAccessMode()==='we';
+  const type=(form.elements.namedItem('connection_type')?.value||'ftp').toLowerCase();
+  const proto=type==='sftp'?'SFTP':'FTP';
+  const hostEl=form.elements.namedItem('conn_host');
+  const help=document.getElementById('furnizor-ftp-panel-help');
+  const hostLabel=document.getElementById('furnizor-ftp-host-label');
+  const userLabel=document.getElementById('furnizor-ftp-user-label');
+  const passLabel=document.getElementById('furnizor-ftp-pass-label');
+  const pathLabel=document.getElementById('furnizor-ftp-path-label');
+  const pathHint=document.getElementById('furnizor-ftp-path-hint');
+  const inboxHint=document.getElementById('furnizor-ftp-inbox-hint');
+  const inboxPath=document.getElementById('furnizor-ftp-inbox-path');
+  if(help){
+    help.textContent=ours
+      ? proto+': le dai tu cont pe serverul nostru. Ei încarcă listele; noi le luăm automat în folderul local.'
+      : proto+': pui IP/host, login și parola de la furnizor. Noi ne conectăm la serverul lui și descărcăm listele.';
+  }
+  if(hostLabel) hostLabel.textContent=ours?'Host-ul nostru FTP/SFTP (opțional)':'IP / host (de la furnizor)';
+  if(userLabel) userLabel.textContent=ours?'Login-ul pe care i-l dăm noi':'Login (de la furnizor)';
+  if(passLabel) passLabel.textContent=ours?'Parola pe care i-o dăm noi':'Parolă (de la furnizor)';
+  if(pathLabel) pathLabel.textContent=ours?'Folder unde încarcă ei (pe FTP-ul nostru)':'Folder pe serverul furnizorului';
+  if(pathHint){
+    pathHint.textContent=ours
+      ?'Calea din contul creat pentru ei. Gol = rădăcina contului. Dacă FTP-ul e pe același server, poți pune și calea de pe disc.'
+      :'Calea de unde luăm lista (pe serverul lor). Gol = rădăcina contului.';
+  }
+  if(hostEl){
+    hostEl.placeholder=ours?'ftp.besoiupieseauto.ro (sau lasă gol = doar inbox local)':'ftp.furnizor.ro sau 185.x.x.x';
+  }
+  inboxHint?.classList.toggle('hidden',!ours);
+  if(inboxPath){
+    const code=String(furnizor?.supplier_code||furnizor?.code||'').trim().toLowerCase()||'{cod}';
+    inboxPath.textContent='storage/supplier_inbox/'+code+'/';
+  }
+  updateBrowseHelpFromForm();
+}
 
 function switchTab(name){
   document.querySelectorAll('.furnizor-tab').forEach(t=>{
@@ -1169,6 +1242,7 @@ function updateBrowseHelpFromForm(){
   updateBrowseHelp({
     connection_type:form.elements.namedItem('connection_type')?.value||'',
     conn_remote_path:form.elements.namedItem('conn_remote_path')?.value||'',
+    ftp_access_mode:ftpAccessMode(),
     feed_folder_relative:local,
   });
   updateBrowsePaths({
@@ -1177,6 +1251,7 @@ function updateBrowseHelpFromForm(){
     connection_type:form.elements.namedItem('connection_type')?.value||'',
     conn_remote_path:form.elements.namedItem('conn_remote_path')?.value||'',
     conn_host:form.elements.namedItem('conn_host')?.value||'',
+    ftp_access_mode:ftpAccessMode(),
   });
 }
 
@@ -1189,6 +1264,7 @@ function updateBrowsePaths(data){
   if(localEl){
     localEl.textContent=local?(local+(abs?('  ('+abs+')'):'')):'Se creeaza la salvare (admin/storage/supplier_feeds/{cod}/).';
   }
+  const ours=String(data?.ftp_access_mode||ftpAccessMode()).toLowerCase()==='we';
   const type=String(data?.connection_type||'').toLowerCase();
   const remote=String(data?.remote_path||data?.conn_remote_path||'').trim();
   const host=String(data?.remote_host||data?.conn_host||'').trim();
@@ -1196,22 +1272,33 @@ function updateBrowsePaths(data){
   remoteLabel?.classList.toggle('hidden',!showRemote);
   remoteEl?.classList.toggle('hidden',!showRemote);
   if(showRemote&&remoteEl){
-    remoteEl.textContent=remote
-      ?remote+(host?('  @ '+host):'')+' — folder pe serverul furnizorului (de unde descărcăm)'
-      :'Configurează «Folder pe serverul furnizorului» de mai sus, apoi Salvează sau Reîncarcă lista.';
+    if(ours){
+      remoteEl.textContent=remote||host
+        ? (remote||'/')+(host?('  @ '+host):'')+' — ei încarcă aici, pe FTP-ul nostru'
+        : 'Inbox local: admin/storage/supplier_inbox/{cod}/ — sau completează host-ul FTP al nostru.';
+    }else{
+      remoteEl.textContent=remote
+        ?remote+(host?('  @ '+host):'')+' — folder pe serverul furnizorului (de unde descărcăm)'
+        :'Configurează «Folder pe serverul furnizorului» de mai sus, apoi Salvează sau Reîncarcă lista.';
+    }
   }
 }
 
 function updateBrowseHelp(data){
   const help=document.getElementById('furnizor-browse-help');
   if(!help) return;
+  const ours=String(data?.ftp_access_mode||ftpAccessMode()).toLowerCase()==='we';
   const type=String(data?.connection_type||'').toLowerCase();
   const remote=String(data?.conn_remote_path||'').trim();
   const local=String(data?.feed_folder_relative||'').trim();
   if(type==='sftp'||type==='ftp'){
-    help.textContent=remote
-      ?`Fisiere din folderul local ${local||'storage/supplier_feeds/{cod}/'} si din ${type.toUpperCase()} ${remote} (dupa sync). Apasa Deschide lista.`
-      :`Fisiere din folderul local ${local||'storage/supplier_feeds/{cod}/'}. Configurează «Folder pe serverul furnizorului» (calea de la ei).`;
+    if(ours){
+      help.textContent='Ei încarcă la noi. Fișierele ajung în '+(local||'storage/supplier_feeds/{cod}/')+' (din inbox sau din FTP-ul nostru).';
+    }else{
+      help.textContent=remote
+        ?`Fisiere din folderul local ${local||'storage/supplier_feeds/{cod}/'} si din ${type.toUpperCase()} ${remote} (dupa sync). Apasa Deschide lista.`
+        :`Fisiere din folderul local ${local||'storage/supplier_feeds/{cod}/'}. Configurează «Folder pe serverul furnizorului» (calea de la ei).`;
+    }
   }else{
     help.textContent='Fișiere din folderul local '+ (local || 'storage/supplier_feeds/{cod}/') + '. Staging import apare doar pentru fișiere necopiate încă în folder.';
   }

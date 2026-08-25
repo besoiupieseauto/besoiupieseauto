@@ -735,6 +735,7 @@ CREATE TABLE `furnizori` (
   `scan_include_zero_stock` tinyint(1) NOT NULL DEFAULT '1',
   `scan_skip_unavailable` tinyint(1) NOT NULL DEFAULT '0',
   `connection_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ftp',
+  `ftp_access_mode` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'they',
   `scan_interval_minutes` int unsigned NOT NULL DEFAULT '60',
   `scan_schedule_mode` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'interval',
   `scan_schedule_time` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '06:00',

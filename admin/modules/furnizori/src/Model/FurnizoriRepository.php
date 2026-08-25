@@ -27,6 +27,7 @@ final class FurnizoriRepository
         'scan_include_zero_stock',
         'scan_skip_unavailable',
         'connection_type',
+        'ftp_access_mode',
         'scan_interval_minutes',
         'scan_schedule_mode',
         'scan_schedule_time',
@@ -59,6 +60,7 @@ final class FurnizoriRepository
     /** @return array<int, array<string, mixed>> */
     public function findAll(): array
     {
+        $this->ensureAccessModeColumn();
         $rows = AdvancedCRUD::selectnew(self::TABLE, '*', '', 'id DESC');
 
         return array_map(fn (array $row): array => $this->normalizeRow($row), $rows);
@@ -67,6 +69,7 @@ final class FurnizoriRepository
     /** @return array{items:array<int,array<string,mixed>>,total:int,page:int,per_page:int,total_pages:int} */
     public function findPaginated(int $page = 1, int $perPage = 10, array $filters = []): array
     {
+        $this->ensureAccessModeColumn();
         $whereParts = [];
         $params = [];
 
@@ -89,6 +92,7 @@ final class FurnizoriRepository
     /** @return array<string, mixed>|null */
     public function findByCode(string $code): ?array
     {
+        $this->ensureAccessModeColumn();
         $code = trim($code);
         if ($code === '') {
             return null;
@@ -109,6 +113,7 @@ final class FurnizoriRepository
     /** @return array<string, mixed>|null */
     public function findByRandomId(int $randomId): ?array
     {
+        $this->ensureAccessModeColumn();
         $rows = AdvancedCRUD::selectnew(
             self::TABLE,
             '*',
@@ -155,6 +160,10 @@ final class FurnizoriRepository
             $row['connection_type'] = 'ftp';
         }
 
+        $row['ftp_access_mode'] = \Besoiu\Modules\Furnizori\Service\FtpAccessMode::normalize(
+            $row['ftp_access_mode'] ?? ''
+        );
+
         if (empty($row['stock_zero_mode'])) {
             $row['stock_zero_mode'] = 'full';
         }
@@ -189,12 +198,14 @@ final class FurnizoriRepository
     /** @param array<string, string|int|float|null> $payload */
     public function insert(array $payload): bool
     {
+        $this->ensureAccessModeColumn();
         return AdvancedCRUD::create(self::TABLE, $this->filterAllowedColumns($payload));
     }
 
     /** @param array<string, string|int|float|null> $payload */
     public function updateByRandomId(int $randomId, array $payload): bool
     {
+        $this->ensureAccessModeColumn();
         $where = $this->buildWhereForIdentifier($randomId);
 
         return AdvancedCRUD::update(
@@ -265,5 +276,32 @@ final class FurnizoriRepository
     private function filterAllowedColumns(array $payload): array
     {
         return array_intersect_key($payload, array_flip(self::ALLOWED_COLUMNS));
+    }
+
+    private function ensureAccessModeColumn(): void
+    {
+        static $ready = false;
+        if ($ready) {
+            return;
+        }
+
+        try {
+            $pdo = \Config\Database::getDB();
+            $stmt = $pdo->prepare(
+                'SELECT COUNT(*) FROM information_schema.COLUMNS
+                 WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?'
+            );
+            $stmt->execute([self::TABLE, 'ftp_access_mode']);
+            if ((int) $stmt->fetchColumn() === 0) {
+                $pdo->exec(
+                    "ALTER TABLE `" . self::TABLE . "`
+                     ADD COLUMN `ftp_access_mode` varchar(16) NOT NULL DEFAULT 'they'"
+                );
+            }
+        } catch (\Throwable) {
+            // coloana se adaugă la următoarea rulare dacă DB nu e gata
+        }
+
+        $ready = true;
     }
 }
