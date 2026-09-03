@@ -2,112 +2,86 @@
 declare(strict_types=1);
 
 /**
- * Viewer Autonet QWP — coloane A, B, C din XLSX, 50 rânduri/pagină.
- * URL Laragon: http://besoiupieseauto.ro.test/admin/tools/autonet_qwp_viewer/
+ * Editor simplu autonet_qwp_data — listare + editare + paginare 50.
+ * URL: http://besoiupieseauto.ro.test/admin/tools/autonet_qwp_viewer/
  */
 
-require_once __DIR__ . '/lib/AutonetQwpXlsxReader.php';
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/lib/QwpDb.php';
 
 header('Content-Type: text/html; charset=utf-8');
 
-const DEFAULT_XLSX = 'C:/Users/Radu/Desktop/Новая папка/Autonet QWP-update filtrare (1).xlsx';
 const PER_PAGE = 50;
 
-$xlsxPath = trim((string) ($_GET['file'] ?? DEFAULT_XLSX));
-$refresh = isset($_GET['refresh']);
 $page = max(1, (int) ($_GET['page'] ?? 1));
 $q = trim((string) ($_GET['q'] ?? ''));
-
-$cacheDir = __DIR__ . '/cache';
-$cacheFile = $cacheDir . '/rows_' . md5($xlsxPath) . '.json';
+$flash = '';
 $error = '';
-$headers = ['a' => 'Coloana A', 'b' => 'Coloana B', 'c' => 'Coloana C'];
-$sourceMtime = is_file($xlsxPath) ? (int) filemtime($xlsxPath) : 0;
 
-/** @var list<array{row:int,a:string,b:string,c:string}> $allRows */
-$allRows = [];
+try {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $action = (string) ($_POST['action'] ?? '');
 
-function loadData(string $xlsxPath, string $cacheFile, int $sourceMtime, bool $refresh): array
-{
-    if (
-        !$refresh
-        && is_file($cacheFile)
-        && (int) filemtime($cacheFile) >= $sourceMtime
-    ) {
-        $cached = json_decode((string) file_get_contents($cacheFile), true);
-        if (is_array($cached) && isset($cached['rows']) && is_array($cached['rows'])) {
-            return [
-                'headers' => is_array($cached['headers'] ?? null)
-                    ? $cached['headers']
-                    : ['a' => 'Coloana A', 'b' => 'Coloana B', 'c' => 'Coloana C'],
-                'rows' => $cached['rows'],
-            ];
+        if ($action === 'update') {
+            QwpDb::updateRow(
+                (int) ($_POST['id'] ?? 0),
+                (string) ($_POST['ArtNr'] ?? ''),
+                (string) ($_POST['ReferenceBrand'] ?? ''),
+                (string) ($_POST['RefNr'] ?? '')
+            );
+            $flash = 'Rând actualizat.';
+        } elseif ($action === 'delete') {
+            QwpDb::deleteRow((int) ($_POST['id'] ?? 0));
+            $flash = 'Rând șters.';
+        } elseif ($action === 'add') {
+            QwpDb::insertRow(
+                (string) ($_POST['ArtNr'] ?? ''),
+                (string) ($_POST['ReferenceBrand'] ?? ''),
+                (string) ($_POST['RefNr'] ?? '')
+            );
+            $flash = 'Rând adăugat.';
         }
+
+        $back = '?page=' . $page;
+        if ($q !== '') {
+            $back .= '&q=' . urlencode($q);
+        }
+        if ($flash !== '') {
+            $back .= '&ok=1';
+        }
+        qwp_redirect($back);
     }
 
-    $payload = AutonetQwpXlsxReader::load($xlsxPath);
-    if (($payload['rows'] ?? []) !== []) {
-        if (!is_dir(dirname($cacheFile))) {
-            mkdir(dirname($cacheFile), 0775, true);
-        }
-        file_put_contents(
-            $cacheFile,
-            json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
-        );
+    $totalRows = QwpDb::countRows($q);
+    $totalPages = max(1, (int) ceil($totalRows / PER_PAGE));
+    if ($page > $totalPages) {
+        $page = $totalPages;
     }
 
-    return $payload;
+    $rows = QwpDb::listRows($page, PER_PAGE, $q);
+    $dbName = qwp_db_name();
+
+    if (isset($_GET['ok'])) {
+        $flash = 'Salvat.';
+    }
+} catch (Throwable $e) {
+    $error = $e->getMessage();
+    $rows = [];
+    $totalRows = 0;
+    $totalPages = 1;
+    $dbName = qwp_db_name();
 }
 
-function filterRows(array $rows, string $q): array
-{
-    if ($q === '') {
-        return $rows;
-    }
-
-    $needle = mb_strtolower($q, 'UTF-8');
-    return array_values(array_filter(
-        $rows,
-        static fn(array $row): bool => str_contains(mb_strtolower($row['a'], 'UTF-8'), $needle)
-            || str_contains(mb_strtolower($row['b'], 'UTF-8'), $needle)
-            || str_contains(mb_strtolower($row['c'], 'UTF-8'), $needle)
-    ));
-}
-
-function buildQuery(array $params): string
+function qwp_query(array $params): string
 {
     return http_build_query(array_filter($params, static fn($v) => $v !== '' && $v !== null));
 }
 
-function h(string $value): string
-{
-    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-}
-
-if (!is_file($xlsxPath)) {
-    $error = 'Fișierul XLSX nu există sau nu poate fi citit: ' . $xlsxPath;
-} else {
-    $payload = loadData($xlsxPath, $cacheFile, $sourceMtime, $refresh);
-    $headers = is_array($payload['headers'] ?? null) ? $payload['headers'] : $headers;
-    $allRows = is_array($payload['rows'] ?? null) ? $payload['rows'] : [];
-    if ($allRows === []) {
-        $error = 'Nu s-au putut extrage rânduri din fișier. Verifică extensia zip PHP sau fallback PowerShell.';
-    }
-}
-
-$filteredRows = $error === '' ? filterRows($allRows, $q) : [];
-$totalRows = count($filteredRows);
-$totalPages = max(1, (int) ceil($totalRows / PER_PAGE));
-if ($page > $totalPages) {
-    $page = $totalPages;
-}
 $offset = ($page - 1) * PER_PAGE;
-$pageRows = array_slice($filteredRows, $offset, PER_PAGE);
-
-$baseParams = ['file' => $xlsxPath];
-if ($q !== '') {
-    $baseParams['q'] = $q;
-}
+$window = 5;
+$start = max(1, $page - $window);
+$end = min($totalPages, $page + $window);
+$baseParams = ['q' => $q];
 
 ?>
 <!DOCTYPE html>
@@ -115,227 +89,139 @@ if ($q !== '') {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Autonet QWP — mapare A/B/C</title>
+    <title>Autonet QWP — editor BD</title>
     <style>
-        :root {
-            --bg: #f6f8fb;
-            --card: #fff;
-            --line: #d8dee9;
-            --text: #1f2937;
-            --muted: #6b7280;
-            --accent: #2563eb;
-            --accent-soft: #dbeafe;
-        }
-        * { box-sizing: border-box; }
-        body {
-            margin: 0;
-            font-family: "Segoe UI", Tahoma, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-        }
-        .wrap { max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px; }
-        h1 { margin: 0 0 8px; font-size: 1.5rem; }
-        .sub { color: var(--muted); margin-bottom: 20px; font-size: 14px; }
-        .panel {
-            background: var(--card);
-            border: 1px solid var(--line);
-            border-radius: 10px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-        .panel form { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
-        label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted); }
-        input[type="text"] {
-            min-width: 280px;
-            padding: 8px 10px;
-            border: 1px solid var(--line);
-            border-radius: 6px;
-            font-size: 14px;
-        }
-        button, .btn {
-            display: inline-block;
-            padding: 8px 14px;
-            border-radius: 6px;
-            border: 1px solid var(--line);
-            background: #fff;
-            color: var(--text);
-            text-decoration: none;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        button.primary, .btn.primary {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: #fff;
-        }
-        .stats { display: flex; flex-wrap: wrap; gap: 16px; font-size: 14px; }
-        .stats strong { color: var(--text); }
-        .error {
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            color: #991b1b;
-            padding: 12px 14px;
-            border-radius: 8px;
-            margin-bottom: 16px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--card);
-            border: 1px solid var(--line);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        th, td {
-            border-bottom: 1px solid var(--line);
-            padding: 10px 12px;
-            text-align: left;
-            vertical-align: top;
-            font-size: 14px;
-        }
-        th { background: #eef2ff; font-weight: 600; }
-        tr:last-child td { border-bottom: none; }
-        td.num { color: var(--muted); width: 70px; white-space: nowrap; }
-        td.cell { word-break: break-word; max-width: 360px; }
-        .pager {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            align-items: center;
-            margin: 16px 0;
-        }
-        .pager a, .pager span {
-            min-width: 36px;
-            text-align: center;
-            padding: 6px 10px;
-            border-radius: 6px;
-            border: 1px solid var(--line);
-            text-decoration: none;
-            color: var(--text);
-            font-size: 13px;
-            background: #fff;
-        }
-        .pager a:hover { background: var(--accent-soft); border-color: #93c5fd; }
-        .pager .active {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: #fff;
-            font-weight: 600;
-        }
-        .pager .disabled {
-            opacity: .45;
-            pointer-events: none;
-        }
-        .pager-info { margin-left: auto; color: var(--muted); font-size: 13px; }
-        @media (max-width: 760px) {
-            input[type="text"] { min-width: 100%; width: 100%; }
-            .pager-info { width: 100%; margin-left: 0; margin-top: 8px; }
-        }
+        body { font-family: Segoe UI, sans-serif; margin: 24px; background: #f6f8fb; color: #1f2937; }
+        .wrap { max-width: 1200px; margin: 0 auto; }
+        h1 { margin: 0 0 6px; font-size: 1.45rem; }
+        .sub { color: #6b7280; margin-bottom: 18px; font-size: 14px; }
+        .panel { background: #fff; border: 1px solid #d8dee9; border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
+        .ok { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 10px 12px; border-radius: 8px; margin-bottom: 12px; }
+        .err { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: 10px 12px; border-radius: 8px; margin-bottom: 12px; }
+        table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #d8dee9; border-radius: 10px; overflow: hidden; }
+        th, td { border-bottom: 1px solid #e5e7eb; padding: 8px; vertical-align: top; font-size: 13px; }
+        th { background: #eef2ff; text-align: left; }
+        input[type=text] { width: 100%; min-width: 90px; padding: 6px 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; }
+        button, .btn { padding: 6px 10px; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; cursor: pointer; font-size: 13px; text-decoration: none; color: #111; display: inline-block; }
+        .btn-primary { background: #2563eb; color: #fff; border-color: #2563eb; }
+        .btn-danger { background: #fee2e2; border-color: #fecaca; color: #991b1b; }
+        .pager { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 14px 0; }
+        .pager a, .pager span { min-width: 34px; text-align: center; padding: 6px 10px; border-radius: 6px; border: 1px solid #d8dee9; text-decoration: none; color: #111; background: #fff; font-size: 13px; }
+        .pager .active { background: #2563eb; color: #fff; border-color: #2563eb; }
+        .pager .disabled { opacity: .45; pointer-events: none; }
+        .meta { font-size: 13px; color: #6b7280; }
+        .row-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+        .topbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; }
+        .topbar label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #6b7280; }
+        code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; }
     </style>
 </head>
 <body>
 <div class="wrap">
-    <h1>Autonet QWP — mapare coloane A / B / C</h1>
-    <p class="sub">Citește integral fișierul XLSX și afișează datele paginat (<?= PER_PAGE ?> rânduri/pagină).</p>
+    <h1>Autonet QWP — editor bază de date</h1>
+    <p class="sub">
+        Tabel: <code>autonet_qwp_data</code> · BD: <code><?= qwp_h($dbName) ?></code> ·
+        <a href="import.php">Import din XLSX</a>
+    </p>
+
+    <?php if ($flash !== ''): ?><div class="ok"><?= qwp_h($flash) ?></div><?php endif; ?>
+    <?php if ($error !== ''): ?><div class="err"><?= qwp_h($error) ?></div><?php endif; ?>
+
+    <div class="panel topbar">
+        <form method="get">
+            <label>Căutare (ArtNr / Brand / RefNr)
+                <input type="text" name="q" value="<?= qwp_h($q) ?>" placeholder="ex: QWP, BOSCH, 12345">
+            </label>
+            <button type="submit" class="btn-primary">Caută</button>
+            <?php if ($q !== ''): ?>
+                <a class="btn" href="?">Reset</a>
+            <?php endif; ?>
+        </form>
+        <div class="meta">
+            Total: <strong><?= number_format($totalRows, 0, ',', '.') ?></strong> ·
+            Pagina <?= $page ?> / <?= $totalPages ?>
+        </div>
+    </div>
 
     <div class="panel">
-        <form method="get">
-            <label>
-                Cale fișier XLSX
-                <input type="text" name="file" value="<?= h($xlsxPath) ?>" size="70">
-            </label>
-            <label>
-                Căutare (A, B sau C)
-                <input type="text" name="q" value="<?= h($q) ?>" placeholder="filtru text...">
-            </label>
-            <button type="submit" class="primary">Încarcă</button>
-            <a class="btn" href="?<?= h(buildQuery($baseParams + ['refresh' => 1, 'page' => 1])) ?>">Reîmprospătează cache</a>
+        <h3 style="margin-top:0;">Adaugă rând nou</h3>
+        <form method="post" style="display:flex; flex-wrap:wrap; gap:8px; align-items:end;">
+            <input type="hidden" name="action" value="add">
+            <label>ArtNr<br><input type="text" name="ArtNr" required></label>
+            <label>ReferenceBrand<br><input type="text" name="ReferenceBrand"></label>
+            <label>RefNr<br><input type="text" name="RefNr" required></label>
+            <button type="submit" class="btn-primary">Adaugă</button>
         </form>
     </div>
 
-    <?php if ($error !== ''): ?>
-        <div class="error"><?= h($error) ?></div>
-    <?php else: ?>
-        <div class="panel stats">
-            <div>Total rânduri date: <strong><?= number_format(count($allRows), 0, ',', '.') ?></strong></div>
-            <div>După filtru: <strong><?= number_format($totalRows, 0, ',', '.') ?></strong></div>
-            <div>Pagina: <strong><?= $page ?></strong> / <?= $totalPages ?></div>
-            <div>Ultima modificare fișier: <strong><?= $sourceMtime ? date('d.m.Y H:i', $sourceMtime) : '—' ?></strong></div>
-        </div>
-
-        <?php
-        $window = 5;
-        $start = max(1, $page - $window);
-        $end = min($totalPages, $page + $window);
-        ?>
-        <nav class="pager" aria-label="Paginare">
-            <?php
-            $prevParams = $baseParams + ['page' => max(1, $page - 1)];
-            $nextParams = $baseParams + ['page' => min($totalPages, $page + 1)];
-            ?>
-            <a class="<?= $page <= 1 ? 'disabled' : '' ?>" href="?<?= h(buildQuery($prevParams)) ?>">&laquo; Prev</a>
-
-            <?php if ($start > 1): ?>
-                <a href="?<?= h(buildQuery($baseParams + ['page' => 1])) ?>">1</a>
-                <?php if ($start > 2): ?><span>…</span><?php endif; ?>
-            <?php endif; ?>
-
-            <?php for ($p = $start; $p <= $end; $p++): ?>
-                <?php if ($p === $page): ?>
-                    <span class="active"><?= $p ?></span>
-                <?php else: ?>
-                    <a href="?<?= h(buildQuery($baseParams + ['page' => $p])) ?>"><?= $p ?></a>
-                <?php endif; ?>
-            <?php endfor; ?>
-
-            <?php if ($end < $totalPages): ?>
-                <?php if ($end < $totalPages - 1): ?><span>…</span><?php endif; ?>
-                <a href="?<?= h(buildQuery($baseParams + ['page' => $totalPages])) ?>"><?= $totalPages ?></a>
-            <?php endif; ?>
-
-            <a class="<?= $page >= $totalPages ? 'disabled' : '' ?>" href="?<?= h(buildQuery($nextParams)) ?>">Next &raquo;</a>
-            <div class="pager-info">
-                Afișez rândurile <?= $totalRows ? ($offset + 1) : 0 ?>–<?= min($offset + PER_PAGE, $totalRows) ?> din <?= number_format($totalRows, 0, ',', '.') ?>
-            </div>
-        </nav>
-
-        <table>
-            <thead>
-            <tr>
-                <th># Excel</th>
-                <th><?= h((string) ($headers['a'] ?? 'Coloana A')) ?></th>
-                <th><?= h((string) ($headers['b'] ?? 'Coloana B')) ?></th>
-                <th><?= h((string) ($headers['c'] ?? 'Coloana C')) ?></th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php if ($pageRows === []): ?>
-                <tr><td colspan="4">Niciun rând pentru filtrul curent.</td></tr>
+    <nav class="pager">
+        <?php $prev = max(1, $page - 1); $next = min($totalPages, $page + 1); ?>
+        <a class="<?= $page <= 1 ? 'disabled' : '' ?>" href="?<?= qwp_h(qwp_query($baseParams + ['page' => $prev])) ?>">&laquo;</a>
+        <?php for ($p = $start; $p <= $end; $p++): ?>
+            <?php if ($p === $page): ?>
+                <span class="active"><?= $p ?></span>
             <?php else: ?>
-                <?php foreach ($pageRows as $row): ?>
-                    <tr>
-                        <td class="num"><?= (int) $row['row'] ?></td>
-                        <td class="cell"><?= h($row['a']) ?></td>
-                        <td class="cell"><?= h($row['b']) ?></td>
-                        <td class="cell"><?= h($row['c']) ?></td>
-                    </tr>
-                <?php endforeach; ?>
+                <a href="?<?= qwp_h(qwp_query($baseParams + ['page' => $p])) ?>"><?= $p ?></a>
             <?php endif; ?>
-            </tbody>
-        </table>
+        <?php endfor; ?>
+        <a class="<?= $page >= $totalPages ? 'disabled' : '' ?>" href="?<?= qwp_h(qwp_query($baseParams + ['page' => $next])) ?>">&raquo;</a>
+        <span class="meta" style="margin-left:auto;">
+            Rânduri <?= $totalRows ? ($offset + 1) : 0 ?>–<?= min($offset + PER_PAGE, $totalRows) ?>
+        </span>
+    </nav>
 
-        <nav class="pager" aria-label="Paginare jos">
-            <a class="<?= $page <= 1 ? 'disabled' : '' ?>" href="?<?= h(buildQuery($prevParams)) ?>">&laquo; Prev</a>
-            <?php for ($p = $start; $p <= $end; $p++): ?>
-                <?php if ($p === $page): ?>
-                    <span class="active"><?= $p ?></span>
-                <?php else: ?>
-                    <a href="?<?= h(buildQuery($baseParams + ['page' => $p])) ?>"><?= $p ?></a>
-                <?php endif; ?>
-            <?php endfor; ?>
-            <a class="<?= $page >= $totalPages ? 'disabled' : '' ?>" href="?<?= h(buildQuery($nextParams)) ?>">Next &raquo;</a>
-        </nav>
-    <?php endif; ?>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>ArtNr</th>
+            <th>ReferenceBrand</th>
+            <th>RefNr</th>
+            <th>Actualizat</th>
+            <th>Acțiuni</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if ($rows === []): ?>
+            <tr><td colspan="6">Niciun rând.</td></tr>
+        <?php else: ?>
+            <?php foreach ($rows as $row): ?>
+                <?php $formId = 'edit-' . (int) $row['id']; ?>
+                <tr>
+                    <td><?= (int) $row['id'] ?></td>
+                    <td><input form="<?= qwp_h($formId) ?>" type="text" name="ArtNr" value="<?= qwp_h((string) $row['ArtNr']) ?>"></td>
+                    <td><input form="<?= qwp_h($formId) ?>" type="text" name="ReferenceBrand" value="<?= qwp_h((string) $row['ReferenceBrand']) ?>"></td>
+                    <td><input form="<?= qwp_h($formId) ?>" type="text" name="RefNr" value="<?= qwp_h((string) $row['RefNr']) ?>"></td>
+                    <td><?= qwp_h((string) ($row['updated_at'] ?? '')) ?></td>
+                    <td class="row-actions">
+                        <form id="<?= qwp_h($formId) ?>" method="post">
+                            <input type="hidden" name="action" value="update">
+                            <input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
+                            <button type="submit" class="btn-primary">Salvează</button>
+                        </form>
+                        <form method="post" onsubmit="return confirm('Ștergi rândul <?= (int) $row['id'] ?>?');">
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
+                            <button type="submit" class="btn-danger">Șterge</button>
+                        </form>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
+        </tbody>
+    </table>
+
+    <nav class="pager">
+        <a class="<?= $page <= 1 ? 'disabled' : '' ?>" href="?<?= qwp_h(qwp_query($baseParams + ['page' => $prev])) ?>">&laquo;</a>
+        <?php for ($p = $start; $p <= $end; $p++): ?>
+            <?php if ($p === $page): ?>
+                <span class="active"><?= $p ?></span>
+            <?php else: ?>
+                <a href="?<?= qwp_h(qwp_query($baseParams + ['page' => $p])) ?>"><?= $p ?></a>
+            <?php endif; ?>
+        <?php endfor; ?>
+        <a class="<?= $page >= $totalPages ? 'disabled' : '' ?>" href="?<?= qwp_h(qwp_query($baseParams + ['page' => $next])) ?>">&raquo;</a>
+    </nav>
 </div>
 </body>
 </html>
