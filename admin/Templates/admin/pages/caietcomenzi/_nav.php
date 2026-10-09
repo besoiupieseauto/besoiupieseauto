@@ -113,4 +113,28 @@ $caietLinks = [
 .pa-line{display:flex;gap:8px;align-items:center;margin:8px 0}
 .pa-edit{display:grid;grid-template-columns:1.4fr .7fr .8fr .6fr .8fr;gap:6px;margin:0 0 10px 22px}
 .pa-edit input,.pa-edit select{width:100%;border:1px solid #ccc;padding:4px 6px;background:#fff}
+.inv-hidden{display:none !important}
+.inv-card{background:#eee;border:1px solid #ddd}
+.inv-head{background:#8fbf6a;color:#173017;padding:12px 16px}
+.inv-head h4{margin:0;font-size:18px;font-weight:500}
+.inv-body{background:#fff;padding:18px 16px 10px}
+.inv-grid{display:grid;grid-template-columns:92px minmax(240px,1.6fr) 78px minmax(150px,.9fr) 118px minmax(160px,1fr);gap:14px 12px;align-items:center}
+.inv-grid > label{text-align:right;font-size:14px;color:#333;margin:0}
+.inv-grid input,.inv-grid select{height:34px;border:1px solid #ccc;border-radius:0;padding:4px 8px;width:100%;box-sizing:border-box;background:#fff;color:#111}
+.inv-client{display:flex;position:relative;min-width:0}
+.inv-client input{flex:1;min-width:0}
+.inv-client > button{width:36px;height:34px;border:1px solid #ccc;border-left:0;background:#fff;cursor:pointer}
+.inv-suggest{position:absolute;z-index:6;top:34px;left:0;right:36px;margin:0;padding:0;list-style:none;background:#fff;border:1px solid #ccc;max-height:220px;overflow:auto}
+.inv-suggest li{padding:6px 8px;cursor:pointer}
+.inv-suggest li:hover{background:#d9edf7}
+.inv-actions{display:flex;justify-content:flex-end;gap:8px;margin:18px 0 14px}
+.inv-actions button{height:34px;padding:0 12px;border:1px solid #ccc;background:#fff;cursor:pointer;border-radius:2px}
+.inv-actions .lg-btn-success{background:#5cb85c;border-color:#4cae4c;color:#fff}
+.inv-table{width:100%;border-collapse:collapse;background:#fff}
+.inv-table th,.inv-table td{border:1px solid #ddd;padding:8px;text-align:center}
+.inv-table thead th{background:#fcf8e3;font-weight:600}
+.inv-table .inv-right{text-align:right}
+.inv-form label{display:flex;flex-direction:column;gap:4px;margin:0 0 10px;font-size:13px}
+.inv-form input,.inv-form select,.inv-form textarea{border:1px solid #ccc;padding:6px 8px;width:100%;box-sizing:border-box;background:#fff}
+.inv-inline{display:flex;gap:8px;align-items:center}
 </style>

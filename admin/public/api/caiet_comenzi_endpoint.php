@@ -49,7 +49,11 @@ function caiet_comenzi_dispatch(CaietComenziModel $model, string $type, array $p
         'clienti_save' => $model->saveClient($payload),
         'clienti_delete' => ['deleted' => $model->deleteClient(caiet_comenzi_id($payload, 'idclienti'))],
         'facturi_list' => $model->findFacturi($payload),
+        'facturi_meta' => $model->invoiceFormMeta(),
+        'facturi_localitati' => $model->localitiesByCounty((string) ($payload['judet'] ?? '')),
+        'facturi_anaf' => caiet_facturi_anaf((string) ($payload['cui'] ?? '')),
         'facturi_save' => $model->saveFactura($payload),
+        'facturi_create' => $model->createInvoice($payload),
         'facturi_delete' => ['deleted' => $model->deleteFactura(caiet_comenzi_id($payload, 'OrderID'))],
         'facturi_details' => caiet_comenzi_factura($model, caiet_comenzi_id($payload, 'OrderID')),
         'incasari_list' => $model->findIncasari($payload),
@@ -451,6 +455,34 @@ function caiet_update_line(array $payload): array
     }
 
     return ['iddetaliu' => $id, 'field' => $field];
+}
+
+/**
+ * @return array<string, string>
+ */
+function caiet_facturi_anaf(string $cui): array
+{
+    $digits = preg_replace('/\D/', '', $cui) ?? '';
+    if ($digits === '') {
+        throw new InvalidArgumentException('Introduceți CUI/CNP pentru căutare.');
+    }
+    $anaf = caiet_pieseauto_anaf($digits);
+    $found = is_array($anaf['found'][0] ?? null) ? $anaf['found'][0] : [];
+    $general = is_array($found['date_generale'] ?? null) ? $found['date_generale'] : [];
+    if ($general === []) {
+        throw new InvalidArgumentException('Nu s-au găsit date pentru acest CUI/CNP.');
+    }
+    $postal = is_array($found['adresa_sediu_social'] ?? null) ? $found['adresa_sediu_social'] : [];
+
+    return [
+        'companie' => (string) ($general['denumire'] ?? ''),
+        'adresa' => (string) ($general['adresa'] ?? ''),
+        'telefon' => (string) ($general['telefon'] ?? ''),
+        'regcom' => (string) ($general['nrRegCom'] ?? ''),
+        'cont_banca' => (string) ($general['iban'] ?? ''),
+        'judet' => (string) ($postal['sdenumire_Judet'] ?? ''),
+        'localitate' => (string) ($postal['sdenumire_Localitate'] ?? ''),
+    ];
 }
 
 /**

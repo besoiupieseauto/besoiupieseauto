@@ -38,12 +38,13 @@ $caietCsrf = AdminCsrf::token();
     <div class="caiet-panel">
         <div class="caiet-toolbar" id="caiet-toolbar"></div>
         <div id="caiet-extra"></div>
-        <div style="overflow:auto">
+        <div id="caiet-list" style="overflow:auto">
             <table class="caiet-table">
                 <thead id="caiet-head"></thead>
                 <tbody id="caiet-body"><tr><td>Se încarcă…</td></tr></tbody>
             </table>
         </div>
+        <div id="caiet-invoice" class="inv-hidden"></div>
     </div>
     <?php endif; ?>
 </div>
@@ -67,6 +68,8 @@ $caietCsrf = AdminCsrf::token();
   const modal = document.getElementById('caiet-modal');
   let rows = [];
   let draftLines = [];
+  let invoiceLines = [];
+  let invoiceClient = {id: 0, company: ''};
 
   function esc(v) {
     return String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
@@ -159,7 +162,10 @@ $caietCsrf = AdminCsrf::token();
     head.innerHTML = '<tr><th>ID</th><th>Serie</th><th>Client</th><th>Data</th><th>Tip</th><th>Valid</th><th></th></tr>';
     toolbar.innerHTML = '<input id="q" type="search" placeholder="Serie, client, ID"><select id="tip"><option value="">Toate</option><option value="interna">Internă</option><option value="externa">Externă</option></select><button type="button" id="go">Caută</button><button type="button" id="new">Factură nouă</button>';
     document.getElementById('go').onclick = () => renderFacturi();
-    document.getElementById('new').onclick = () => openForm('Factură nouă', facturaFields(), {OrderDate: today(), valid: 'Da', tip_comanda: '0'}, payload => api('facturi_save', payload));
+    document.getElementById('new').onclick = () => openInvoiceCreate();
+    document.getElementById('caiet-invoice').classList.add('inv-hidden');
+    document.getElementById('caiet-list').classList.remove('inv-hidden');
+    document.getElementById('caiet-toolbar').classList.remove('inv-hidden');
     return renderFacturi();
   }
   function facturaFields() {
@@ -190,6 +196,218 @@ $caietCsrf = AdminCsrf::token();
     const data = await api('facturi_details', {OrderID: id});
     const lines = (data.lines || []).map(line => '<tr><td>' + esc(line.ProductId) + '</td><td>' + esc(line.Quantity) + '</td><td>' + esc(line.UnitPrice) + '</td><td>' + esc(line.tva) + '</td><td>' + esc(line.total) + '</td></tr>').join('');
     sheet('Factura ' + data.OrderID, '<p><strong>' + esc(data.client_name) + '</strong> — total ' + esc(data.grand_total) + ' RON</p><table class="caiet-lines"><thead><tr><th>Produs</th><th>Cant.</th><th>Preț</th><th>TVA</th><th>Total</th></tr></thead><tbody>' + (lines || '<tr><td colspan="5">Fără linii.</td></tr>') + '</tbody></table><div class="caiet-actions"><button type="button" data-close>Închide</button></div>', true);
+  }
+  async function openInvoiceCreate() {
+    const meta = await api('facturi_meta', {});
+    invoiceLines = [];
+    invoiceClient = {id: 0, company: ''};
+    const agents = (meta.agents || []).map(agent => '<option value="' + esc(agent.EmployeeId) + '">' + esc(((agent.FirstName || '') + ' ' + (agent.LastName || '')).trim()) + '</option>').join('');
+    const payments = (meta.payments || []).map(pay => '<option value="' + esc(pay.id_plata) + '"' + (String(pay.id_plata) === '1' ? ' selected' : '') + '>' + esc(pay.denumire) + '</option>').join('');
+    const box = document.getElementById('caiet-invoice');
+    box.classList.remove('inv-hidden');
+    document.getElementById('caiet-list').classList.add('inv-hidden');
+    document.getElementById('caiet-toolbar').classList.add('inv-hidden');
+    document.getElementById('caiet-extra').classList.add('inv-hidden');
+    box.innerHTML = '<div class="inv-card"><div class="inv-head"><h4>✎ Factura noua</h4></div><div class="inv-body">'
+      + '<div class="inv-grid">'
+      + '<label for="inv-client">Client</label><div class="inv-client"><input id="inv-client" placeholder="Selecteaza un client" autocomplete="off"><button type="button" id="inv-client-add" title="Client nou">+</button><ul id="inv-suggest" class="inv-suggest inv-hidden"></ul></div>'
+      + '<label for="inv-phone">Telefon</label><input id="inv-phone" placeholder="Telefon" readonly>'
+      + '<label for="inv-cui">CUI</label><input id="inv-cui" placeholder="CUI" readonly>'
+      + '<label for="inv-agent">Agent</label><select id="inv-agent">' + agents + '</select>'
+      + '<label for="inv-date">Data</label><input id="inv-date" value="' + esc(meta.date || '') + '" readonly>'
+      + '<label for="inv-due">Data scadenta</label><input id="inv-due" value="' + esc(meta.due || '') + '" readonly>'
+      + '<label for="inv-pay">Tip incasare</label><select id="inv-pay">' + payments + '</select>'
+      + '</div>'
+      + '<div class="inv-actions"><button type="button" id="inv-add">⌕ Adauga produs</button><button type="button" id="inv-save" class="lg-btn-success">Salvare</button></div>'
+      + '<table class="inv-table"><thead><tr><th>Nr. Crt.</th><th>PRODUS</th><th>UM</th><th>CANT.</th><th>PRET UNIT.</th><th>VALOARE.</th><th>TVA</th><th>Cota TVA</th><th></th></tr></thead><tbody id="inv-lines"></tbody></table>'
+      + '</div></div>';
+    window.__invCounties = meta.counties || [];
+    renderInvoiceLines();
+    const clientInput = document.getElementById('inv-client');
+    let timer = 0;
+    clientInput.oninput = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => searchInvoiceClients(clientInput.value), 250);
+    };
+    document.getElementById('inv-client-add').onclick = () => openInvoiceClient();
+    document.getElementById('inv-add').onclick = () => openInvoiceProducts();
+    document.getElementById('inv-save').onclick = () => askInvoiceType();
+  }
+  async function searchInvoiceClients(query) {
+    const list = document.getElementById('inv-suggest');
+    if (!list) return;
+    if (query.trim().length < 1) {
+      list.classList.add('inv-hidden');
+      return;
+    }
+    const found = await api('clienti_list', {search: query, limit: 12});
+    list.innerHTML = found.map(client => '<li data-id="' + esc(client.idclienti) + '">' + esc(client.nume) + (client.telefon ? ' — ' + esc(client.telefon) : '') + '</li>').join('') || '<li>Niciun client</li>';
+    list.classList.remove('inv-hidden');
+    list.querySelectorAll('li[data-id]').forEach(item => item.onclick = () => {
+      const client = found.find(row => String(row.idclienti) === item.dataset.id);
+      if (!client) return;
+      invoiceClient = {id: client.idclienti, company: client.companie || ''};
+      document.getElementById('inv-client').value = client.nume || '';
+      document.getElementById('inv-phone').value = client.telefon || '';
+      document.getElementById('inv-cui').value = client.cif || '';
+      applyPaymentRule();
+      list.classList.add('inv-hidden');
+    });
+  }
+  function applyPaymentRule() {
+    const pay = document.getElementById('inv-pay');
+    if (!pay) return;
+    const chitanta = pay.querySelector('option[value="1"]');
+    if (!chitanta) return;
+    const company = String(invoiceClient.company || '').trim() !== '';
+    chitanta.hidden = !company && invoiceClient.id;
+    if (!company && invoiceClient.id && pay.value === '1') pay.value = '2';
+    if (!invoiceClient.id) chitanta.hidden = false;
+  }
+  function renderInvoiceLines() {
+    const body = document.getElementById('inv-lines');
+    if (!body) return;
+    let subtotal = 0;
+    let vat = 0;
+    const rowsHtml = invoiceLines.map((line, index) => {
+      const value = Number(line.cantitate) * Number(line.pret);
+      const rowVat = value * (Number(line.tva || 21) / 100);
+      subtotal += value;
+      vat += rowVat;
+      return '<tr><td>' + (index + 1) + '</td><td>' + esc(line.denumire) + '</td><td>buc</td><td>' + esc(line.cantitate) + '</td><td>' + Number(line.pret).toFixed(2) + '</td><td>' + value.toFixed(2) + '</td><td>' + rowVat.toFixed(2) + '</td><td>' + esc(line.tva || 21) + '</td><td><button type="button" data-drop="' + index + '">Șterge</button></td></tr>';
+    }).join('');
+    body.innerHTML = (rowsHtml || '<tr><td colspan="9">No items found</td></tr>')
+      + '<tr><td colspan="5" class="inv-right"><strong>SUBTOTAL</strong></td><td>' + subtotal.toFixed(2) + '</td><td>' + vat.toFixed(2) + '</td><td colspan="2"></td></tr>'
+      + '<tr><td colspan="7" class="inv-right"><strong>TOTAL</strong></td><td colspan="2">' + (subtotal + vat).toFixed(2) + ' lei</td></tr>';
+    body.querySelectorAll('[data-drop]').forEach(btn => btn.onclick = () => {
+      invoiceLines.splice(Number(btn.dataset.drop), 1);
+      renderInvoiceLines();
+    });
+  }
+  function openInvoiceProducts() {
+    sheet('Cauta produs', '<div class="inv-inline"><input id="inv-q" placeholder="Cauta produs" style="flex:1;height:34px;border:1px solid #ccc;padding:4px 8px"><button type="button" id="inv-q-go">Cauta</button><button type="button" id="inv-prod-new">+ Produs nou</button></div><div id="inv-prod-results" style="margin-top:12px"></div>', true);
+    const run = () => searchInvoiceProducts(document.getElementById('inv-q').value);
+    document.getElementById('inv-q-go').onclick = run;
+    document.getElementById('inv-q').onkeydown = event => { if (event.key === 'Enter') { event.preventDefault(); run(); } };
+    document.getElementById('inv-prod-new').onclick = () => openInvoiceNewProduct();
+    run();
+  }
+  async function searchInvoiceProducts(query) {
+    const box = document.getElementById('inv-prod-results');
+    if (!box) return;
+    const term = query.trim();
+    if (term.length === 1) return;
+    const page = await api('produse_list', {search: term, limit: 20});
+    const items = page.items || [];
+    const rowsHtml = items.map(product => '<tr><td>' + esc(product.denumire) + '</td><td>' + esc(product.cod_produs) + '</td><td><input data-qty="' + esc(product.idprodus) + '" value="1" style="width:70px;text-align:right"></td><td><input data-price="' + esc(product.idprodus) + '" value="' + esc(product.pret) + '" style="width:90px;text-align:right"></td><td><button type="button" data-add="' + esc(product.idprodus) + '">+</button></td></tr>').join('');
+    box.innerHTML = '<table class="inv-table"><thead><tr><th>Produs</th><th>Cod Produs</th><th>Cant.</th><th>Pret</th><th>Adauga</th></tr></thead><tbody>' + rowsHtml
+      + '<tr><td>CHELTUIELI TRANSPORT</td><td>-</td><td><input data-qty="32066" value="1" style="width:70px;text-align:right"></td><td><input data-price="32066" value="30" style="width:90px;text-align:right"></td><td><button type="button" data-add="32066" data-name="CHELTUIELI TRANSPORT">+</button></td></tr></tbody></table>';
+    box.querySelectorAll('[data-add]').forEach(btn => btn.onclick = () => {
+      const id = btn.dataset.add;
+      const product = items.find(item => String(item.idprodus) === String(id));
+      const qty = box.querySelector('[data-qty="' + id + '"]');
+      const price = box.querySelector('[data-price="' + id + '"]');
+      invoiceLines.push({
+        idprodus: Number(id),
+        denumire: product ? product.denumire : (btn.dataset.name || 'Produs'),
+        cantitate: Number(qty && qty.value ? qty.value : 1),
+        pret: Number(price && price.value ? price.value : 0),
+        tva: product && product.TVA !== null && product.TVA !== '' ? Number(product.TVA) : 21
+      });
+      renderInvoiceLines();
+    });
+  }
+  function openInvoiceNewProduct() {
+    sheet('Produs nou', '<form class="inv-form" id="inv-prod-form"><label>Produs<textarea id="np-name" required></textarea></label><label>Cod produs<input id="np-code" required></label><label>Pret<input id="np-price" type="number" step="0.01" required></label><div class="caiet-actions"><button type="submit" class="lg-btn-success">Salveaza</button></div></form>', 'form');
+    document.getElementById('inv-prod-form').onsubmit = async event => {
+      event.preventDefault();
+      await api('produse_save', {denumire: document.getElementById('np-name').value, cod_produs: document.getElementById('np-code').value, pret: document.getElementById('np-price').value, TVA: 21, um: 'buc'});
+      openInvoiceProducts();
+    };
+  }
+  function openInvoiceClient() {
+    const counties = (window.__invCounties || []).map(county => '<option value="' + esc(county) + '">' + esc(county) + '</option>').join('');
+    sheet('Client nou', '<form class="inv-form" id="inv-client-form">'
+      + '<label>Societate<input id="nc-company" placeholder="Denumire"></label>'
+      + '<label>CUI / CNP<div class="inv-inline"><input id="nc-cif" placeholder="Cui/CNP"><button type="button" id="nc-anaf">Cauta ANAF</button></div></label>'
+      + '<label>J<input id="nc-reg" placeholder="Reg.Com"></label>'
+      + '<label>Cont bancar<input id="nc-iban" placeholder="Cont bancar"></label>'
+      + '<label>Banca<input id="nc-bank" placeholder="Banca"></label>'
+      + '<label>Nume / Contact<input id="nc-name" placeholder="Denumire client" required></label>'
+      + '<label>Telefon<input id="nc-phone" placeholder="Telefon"></label>'
+      + '<label>Judet<select id="nc-county"><option value="">-- Judet --</option>' + counties + '</select></label>'
+      + '<label>Localitate<select id="nc-city"><option value="">Localitate</option></select></label>'
+      + '<label>Adresa<textarea id="nc-address" placeholder="Str., nr., ..." required></textarea></label>'
+      + '<label>Marca masina<input id="nc-marca" placeholder="Marca masina"></label>'
+      + '<label>Serie sasiu<input id="nc-vin" placeholder="Serie Sasiu"></label>'
+      + '<label>Nr. inmatriculare<input id="nc-plate" placeholder="Nr. inmatriculare"></label>'
+      + '<div class="caiet-actions"><button type="submit" class="lg-btn-success">Salvare</button></div></form>', 'form');
+    document.getElementById('nc-county').onchange = async () => {
+      const county = document.getElementById('nc-county').value;
+      const city = document.getElementById('nc-city');
+      city.innerHTML = '<option value="">Localitate</option>';
+      if (!county) return;
+      const places = await api('facturi_localitati', {judet: county});
+      city.innerHTML += places.map(place => '<option value="' + esc(place.idlocatie) + '">' + esc(place.localitate) + '</option>').join('');
+    };
+    document.getElementById('nc-anaf').onclick = async () => {
+      const data = await api('facturi_anaf', {cui: document.getElementById('nc-cif').value});
+      if (data.companie) document.getElementById('nc-company').value = data.companie;
+      if (data.adresa) document.getElementById('nc-address').value = data.adresa;
+      if (data.telefon) document.getElementById('nc-phone').value = data.telefon;
+      if (data.regcom) document.getElementById('nc-reg').value = data.regcom;
+      if (data.cont_banca) document.getElementById('nc-iban').value = data.cont_banca;
+    };
+    document.getElementById('inv-client-form').onsubmit = async event => {
+      event.preventDefault();
+      const saved = await api('clienti_save', {
+        nume: document.getElementById('nc-name').value,
+        telefon: document.getElementById('nc-phone').value,
+        adresa: document.getElementById('nc-address').value,
+        companie: document.getElementById('nc-company').value,
+        cif: document.getElementById('nc-cif').value,
+        regcom: document.getElementById('nc-reg').value,
+        cont_banca: document.getElementById('nc-iban').value,
+        nume_banca: document.getElementById('nc-bank').value,
+        idlocalitate: document.getElementById('nc-city').value,
+        marca: document.getElementById('nc-marca').value,
+        sasiu: document.getElementById('nc-vin').value,
+        nr_inmat: document.getElementById('nc-plate').value
+      });
+      invoiceClient = {id: saved.idclienti, company: saved.companie || ''};
+      document.getElementById('inv-client').value = saved.nume || '';
+      document.getElementById('inv-phone').value = saved.telefon || '';
+      document.getElementById('inv-cui').value = saved.cif || '';
+      applyPaymentRule();
+      closeModal();
+    };
+  }
+  function askInvoiceType() {
+    if (!invoiceClient.id) {
+      alert('Selecteaza un client.');
+      return;
+    }
+    sheet('Selectează tip factură', '<p>Alege cum vrei să creezi factura:</p><div class="caiet-actions" style="flex-direction:column"><button type="button" id="inv-internal" class="lg-btn lg-btn-info">Factura Internă</button><button type="button" id="inv-smart" class="lg-btn lg-btn-info">Factura SmartBill</button></div>');
+    document.getElementById('inv-internal').onclick = () => saveInvoice('internal');
+    document.getElementById('inv-smart').onclick = () => saveInvoice('smartbill');
+  }
+  async function saveInvoice(kind) {
+    try {
+      const saved = await api('facturi_create', {
+        id_client: invoiceClient.id,
+        agent: document.getElementById('inv-agent').value,
+        data_factura: document.getElementById('inv-date').value,
+        data_scadenta: document.getElementById('inv-due').value,
+        tip_incasare: document.getElementById('inv-pay').value,
+        tip_factura: kind,
+        lines: invoiceLines
+      });
+      closeModal();
+      alert('Factura ' + saved.seria + ' ' + saved.OrderID + ' a fost creată.');
+      await loadFacturi();
+    } catch (error) {
+      alert(error.message || 'Factura nu a putut fi salvată.');
+    }
   }
 
   function loadIncasari() {

@@ -672,16 +672,17 @@ final class CaietComenziModel
             'marca' => trim((string) ($payload['marca'] ?? '')),
             'sasiu' => trim((string) ($payload['sasiu'] ?? '')),
             'nr_inmat' => trim((string) ($payload['nr_inmat'] ?? '')),
+            'regcom' => trim((string) ($payload['regcom'] ?? '')),
+            'cont_banca' => trim((string) ($payload['cont_banca'] ?? '')),
+            'nume_banca' => trim((string) ($payload['nume_banca'] ?? '')),
+            'idlocalitate' => isset($payload['idlocalitate']) && is_numeric($payload['idlocalitate']) ? (int) $payload['idlocalitate'] : 0,
         ];
 
         if ($id > 0) {
-            $stmt = $this->legacyDb->prepare(
-                'UPDATE clienti
+            $sql = 'UPDATE clienti
                  SET nume = :nume, telefon = :telefon, adresa = :adresa, companie = :companie, cif = :cif,
-                     marca = :marca, sasiu = :sasiu, nr_inmat = :nr_inmat
-                 WHERE idclienti = :id'
-            );
-            $stmt->execute([
+                     marca = :marca, sasiu = :sasiu, nr_inmat = :nr_inmat';
+            $params = [
                 ':id' => $id,
                 ':nume' => $data['nume'],
                 ':telefon' => $data['telefon'] !== '' ? $data['telefon'] : null,
@@ -691,7 +692,16 @@ final class CaietComenziModel
                 ':marca' => $data['marca'] !== '' ? $data['marca'] : null,
                 ':sasiu' => $data['sasiu'] !== '' ? $data['sasiu'] : null,
                 ':nr_inmat' => $data['nr_inmat'] !== '' ? $data['nr_inmat'] : null,
-            ]);
+            ];
+            if (array_key_exists('regcom', $payload) || array_key_exists('idlocalitate', $payload)) {
+                $sql .= ', regcom = :regcom, cont_banca = :cont_banca, nume_banca = :nume_banca, idlocalitate = :idlocalitate';
+                $params[':regcom'] = $data['regcom'] !== '' ? $data['regcom'] : null;
+                $params[':cont_banca'] = $data['cont_banca'] !== '' ? $data['cont_banca'] : null;
+                $params[':nume_banca'] = $data['nume_banca'] !== '' ? $data['nume_banca'] : null;
+                $params[':idlocalitate'] = $data['idlocalitate'] > 0 ? $data['idlocalitate'] : null;
+            }
+            $stmt = $this->legacyDb->prepare($sql . ' WHERE idclienti = :id');
+            $stmt->execute($params);
 
             return ['idclienti' => $id] + $data;
         }
@@ -699,9 +709,11 @@ final class CaietComenziModel
         $newId = $this->nextId('clienti', 'idclienti');
         $stmt = $this->legacyDb->prepare(
             'INSERT INTO clienti (
-                idclienti, nume, telefon, adresa, companie, cif, marca, sasiu, nr_inmat, created_at
+                idclienti, nume, telefon, adresa, companie, cif, marca, sasiu, nr_inmat,
+                regcom, cont_banca, nume_banca, idlocalitate, created_at
             ) VALUES (
-                :id, :nume, :telefon, :adresa, :companie, :cif, :marca, :sasiu, :nr_inmat, :created_at
+                :id, :nume, :telefon, :adresa, :companie, :cif, :marca, :sasiu, :nr_inmat,
+                :regcom, :cont_banca, :nume_banca, :idlocalitate, :created_at
             )'
         );
         $stmt->execute([
@@ -714,6 +726,10 @@ final class CaietComenziModel
             ':marca' => $data['marca'] !== '' ? $data['marca'] : null,
             ':sasiu' => $data['sasiu'] !== '' ? $data['sasiu'] : null,
             ':nr_inmat' => $data['nr_inmat'] !== '' ? $data['nr_inmat'] : null,
+            ':regcom' => $data['regcom'] !== '' ? $data['regcom'] : null,
+            ':cont_banca' => $data['cont_banca'] !== '' ? $data['cont_banca'] : null,
+            ':nume_banca' => $data['nume_banca'] !== '' ? $data['nume_banca'] : null,
+            ':idlocalitate' => $data['idlocalitate'] > 0 ? $data['idlocalitate'] : null,
             ':created_at' => time(),
         ]);
 
@@ -840,6 +856,182 @@ final class CaietComenziModel
             'tip_comanda' => $tipComanda,
             'valid' => $valid,
         ];
+    }
+
+    /**
+     * @return array{agents:array<int, array<string, mixed>>, payments:array<int, array<string, mixed>>, counties:array<int, string>}
+     */
+    public function invoiceFormMeta(): array
+    {
+        $agents = $this->tableExists('employees')
+            ? $this->legacyDb->query('SELECT EmployeeId, FirstName, LastName FROM employees ORDER BY LastName, FirstName')->fetchAll(PDO::FETCH_ASSOC)
+            : [];
+        $payments = $this->tableExists('tip_plata')
+            ? $this->legacyDb->query('SELECT id_plata, denumire FROM tip_plata ORDER BY denumire')->fetchAll(PDO::FETCH_ASSOC)
+            : [];
+        $counties = $this->tableExists('localitati')
+            ? $this->legacyDb->query('SELECT DISTINCT judet FROM localitati WHERE judet IS NOT NULL AND judet <> \'\' ORDER BY judet')->fetchAll(PDO::FETCH_COLUMN)
+            : [];
+
+        return [
+            'agents' => $agents,
+            'payments' => $payments,
+            'counties' => array_values(array_map('strval', $counties)),
+            'date' => date('d/m/Y'),
+            'due' => date('d/m/Y', strtotime('+14 days')),
+        ];
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    public function localitiesByCounty(string $county): array
+    {
+        $county = trim($county);
+        if ($county === '' || !$this->tableExists('localitati')) {
+            return [];
+        }
+        $stmt = $this->legacyDb->prepare('SELECT idlocatie, localitate FROM localitati WHERE judet = :judet ORDER BY localitate');
+        $stmt->execute([':judet' => $county]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     * @return array<string, mixed>
+     */
+    public function createInvoice(array $payload): array
+    {
+        $customerId = isset($payload['id_client']) && is_numeric($payload['id_client']) ? (int) $payload['id_client'] : 0;
+        $agentId = isset($payload['agent']) && is_numeric($payload['agent']) ? (int) $payload['agent'] : 0;
+        $tip = isset($payload['tip_incasare']) && is_numeric($payload['tip_incasare']) ? (int) $payload['tip_incasare'] : 0;
+        $kind = trim((string) ($payload['tip_factura'] ?? 'internal'));
+        if (!in_array($kind, ['internal', 'smartbill'], true)) {
+            $kind = 'internal';
+        }
+        if ($customerId <= 0) {
+            throw new \InvalidArgumentException('Selectează un client.');
+        }
+        if ($agentId <= 0) {
+            throw new \InvalidArgumentException('Selectează agentul.');
+        }
+        if ($tip <= 0) {
+            throw new \InvalidArgumentException('Selectează tipul de încasare.');
+        }
+
+        $orderDate = $this->parseRoDate((string) ($payload['data_factura'] ?? ''));
+        $requiredDate = $this->parseRoDate((string) ($payload['data_scadenta'] ?? ''));
+        $lines = is_array($payload['lines'] ?? null) ? $payload['lines'] : [];
+        $seria = 'BPA_C';
+        if ($tip === 7) {
+            $seria = 'BPA_O';
+        } elseif ($tip === 8) {
+            $seria = 'BPA_P';
+        }
+        if ($kind === 'smartbill') {
+            $seria = 'BPA_CAI';
+        }
+
+        $this->legacyDb->beginTransaction();
+        try {
+            $newId = (int) $this->legacyDb->query('SELECT COALESCE(MAX(OrderID), 0) + 1 FROM facturi')->fetchColumn();
+            $chitanta = $tip === 1
+                ? (int) $this->legacyDb->query('SELECT COALESCE(MAX(id_chitanta), 0) + 1 FROM facturi')->fetchColumn()
+                : null;
+            $insert = $this->legacyDb->prepare(
+                'INSERT INTO facturi (
+                    OrderID, CustomerID, EmployeeID, OrderDate, RequiredDate, seria, valid,
+                    tip_incas, id_chitanta, generation_method, smartbill_in_cash, created_at
+                 ) VALUES (
+                    :id, :customer, :agent, :order_date, :required_date, :seria, :valid,
+                    :tip, :chitanta, :method, :cash, :created_at
+                 )'
+            );
+            $insert->execute([
+                ':id' => $newId,
+                ':customer' => $customerId,
+                ':agent' => $agentId,
+                ':order_date' => $orderDate,
+                ':required_date' => $requiredDate,
+                ':seria' => $seria,
+                ':valid' => 'Da',
+                ':tip' => $tip,
+                ':chitanta' => $chitanta,
+                ':method' => $kind,
+                ':cash' => 'no',
+                ':created_at' => time() + 7200,
+            ]);
+
+            $lineStmt = $this->legacyDb->prepare(
+                'INSERT INTO facturidetails (OrderID, ProductId, UnitPrice, Quantity, tva, total)
+                 VALUES (:order_id, :product_id, :price, :qty, :tva, :total)'
+            );
+            $subtotal = 0.0;
+            $vatTotal = 0.0;
+            foreach ($lines as $line) {
+                if (!is_array($line)) {
+                    continue;
+                }
+                $productId = (int) ($line['idprodus'] ?? 0);
+                $qty = (float) ($line['cantitate'] ?? 0);
+                $price = round((float) ($line['pret'] ?? 0), 2);
+                $rate = (float) ($line['tva'] ?? 21);
+                if ($productId <= 0 || $qty == 0.0) {
+                    continue;
+                }
+                $value = round($qty * $price, 2);
+                $vat = round($value * ($rate / 100), 2);
+                $total = round($value + $vat, 2);
+                $lineStmt->execute([
+                    ':order_id' => $newId,
+                    ':product_id' => $productId,
+                    ':price' => $price,
+                    ':qty' => $qty,
+                    ':tva' => $vat,
+                    ':total' => $total,
+                ]);
+                $subtotal += $value;
+                $vatTotal += $vat;
+            }
+
+            if ($kind !== 'smartbill') {
+                $smartId = (int) $this->legacyDb->query(
+                    "SELECT COALESCE(MAX(smartbill_invoice_id), 0) + 1 FROM facturi WHERE generation_method IN ('internal', 'manual')"
+                )->fetchColumn();
+                $update = $this->legacyDb->prepare('UPDATE facturi SET smartbill_invoice_id = :sid WHERE OrderID = :id');
+                $update->execute([':sid' => $smartId, ':id' => $newId]);
+            }
+
+            $this->legacyDb->commit();
+        } catch (\Throwable $exception) {
+            if ($this->legacyDb->inTransaction()) {
+                $this->legacyDb->rollBack();
+            }
+            throw $exception;
+        }
+
+        return [
+            'OrderID' => $newId,
+            'seria' => $seria,
+            'CustomerID' => $customerId,
+            'subtotal' => round($subtotal, 2),
+            'tva' => round($vatTotal, 2),
+            'total' => round($subtotal + $vatTotal, 2),
+        ];
+    }
+
+    private function parseRoDate(string $value): string
+    {
+        $value = trim($value);
+        if (preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', $value, $match) === 1) {
+            return $match[3] . '-' . $match[2] . '-' . $match[1];
+        }
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $value) === 1) {
+            return $value;
+        }
+
+        throw new \InvalidArgumentException('Data facturii este invalidă.');
     }
 
     public function deleteFactura(int $orderId): bool
