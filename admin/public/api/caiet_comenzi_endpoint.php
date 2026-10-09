@@ -66,6 +66,7 @@ function caiet_comenzi_dispatch(CaietComenziModel $model, string $type, array $p
         ],
         'utilizatori_list' => caiet_users(),
         'api_list' => caiet_api_keys(),
+        'api_save' => caiet_api_save($payload),
         'pieseauto_fetch' => caiet_pieseauto_fetch($payload),
         'comenzi_create' => caiet_create_order($payload, $userId),
         'comenzi_delete' => caiet_delete_order($payload),
@@ -129,10 +130,116 @@ function caiet_users(): array
 function caiet_api_keys(): array
 {
     $stmt = Database::getDB('legacy')->query(
-        'SELECT service_name, data_key FROM api_credentials ORDER BY service_name, data_key'
+        'SELECT service_name, data_key, data_value FROM api_credentials ORDER BY service_name, data_key'
     );
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($rows as &$row) {
+        $row['data_value'] = caiet_laravel_decrypt((string) ($row['data_value'] ?? ''));
+    }
+    unset($row);
 
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $rows;
+}
+
+/**
+ * @param array<string, mixed> $payload
+ * @return array<string, int>
+ */
+function caiet_api_save(array $payload): array
+{
+    $items = $payload['items'] ?? [];
+    if (!is_array($items)) {
+        throw new InvalidArgumentException('Lista de credențiale este invalidă.');
+    }
+    $pdo = Database::getDB('legacy');
+    $update = $pdo->prepare(
+        'UPDATE api_credentials SET data_value = :value WHERE service_name = :service AND data_key = :key'
+    );
+    $saved = 0;
+    foreach ($items as $item) {
+        if (!is_array($item)) {
+            continue;
+        }
+        $service = trim((string) ($item['service_name'] ?? ''));
+        $key = trim((string) ($item['data_key'] ?? ''));
+        if ($service === '' || $key === '' || !preg_match('/^[A-Za-z0-9_]+$/', $service) || !preg_match('/^[A-Za-z0-9_]+$/', $key)) {
+            continue;
+        }
+        $update->execute([
+            ':value' => caiet_laravel_encrypt((string) ($item['data_value'] ?? '')),
+            ':service' => $service,
+            ':key' => $key,
+        ]);
+        $saved += $update->rowCount() > 0 ? 1 : 0;
+    }
+
+    return ['saved' => $saved];
+}
+
+function caiet_laravel_key(): string
+{
+    $raw = trim((string) ($_ENV['LEGACY_APP_KEY'] ?? ''));
+    if ($raw === '') {
+        $envFile = dirname((string) (defined('BESOIU_ROOT') ? BESOIU_ROOT : dirname(__DIR__, 3))) . '/caietdecomenzi/.env';
+        if (is_file($envFile)) {
+            $lines = file($envFile, FILE_IGNORE_NEW_LINES) ?: [];
+            foreach ($lines as $line) {
+                if (str_starts_with($line, 'APP_KEY=')) {
+                    $raw = trim(substr($line, 8), " \t\"'");
+                    break;
+                }
+            }
+        }
+    }
+    if (str_starts_with($raw, 'base64:')) {
+        $raw = substr($raw, 7);
+    }
+    $key = base64_decode($raw, true);
+    if (!is_string($key) || strlen($key) !== 32) {
+        throw new InvalidArgumentException('Cheia de decriptare a caietului nu este disponibilă.');
+    }
+
+    return $key;
+}
+
+function caiet_laravel_decrypt(string $payload): string
+{
+    $json = json_decode(base64_decode($payload, true) ?: '', true);
+    if (!is_array($json) || !isset($json['iv'], $json['value'], $json['mac'])) {
+        return $payload;
+    }
+    $key = caiet_laravel_key();
+    $mac = hash_hmac('sha256', $json['iv'] . $json['value'], $key);
+    if (!hash_equals($mac, (string) $json['mac'])) {
+        throw new InvalidArgumentException('Credențiala nu poate fi citită.');
+    }
+    $iv = base64_decode((string) $json['iv'], true);
+    $plain = openssl_decrypt((string) $json['value'], 'AES-256-CBC', $key, 0, $iv);
+    if (!is_string($plain) || $plain === '') {
+        throw new InvalidArgumentException('Credențiala nu poate fi citită.');
+    }
+    $value = @unserialize($plain, ['allowed_classes' => false]);
+
+    return is_string($value) ? $value : $plain;
+}
+
+function caiet_laravel_encrypt(string $value): string
+{
+    $key = caiet_laravel_key();
+    $iv = random_bytes(16);
+    $encrypted = openssl_encrypt(serialize($value), 'AES-256-CBC', $key, 0, $iv);
+    if (!is_string($encrypted) || $encrypted === '') {
+        throw new InvalidArgumentException('Credențiala nu poate fi salvată.');
+    }
+    $ivB64 = base64_encode($iv);
+    $packet = json_encode([
+        'iv' => $ivB64,
+        'value' => $encrypted,
+        'mac' => hash_hmac('sha256', $ivB64 . $encrypted, $key),
+        'tag' => '',
+    ], JSON_UNESCAPED_SLASHES);
+
+    return base64_encode((string) $packet);
 }
 
 /**

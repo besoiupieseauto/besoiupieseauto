@@ -230,14 +230,41 @@ $caietCsrf = AdminCsrf::token();
     body.innerHTML = rows.map(row => '<tr><td>' + esc(row.Id) + '</td><td>' + esc(row.username) + '</td><td>' + esc(row.email) + '</td><td>' + esc(row.nume_complet) + '</td><td>' + esc(row.telefon) + '</td><td>' + esc(row.rol) + '</td><td>' + esc(row.active) + '</td><td><a href="/admin/users">Deschide în Besoiu</a></td></tr>').join('') || '<tr><td colspan="8">Niciun utilizator.</td></tr>';
   }
   async function loadApi() {
-    head.innerHTML = '<tr><th>Serviciu</th><th>Cheie</th><th>Valoare</th></tr>';
-    toolbar.innerHTML = '<button type="button" id="go">Reîncarcă</button>';
+    head.innerHTML = '';
+    toolbar.innerHTML = '<button type="button" id="go">Reîncarcă</button><button type="button" id="save-api" class="lg-btn lg-btn-success">Salvare</button>';
     document.getElementById('go').onclick = () => renderApi();
+    document.getElementById('save-api').onclick = saveApi;
     return renderApi();
   }
   async function renderApi() {
     rows = await api('api_list', {});
-    body.innerHTML = rows.map(row => '<tr><td>' + esc(row.service_name) + '</td><td>' + esc(row.data_key) + '</td><td>setată</td></tr>').join('') || '<tr><td colspan="3">Nicio credențială.</td></tr>';
+    const groups = {};
+    rows.forEach(row => { (groups[row.service_name] ||= []).push(row); });
+    extra.innerHTML = Object.entries(groups).map(([service, fields]) => {
+      const inputs = fields.map(field => {
+        const value = field.data_value || '';
+        const wide = String(value).length > 80 || String(service).indexOf('template') !== -1;
+        const control = wide
+          ? '<textarea data-service="' + esc(service) + '" data-key="' + esc(field.data_key) + '" rows="4">' + esc(value) + '</textarea>'
+          : '<input data-service="' + esc(service) + '" data-key="' + esc(field.data_key) + '" value="' + esc(value) + '">';
+        return '<label class="' + (wide ? 'wide' : '') + '">' + esc(String(field.data_key).replaceAll('_', ' ')) + control + '</label>';
+      }).join('');
+      return '<section class="caiet-sheet" style="width:100%;margin:0 0 12px"><div class="caiet-sheet__head"><h3>' + esc(service) + '</h3></div><div class="caiet-sheet__body caiet-api-fields">' + inputs + '</div></section>';
+    }).join('') || '<p>Nicio credențială în baza de date.</p>';
+    body.innerHTML = '';
+  }
+  async function saveApi() {
+    const items = Array.from(document.querySelectorAll('[data-service][data-key]')).map(field => ({
+      service_name: field.dataset.service,
+      data_key: field.dataset.key,
+      data_value: field.value
+    }));
+    try {
+      const result = await api('api_save', {items});
+      alert('Salvate: ' + (result.saved || 0));
+    } catch (error) {
+      alert(error.message);
+    }
   }
   async function loadPieseauto() {
     head.innerHTML = '<tr><th></th><th>Comandă</th><th>Cumpărător</th><th>Telefon</th><th>Oraș</th><th>Total</th></tr>';
@@ -268,7 +295,7 @@ $caietCsrf = AdminCsrf::token();
     const statusOpts = Object.entries(STATUS).map(([id, pair]) => '<option value="' + id + '">' + esc(pair[0]) + '</option>').join('');
     toolbar.innerHTML = '<button type="button" id="prev">←</button><input id="day" type="date"><button type="button" id="next">→</button><button type="button" id="all">Toate zilele</button><select id="st"><option value="">Status</option>' + statusOpts + '</select><input id="q" type="search" placeholder="Nume, telefon, marca, adresa, cod"><button type="button" id="go">Cauta</button><button type="button" id="new" class="lg-btn lg-btn-success">+ Comanda noua</button>';
     const day = document.getElementById('day');
-    day.value = today();
+    day.value = '';
     document.getElementById('prev').onclick = () => shiftDay(-1);
     document.getElementById('next').onclick = () => shiftDay(1);
     document.getElementById('all').onclick = () => { day.value = ''; renderComenzi(); };
@@ -294,7 +321,7 @@ $caietCsrf = AdminCsrf::token();
       const statusBtn = '<button type="button" class="lg-btn" style="background:' + statusColor(stare) + ';color:#fff;border-color:' + statusColor(stare) + '" data-status="' + esc(row.order_id) + '" data-source="' + esc(row.source_type) + '" data-stare="' + stare + '">' + esc(statusName(stare)) + '</button>';
       const note = row.observations ? '<button type="button" class="lg-btn lg-btn-danger" title="' + esc(row.observations) + '" data-note="' + esc(row.observations) + '">i</button>' : '<b>__</b>';
       return '<tr><td>' + esc(row.order_date) + '</td><td><b>' + esc(row.client_name) + '</b><br>' + esc(row.client_phone) + '</td><td>' + esc(row.marca) + '</td><td><button type="button" data-total="' + esc(row.order_id) + '" data-source="' + esc(row.source_type) + '" data-amount="' + esc(row.total_amount) + '"><b>' + Number(row.total_amount || 0).toFixed(2) + '</b></button></td><td>' + statusBtn + '</td><td>' + note + '</td><td>' + actionButtons(row, stare) + '</td></tr>';
-    }).join('') || '<tr><td colspan="7">Nicio comandă în ziua aleasă.</td></tr>';
+    }).join('') || '<tr><td colspan="7">' + (document.getElementById('day').value ? 'Nicio comandă în ziua aleasă.' : 'Nicio comandă în baza de date.') + '</td></tr>';
     body.querySelectorAll('[data-status]').forEach(btn => btn.onclick = () => openStatus(btn.dataset.status, btn.dataset.source, btn.dataset.stare));
     body.querySelectorAll('[data-total]').forEach(btn => btn.onclick = () => openTotal(btn.dataset.total, btn.dataset.source, btn.dataset.amount));
     body.querySelectorAll('[data-note]').forEach(btn => btn.onclick = () => alert(btn.getAttribute('title') || ''));

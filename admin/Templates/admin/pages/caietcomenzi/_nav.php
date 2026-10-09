@@ -83,5 +83,9 @@ $caietLinks = [
 .total-luna,.total-zi,.total-cautare{display:inline-block;color:#fff;font-weight:700;padding:8px 15px;border-radius:4px;margin-right:8px}
 .total-luna{background:#5bc0de}
 .total-zi,.total-cautare{background:#5cb85c}
+.caiet-api-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.caiet-api-fields label{display:flex;flex-direction:column;gap:4px;font-size:13px}
+.caiet-api-fields label.wide{grid-column:1/-1}
+.caiet-api-fields input,.caiet-api-fields textarea{border:1px solid #ccc;padding:6px 8px;width:100%;box-sizing:border-box;background:#fff}
 .caiet-frame{width:100%;height:78vh;border:0;border-radius:12px;background:#fff}
 </style>
