@@ -93,7 +93,14 @@ $caietLinks = [
 .caiet-lines{width:100%;border-collapse:collapse;margin-top:12px}
 .caiet-lines th,.caiet-lines td{border:1px solid #ddd;padding:6px 8px;text-align:center}
 .caiet-lines thead tr{background:#fcf8e3}
-.order-act{display:flex;flex-direction:column;gap:3px;align-items:stretch}
+.order-act{display:flex;flex-wrap:wrap;gap:3px;align-items:center;max-width:148px}
+.order-phone{display:block;margin-top:2px;font-weight:600;color:#1f2937}
+.order-company{display:block;color:#6b7280}
+.order-stamp{display:flex;flex-direction:column;line-height:1.35}
+.code-cell{font-weight:700}
+.awb-cell{white-space:normal}
+.awb-cell strong,.awb-track{display:block}
+.awb-track{margin-top:4px;font-size:12px}
 .order-act button,.order-act a{min-width:28px;height:26px;padding:0 6px;border-radius:3px;border:1px solid #ccc;background:#fff;color:#333;text-decoration:none;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
 .total-luna,.total-zi,.total-cautare{display:inline-block;color:#fff;font-weight:700;padding:8px 15px;border-radius:4px;margin-right:8px}
 .total-luna{background:#5bc0de}

@@ -57,6 +57,7 @@ $caietCsrf = AdminCsrf::token();
   const CSRF = <?= json_encode($caietCsrf, JSON_UNESCAPED_UNICODE) ?>;
   const ENDPOINT = '/admin/api/caiet_comenzi_endpoint.php';
   const STATUS = {1:['Comandat','#f0ad4e'],2:['Sosit','#5bc0de'],3:['Cash','#5cb85c'],4:['Avans','#d9534f'],5:['Retur','#6545f0'],6:['Card','#111'],7:['FD','#dc7d0d'],8:['Anulat','#d9534f'],9:['OP','#ff9800'],10:['Avans FD','#dc7d0d'],11:['Avans Cash','#5cb85c'],12:['Avans Card','#111'],13:['Avans OP','#ff9800']};
+  const STATUS_EXT = {1:['Comandat','#f0ad4e'],2:['Sosit','#5bc0de'],3:['Expediat','#337ab7'],4:['Achitat','#5cb85c'],5:['Avans','#d9534f'],6:['Retur','#5cb85c'],7:['Anulat','#d9534f']};
   const SUPPLIERS = ['ET','MA','IC','AN','AT','BA','AB','SZ','AP','AD','Stoc'];
   const COLORS = [['7CFC00','Azi','#7CFC00'],['ADD8E6','Maine','#ADD8E6'],['F5A000','2 zile','#F5A000'],['FF0000','+3 zile','#FF0000'],['FFFFFF','Sosit','#9EA5AF']];
   const body = document.getElementById('caiet-body');
@@ -364,11 +365,14 @@ $caietCsrf = AdminCsrf::token();
     const found = COLORS.find(item => item[0].toUpperCase() === key);
     return found ? found[1] : (key === 'FFFFFF' ? 'Sosit' : key);
   }
+  function statusMap() {
+    return SOURCE === 'externa' ? STATUS_EXT : STATUS;
+  }
   function statusName(code) {
-    return (STATUS[code] || ['Status ' + code, '#777'])[0];
+    return (statusMap()[code] || ['Status ' + code, '#777'])[0];
   }
   function statusColor(code) {
-    return (STATUS[code] || ['', '#777'])[1];
+    return (statusMap()[code] || ['', '#777'])[1];
   }
   function sheet(title, body, wide) {
     mountModal();
@@ -378,8 +382,10 @@ $caietCsrf = AdminCsrf::token();
     modal.querySelectorAll('[data-close]').forEach(btn => { btn.onclick = closeModal; });
   }
   function loadComenzi() {
-    head.innerHTML = '<tr class="info"><th>Data</th><th>Client</th><th>Marca</th><th>Total</th><th>Status</th><th>Notita</th><th>Actiune</th></tr>';
-    const statusOpts = Object.entries(STATUS).map(([id, pair]) => '<option value="' + id + '">' + esc(pair[0]) + '</option>').join('');
+    head.innerHTML = SOURCE === 'externa'
+      ? '<tr class="info"><th>Data</th><th>Client</th><th>Adresa</th><th>Produs</th><th>Cod</th><th>Furnizor</th><th>Cant.</th><th>Pret</th><th>Total</th><th>AWB</th><th>Status</th><th>Notita</th><th>Actiune</th></tr>'
+      : '<tr class="info"><th>Data</th><th>Client</th><th>Marca</th><th>Total</th><th>Status</th><th>Notita</th><th>Actiune</th></tr>';
+    const statusOpts = Object.entries(statusMap()).map(([id, pair]) => '<option value="' + id + '">' + esc(pair[0]) + '</option>').join('');
     toolbar.innerHTML = '<button type="button" id="prev">←</button><input id="day" type="date"><button type="button" id="next">→</button><button type="button" id="all">Toate zilele</button><select id="st"><option value="">Status</option>' + statusOpts + '</select><input id="q" type="search" placeholder="Nume, telefon, marca, adresa, cod"><button type="button" id="go">Cauta</button><a class="lg-btn lg-btn-success" href="/admin/caiet-pieseauto">Import comenzi pieseauto.ro</a><button type="button" id="new" class="lg-btn lg-btn-success">+ Comanda noua</button>';
     const day = document.getElementById('day');
     day.value = '';
@@ -403,12 +409,13 @@ $caietCsrf = AdminCsrf::token();
     rows = await api('comenzi_list', {search: document.getElementById('q').value, source_type: SOURCE, location: SOURCE === 'externa' ? '' : LOC, status: status, order_date: document.getElementById('day').value, limit: 80});
     const dayTotal = rows.reduce((sum, row) => sum + Number(row.total_amount || 0), 0);
     extra.innerHTML = '<div class="total-wrapper"><span class="total-zi">Total zi: ' + dayTotal.toFixed(2) + '</span><span class="total-cautare">Total cautare: ' + dayTotal.toFixed(2) + '</span></div>';
-    body.innerHTML = rows.map(row => {
+    body.innerHTML = (SOURCE === 'externa' ? rows.map(renderExternalOrder) : rows.map(row => {
       const stare = Number(row.status || 0);
       const statusBtn = '<button type="button" class="lg-btn" style="background:' + statusColor(stare) + ';color:#fff;border-color:' + statusColor(stare) + '" data-status="' + esc(row.order_id) + '" data-source="' + esc(row.source_type) + '" data-stare="' + stare + '">' + esc(statusName(stare)) + '</button>';
       const note = row.observations ? '<button type="button" class="lg-btn lg-btn-danger" title="' + esc(row.observations) + '" data-note="' + esc(row.observations) + '">i</button>' : '<b>__</b>';
-      return '<tr><td>' + esc(row.order_date) + '</td><td><b>' + esc(row.client_name) + '</b><br>' + esc(row.client_phone) + '</td><td>' + esc(row.marca) + '</td><td><button type="button" data-total="' + esc(row.order_id) + '" data-source="' + esc(row.source_type) + '" data-amount="' + esc(row.total_amount) + '"><b>' + Number(row.total_amount || 0).toFixed(2) + '</b></button></td><td>' + statusBtn + '</td><td>' + note + '</td><td>' + actionButtons(row, stare) + '</td></tr>';
-    }).join('') || '<tr><td colspan="7">' + (document.getElementById('day').value ? 'Nicio comandă în ziua aleasă.' : 'Nicio comandă în baza de date.') + '</td></tr>';
+      const phone = row.client_phone ? '<span class="order-phone">' + esc(row.client_phone) + '</span>' : '';
+      return '<tr><td>' + esc(row.order_date) + '</td><td><b>' + esc(row.client_name) + '</b>' + phone + '</td><td>' + esc(row.marca) + '</td><td><button type="button" data-total="' + esc(row.order_id) + '" data-source="' + esc(row.source_type) + '" data-amount="' + esc(row.total_amount) + '"><b>' + Number(row.total_amount || 0).toFixed(2) + '</b></button></td><td>' + statusBtn + '</td><td>' + note + '</td><td>' + actionButtons(row, stare) + '</td></tr>';
+    })).join('') || '<tr><td colspan="' + (SOURCE === 'externa' ? 13 : 7) + '">' + (document.getElementById('day').value ? 'Nicio comandă în ziua aleasă.' : 'Nicio comandă în baza de date.') + '</td></tr>';
     body.querySelectorAll('[data-status]').forEach(btn => btn.onclick = () => openStatus(btn.dataset.status, btn.dataset.source, btn.dataset.stare));
     body.querySelectorAll('[data-total]').forEach(btn => btn.onclick = () => openTotal(btn.dataset.total, btn.dataset.source, btn.dataset.amount));
     body.querySelectorAll('[data-note]').forEach(btn => btn.onclick = () => sheet('Observații comandă', '<p style="margin:0;white-space:pre-wrap">' + esc(btn.getAttribute('title') || '') + '</p><div class="caiet-actions"><button type="button" data-close>Închide</button></div>'));
@@ -421,11 +428,91 @@ $caietCsrf = AdminCsrf::token();
       await api('comenzi_delete', {order_id: btn.dataset.del, source_type: btn.dataset.source});
       await renderComenzi();
     });
+    body.querySelectorAll('[data-factura]').forEach(btn => btn.onclick = () => showFactura(btn.dataset.factura));
+    body.querySelectorAll('[data-factureaza]').forEach(btn => btn.onclick = () => openFactureaza(btn.dataset.factureaza));
+  }
+  function orderStamp(row) {
+    const raw = String(row.created_at || row.order_date || '');
+    const date = raw.slice(0, 10).split('-');
+    const shown = date.length === 3 ? date[2] + '/' + date[1] + '/' + date[0] : esc(row.order_date || '');
+    const time = raw.length >= 16 ? raw.slice(11, 16) : '';
+    return '<div class="order-stamp"><span>' + esc(row.user_name || '') + '</span><span>' + shown + '</span><span>' + esc(time) + '</span></div>';
+  }
+  function invoiceButton(row) {
+    const invoiceId = Number(row.invoice_id || 0);
+    if (invoiceId > 0) {
+      return '<button type="button" class="lg-btn lg-btn-info" title="Tipărește factura" data-factura="' + invoiceId + '">Factură</button>';
+    }
+    return '<button type="button" class="lg-btn lg-btn-default" title="Facturează" data-factureaza="' + esc(row.order_id) + '">Facturează</button>';
+  }
+  function awbCell(row) {
+    const awb = String(row.awb || '').trim();
+    if (awb === '' || awb === '___') {
+      return '<strong>Emitere AWB</strong>';
+    }
+    const track = /^\d+$/.test(awb)
+      ? 'https://www.fancourier.ro/awb-tracking/?tracking=' + encodeURIComponent(awb)
+      : 'https://sameday.ro/#awb=' + encodeURIComponent(awb);
+    let html = '<strong>' + esc(awb) + '</strong><a class="awb-track" href="' + track + '" target="_blank" rel="noopener">Urmărire colet</a>';
+    const swap = String(row.swap_awb || '').trim();
+    if (swap !== '' && swap !== '___') {
+      html += '<strong>' + esc(swap) + '</strong>';
+    }
+    return html;
+  }
+  function renderExternalOrder(row) {
+    const stare = Number(row.status || 0);
+    const products = Array.isArray(row.products) && row.products.length ? row.products : [{denumire:'', cod_produs:'', furnizor:'', cantitate:'', pret:'', culoare:''}];
+    const span = products.length;
+    const statusBtn = '<button type="button" class="lg-btn" style="background:' + statusColor(stare) + ';color:#fff;border-color:' + statusColor(stare) + '" data-status="' + esc(row.order_id) + '" data-source="externa" data-stare="' + stare + '">' + esc(statusName(stare)) + '</button>';
+    const note = row.observations ? '<button type="button" class="lg-btn lg-btn-danger" title="' + esc(row.observations) + '" data-note="' + esc(row.observations) + '">i</button>' : '<b>—</b>';
+    const phone = '<span class="order-phone">' + esc(row.client_phone || '') + '</span>';
+    const company = row.company ? '<small class="order-company">' + esc(row.company) + '</small>' : '';
+    const meta = '<td rowspan="' + span + '">' + orderStamp(row) + '</td>'
+      + '<td rowspan="' + span + '"><b>' + esc(row.client_name) + '</b>' + company + phone + '</td>'
+      + '<td rowspan="' + span + '">' + esc(row.address_city || '') + '</td>';
+    const tail = '<td rowspan="' + span + '"><button type="button" data-total="' + esc(row.order_id) + '" data-source="externa" data-amount="' + esc(row.total_amount) + '"><b>' + Number(row.total_amount || 0).toFixed(2) + '</b></button></td>'
+      + '<td rowspan="' + span + '" class="awb-cell">' + awbCell(row) + '</td>'
+      + '<td rowspan="' + span + '">' + statusBtn + '</td>'
+      + '<td rowspan="' + span + '">' + note + '</td>'
+      + '<td rowspan="' + span + '">' + actionButtons(row, stare) + '</td>';
+    return products.map((product, index) => {
+      const color = String(product.culoare || '').replace('#', '');
+      const codeBg = color && color.toUpperCase() !== 'FFFFFF' ? '#' + color : '#7CFC00';
+      const line = '<td>' + esc(product.denumire || '') + '</td>'
+        + '<td class="code-cell" style="background:' + codeBg + '"><strong>' + esc(product.cod_produs || '') + '</strong></td>'
+        + '<td><strong>' + esc(product.furnizor || '—') + '</strong></td>'
+        + '<td>' + esc(product.cantitate === '' || product.cantitate == null ? '' : product.cantitate) + '</td>'
+        + '<td>' + (product.pret === '' || product.pret == null ? '' : Number(product.pret).toFixed(2)) + '</td>';
+      return '<tr>' + (index === 0 ? meta : '') + line + (index === 0 ? tail : '') + '</tr>';
+    }).join('');
+  }
+  function openFactureaza(orderId) {
+    const row = rows.find(item => String(item.order_id) === String(orderId));
+    if (!row) return;
+    const lines = (row.products || []).map(product => '<tr><td>' + esc(product.denumire) + '</td><td>' + esc(product.cod_produs) + '</td><td>' + esc(product.cantitate) + '</td><td>' + Number(product.pret || 0).toFixed(2) + '</td></tr>').join('');
+    sheet('Facturează comanda ' + orderId, '<p><strong>' + esc(row.client_name) + '</strong></p><p class="order-phone">Telefon: ' + esc(row.client_phone || '—') + '</p><p>Adresă: ' + esc(row.address_city || '—') + '</p><table class="caiet-lines"><thead><tr><th>Produs</th><th>Cod</th><th>Cant.</th><th>Preț</th></tr></thead><tbody>' + (lines || '<tr><td colspan="4">Fără linii.</td></tr>') + '</tbody></table><p>Total: <strong>' + Number(row.total_amount || 0).toFixed(2) + '</strong></p><div class="caiet-actions"><button type="button" data-close>Închide</button></div>', true);
   }
   function actionButtons(row, stare) {
     const id = esc(row.order_id);
     const source = esc(row.source_type);
     let html = '<div class="order-act">';
+    if (SOURCE === 'externa') {
+      if (stare === 3 || stare === 5) {
+        html += '<button type="button" class="lg-btn lg-btn-success" title="SMS" data-sms="' + id + '" data-name="' + esc(row.client_name) + '" data-phone="' + esc(row.client_phone) + '">SMS</button>';
+      }
+      if (stare !== 3) {
+        html += '<button type="button" class="lg-btn lg-btn-default" title="Editare" data-lines="' + id + '" data-source="' + source + '" data-stare="' + stare + '">Edit</button>';
+      }
+      if (stare === 1) {
+        html += '<button type="button" class="lg-btn lg-btn-warning" title="Sterge" data-del="' + id + '" data-source="' + source + '">Del</button>';
+      }
+      html += invoiceButton(row);
+      if (stare === 3 || stare === 4 || stare === 5 || stare === 6) {
+        html += '<button type="button" class="lg-btn lg-btn-default" title="Duplicate" data-copy="' + id + '">Copy</button>';
+      }
+      return html + '</div>';
+    }
     if (stare === 2 || stare === 4) {
       html += '<button type="button" class="lg-btn lg-btn-success" title="SMS" data-sms="' + id + '" data-name="' + esc(row.client_name) + '" data-phone="' + esc(row.client_phone) + '">SMS</button>';
     }
@@ -435,7 +522,7 @@ $caietCsrf = AdminCsrf::token();
     if (stare === 1) {
       html += '<button type="button" class="lg-btn lg-btn-warning" title="Sterge" data-del="' + id + '" data-source="' + source + '">Del</button>';
     }
-    html += '<a class="lg-btn lg-btn-default" title="Factureaza" href="/admin/caiet-facturi">Fact</a>';
+    html += invoiceButton(row);
     if (stare === 2 || stare === 4) {
       html += '<a class="lg-btn lg-btn-success" title="Trimite WhatsApp" href="/admin/caiet-clienti">WA</a>';
     }
@@ -450,7 +537,10 @@ $caietCsrf = AdminCsrf::token();
   }
   function openStatus(orderId, source, stare) {
     const group = (title, ids) => '<p><b><u>' + title + '</u></b></p>' + ids.map(id => '<label class="st-btn" style="background:' + statusColor(id) + '"><input type="radio" name="stare" value="' + id + '"' + (String(stare) === String(id) ? ' checked' : '') + '>' + esc(statusName(id)) + '</label>').join('');
-    sheet('Editare status comanda', group('Status comanda', [1,2,8,5]) + group('Incasare comanda', [3,6,7,4,9,10,11,12,13]) + '<div class="caiet-actions"><button type="button" id="save-status" class="lg-btn lg-btn-success">Actualizare date</button></div>');
+    const body = SOURCE === 'externa'
+      ? group('Status comanda', [1,2,3,4,5,6,7])
+      : group('Status comanda', [1,2,8,5]) + group('Incasare comanda', [3,6,7,4,9,10,11,12,13]);
+    sheet('Editare status comanda', body + '<div class="caiet-actions"><button type="button" id="save-status" class="lg-btn lg-btn-success">Actualizare date</button></div>');
     document.getElementById('save-status').onclick = async () => {
       const picked = modal.querySelector('input[name="stare"]:checked');
       if (!picked) return;

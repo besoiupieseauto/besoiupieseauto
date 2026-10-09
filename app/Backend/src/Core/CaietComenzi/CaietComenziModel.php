@@ -129,13 +129,26 @@ final class CaietComenziModel
 
         $search = trim((string) ($filters['search'] ?? ''));
         if ($search !== '') {
-            $params[':search'] = '%' . $search . '%';
-            $awbClause = $sourceType === 'externa' ? ' OR c.awb LIKE :search' : '';
-            $where[] = '(cl.nume LIKE :search OR cl.telefon LIKE :search OR CAST(c.idcomanda AS CHAR) LIKE :search' . $awbClause . ')';
+            $like = '%' . $search . '%';
+            $params[':s_nume'] = $like;
+            $params[':s_tel'] = $like;
+            $params[':s_id'] = $like;
+            $awbClause = '';
+            if ($sourceType === 'externa') {
+                $params[':s_awb'] = $like;
+                $awbClause = ' OR c.awb LIKE :s_awb';
+            }
+            $where[] = '(cl.nume LIKE :s_nume OR cl.telefon LIKE :s_tel OR CAST(c.idcomanda AS CHAR) LIKE :s_id' . $awbClause . ')';
         }
 
         $awbSelect = $sourceType === 'externa' ? "COALESCE(c.awb, '')" : "''";
         $locationSelect = $sourceType === 'interna' ? "COALESCE(c.locatie_mgz, '')" : "''";
+        $externalSelect = $sourceType === 'externa'
+            ? ", COALESCE(cl.companie, '') AS company, COALESCE(loc.localitate, '') AS address_city, COALESCE(c.id_factura, 0) AS invoice_id, COALESCE(c.cont_awb, '') AS awb_account, COALESCE(c.swap_awb, '') AS swap_awb, COALESCE(u.nume_complet, u.username, '') AS user_name, COALESCE(c.whatsapp_sent, 0) AS whatsapp_sent"
+            : ", '' AS company, '' AS address_city, COALESCE(c.id_factura, 0) AS invoice_id, '' AS awb_account, '' AS swap_awb, '' AS user_name, 0 AS whatsapp_sent";
+        $externalJoin = $sourceType === 'externa'
+            ? ' LEFT JOIN localitati loc ON loc.idlocatie = cl.idlocalitate LEFT JOIN users u ON u.Id = c.userid'
+            : '';
 
         $sql = "
             SELECT
@@ -144,7 +157,7 @@ final class CaietComenziModel
                 c.idcmd AS record_id,
                 c.idclient AS client_id,
                 COALESCE(cl.nume, '-') AS client_name,
-                COALESCE(cl.telefon, '-') AS client_phone,
+                COALESCE(cl.telefon, '') AS client_phone,
                 COALESCE(c.stare, 0) AS status,
                 COALESCE(c.total, 0) AS total_amount,
                 c.data AS order_date,
@@ -153,8 +166,10 @@ final class CaietComenziModel
                 COALESCE(c.observations, '') AS observations,
                 {$locationSelect} AS location,
                 COALESCE(cl.marca, '') AS marca
+                {$externalSelect}
             FROM {$table} c
             LEFT JOIN clienti cl ON cl.idclienti = c.idclient
+            {$externalJoin}
             WHERE " . implode(' AND ', $where) . "
             ORDER BY c.data DESC, c.idcomanda DESC
             LIMIT {$limit}
@@ -165,6 +180,9 @@ final class CaietComenziModel
         $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         $this->attachLineCounts($rows, $sourceType);
+        if ($sourceType === 'externa') {
+            $this->attachOrderProducts($rows);
+        }
 
         return $this->normalizeOrderRows($rows);
     }
@@ -224,6 +242,55 @@ final class CaietComenziModel
      * @param array<int, array<string, mixed>> $rows
      * @return array<int, array<string, mixed>>
      */
+    /**
+     * @param array<int, array<string, mixed>> $rows
+     */
+    private function attachOrderProducts(array &$rows): void
+    {
+        $ids = [];
+        foreach ($rows as $row) {
+            $orderId = (int) ($row['order_id'] ?? 0);
+            if ($orderId > 0) {
+                $ids[] = $orderId;
+            }
+        }
+        if ($ids === []) {
+            return;
+        }
+        $placeholders = [];
+        $params = [];
+        foreach ($ids as $index => $orderId) {
+            $key = ':pid_' . $index;
+            $placeholders[] = $key;
+            $params[$key] = $orderId;
+        }
+        $sql = 'SELECT d.idcomanda, d.iddetaliu, d.idprodus, d.cantitate, d.pret, d.culoare, d.furnizor,
+                       COALESCE(p.denumire, \'\') AS denumire, COALESCE(p.cod_produs, \'\') AS cod_produs
+                FROM detaliu_ext d
+                LEFT JOIN produse p ON p.idprodus = d.idprodus
+                WHERE d.idcomanda IN (' . implode(', ', $placeholders) . ')
+                ORDER BY d.iddetaliu ASC';
+        $statement = $this->legacyDb->prepare($sql);
+        $statement->execute($params);
+        $grouped = [];
+        while ($line = $statement->fetch(PDO::FETCH_ASSOC)) {
+            $grouped[(int) ($line['idcomanda'] ?? 0)][] = [
+                'iddetaliu' => (int) ($line['iddetaliu'] ?? 0),
+                'idprodus' => (int) ($line['idprodus'] ?? 0),
+                'denumire' => (string) ($line['denumire'] ?? ''),
+                'cod_produs' => (string) ($line['cod_produs'] ?? ''),
+                'cantitate' => (float) ($line['cantitate'] ?? 0),
+                'pret' => round((float) ($line['pret'] ?? 0), 2),
+                'culoare' => (string) ($line['culoare'] ?? ''),
+                'furnizor' => (string) ($line['furnizor'] ?? ''),
+            ];
+        }
+        foreach ($rows as &$row) {
+            $row['products'] = $grouped[(int) ($row['order_id'] ?? 0)] ?? [];
+        }
+        unset($row);
+    }
+
     private function normalizeOrderRows(array $rows): array
     {
         foreach ($rows as &$row) {
@@ -320,8 +387,13 @@ final class CaietComenziModel
 
         $search = trim((string) ($filters['search'] ?? ''));
         if ($search !== '') {
-            $params[':search'] = '%' . $search . '%';
-            $where[] = '(cl.nume LIKE :search OR cl.telefon LIKE :search OR cl.adresa LIKE :search OR cl.companie LIKE :search OR cl.cif LIKE :search)';
+            $like = '%' . $search . '%';
+            $params[':s_nume'] = $like;
+            $params[':s_tel'] = $like;
+            $params[':s_adr'] = $like;
+            $params[':s_comp'] = $like;
+            $params[':s_cif'] = $like;
+            $where[] = '(cl.nume LIKE :s_nume OR cl.telefon LIKE :s_tel OR cl.adresa LIKE :s_adr OR cl.companie LIKE :s_comp OR cl.cif LIKE :s_cif)';
         }
 
         $sql = "SELECT cl.idclienti, cl.nume, cl.telefon, '' AS email, cl.adresa, cl.companie, cl.cif,
@@ -492,8 +564,11 @@ final class CaietComenziModel
 
         $search = trim((string) ($filters['search'] ?? ''));
         if ($search !== '') {
-            $params[':search'] = '%' . $search . '%';
-            $where[] = '(f.seria LIKE :search OR cl.nume LIKE :search OR CAST(f.OrderID AS CHAR) LIKE :search)';
+            $like = '%' . $search . '%';
+            $params[':s_seria'] = $like;
+            $params[':s_nume'] = $like;
+            $params[':s_order'] = $like;
+            $where[] = '(f.seria LIKE :s_seria OR cl.nume LIKE :s_nume OR CAST(f.OrderID AS CHAR) LIKE :s_order)';
         }
 
         $tipComanda = strtolower(trim((string) ($filters['tip_comanda'] ?? '')));
@@ -540,8 +615,10 @@ final class CaietComenziModel
 
         $search = trim((string) ($filters['search'] ?? ''));
         if ($search !== '') {
-            $params[':search'] = '%' . $search . '%';
-            $where[] = '(i.cstmtext LIKE :search OR cl.nume LIKE :search)';
+            $like = '%' . $search . '%';
+            $params[':s_text'] = $like;
+            $params[':s_nume'] = $like;
+            $where[] = '(i.cstmtext LIKE :s_text OR cl.nume LIKE :s_nume)';
         }
 
         $dateFrom = trim((string) ($filters['date_from'] ?? ''));
