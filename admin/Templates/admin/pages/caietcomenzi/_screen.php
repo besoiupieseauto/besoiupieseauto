@@ -98,10 +98,7 @@ $caietCsrf = AdminCsrf::token();
       }
       return '<label>' + esc(field.label) + '<input name="' + esc(field.name) + '" value="' + esc(value) + '"></label>';
     }).join('');
-    mountModal();
-    modal.innerHTML = '<form class="caiet-grid"><h3>' + esc(title) + '</h3>' + inputs + '<div class="caiet-actions"><button type="button" data-close>Anulează</button><button type="submit">Salvează</button></div></form>';
-    modal.classList.remove('hidden');
-    modal.querySelector('[data-close]').addEventListener('click', closeModal);
+    sheet(title, '<form class="caiet-grid">' + inputs + '<div class="caiet-actions"><button type="button" data-close>Anulează</button><button type="submit" class="lg-btn lg-btn-success">Salvează</button></div></form>', 'form');
     modal.querySelector('form').addEventListener('submit', async (event) => {
       event.preventDefault();
       try { await onSubmit(formValues(event.target)); closeModal(); await load(); }
@@ -131,7 +128,16 @@ $caietCsrf = AdminCsrf::token();
     return renderClienti();
   }
   function clientFields() {
-    return ['nume','telefon','adresa','companie','cif','marca','sasiu','nr_inmat'].map(name => ({name, label: name}));
+    return [
+      {name:'nume', label:'Nume / Contact'},
+      {name:'telefon', label:'Telefon'},
+      {name:'adresa', label:'Adresa'},
+      {name:'companie', label:'Societate'},
+      {name:'cif', label:'CUI / CNP'},
+      {name:'marca', label:'Marca masina'},
+      {name:'sasiu', label:'Serie sasiu'},
+      {name:'nr_inmat', label:'Nr. inmatriculare'}
+    ];
   }
   async function renderClienti() {
     rows = await api('clienti_list', {search: document.getElementById('q').value, limit: 100});
@@ -181,7 +187,7 @@ $caietCsrf = AdminCsrf::token();
   async function showFactura(id) {
     const data = await api('facturi_details', {OrderID: id});
     const lines = (data.lines || []).map(line => '<tr><td>' + esc(line.ProductId) + '</td><td>' + esc(line.Quantity) + '</td><td>' + esc(line.UnitPrice) + '</td><td>' + esc(line.tva) + '</td><td>' + esc(line.total) + '</td></tr>').join('');
-    extra.innerHTML = '<p><strong>Factura ' + esc(data.OrderID) + '</strong> — ' + esc(data.client_name) + ' — total ' + esc(data.grand_total) + ' RON</p><table class="caiet-table"><thead><tr><th>Produs</th><th>Cant.</th><th>Preț</th><th>TVA</th><th>Total</th></tr></thead><tbody>' + (lines || '<tr><td colspan="5">Fără linii.</td></tr>') + '</tbody></table>';
+    sheet('Factura ' + data.OrderID, '<p><strong>' + esc(data.client_name) + '</strong> — total ' + esc(data.grand_total) + ' RON</p><table class="caiet-lines"><thead><tr><th>Produs</th><th>Cant.</th><th>Preț</th><th>TVA</th><th>Total</th></tr></thead><tbody>' + (lines || '<tr><td colspan="5">Fără linii.</td></tr>') + '</tbody></table><div class="caiet-actions"><button type="button" data-close>Închide</button></div>', true);
   }
 
   function loadIncasari() {
@@ -283,6 +289,11 @@ $caietCsrf = AdminCsrf::token();
     body.innerHTML = list.map(row => '<tr><td><input type="checkbox"></td><td>' + esc(row.id || row.order_id || '') + '</td><td>' + esc(row.buyer || row.name || '') + '</td><td>' + esc(row.phone || '') + '</td><td>' + esc(row.city || '') + '</td><td>' + esc(row.total || '') + '</td></tr>').join('') || '<tr><td colspan="6">' + esc(data.message || 'Nicio comandă.') + '</td></tr>';
   }
 
+  function colorName(hex) {
+    const key = String(hex || 'FFFFFF').replace('#', '').toUpperCase();
+    const found = COLORS.find(item => item[0].toUpperCase() === key);
+    return found ? found[1] : (key === 'FFFFFF' ? 'Sosit' : key);
+  }
   function statusName(code) {
     return (STATUS[code] || ['Status ' + code, '#777'])[0];
   }
@@ -291,9 +302,10 @@ $caietCsrf = AdminCsrf::token();
   }
   function sheet(title, body, wide) {
     mountModal();
-    modal.innerHTML = '<div class="caiet-sheet' + (wide ? '' : ' caiet-sheet--sm') + '"><div class="caiet-sheet__head"><h3>' + title + '</h3><button type="button" class="caiet-sheet__close" data-close>&times;</button></div><div class="caiet-sheet__body">' + body + '</div></div>';
+    const size = wide === 'form' ? ' caiet-sheet--form' : (wide ? '' : ' caiet-sheet--sm');
+    modal.innerHTML = '<div class="caiet-sheet' + size + '"><div class="caiet-sheet__head"><h3>' + esc(title) + '</h3><button type="button" class="caiet-sheet__close" data-close>&times;</button></div><div class="caiet-sheet__body">' + body + '</div></div>';
     modal.classList.remove('hidden');
-    modal.querySelector('[data-close]').onclick = closeModal;
+    modal.querySelectorAll('[data-close]').forEach(btn => { btn.onclick = closeModal; });
   }
   function loadComenzi() {
     head.innerHTML = '<tr class="info"><th>Data</th><th>Client</th><th>Marca</th><th>Total</th><th>Status</th><th>Notita</th><th>Actiune</th></tr>';
@@ -329,7 +341,7 @@ $caietCsrf = AdminCsrf::token();
     }).join('') || '<tr><td colspan="7">' + (document.getElementById('day').value ? 'Nicio comandă în ziua aleasă.' : 'Nicio comandă în baza de date.') + '</td></tr>';
     body.querySelectorAll('[data-status]').forEach(btn => btn.onclick = () => openStatus(btn.dataset.status, btn.dataset.source, btn.dataset.stare));
     body.querySelectorAll('[data-total]').forEach(btn => btn.onclick = () => openTotal(btn.dataset.total, btn.dataset.source, btn.dataset.amount));
-    body.querySelectorAll('[data-note]').forEach(btn => btn.onclick = () => alert(btn.getAttribute('title') || ''));
+    body.querySelectorAll('[data-note]').forEach(btn => btn.onclick = () => sheet('Observații comandă', '<p style="margin:0;white-space:pre-wrap">' + esc(btn.getAttribute('title') || '') + '</p><div class="caiet-actions"><button type="button" data-close>Închide</button></div>'));
     body.querySelectorAll('[data-lines]').forEach(btn => btn.onclick = () => openLines(btn.dataset.lines, btn.dataset.source, btn.dataset.stare));
     body.querySelectorAll('[data-loc]').forEach(btn => btn.onclick = () => openLocation(btn.dataset.loc));
     body.querySelectorAll('[data-sms]').forEach(btn => btn.onclick = () => openSms(btn.dataset.sms, btn.dataset.name, btn.dataset.phone));
@@ -404,7 +416,7 @@ $caietCsrf = AdminCsrf::token();
   async function openLines(orderId, source, stare) {
     const data = await api('comenzi_details', {order_id: orderId, source_type: source});
     const canEdit = Number(stare) < 3;
-    const lines = (data.lines || []).map(line => '<tr><td>' + esc(line.idprodus) + '</td><td>' + esc(line.cantitate) + '</td><td>' + esc(line.pret) + '</td><td>' + (canEdit ? '<button type="button" data-color="' + esc(line.iddetaliu) + '">' + esc(line.culoare || 'FFFFFF') + '</button>' : esc(line.culoare || '')) + '</td><td>' + (canEdit ? '<button type="button" data-sup="' + esc(line.iddetaliu) + '">' + esc(line.furnizor || '__') + '</button>' : esc(line.furnizor || '')) + '</td></tr>').join('');
+    const lines = (data.lines || []).map(line => '<tr><td>' + esc(line.idprodus) + '</td><td>' + esc(line.cantitate) + '</td><td>' + esc(line.pret) + '</td><td>' + (canEdit ? '<button type="button" class="st-btn" style="background:#' + esc(line.culoare || 'FFFFFF') + ';color:#111" data-color="' + esc(line.iddetaliu) + '">' + esc(colorName(line.culoare)) + '</button>' : esc(colorName(line.culoare))) + '</td><td>' + (canEdit ? '<button type="button" data-sup="' + esc(line.iddetaliu) + '">' + esc(line.furnizor || '__') + '</button>' : esc(line.furnizor || '')) + '</td></tr>').join('');
     sheet('Linii comanda ' + orderId, '<table class="caiet-lines"><thead><tr><th>ID produs</th><th>Cant.</th><th>Pret</th><th>Culoare</th><th>Furnizor</th></tr></thead><tbody>' + (lines || '<tr><td colspan="5">Fără linii.</td></tr>') + '</tbody></table>', true);
     modal.querySelectorAll('[data-color]').forEach(btn => btn.onclick = () => openColor(orderId, source, btn.dataset.color, stare));
     modal.querySelectorAll('[data-sup]').forEach(btn => btn.onclick = () => openSupplier(orderId, source, btn.dataset.sup, stare));

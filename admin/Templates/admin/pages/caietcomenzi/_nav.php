@@ -45,6 +45,8 @@ $caietLinks = [
 .caiet-actions button{height:34px;padding:0 14px;border:1px solid #ccc;border-radius:4px;background:#fff;cursor:pointer}
 .caiet-sheet{background:#fff;border:1px solid #bce8f1;width:min(980px,100%);max-height:calc(100vh - 56px);overflow:auto;border-radius:6px;box-shadow:0 18px 50px rgba(15,23,42,.28);box-sizing:border-box}
 .caiet-sheet--sm{width:min(520px,100%)}
+.caiet-sheet--form{width:min(680px,100%)}
+.caiet-sheet form.caiet-grid{box-shadow:none;padding:0;width:100%;background:transparent}
 .caiet-sheet__head{background:#d9edf7;color:#31708f;border-bottom:1px solid #bce8f1;padding:10px 15px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:2}
 .caiet-sheet__head h3{margin:0;font-size:18px;font-weight:500}
 .caiet-sheet__body{padding:16px}

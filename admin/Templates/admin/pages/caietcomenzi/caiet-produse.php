@@ -98,8 +98,12 @@ $legacyDbConfigured = trim((string) ($config['legacy_db_name'] ?? '')) !== '';
         </div>
     <?php endif; ?>
 
-    <div id="legacy-produse-modal" class="hidden fixed inset-0 z-[99999] p-4" style="background:rgba(15,118,110,.35);">
-        <div class="mx-auto w-full max-w-2xl rounded-2xl bg-white shadow-xl" style="border:1px solid rgba(20,184,166,.25);">
+    <style>
+    #legacy-produse-modal.hidden,#legacy-produse-tva-modal.hidden{display:none !important}
+    #legacy-produse-modal:not(.hidden),#legacy-produse-tva-modal:not(.hidden){display:flex;align-items:flex-start;justify-content:center;position:fixed;inset:0;z-index:200000;background:rgba(15,23,42,.45);padding:48px 16px;overflow:auto}
+    </style>
+    <div id="legacy-produse-modal" class="hidden">
+        <div class="w-full rounded-2xl bg-white shadow-xl" style="width:min(680px,100%);max-width:680px;margin:0 auto;border:1px solid rgba(20,184,166,.25);background:#fff;">
             <div class="flex items-center border-b p-5" style="border-color:rgba(15,118,110,.12);">
                 <h3 id="legacy-produse-modal-title" class="text-base font-medium">Produs nou</h3>
                 <button id="legacy-produse-close" class="ml-auto rounded-xl border px-3 py-2 text-sm" type="button">Închide</button>
@@ -136,8 +140,8 @@ $legacyDbConfigured = trim((string) ($config['legacy_db_name'] ?? '')) !== '';
         </div>
     </div>
 
-    <div id="legacy-produse-tva-modal" class="hidden fixed inset-0 z-[99999] p-4" style="background:rgba(15,118,110,.35);">
-        <div class="mx-auto w-full max-w-md rounded-2xl bg-white shadow-xl" style="border:1px solid rgba(20,184,166,.25);">
+    <div id="legacy-produse-tva-modal" class="hidden">
+        <div class="w-full rounded-2xl bg-white shadow-xl" style="width:min(440px,100%);max-width:440px;margin:0 auto;border:1px solid rgba(20,184,166,.25);background:#fff;">
             <div class="flex items-center border-b p-5" style="border-color:rgba(15,118,110,.12);">
                 <h3 class="text-base font-medium">Actualizare TVA</h3>
                 <button id="legacy-produse-tva-close" class="ml-auto rounded-xl border px-3 py-2 text-sm" type="button">Închide</button>
@@ -223,6 +227,7 @@ $legacyDbConfigured = trim((string) ($config['legacy_db_name'] ?? '')) !== '';
       modalTitle.textContent = 'Produs nou ERP';
       idInput.value = '';
     }
+    if (modal.parentElement !== document.body) document.body.appendChild(modal);
     modal.classList.remove('hidden');
   }
 
@@ -356,7 +361,10 @@ $legacyDbConfigured = trim((string) ($config['legacy_db_name'] ?? '')) !== '';
   document.getElementById('legacy-produse-new')?.addEventListener('click', () => openModal(null));
   document.getElementById('legacy-produse-close')?.addEventListener('click', closeModal);
   document.getElementById('legacy-produse-cancel')?.addEventListener('click', closeModal);
-  document.getElementById('legacy-produse-tva')?.addEventListener('click', () => tvaModal.classList.remove('hidden'));
+  document.getElementById('legacy-produse-tva')?.addEventListener('click', () => {
+    if (tvaModal.parentElement !== document.body) document.body.appendChild(tvaModal);
+    tvaModal.classList.remove('hidden');
+  });
   document.getElementById('legacy-produse-tva-close')?.addEventListener('click', () => tvaModal.classList.add('hidden'));
   document.getElementById('legacy-produse-tva-cancel')?.addEventListener('click', () => tvaModal.classList.add('hidden'));
 
