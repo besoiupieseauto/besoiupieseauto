@@ -27,11 +27,12 @@ $caietCsrf = AdminCsrf::token();
     <?php require __DIR__ . '/_nav.php'; ?>
     <?php if ($caietScreen === 'search'): ?>
         <div class="caiet-panel">
-            <p>Căutarea la furnizori este pagina deja activă din Besoiu. Butoanele de coș, wishlist și plasare comandă sunt acolo.</p>
-            <p><a class="caiet-btn" href="/admin/supplier-search">Deschide Supplier Search</a>
-               <a class="caiet-btn" href="/admin/supplier-cart">Coș furnizori</a>
-               <a class="caiet-btn" href="/admin/searching">Căutare clasică</a></p>
-            <iframe class="caiet-frame" src="/admin/supplier-search" title="Supplier Search"></iframe>
+            <?php
+            $supplierSearchPage = dirname(__DIR__, 5) . '/modules/supplier_search/pages/supplier-search.php';
+            if (is_file($supplierSearchPage)) {
+                require $supplierSearchPage;
+            }
+            ?>
         </div>
     <?php else: ?>
     <div class="caiet-panel">
