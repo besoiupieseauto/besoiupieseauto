@@ -86,6 +86,9 @@ $caietCsrf = AdminCsrf::token();
     return payload;
   }
   function closeModal() { modal.classList.add('hidden'); modal.innerHTML = ''; }
+  function mountModal() {
+    if (modal.parentElement !== document.body) document.body.appendChild(modal);
+  }
   function openForm(title, fields, row, onSubmit) {
     const inputs = fields.map(field => {
       const value = row && row[field.name] != null ? row[field.name] : (field.value || '');
@@ -95,6 +98,7 @@ $caietCsrf = AdminCsrf::token();
       }
       return '<label>' + esc(field.label) + '<input name="' + esc(field.name) + '" value="' + esc(value) + '"></label>';
     }).join('');
+    mountModal();
     modal.innerHTML = '<form class="caiet-grid"><h3>' + esc(title) + '</h3>' + inputs + '<div class="caiet-actions"><button type="button" data-close>Anulează</button><button type="submit">Salvează</button></div></form>';
     modal.classList.remove('hidden');
     modal.querySelector('[data-close]').addEventListener('click', closeModal);
@@ -286,6 +290,7 @@ $caietCsrf = AdminCsrf::token();
     return (STATUS[code] || ['', '#777'])[1];
   }
   function sheet(title, body, wide) {
+    mountModal();
     modal.innerHTML = '<div class="caiet-sheet' + (wide ? '' : ' caiet-sheet--sm') + '"><div class="caiet-sheet__head"><h3>' + title + '</h3><button type="button" class="caiet-sheet__close" data-close>&times;</button></div><div class="caiet-sheet__body">' + body + '</div></div>';
     modal.classList.remove('hidden');
     modal.querySelector('[data-close]').onclick = closeModal;
@@ -426,10 +431,12 @@ $caietCsrf = AdminCsrf::token();
     const time = now.toLocaleTimeString('ro-RO', {hour:'2-digit', minute:'2-digit'});
     draftLines = [];
     sheet('Comanda noua',
-      '<div class="lg-row"><label>Client</label><div class="lg-field caiet-suggest"><div class="caiet-input-plus"><input id="client_search" placeholder="Cauta si click pe client din lista" autocomplete="off" value="' + esc(seed && seed.client_name || '') + '"><button type="button" id="add-client" title="Client nou">+</button></div><ul id="client-list" hidden></ul><input type="hidden" id="id_client" value="' + esc(seed && seed.client_id || '') + '"></div><label>Telefon</label><div class="lg-field"><input id="telefon" readonly value="' + esc(seed && seed.client_phone || '') + '"></div><label>Adresa</label><div class="lg-field"><input id="adresa" readonly></div></div>' +
-      '<div class="lg-row"><label>Data</label><div class="lg-field" style="display:flex;gap:8px"><input id="data" type="date" value="' + esc((document.getElementById('day') || {}).value || today()) + '"><input id="created_time" readonly value="' + esc(time) + '" style="max-width:110px"></div><label>Marca masina</label><div class="lg-field"><input id="marca" value="' + esc(seed && seed.marca || '') + '"></div><label>Stare</label><div class="lg-field"><select id="idstare"><option value="1">Comandat</option><option value="2">Sosit</option><option value="3">Expediat</option><option value="4">Achitat</option></select></div></div>' +
-      '<div class="lg-split"><div class="lg-row"><label>Magazin</label><div class="lg-field lg-radios"><label><input type="radio" name="locatie_mgz" value="1"' + (locDefault === '1' ? ' checked' : '') + '> Timisoara</label><label><input type="radio" name="locatie_mgz" value="2"' + (locDefault === '2' ? ' checked' : '') + '> Utvin</label><label><input type="radio" name="locatie_mgz" value="3"' + (locDefault === '3' ? ' checked' : '') + '> Externe</label></div></div><div class="lg-row"><label>Observații comandă</label><div class="lg-field"><textarea id="observations" placeholder="Adăugați observații sau comentarii despre comandă..."></textarea></div></div></div>' +
-      '<div class="caiet-actions"><button type="button" id="add-product" class="lg-btn lg-btn-default">Adauga produs</button><button type="button" id="save-order" class="lg-btn lg-btn-success">Salvare</button></div>' +
+      '<div class="order-form">' +
+      '<div class="order-line"><label for="client_search">Client</label><div class="order-ctrl caiet-suggest"><div class="caiet-input-plus"><input id="client_search" placeholder="Cauta si click pe client din lista" autocomplete="off" value="' + esc(seed && seed.client_name || '') + '"><button type="button" id="add-client" title="Client nou">+</button></div><ul id="client-list" hidden></ul><input type="hidden" id="id_client" value="' + esc(seed && seed.client_id || '') + '"></div><label for="telefon">Telefon</label><div class="order-ctrl"><input id="telefon" readonly value="' + esc(seed && seed.client_phone || '') + '"></div><label for="adresa">Adresa</label><div class="order-ctrl"><input id="adresa" readonly></div></div>' +
+      '<div class="order-line"><label for="data">Data</label><div class="order-ctrl order-when"><input id="data" type="date" value="' + esc((document.getElementById('day') || {}).value || today()) + '"><input id="created_time" type="text" readonly value="' + esc(time) + '"></div><label for="marca">Marca masina</label><div class="order-ctrl"><input id="marca" value="' + esc(seed && seed.marca || '') + '"></div><label for="idstare">Stare</label><div class="order-ctrl"><select id="idstare"><option value="1">Comandat</option><option value="2">Sosit</option><option value="3">Expediat</option><option value="4">Achitat</option></select></div></div>' +
+      '<div class="order-split"><div class="order-block"><span class="order-k">Magazin</span><div class="order-radios"><label><input type="radio" name="locatie_mgz" value="1"' + (locDefault === '1' ? ' checked' : '') + '> Timisoara</label><label><input type="radio" name="locatie_mgz" value="2"' + (locDefault === '2' ? ' checked' : '') + '> Utvin</label><label><input type="radio" name="locatie_mgz" value="3"' + (locDefault === '3' ? ' checked' : '') + '> Externe</label></div></div><div class="order-block"><label for="observations">Observații comandă</label><div class="order-ctrl"><textarea id="observations" placeholder="Adăugați observații sau comentarii despre comandă..."></textarea></div></div></div>' +
+      '<div class="order-actions"><button type="button" id="add-product" class="lg-btn lg-btn-default">Adauga produs</button><button type="button" id="save-order" class="lg-btn lg-btn-success">Salvare</button></div>' +
+      '</div>' +
       '<table class="caiet-lines"><thead><tr><th>Nr. Crt.</th><th>PRODUS</th><th>COD PRODUS</th><th>CANT.</th><th>PRET</th><th>VALOARE.</th><th></th></tr></thead><tbody id="draft-lines"></tbody></table>',
       true);
     paintDraft();
