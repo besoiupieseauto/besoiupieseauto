@@ -8,7 +8,7 @@ use Besoiu\Services\SupplierSearch\SupplierCartService;
 use RuntimeException;
 
 /**
- * placeOrder one-click din coș furnizori (port SearchingController::placeOrder, fără API furnizori).
+ * placeOrder one-click din coș furnizori (port SearchingController::placeOrder, cu API furnizori).
  */
 final class SupplierPlaceOrderService
 {
@@ -53,6 +53,26 @@ final class SupplierPlaceOrderService
             throw new \InvalidArgumentException('Clientul ERP este obligatoriu.');
         }
 
+        $supplierNote = '';
+        foreach ([
+            dirname(__DIR__, 3) . '/public/api/caiet_parity.php',
+            dirname(__DIR__, 4) . '/admin/public/api/caiet_parity.php',
+        ] as $parityFile) {
+            if (is_file($parityFile)) {
+                require_once $parityFile;
+                break;
+            }
+        }
+        if (function_exists('caiet_supplier_place')) {
+            $placed = caiet_supplier_place(
+                $filteredCart,
+                $importFrom === 'UTVIN' ? 'UTVIN' : 'TIMISOARA',
+                $userId,
+                is_array($payload['autototal_excluded_keys'] ?? null) ? $payload['autototal_excluded_keys'] : []
+            );
+            $supplierNote = implode(' ', $placed['warnings'] ?? []);
+        }
+
         $this->tmpService->clear($sessionId);
         $importResult = $this->importer->importFromSupplierCart($sessionId, $filteredCart, false);
 
@@ -77,7 +97,7 @@ final class SupplierPlaceOrderService
 
         return [
             'mode' => 'order_created',
-            'message' => 'Comandă creată direct din coș furnizori.',
+            'message' => 'Comandă creată direct din coș furnizori.' . ($supplierNote !== '' ? ' ' . $supplierNote : ''),
             'imported' => $importResult['imported'],
             'order' => $order,
         ];

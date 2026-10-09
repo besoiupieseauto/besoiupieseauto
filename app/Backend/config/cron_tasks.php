@@ -117,18 +117,18 @@ function admin_cron_tasks_registry(): array
         [
             'name' => 'FanCourier tracking',
             'category' => 'Legacy ERP',
-            'url' => '/bes/well-known/cron/fancourier-tracking',
-            'batch' => 'Laravel scheduler',
+            'url' => '/admin/api/caiet_cron.php?job=fancourier&key=LKQ_CRON_SECRET',
+            'batch' => 'GET caiet_cron.php job=fancourier',
             'schedule' => 'La 30 min',
-            'note' => 'Actualizare AWB — modul Laravel.',
+            'note' => 'Actualizare AWB FanCourier pe comenzile externe.',
         ],
         [
             'name' => 'Import LKQ',
             'category' => 'Legacy ERP',
-            'url' => '/bes/well-known/lkq-import',
-            'batch' => 'HTTP + cheie .env',
+            'url' => '/admin/api/caiet_cron.php?job=lkq&key=LKQ_CRON_SECRET',
+            'batch' => 'GET caiet_cron.php job=lkq',
             'schedule' => 'La cerere',
-            'note' => 'Import prețuri LKQ pe cheie secretă.',
+            'note' => 'Import prețuri LKQ din arhiva LKQ_ZIP_PATH, pe cheie secretă.',
         ],
     ];
 }

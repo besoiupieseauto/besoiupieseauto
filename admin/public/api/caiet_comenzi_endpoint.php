@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/_autoload.php';
 require_once __DIR__ . '/caiet_pieseauto.php';
+require_once __DIR__ . '/caiet_parity.php';
 
 use Besoiu\Core\Bootstrap\ApiBootstrap;
 use Besoiu\Core\CaietComenzi\CaietComenziModel;
@@ -80,6 +81,32 @@ function caiet_comenzi_dispatch(CaietComenziModel $model, string $type, array $p
         'comenzi_location' => caiet_update_location($payload),
         'comenzi_total' => caiet_update_total($payload),
         'comenzi_line' => caiet_update_line($payload),
+        'comenzi_line_save' => caiet_line_save($payload),
+        'comenzi_line_delete' => caiet_line_delete($payload),
+        'sms_prepare' => caiet_sms_prepare($payload),
+        'sms_send' => caiet_sms_send($payload),
+        'whatsapp' => caiet_whatsapp($payload),
+        'awb_form' => caiet_awb_form($payload),
+        'awb_create' => caiet_awb_create($payload),
+        'awb_update' => caiet_awb_update($payload),
+        'awb_track' => caiet_awb_track(80),
+        'facturi_from_order' => caiet_invoice_from_order($model, $payload),
+        'facturi_print' => caiet_invoice_print($model, caiet_comenzi_id($payload, 'OrderID')),
+        'facturi_line_save' => caiet_invoice_line_save($payload),
+        'facturi_line_delete' => caiet_invoice_line_delete($payload),
+        'utilizatori_save' => caiet_user_save($payload),
+        'utilizatori_delete' => caiet_user_delete($payload),
+        'wishlist_list' => caiet_wishlist_list($userId),
+        'wishlist_save' => caiet_wishlist_save($payload, $userId),
+        'wishlist_delete' => caiet_wishlist_delete($payload, $userId),
+        'wishlist_offer' => caiet_wishlist_offer($payload, $userId),
+        'promo_list' => caiet_promo_list(),
+        'promo_save' => caiet_promo_save($payload),
+        'promo_delete' => caiet_promo_delete($payload),
+        'excluded_list' => caiet_excluded_list($userId),
+        'excluded_save' => caiet_excluded_save($payload, $userId),
+        'excluded_delete' => caiet_excluded_delete($payload, $userId),
+        'lkq_import' => caiet_lkq_import($payload),
         'comenzi_status' => $model->updateOrderStatus(
             caiet_comenzi_id($payload, 'order_id'),
             (int) ($payload['new_status'] ?? $payload['status'] ?? -1),
@@ -125,7 +152,7 @@ function caiet_comenzi_source(array $payload): string
 function caiet_users(): array
 {
     $stmt = Database::getDB('legacy')->query(
-        'SELECT Id, username, email, nume_complet, telefon, rol, active FROM users ORDER BY Id DESC LIMIT 100'
+        'SELECT Id, username, email, nume, prenume, nume_complet, telefon, rol, active FROM users ORDER BY Id DESC LIMIT 200'
     );
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);

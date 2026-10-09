@@ -1035,6 +1035,22 @@ final class CaietComenziModel
                 )->fetchColumn();
                 $update = $this->legacyDb->prepare('UPDATE facturi SET smartbill_invoice_id = :sid WHERE OrderID = :id');
                 $update->execute([':sid' => $smartId, ':id' => $newId]);
+            } elseif (function_exists('caiet_emit_smartbill')) {
+                $remote = caiet_emit_smartbill($this->legacyDb, $newId, $customerId, $lines, $seria, $tip);
+                $remoteSeries = trim((string) ($remote['series'] ?? ''));
+                $remoteNumber = trim((string) ($remote['number'] ?? ''));
+                if ($remoteSeries !== '') {
+                    $seria = $remoteSeries;
+                }
+                $mark = $this->legacyDb->prepare(
+                    'UPDATE facturi SET seria = :seria, smartbill_invoice_id = :sid, smartbill_in_cash = :cash WHERE OrderID = :id'
+                );
+                $mark->execute([
+                    ':seria' => $seria,
+                    ':sid' => ctype_digit($remoteNumber) ? (int) $remoteNumber : null,
+                    ':cash' => $tip === 1 ? 'yes' : 'no',
+                    ':id' => $newId,
+                ]);
             }
 
             $this->legacyDb->commit();
