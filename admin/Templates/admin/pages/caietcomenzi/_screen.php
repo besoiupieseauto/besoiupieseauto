@@ -699,6 +699,7 @@ $caietCsrf = AdminCsrf::token();
     body.querySelectorAll('[data-sms]').forEach(btn => btn.onclick = () => openSms(btn.dataset.sms, btn.dataset.name, btn.dataset.phone));
     body.querySelectorAll('[data-wa]').forEach(btn => btn.onclick = () => openWhatsapp(btn.dataset.wa));
     body.querySelectorAll('[data-awb]').forEach(btn => btn.onclick = () => openAwb(btn.dataset.awb));
+    body.querySelectorAll('[data-label]').forEach(btn => btn.onclick = () => openAwbLabel(btn.dataset.label));
     body.querySelectorAll('[data-copy]').forEach(btn => btn.onclick = () => openNewOrder(rows.find(row => String(row.order_id) === btn.dataset.copy) || null));
     body.querySelectorAll('[data-del]').forEach(btn => btn.onclick = async () => {
       if (!confirm('Ștergi comanda ' + btn.dataset.del + '?')) return;
@@ -730,7 +731,7 @@ $caietCsrf = AdminCsrf::token();
     const track = /^\d+$/.test(awb)
       ? 'https://www.fancourier.ro/awb-tracking/?tracking=' + encodeURIComponent(awb)
       : 'https://sameday.ro/#awb=' + encodeURIComponent(awb);
-    let html = '<strong>' + esc(awb) + '</strong><a class="awb-track" href="' + track + '" target="_blank" rel="noopener">Urmărire colet</a>';
+    let html = '<strong>' + esc(awb) + '</strong><button type="button" class="awb-track" data-label="' + esc(awb) + '">Tipărește AWB</button><a class="awb-track" href="' + track + '" target="_blank" rel="noopener">Urmărire colet</a>';
     const swap = String(row.swap_awb || '').trim();
     if (swap !== '' && swap !== '___') {
       html += '<strong>' + esc(swap) + '</strong>';
@@ -1026,6 +1027,18 @@ $caietCsrf = AdminCsrf::token();
       page.document.open();
       page.document.write(data.html || '');
       page.document.close();
+    }
+  }
+  async function openAwbLabel(awb) {
+    try {
+      const data = await api('awb_label', {awb});
+      const binary = atob(data.pdf_base64 || '');
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+      const url = URL.createObjectURL(new Blob([bytes], {type: 'application/pdf'}));
+      window.open(url, '_blank', 'noopener');
+    } catch (error) {
+      alert(error.message);
     }
   }
   async function openWhatsapp(orderId) {

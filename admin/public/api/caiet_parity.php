@@ -463,6 +463,85 @@ function caiet_awb_update(array $payload): array
 }
 
 /**
+ * @param array<string, mixed> $payload
+ * @return array{filename:string,pdf_base64:string}
+ */
+function caiet_awb_label(array $payload): array
+{
+    $awb = trim((string) ($payload['awb'] ?? ''));
+    if ($awb === '' || $awb === '___') {
+        throw new InvalidArgumentException('AWB-ul lipsește.');
+    }
+    if (preg_match('/^1ONB/i', $awb) === 1) {
+        $pdf = caiet_sameday_label($awb);
+    } else {
+        $pdf = caiet_fancourier_label($awb);
+    }
+
+    return ['filename' => 'awb-' . $awb . '.pdf', 'pdf_base64' => base64_encode($pdf)];
+}
+
+function caiet_fancourier_label(string $awb): string
+{
+    $username = caiet_cred('fancourier', 'username') ?: caiet_env('FANCOURIER_USERNAME');
+    $password = caiet_cred('fancourier', 'password') ?: caiet_env('FANCOURIER_PASSWORD');
+    $clientId = caiet_cred('fancourier', 'client_id') ?: caiet_env('FANCOURIER_CLIENT_ID');
+    if ($username === '' || $password === '' || $clientId === '') {
+        throw new InvalidArgumentException('FanCourier nu este configurat.');
+    }
+    $base = rtrim(caiet_env('FANCOURIER_API_URL', 'https://api.fancourier.ro'), '/');
+    $login = caiet_http('POST', $base . '/login?' . http_build_query(['username' => $username, 'password' => $password]), null, ['Accept: application/json']);
+    $token = (string) ($login['json']['data']['token'] ?? '');
+    if ($token === '') {
+        throw new InvalidArgumentException('Autentificare FanCourier eșuată.');
+    }
+    $url = $base . '/awb/label?' . http_build_query(['clientId' => $clientId, 'pdf' => 1, 'language' => 'ro']) . '&awbs[]=' . rawurlencode($awb);
+    $response = caiet_http('GET', $url, null, ['Authorization: Bearer ' . $token, 'Accept: application/pdf']);
+    if ($response['status'] >= 400 || !str_starts_with($response['body'], '%PDF')) {
+        throw new InvalidArgumentException('FanCourier nu a returnat PDF-ul AWB.');
+    }
+
+    return $response['body'];
+}
+
+function caiet_sameday_token(): string
+{
+    $username = caiet_cred('sameday', 'username') ?: caiet_env('SAMEDAY_USERNAME');
+    $password = caiet_cred('sameday', 'password') ?: caiet_env('SAMEDAY_PASSWORD');
+    if ($username === '' || $password === '') {
+        return '';
+    }
+    $base = rtrim(caiet_env('SAMEDAY_API_URL', 'https://api.sameday.ro'), '/');
+    $authBody = json_encode(['username' => $username, 'password' => $password]);
+    $auth = caiet_http('POST', $base . '/api/authenticate', $authBody === false ? '{}' : $authBody, [
+        'Content-Type: application/json',
+        'Accept: application/json',
+        'X-Auth-Username: ' . $username,
+        'X-Auth-Password: ' . $password,
+    ]);
+
+    return (string) ($auth['json']['token'] ?? '');
+}
+
+function caiet_sameday_label(string $awb): string
+{
+    $token = caiet_sameday_token();
+    if ($token === '') {
+        throw new InvalidArgumentException('Sameday nu este configurat.');
+    }
+    $base = rtrim(caiet_env('SAMEDAY_API_URL', 'https://api.sameday.ro'), '/');
+    $response = caiet_http('GET', $base . '/api/awb/download/' . rawurlencode($awb) . '/pdf', null, [
+        'Authorization: Bearer ' . $token,
+        'Accept: application/pdf',
+    ]);
+    if ($response['status'] >= 400 || !str_starts_with($response['body'], '%PDF')) {
+        throw new InvalidArgumentException('Sameday nu a returnat PDF-ul AWB.');
+    }
+
+    return $response['body'];
+}
+
+/**
  * @return array<string, int>
  */
 function caiet_awb_track(int $limit): array
@@ -484,8 +563,27 @@ function caiet_awb_track(int $limit): array
         $login = caiet_http('POST', $base . '/login?' . http_build_query(['username' => $username, 'password' => $password]), null, ['Accept: application/json']);
         $token = (string) ($login['json']['data']['token'] ?? '');
     }
+    $samedayToken = '';
     foreach ($rows as $row) {
         $awb = (string) $row['awb'];
+        if (preg_match('/^1ONB/i', $awb) === 1) {
+            if ($samedayToken === '') {
+                $samedayToken = caiet_sameday_token();
+            }
+            if ($samedayToken === '') {
+                continue;
+            }
+            $sameBase = rtrim(caiet_env('SAMEDAY_API_URL', 'https://api.sameday.ro'), '/');
+            $track = caiet_http('GET', $sameBase . '/api/client/awb/' . rawurlencode($awb) . '/status', null, ['Authorization: Bearer ' . $samedayToken, 'Accept: application/json']);
+            $name = (string) ($track['json']['expeditionStatus']['statusLabel'] ?? $track['json']['status'] ?? '');
+            if ($name === '') {
+                continue;
+            }
+            $stareSql = str_contains(strtolower($name), 'livrat') ? ', stare = 4' : '';
+            $pdo->prepare('UPDATE comenzi_ext SET courier_status = :status' . $stareSql . ' WHERE idcomanda = :id')->execute([':status' => $name, ':id' => (int) $row['idcomanda']]);
+            $updated++;
+            continue;
+        }
         if (!ctype_digit($awb) || $token === '') {
             continue;
         }

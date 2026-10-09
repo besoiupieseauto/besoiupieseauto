@@ -89,6 +89,7 @@ function caiet_comenzi_dispatch(CaietComenziModel $model, string $type, array $p
         'awb_form' => caiet_awb_form($payload),
         'awb_create' => caiet_awb_create($payload),
         'awb_update' => caiet_awb_update($payload),
+        'awb_label' => caiet_awb_label($payload),
         'awb_track' => caiet_awb_track(80),
         'facturi_from_order' => caiet_invoice_from_order($model, $payload),
         'facturi_print' => caiet_invoice_print($model, caiet_comenzi_id($payload, 'OrderID')),
