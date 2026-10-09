@@ -605,50 +605,84 @@ final class CaietComenziModel
     }
 
     /**
-     * @return array<int, array<string, mixed>>
+     * @param array<string, mixed> $filters
+     * @return array<string, mixed>
      */
     public function findIncasari(array $filters = []): array
     {
-        $params = [];
-        $where = [];
-        $limit = $this->resolveLimit($filters['limit'] ?? 100);
-
-        $search = trim((string) ($filters['search'] ?? ''));
-        if ($search !== '') {
-            $like = '%' . $search . '%';
-            $params[':s_text'] = $like;
-            $params[':s_nume'] = $like;
-            $where[] = '(i.cstmtext LIKE :s_text OR cl.nume LIKE :s_nume)';
+        $date = trim((string) ($filters['order_date'] ?? ''));
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $date) !== 1) {
+            $date = date('Y-m-d');
         }
-
-        $dateFrom = trim((string) ($filters['date_from'] ?? ''));
-        if ($dateFrom !== '' && preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateFrom) === 1) {
-            $params[':date_from'] = $dateFrom;
-            $where[] = 'i.data >= :date_from';
+        $location = trim((string) ($filters['location'] ?? ''));
+        if ($location !== '1' && $location !== '2') {
+            $location = '';
         }
+        $method = isset($filters['method']) && is_numeric($filters['method']) ? (int) $filters['method'] : 0;
+        $page = max(1, (int) ($filters['page'] ?? 1));
+        $perPage = 50;
+        $offset = ($page - 1) * $perPage;
 
-        $dateTo = trim((string) ($filters['date_to'] ?? ''));
-        if ($dateTo !== '' && preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateTo) === 1) {
-            $params[':date_to'] = $dateTo;
-            $where[] = 'i.data <= :date_to';
+        $where = ['DATE(i.data) = :date', '(i.idcmd = 0 OR c.idcomanda IS NOT NULL)'];
+        $params = [':date' => $date];
+        if ($location !== '') {
+            $where[] = 'i.locatie_mgz = :location';
+            $params[':location'] = $location;
         }
+        if ($method > 0) {
+            $where[] = 'i.idstare = :method';
+            $params[':method'] = $method;
+        }
+        $whereSql = implode(' AND ', $where);
 
-        $sql = "SELECT i.id, i.idcmd, i.userid, i.idclient, i.cstmtext, i.suma, i.data, i.data_time,
-                       i.idstare, i.locatie_mgz,
-                       COALESCE(cl.nume, '-') AS client_name
+        $count = $this->legacyDb->prepare(
+            "SELECT COUNT(*) FROM incasari i LEFT JOIN comenzi c ON c.idcomanda = i.idcmd WHERE {$whereSql}"
+        );
+        $count->execute($params);
+        $totalRows = (int) $count->fetchColumn();
+        $pages = max(1, (int) ceil($totalRows / $perPage));
+
+        $sql = "SELECT i.id, i.idcmd, i.idclient, i.suma, i.data, i.data_time, i.idstare, i.cstmtext, i.locatie_mgz,
+                       COALESCE(cl.nume, '') AS client_name, COALESCE(u.username, '') AS user_name, c.data AS order_date
                 FROM incasari i
-                LEFT JOIN clienti cl ON cl.idclienti = i.idclient";
-
-        if (!empty($where)) {
-            $sql .= ' WHERE ' . implode(' AND ', $where);
-        }
-
-        $sql .= ' ORDER BY i.id DESC LIMIT ' . $limit;
-
+                LEFT JOIN users u ON u.Id = i.userid
+                LEFT JOIN clienti cl ON cl.idclienti = i.idclient
+                LEFT JOIN comenzi c ON c.idcomanda = i.idcmd
+                WHERE {$whereSql}
+                ORDER BY i.id DESC
+                LIMIT {$perPage} OFFSET {$offset}";
         $stmt = $this->legacyDb->prepare($sql);
         $stmt->execute($params);
+        $methods = [
+            3 => 'Cash', 4 => 'Avans', 5 => 'Retur', 6 => 'Card', 7 => 'FD', 9 => 'OP',
+            10 => 'Avans FD', 11 => 'Avans Cash', 12 => 'Avans Card', 13 => 'Avans OP',
+        ];
+        $rows = [];
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            $status = (int) ($row['idstare'] ?? 0);
+            $clientId = (int) ($row['idclient'] ?? 0);
+            $time = trim((string) ($row['data_time'] ?? ''));
+            $rows[] = [
+                'id' => (int) ($row['id'] ?? 0),
+                'order_date' => $this->formatRoDate($row['order_date'] ?? null),
+                'user_name' => (string) ($row['user_name'] ?? ''),
+                'receipt_date' => $this->formatRoDate($row['data'] ?? null),
+                'receipt_time' => strlen($time) >= 5 ? substr($time, 0, 5) : '',
+                'client_name' => $clientId === 0 ? (trim((string) ($row['cstmtext'] ?? '')) ?: '-') : (string) ($row['client_name'] ?? ''),
+                'suma' => round((float) ($row['suma'] ?? 0), 2),
+                'store_name' => (string) ($row['locatie_mgz'] ?? '') === '1' ? 'Timisoara' : 'Utvin',
+                'method_name' => $methods[$status] ?? 'Necunoscut',
+                'missing_order' => empty($row['order_date']),
+            ];
+        }
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return [
+            'rows' => $rows,
+            'page' => $page,
+            'pages' => $pages,
+            'total' => $totalRows,
+            'totals' => $this->incasariTotals($date, $location, $method),
+        ];
     }
 
     /**
@@ -1180,6 +1214,104 @@ final class CaietComenziModel
     /**
      * @return array<string, int|float>
      */
+    /**
+     * @return array<string, float>
+     */
+    private function incasariTotals(string $date, string $location, int $method): array
+    {
+        $where = ['DATE(data) = :date'];
+        $params = [':date' => $date];
+        if ($location !== '') {
+            $where[] = 'locatie_mgz = :location';
+            $params[':location'] = $location;
+        }
+        if ($method > 0) {
+            $where[] = 'idstare = :method';
+            $params[':method'] = $method;
+        }
+        $stmt = $this->legacyDb->prepare(
+            'SELECT idstare, COALESCE(SUM(suma), 0) AS total FROM incasari WHERE ' . implode(' AND ', $where) . ' GROUP BY idstare'
+        );
+        $stmt->execute($params);
+        $by = [];
+        $day = 0.0;
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $amount = (float) ($row['total'] ?? 0);
+            $by[(int) ($row['idstare'] ?? 0)] = $amount;
+            $day += $amount;
+        }
+        $pick = static function (array $codes) use ($by, $method): float {
+            if ($method > 0 && !in_array($method, $codes, true)) {
+                return 0.0;
+            }
+            $sum = 0.0;
+            foreach ($codes as $code) {
+                if ($method > 0 && $code !== $method && !in_array($method, [3, 6, 7, 9], true)) {
+                    continue;
+                }
+                $sum += $by[$code] ?? 0.0;
+            }
+            return $sum;
+        };
+        if ($date === date('Y-m-d')) {
+            $day += (float) ($this->getDailyCash()['amount'] ?? 0);
+        }
+
+        return [
+            'zi' => round($day, 2),
+            'cash' => round($pick([3, 11]), 2),
+            'op' => round($pick([9, 13]), 2),
+            'card' => round($pick([6, 12]), 2),
+            'fd' => round($pick([7, 10]), 2),
+            'retur' => round($pick([5]), 2),
+            'avans' => round($pick([4]), 2),
+        ];
+    }
+
+    private function formatRoDate($value): string
+    {
+        $value = trim((string) $value);
+        if ($value === '') {
+            return '-';
+        }
+        $stamp = strtotime($value);
+        if ($stamp === false) {
+            return '-';
+        }
+
+        return date('d/m/Y', $stamp);
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     * @return array<string, int|float|string>
+     */
+    public function addIncasareExpense(array $payload, int $userId): array
+    {
+        $text = trim((string) ($payload['text'] ?? ''));
+        $amount = round((float) ($payload['amount'] ?? 0), 2);
+        $location = strtoupper(trim((string) ($payload['location'] ?? 'TM')));
+        if ($text === '') {
+            throw new \InvalidArgumentException('Textul este obligatoriu.');
+        }
+        $id = $this->nextId('incasari', 'id');
+        $stmt = $this->legacyDb->prepare(
+            'INSERT INTO incasari (id, idcmd, userid, idstare, suma, data, data_time, idclient, cstmtext, locatie_mgz)
+             VALUES (:id, 0, :user, 3, :amount, :data, :time, 0, :text, :location)'
+        );
+        $stmt->execute([
+            ':id' => $id,
+            ':user' => $userId,
+            ':amount' => $amount,
+            ':data' => date('Y-m-d'),
+            ':time' => date('H:i:s'),
+            ':text' => $text,
+            ':location' => $location === 'UTVIN' ? 2 : 1,
+        ]);
+
+        return ['id' => $id, 'suma' => $amount];
+    }
+
     public function getDailyCash(): array
     {
         $todayTs = strtotime(date('Y-m-d 00:00:00'));

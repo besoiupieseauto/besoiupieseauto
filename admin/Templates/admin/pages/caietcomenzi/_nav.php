@@ -134,6 +134,28 @@ $caietLinks = [
 .inv-table th,.inv-table td{border:1px solid #ddd;padding:8px;text-align:center}
 .inv-table thead th{background:#fcf8e3;font-weight:600}
 .inv-table .inv-right{text-align:right}
+.inc-head{flex:1 0 100%;background:#8fbf6a;color:#173017;padding:12px 16px;margin:-16px -16px 4px}
+.inc-head h4{margin:0;font-size:18px;font-weight:500}
+.inc-date{display:flex}
+.inc-date button,.inc-date input{height:34px;border:1px solid #ccc;background:#fff}
+.inc-date button{width:34px;cursor:pointer}
+.inc-date input{width:118px;text-align:center;border-left:0;border-right:0}
+.caiet-toolbar select{height:34px;min-width:140px;border:1px solid #ccc;background:#fff;padding:0 8px}
+.caiet-toolbar .inc-add{height:34px;padding:0 12px;background:#337ab7;color:#fff;border:1px solid #2e6da4;border-radius:2px;cursor:pointer}
+.inc-table thead th{background:#8fbf6a;color:#173017;text-align:center;text-transform:none;letter-spacing:0;font-size:14px}
+.inc-table td{text-align:center}
+.inc-table td.inc-client{text-align:left}
+.inc-table td.inc-sum{text-align:right}
+.inc-table tbody tr:nth-child(even){background:#f3f8ef}
+.inc-table tr.inc-red td{background:#ff6969}
+.inc-user{display:flex;flex-direction:column;line-height:1.35}
+.inc-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.inc-badges span{color:#fff;font-weight:700;padding:8px 14px;border-radius:4px}
+.inc-badges .info{background:#5bc0de}
+.inc-badges .ok{background:#5cb85c}
+.inc-pager{display:flex;justify-content:flex-end;gap:4px;margin-top:10px}
+.inc-pager button{border:1px solid #ddd;background:#fff;color:#337ab7;padding:6px 12px;cursor:pointer}
+.inc-pager button.is-on{background:#337ab7;color:#fff}
 .inv-form label{display:flex;flex-direction:column;gap:4px;margin:0 0 10px;font-size:13px}
 .inv-form input,.inv-form select,.inv-form textarea{border:1px solid #ccc;padding:6px 8px;width:100%;box-sizing:border-box;background:#fff}
 .inv-inline{display:flex;gap:8px;align-items:center}

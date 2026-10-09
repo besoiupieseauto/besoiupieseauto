@@ -411,42 +411,78 @@ $caietCsrf = AdminCsrf::token();
   }
 
   function loadIncasari() {
-    head.innerHTML = '<tr><th>ID</th><th>Data</th><th>Client</th><th>Comandă</th><th>Sumă</th><th>Notă</th><th>Locație</th><th></th></tr>';
-    toolbar.innerHTML = '<input id="q" type="search" placeholder="Client sau notă"><input id="from" type="date"><input id="to" type="date"><button type="button" id="go">Caută</button><button type="button" id="new">Încasare nouă</button><label>Casa zilei <input id="cash" type="number" step="0.01"></label><button type="button" id="cash-save">Salvează casa</button>';
-    document.getElementById('go').onclick = () => renderIncasari();
-    document.getElementById('new').onclick = () => openForm('Încasare nouă', incasareFields(), {data: today()}, payload => api('incasari_save', payload));
-    document.getElementById('cash-save').onclick = async () => {
-      await api('incasari_daily_save', {amount: document.getElementById('cash').value});
-      alert('Casa zilei a fost salvată.');
+    const title = document.querySelector('.admin-content > h2');
+    if (title) title.style.display = 'none';
+    document.querySelector('.caiet-table').classList.add('inc-table');
+    head.innerHTML = '<tr><th>Data comanda</th><th>Utilizator</th><th>Client</th><th>Suma incasata</th><th>Magazin</th><th>Metoda incasare</th></tr>';
+    toolbar.innerHTML = '<div class="inc-head"><h4>⌕ Incasari</h4></div>'
+      + '<div class="inc-date"><button type="button" id="inc-prev">‹</button><input id="inc-date" readonly><button type="button" id="inc-next">›</button></div>'
+      + '<select id="inc-loc"><option value="">Locație</option><option value="1">TM</option><option value="2">UTVIN</option></select>'
+      + '<select id="inc-method"><option value="">Metodă</option><option value="3">Cash</option><option value="6">Card</option><option value="9">OP</option><option value="7">FD</option><option value="5">Return</option><option value="4">Avans</option></select>'
+      + '<button type="button" id="inc-add" class="inc-add">Adauga Cheltuieli</button>';
+    const date = document.getElementById('inc-date');
+    date.value = roStamp(new Date());
+    document.getElementById('inc-prev').onclick = () => shiftIncasari(-1);
+    document.getElementById('inc-next').onclick = () => shiftIncasari(1);
+    document.getElementById('inc-loc').onchange = () => renderIncasari(1);
+    document.getElementById('inc-method').onchange = () => renderIncasari(1);
+    document.getElementById('inc-add').onclick = () => openExpense();
+    return renderIncasari(1);
+  }
+  function roStamp(date) {
+    const pad = value => String(value).padStart(2, '0');
+    return pad(date.getDate()) + '/' + pad(date.getMonth() + 1) + '/' + date.getFullYear();
+  }
+  function isoFromRo(value) {
+    const parts = String(value || '').split('/');
+    if (parts.length !== 3) return today();
+    return parts[2] + '-' + parts[1] + '-' + parts[0];
+  }
+  function shiftIncasari(delta) {
+    const input = document.getElementById('inc-date');
+    const parts = input.value.split('/');
+    const date = new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]));
+    date.setDate(date.getDate() + delta);
+    input.value = roStamp(date);
+    renderIncasari(1);
+  }
+  function incBadge(value) {
+    return Math.round(Number(value || 0)).toLocaleString('ro-RO');
+  }
+  async function renderIncasari(page) {
+    const data = await api('incasari_list', {
+      order_date: isoFromRo(document.getElementById('inc-date').value),
+      location: document.getElementById('inc-loc').value,
+      method: document.getElementById('inc-method').value,
+      page: page || 1
+    });
+    const list = data.rows || [];
+    body.innerHTML = list.map(row => '<tr class="' + (row.missing_order ? 'inc-red' : '') + '"><td>' + esc(row.order_date) + '</td><td><div class="inc-user"><span>' + esc(row.user_name) + '</span><span>' + esc(row.receipt_date) + '</span><span>' + esc(row.receipt_time) + '</span></div></td><td class="inc-client">' + esc(row.client_name) + '</td><td class="inc-sum">' + Number(row.suma || 0).toFixed(2) + '</td><td>' + esc(row.store_name) + '</td><td>' + esc(row.method_name) + '</td></tr>').join('') || '<tr><td colspan="6">Nu există înregistrări pentru data selectată.</td></tr>';
+    const totals = data.totals || {};
+    const pages = Number(data.pages || 1);
+    const current = Number(data.page || 1);
+    let pager = '';
+    if (pages > 1) {
+      pager = '<div class="inc-pager">' + Array.from({length: pages}, (_, index) => {
+        const number = index + 1;
+        return '<button type="button" data-page="' + number + '"' + (number === current ? ' class="is-on"' : '') + '>' + number + '</button>';
+      }).join('') + '</div>';
+    }
+    extra.innerHTML = '<div class="inc-badges"><span class="info">Total zi: ' + incBadge(totals.zi) + '</span><span class="ok">Cash: ' + incBadge(totals.cash) + '</span><span class="ok">OP: ' + incBadge(totals.op) + '</span><span class="ok">Card: ' + incBadge(totals.card) + '</span><span class="ok">FD: ' + incBadge(totals.fd) + '</span><span class="ok">Retur: ' + incBadge(totals.retur) + '</span><span class="ok">Avans: ' + incBadge(totals.avans) + '</span></div>' + pager;
+    extra.querySelectorAll('[data-page]').forEach(btn => btn.onclick = () => renderIncasari(Number(btn.dataset.page)));
+  }
+  function openExpense() {
+    sheet('Start Of Day Cash', '<form class="inv-form" id="exp-form"><label>Text<textarea id="exp-text" rows="3" required></textarea></label><label>Price (RON)<input id="exp-price" type="number" step="0.01" required></label><label>Location<select id="exp-loc"><option value="TM">TM</option><option value="UTVIN">UTVIN</option></select></label><div class="caiet-actions"><button type="submit" class="lg-btn-success">Save</button><button type="button" data-close>Close</button></div></form>', 'form');
+    document.getElementById('exp-form').onsubmit = async event => {
+      event.preventDefault();
+      try {
+        await api('incasari_expense', {text: document.getElementById('exp-text').value, amount: document.getElementById('exp-price').value, location: document.getElementById('exp-loc').value});
+        closeModal();
+        await renderIncasari(1);
+      } catch (error) {
+        alert(error.message || 'Nu am putut salva cheltuiala.');
+      }
     };
-    return renderIncasari();
-  }
-  function incasareFields() {
-    return [
-      {name:'idclient', label:'ID client'},
-      {name:'idcmd', label:'ID comandă'},
-      {name:'suma', label:'Sumă'},
-      {name:'data', label:'Data'},
-      {name:'cstmtext', label:'Notă'},
-      {name:'locatie_mgz', label:'Locație'},
-      {name:'idstare', label:'Stare'}
-    ];
-  }
-  async function renderIncasari() {
-    const daily = await api('incasari_daily', {});
-    const cash = document.getElementById('cash');
-    if (cash && document.activeElement !== cash) cash.value = daily.amount ?? 0;
-    rows = await api('incasari_list', {search: document.getElementById('q').value, date_from: document.getElementById('from').value, date_to: document.getElementById('to').value, limit: 100});
-    body.innerHTML = rows.map(row => '<tr><td>' + esc(row.id) + '</td><td>' + esc(row.data) + ' ' + esc(row.data_time) + '</td><td>' + esc(row.client_name) + '</td><td>' + esc(row.idcmd) + '</td><td>' + Number(row.suma || 0).toFixed(2) + '</td><td>' + esc(row.cstmtext) + '</td><td>' + esc(row.locatie_mgz) + '</td><td><button data-edit="' + esc(row.id) + '">Edit</button> <button data-del="' + esc(row.id) + '">Șterge</button></td></tr>').join('') || '<tr><td colspan="8">Nicio încasare.</td></tr>';
-    body.querySelectorAll('[data-edit]').forEach(btn => btn.onclick = () => {
-      const row = rows.find(item => String(item.id) === btn.dataset.edit);
-      openForm('Edit încasare', incasareFields(), row, payload => api('incasari_save', Object.assign({id: row.id}, payload)));
-    });
-    body.querySelectorAll('[data-del]').forEach(btn => btn.onclick = async () => {
-      if (!confirm('Ștergi încasarea?')) return;
-      await api('incasari_delete', {id: btn.dataset.del});
-      await renderIncasari();
-    });
   }
 
   async function loadUsers() {

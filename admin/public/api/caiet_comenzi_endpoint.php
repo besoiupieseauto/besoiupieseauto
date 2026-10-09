@@ -58,6 +58,7 @@ function caiet_comenzi_dispatch(CaietComenziModel $model, string $type, array $p
         'facturi_details' => caiet_comenzi_factura($model, caiet_comenzi_id($payload, 'OrderID')),
         'incasari_list' => $model->findIncasari($payload),
         'incasari_save' => $model->saveIncasare($payload, $userId),
+        'incasari_expense' => $model->addIncasareExpense($payload, $userId),
         'incasari_delete' => ['deleted' => $model->deleteIncasare(caiet_comenzi_id($payload, 'id'))],
         'incasari_daily' => $model->getDailyCash(),
         'incasari_daily_save' => $model->updateDailyCash((float) ($payload['amount'] ?? 0)),
