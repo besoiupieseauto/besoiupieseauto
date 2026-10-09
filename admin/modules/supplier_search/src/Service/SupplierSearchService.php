@@ -201,6 +201,7 @@ final class SupplierSearchService
                     CURLOPT_TIMEOUT => $timeout,
                     CURLOPT_CONNECTTIMEOUT => $connectTimeout,
                 ]);
+                SupplierSearchConfig::configureCurl($ch);
                 $handles[] = $ch;
                 $handleMeta[] = ['key' => 'materom', 'handle' => $ch, 'type' => 'json'];
             } else {
@@ -209,7 +210,12 @@ final class SupplierSearchService
         }
 
         if (in_array('autopartner', $suppliers, true)) {
-            $furnizor = SupplierSearchConfig::autopartnerFurnizor();
+            try {
+                $furnizor = SupplierSearchConfig::autopartnerFurnizor();
+            } catch (\Throwable) {
+                $furnizor = null;
+                $responses['autopartner'] = ['success' => false, 'data' => [], 'error' => 'Auto Partner indisponibil (catalog furnizori).'];
+            }
             if ($furnizor !== null) {
                 $products = $this->buildAutopartnerProducts($query, $catalogLookup);
                 $client = SupplierHooks::autoPartnerClient()->configure($furnizor);
@@ -232,6 +238,7 @@ final class SupplierSearchService
                     CURLOPT_TIMEOUT => $timeout,
                     CURLOPT_CONNECTTIMEOUT => $connectTimeout,
                 ]);
+                SupplierSearchConfig::configureCurl($ch);
                 $handles[] = $ch;
                 $handleMeta[] = ['key' => 'autopartner', 'handle' => $ch, 'type' => 'json'];
             } else {
@@ -270,7 +277,8 @@ final class SupplierSearchService
                         CURLOPT_TIMEOUT => $timeout,
                         CURLOPT_CONNECTTIMEOUT => $connectTimeout,
                     ]);
-                    $handles[] = $ch;
+                    SupplierSearchConfig::configureCurl($ch);
+                $handles[] = $ch;
                     $handleMeta[] = ['key' => 'autonet', 'handle' => $ch, 'type' => 'autonet_chunk', 'chunk' => $chunkIndex];
                 }
             }
@@ -302,7 +310,8 @@ final class SupplierSearchService
                         CURLOPT_TIMEOUT => $timeout,
                         CURLOPT_CONNECTTIMEOUT => $connectTimeout,
                     ]);
-                    $handles[] = $ch;
+                    SupplierSearchConfig::configureCurl($ch);
+                $handles[] = $ch;
                     $handleMeta[] = [
                         'key' => 'autototal',
                         'handle' => $ch,

@@ -37,9 +37,9 @@ final class MateromParser
             $entries[] = [
                 'code' => $baseCode,
                 'mfrpn' => $baseCode,
-                'manufacturer' => $product['manufacturer'] ?? null,
+                'manufacturer' => self::text($product['manufacturer'] ?? null),
                 'db_name' => null,
-                'name' => $product['name'] ?? null,
+                'name' => self::text($product['name'] ?? null),
                 'ean' => $product['ean'] ?? null,
                 'material' => $product['material'] ?? null,
                 'supplier_name' => 'materom',
@@ -48,5 +48,27 @@ final class MateromParser
         }
 
         return $entries;
+    }
+
+    private static function text(mixed $value): ?string
+    {
+        if (is_string($value) || is_numeric($value)) {
+            $text = trim((string) $value);
+            return $text !== '' ? $text : null;
+        }
+        if (!is_array($value)) {
+            return null;
+        }
+        foreach (['name', 'label', 'title'] as $key) {
+            if (!isset($value[$key]) || !is_scalar($value[$key])) {
+                continue;
+            }
+            $text = trim((string) $value[$key]);
+            if ($text !== '') {
+                return $text;
+            }
+        }
+
+        return null;
     }
 }

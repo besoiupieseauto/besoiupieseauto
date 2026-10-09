@@ -31,6 +31,7 @@ final class AutototalClient
         ], JSON_UNESCAPED_UNICODE);
 
         $ch = curl_init($url);
+        SupplierSearchConfig::configureCurl($ch);
         curl_setopt_array($ch, [
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => $payload,
@@ -76,6 +77,7 @@ final class AutototalClient
         ]);
 
         $ch = curl_init($url);
+        SupplierSearchConfig::configureCurl($ch);
         curl_setopt_array($ch, [
             CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . $token, 'Accept: application/json'],
             CURLOPT_RETURNTRANSFER => true,

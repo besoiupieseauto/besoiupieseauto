@@ -56,6 +56,36 @@ final class SupplierSearchConfig
         return is_array($secrets[$normalized] ?? null) ? $secrets[$normalized] : [];
     }
 
+    private static function envValue(string $key): string
+    {
+        $fromProcess = trim((string) ($_ENV[$key] ?? ''));
+        if ($fromProcess === '') {
+            $fromGetenv = getenv($key);
+            $fromProcess = $fromGetenv === false ? '' : trim((string) $fromGetenv);
+        }
+        if ($fromProcess !== '') {
+            return $fromProcess;
+        }
+
+        static $file = null;
+        if ($file === null) {
+            $file = [];
+            $path = dirname(self::backendRoot()) . '/Config/.env';
+            if (is_file($path)) {
+                foreach (file($path, FILE_IGNORE_NEW_LINES) ?: [] as $line) {
+                    $line = trim($line);
+                    if ($line === '' || str_starts_with($line, '#') || !str_contains($line, '=')) {
+                        continue;
+                    }
+                    [$name, $value] = explode('=', $line, 2);
+                    $file[trim($name)] = trim($value, " \t\"'");
+                }
+            }
+        }
+
+        return trim((string) ($file[$key] ?? ''));
+    }
+
     /** @param array<string, mixed> $entry */
     public static function materomTokenFromEntry(array $entry = []): string
     {
@@ -95,13 +125,42 @@ final class SupplierSearchConfig
     /** @return array<string, mixed>|null */
     public static function autopartnerFurnizor(): ?array
     {
-        $model = new SupplierCatalogRepository();
-        $row = $model->findByCode('AUTOPARTNER');
-        if ($row === null) {
+        $row = null;
+        try {
+            $model = new SupplierCatalogRepository();
+            $found = $model->findByCode('AUTOPARTNER');
+            if (is_array($found)) {
+                $row = $found;
+            }
+        } catch (\Throwable) {
+            $row = null;
+        }
+
+        $secrets = self::secretsForCode('AUTOPARTNER');
+        if ($row === null && $secrets === []) {
             return null;
         }
 
-        return $row;
+        $merged = array_merge([
+            'code' => 'AUTOPARTNER',
+            'name' => 'Auto Partner',
+            'status' => 'active',
+        ], $row ?? []);
+        foreach ($secrets as $key => $value) {
+            if ($value === null || $value === '') {
+                continue;
+            }
+            if (!array_key_exists($key, $merged) || trim((string) $merged[$key]) === '') {
+                $merged[$key] = $value;
+            }
+        }
+
+        $hasApi = trim((string) ($merged['api_base_url'] ?? '')) !== ''
+            || trim((string) ($merged['api_token'] ?? '')) !== ''
+            || trim((string) ($merged['api_client_code'] ?? '')) !== ''
+            || trim((string) ($merged['conn_username'] ?? '')) !== '';
+
+        return $hasApi ? $merged : null;
     }
 
     public static function legacyPdo(): ?PDO
@@ -170,20 +229,12 @@ final class SupplierSearchConfig
         $secrets = self::secretsForCode('AUTOTOTAL');
 
         return [
-            'username' => trim((string) (
-                $_ENV['AUTOTOTAL_USERNAME']
-                ?? $_ENV['AUTOTOTAL_USER_TIMISOARA']
-                ?? $secrets['search_username']
-                ?? $secrets['conn_username']
-                ?? ''
-            )),
-            'password' => trim((string) (
-                $_ENV['AUTOTOTAL_PASSWORD']
-                ?? $_ENV['AUTOTOTAL_PASS_TIMISOARA']
-                ?? $secrets['search_password']
-                ?? $secrets['conn_password']
-                ?? ''
-            )),
+            'username' => self::envValue('AUTOTOTAL_USERNAME')
+                ?: self::envValue('AUTOTOTAL_USER_TIMISOARA')
+                ?: trim((string) ($secrets['search_username'] ?? $secrets['conn_username'] ?? '')),
+            'password' => self::envValue('AUTOTOTAL_PASSWORD')
+                ?: self::envValue('AUTOTOTAL_PASS_TIMISOARA')
+                ?: trim((string) ($secrets['search_password'] ?? $secrets['conn_password'] ?? '')),
         ];
     }
 
@@ -196,6 +247,39 @@ final class SupplierSearchConfig
     public static function autototalAvailabilityBaseUrl(): string
     {
         return rtrim(trim((string) ($_ENV['AUTOTOTAL_AVAILABILITY_URL'] ?? 'https://atx.autototal.ro:15063')), '/');
+    }
+
+    public static function configureCurl(\CurlHandle $handle): void
+    {
+        $ca = self::caBundle();
+        if ($ca === null) {
+            return;
+        }
+
+        curl_setopt($handle, CURLOPT_CAINFO, $ca);
+        curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, true);
+    }
+
+    private static function caBundle(): ?string
+    {
+        $ini = trim((string) ini_get('curl.cainfo'));
+        if ($ini !== '' && is_file($ini)) {
+            return null;
+        }
+
+        $candidates = ['D:\\laragon\\etc\\ssl\\cacert.pem'];
+        if (PHP_BINARY !== '') {
+            $candidates[] = dirname(PHP_BINARY, 4) . DIRECTORY_SEPARATOR . 'etc' . DIRECTORY_SEPARATOR . 'ssl' . DIRECTORY_SEPARATOR . 'cacert.pem';
+            $candidates[] = dirname(PHP_BINARY, 5) . DIRECTORY_SEPARATOR . 'etc' . DIRECTORY_SEPARATOR . 'ssl' . DIRECTORY_SEPARATOR . 'cacert.pem';
+        }
+
+        foreach ($candidates as $path) {
+            if (is_file($path)) {
+                return $path;
+            }
+        }
+
+        return null;
     }
 
     public static function cacheDir(): string

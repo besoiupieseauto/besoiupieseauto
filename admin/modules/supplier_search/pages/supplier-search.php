@@ -160,7 +160,7 @@
 
     const CART_ENDPOINT = '/admin/api/supplier_cart_endpoint.php';
 
-    const SEARCH_TIMEOUT_MS = 45000;
+    const SEARCH_TIMEOUT_MS = 70000;
 
     function fetchErrorMessage(error, response) {
         if (error && (error.name === 'AbortError' || error.name === 'TimeoutError')) {

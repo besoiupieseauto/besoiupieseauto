@@ -18,7 +18,7 @@ final class SupplierSearchApiHandler
 
         try {
             ApiBootstrap::requireAuthenticatedSession();
-            ApiBootstrap::beginBoundedJsonWork(45);
+            ApiBootstrap::beginBoundedJsonWork(60);
             self::ensureLegacyDb($config);
 
             $method = strtoupper((string) ($_SERVER['REQUEST_METHOD'] ?? 'GET'));

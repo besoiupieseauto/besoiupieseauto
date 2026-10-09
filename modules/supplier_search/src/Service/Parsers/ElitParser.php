@@ -66,10 +66,13 @@ final class ElitParser
 
         $partsStmt = $this->pdo->prepare(
             'SELECT code_parts, mainart_code_parts, mainart_brands, brands
-             FROM parts_catalog
-             WHERE REPLACE(REPLACE(REPLACE(code_parts, " ", ""), "-", ""), ".", "") = ?'
+             FROM parts_catalog WHERE code_parts = ?
+             UNION
+             SELECT code_parts, mainart_code_parts, mainart_brands, brands
+             FROM parts_catalog WHERE mainart_code_parts = ?
+             LIMIT 80'
         );
-        $partsStmt->execute([$normalizedQuery]);
+        $partsStmt->execute([$normalizedQuery, $normalizedQuery]);
         $partsRows = $partsStmt->fetchAll(PDO::FETCH_OBJ) ?: [];
 
         $partsMeta = [];

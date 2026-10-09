@@ -21,10 +21,13 @@ final class PartsCatalogLookup
         $normalized = SupplierSearchConfig::normalizeQuery($code);
         $stmt = $this->pdo->prepare(
             'SELECT code_parts, code_parts_advanced, mainart_code_parts, mainart_brands, brands, brand_id
-             FROM parts_catalog
-             WHERE code_parts = ?
-                OR code_parts_advanced = ?
-                OR mainart_code_parts = ?
+             FROM parts_catalog WHERE code_parts = ?
+             UNION
+             SELECT code_parts, code_parts_advanced, mainart_code_parts, mainart_brands, brands, brand_id
+             FROM parts_catalog WHERE code_parts_advanced = ?
+             UNION
+             SELECT code_parts, code_parts_advanced, mainart_code_parts, mainart_brands, brands, brand_id
+             FROM parts_catalog WHERE mainart_code_parts = ?
              LIMIT 1'
         );
         $stmt->execute([$normalized, $normalized, $normalized]);
@@ -42,12 +45,10 @@ final class PartsCatalogLookup
             'SELECT code_parts, code_parts_advanced, mainart_code_parts, mainart_brands, brands, brand_id
              FROM parts_catalog
              WHERE code_parts LIKE ?
-                OR code_parts_advanced LIKE ?
-                OR mainart_code_parts LIKE ?
              LIMIT 120'
         );
         $like = $prefix . '%';
-        $stmt->execute([$like, $like, $like]);
+        $stmt->execute([$like]);
 
         foreach ($stmt->fetchAll(PDO::FETCH_OBJ) as $candidate) {
             if ($this->normalizeField($candidate->code_parts ?? '') === $normalized
@@ -70,10 +71,14 @@ final class PartsCatalogLookup
         $normalized = SupplierSearchConfig::normalizeQuery($code);
         $stmt = $this->pdo->prepare(
             'SELECT code_parts, code_parts_advanced, mainart_code_parts, mainart_brands, brands, brand_id
-             FROM parts_catalog
-             WHERE code_parts = ?
-                OR code_parts_advanced = ?
-                OR mainart_code_parts = ?'
+             FROM parts_catalog WHERE code_parts = ?
+             UNION
+             SELECT code_parts, code_parts_advanced, mainart_code_parts, mainart_brands, brands, brand_id
+             FROM parts_catalog WHERE code_parts_advanced = ?
+             UNION
+             SELECT code_parts, code_parts_advanced, mainart_code_parts, mainart_brands, brands, brand_id
+             FROM parts_catalog WHERE mainart_code_parts = ?
+             LIMIT 200'
         );
         $stmt->execute([$normalized, $normalized, $normalized]);
         $rows = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -90,12 +95,10 @@ final class PartsCatalogLookup
             'SELECT code_parts, code_parts_advanced, mainart_code_parts, mainart_brands, brands, brand_id
              FROM parts_catalog
              WHERE code_parts LIKE ?
-                OR code_parts_advanced LIKE ?
-                OR mainart_code_parts LIKE ?
              LIMIT 200'
         );
         $like = $prefix . '%';
-        $stmt->execute([$like, $like, $like]);
+        $stmt->execute([$like]);
 
         $filtered = [];
         foreach ($stmt->fetchAll(PDO::FETCH_OBJ) as $candidate) {
@@ -116,24 +119,19 @@ final class PartsCatalogLookup
             return [];
         }
 
-        $rawNormalized = preg_replace('/[.\s\-\/|\\\\]+/', '', $rawQuery) ?? '';
-        $params = [$query, $query];
-        $sql = 'SELECT code_parts, code_parts_advanced, mainart_code_parts, mainart_brands, brands, brand_id
-                FROM parts_catalog
-                WHERE code_parts = ? OR code_parts_advanced = ?';
-
-        if ($rawQuery !== '' && $rawQuery !== $query) {
-            $sql .= ' OR code_parts = ? OR code_parts_advanced = ?';
-            $params[] = $rawQuery;
-            $params[] = $rawQuery;
+        $needles = array_values(array_unique(array_filter(
+            [$query, $rawQuery, preg_replace('/[.\s\-\/|\\\\]+/', '', $rawQuery) ?? ''],
+            static fn (string $needle): bool => $needle !== ''
+        )));
+        $parts = [];
+        $params = [];
+        foreach ($needles as $needle) {
+            foreach (['code_parts', 'code_parts_advanced', 'mainart_code_parts'] as $column) {
+                $parts[] = 'SELECT code_parts, code_parts_advanced, mainart_code_parts, mainart_brands, brands, brand_id FROM parts_catalog WHERE ' . $column . ' = ?';
+                $params[] = $needle;
+            }
         }
-        if ($rawNormalized !== '' && $rawNormalized !== $query) {
-            $sql .= ' OR code_parts = ? OR code_parts_advanced = ?';
-            $params[] = $rawNormalized;
-            $params[] = $rawNormalized;
-        }
-
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->pdo->prepare(implode(' UNION ', $parts) . ' LIMIT 200');
         $stmt->execute($params);
         $rows = $stmt->fetchAll(PDO::FETCH_OBJ);
 
