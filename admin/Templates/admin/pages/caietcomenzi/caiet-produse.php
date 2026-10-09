@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use Besoiu\Core\AdminUrl;
+use Besoiu\Core\Auth\AdminCsrf;
 use Besoiu\Services\Products\ProduseService;
 
 $projectRoot = dirname(__DIR__, 5);
@@ -28,6 +29,7 @@ $legacyDbConfigured = trim((string) ($config['legacy_db_name'] ?? '')) !== '';
         <span class="pl-head-meta"><span class="pl-head-meta__dot" aria-hidden="true"></span><i class="fa-solid fa-database"></i> Produse ERP</span>
     </div>
     <?php require $projectRoot . '/modules/produse/pages/views/_produse-section-nav.php'; ?>
+    <?php $caietScreen = 'produse'; require __DIR__ . '/_nav.php'; ?>
 
 <div class="besoiu-page besoiu-produse-page besoiu-caiet-produse-page">
     <div class="besoiu-dash-hero">
@@ -161,6 +163,7 @@ $legacyDbConfigured = trim((string) ($config['legacy_db_name'] ?? '')) !== '';
 (function () {
   'use strict';
   const ENDPOINT = '/admin/api/caiet_comenzi_endpoint.php';
+  const CSRF = <?= json_encode(AdminCsrf::token(), JSON_UNESCAPED_UNICODE) ?>;
   const body = document.getElementById('legacy-produse-body');
   const search = document.getElementById('legacy-produse-search');
   const form = document.getElementById('legacy-produse-form');
@@ -190,7 +193,7 @@ $legacyDbConfigured = trim((string) ($config['legacy_db_name'] ?? '')) !== '';
   async function apiCall(type, payload = {}, signal = undefined) {
     const response = await fetch(ENDPOINT, {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: {'Content-Type': 'application/json', 'X-Admin-CSRF': (document.querySelector('meta[name="csrf-token"]') || {}).content || CSRF},
       credentials: 'same-origin',
       body: JSON.stringify({type_product: type, ...payload}),
       signal
