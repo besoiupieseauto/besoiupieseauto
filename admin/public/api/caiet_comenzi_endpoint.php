@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/_autoload.php';
+require_once __DIR__ . '/caiet_pieseauto.php';
 
 use Besoiu\Core\Bootstrap\ApiBootstrap;
 use Besoiu\Core\CaietComenzi\CaietComenziModel;
@@ -68,6 +69,7 @@ function caiet_comenzi_dispatch(CaietComenziModel $model, string $type, array $p
         'api_list' => caiet_api_keys(),
         'api_save' => caiet_api_save($payload),
         'pieseauto_fetch' => caiet_pieseauto_fetch($payload),
+        'pieseauto_import' => caiet_pieseauto_import($payload, $userId),
         'comenzi_create' => caiet_create_order($payload, $userId),
         'comenzi_delete' => caiet_delete_order($payload),
         'comenzi_location' => caiet_update_location($payload),
@@ -240,20 +242,6 @@ function caiet_laravel_encrypt(string $value): string
     ], JSON_UNESCAPED_SLASHES);
 
     return base64_encode((string) $packet);
-}
-
-/**
- * @param array<string, mixed> $payload
- * @return array<string, mixed>
- */
-function caiet_pieseauto_fetch(array $payload): array
-{
-    unset($payload);
-
-    return [
-        'orders' => [],
-        'message' => 'Contul pieseauto.ro nu este salvat în API Credentials. Butonul de încărcare răspunde; importul pornește după ce tokenul este pus la serviciul pieseauto, nu în cod.',
-    ];
 }
 
 /**

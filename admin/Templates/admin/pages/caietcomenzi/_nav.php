@@ -103,4 +103,7 @@ $caietLinks = [
 .caiet-api-fields label.wide{grid-column:1/-1}
 .caiet-api-fields input,.caiet-api-fields textarea{border:1px solid #ccc;padding:6px 8px;width:100%;box-sizing:border-box;background:#fff}
 .caiet-frame{width:100%;height:78vh;border:0;border-radius:12px;background:#fff}
+.pa-line{display:flex;gap:8px;align-items:center;margin:8px 0}
+.pa-edit{display:grid;grid-template-columns:1.4fr .7fr .8fr .6fr .8fr;gap:6px;margin:0 0 10px 22px}
+.pa-edit input,.pa-edit select{width:100%;border:1px solid #ccc;padding:4px 6px;background:#fff}
 </style>

@@ -277,17 +277,86 @@ $caietCsrf = AdminCsrf::token();
       alert(error.message);
     }
   }
+  let pieseOrders = [];
+  let piesePicked = [];
   async function loadPieseauto() {
-    head.innerHTML = '<tr><th></th><th>Comandă</th><th>Cumpărător</th><th>Telefon</th><th>Oraș</th><th>Total</th></tr>';
-    toolbar.innerHTML = '<select id="cont"><option value="1">Cont 1</option><option value="2">Cont 2</option></select><select id="st"><option value="new">New</option><option value="in_progress">Processing</option><option value="finalized">Finalized</option><option value="cancelled">Cancelled</option></select><button type="button" id="go">Încarcă comenzi</button><button type="button" id="imp" disabled>Import selectate</button>';
-    document.getElementById('go').onclick = () => renderPieseauto();
-    document.getElementById('imp').onclick = () => extra && (extra.textContent = 'Importul în comenzi TM / UTVIN / externe nu este încă legat. Lista se încarcă ca să poți verifica butonul.');
-    return renderPieseauto();
+    head.innerHTML = '<tr><th></th><th>Comandă</th><th>Cumpărător</th><th>Telefon</th><th>Oraș</th><th>Mașină</th><th>Total</th><th>Data</th></tr>';
+    toolbar.innerHTML = '<select id="st"><option value="new">New</option><option value="in_progress">Processing</option><option value="finalized">Finalized</option><option value="cancelled">Cancelled</option></select><button type="button" id="go">Alege contul</button><button type="button" id="imp" class="lg-btn lg-btn-success" disabled>Import selectate</button>';
+    document.getElementById('go').onclick = () => {
+      sheet('Select PieseAuto Account', '<p>Alege contul din care se încarcă comenzile.</p><div class="caiet-actions"><button type="button" id="pa-1" class="lg-btn lg-btn-success">BesoiuPieseAuto</button><button type="button" id="pa-2">PieseAutoBesoiu</button></div>');
+      document.getElementById('pa-1').onclick = () => renderPieseauto(1);
+      document.getElementById('pa-2').onclick = () => renderPieseauto(2);
+    };
+    document.getElementById('go').click();
+    document.getElementById('st').onchange = () => paintPieseauto();
+    document.getElementById('imp').onclick = openPieseProducts;
+    return Promise.resolve();
   }
-  async function renderPieseauto() {
-    const data = await api('pieseauto_fetch', {account: document.getElementById('cont').value});
-    const list = Array.isArray(data.orders) ? data.orders : [];
-    body.innerHTML = list.map(row => '<tr><td><input type="checkbox"></td><td>' + esc(row.id || row.order_id || '') + '</td><td>' + esc(row.buyer || row.name || '') + '</td><td>' + esc(row.phone || '') + '</td><td>' + esc(row.city || '') + '</td><td>' + esc(row.total || '') + '</td></tr>').join('') || '<tr><td colspan="6">' + esc(data.message || 'Nicio comandă.') + '</td></tr>';
+  async function renderPieseauto(account) {
+    closeModal();
+    body.innerHTML = '<tr><td colspan="8">Se încarcă...</td></tr>';
+    const data = await api('pieseauto_fetch', {account: account});
+    pieseOrders = Array.isArray(data.orders) ? data.orders : [];
+    if (!pieseOrders.length && data.message) extra.textContent = data.message;
+    paintPieseauto();
+  }
+  function paintPieseauto() {
+    const status = document.getElementById('st').value;
+    const rows = pieseOrders.filter(order => String(order.order_status || '') === status);
+    body.innerHTML = rows.map(order => {
+      const car = order.car_info ? [order.car_info.car_maker, order.car_info.car_model, order.car_info.car_year].filter(Boolean).join(' ') : '';
+      const total = (Number(order.items_cost_ron || 0) + Number(order.shipping_cost_ron || 0)).toFixed(2);
+      const date = order.order_date ? new Date(Number(order.order_date) * 1000).toLocaleString('ro-RO') : '';
+      return '<tr><td><input type="checkbox" class="pa-check" value="' + esc(order.order_id) + '"></td><td>' + esc(order.order_id) + '</td><td>' + esc(order.buyer_name) + '</td><td>' + esc(order.buyer_phone) + '</td><td>' + esc(order.shipping_city) + '</td><td>' + esc(car) + '</td><td>' + esc(total) + '</td><td>' + esc(date) + '</td></tr>';
+    }).join('') || '<tr><td colspan="8">Nicio comandă ' + esc(status) + '.</td></tr>';
+    body.querySelectorAll('.pa-check').forEach(box => box.onchange = () => {
+      document.getElementById('imp').disabled = !body.querySelector('.pa-check:checked');
+    });
+  }
+  function openPieseProducts() {
+    const ids = [...body.querySelectorAll('.pa-check:checked')].map(box => String(box.value));
+    piesePicked = pieseOrders.filter(order => ids.includes(String(order.order_id)));
+    if (!piesePicked.length) return;
+    const supplierOpts = SUPPLIERS.map(name => '<option value="' + name + '">' + name + '</option>').join('');
+    const colorOpts = COLORS.map(item => '<option value="' + item[0] + '">' + item[1] + '</option>').join('');
+    const html = piesePicked.map(order => {
+      const items = (order.items || []).map(item => '<label class="pa-line"><input type="checkbox" class="pa-prod" data-order="' + esc(order.order_id) + '" data-prod="' + esc(item.product_id) + '" checked> <span>' + esc(item.title) + '</span> — ' + esc(item.unit_price_ron) + ' RON</label><div class="pa-edit"><input data-field="title" data-order="' + esc(order.order_id) + '" data-prod="' + esc(item.product_id) + '" value="' + esc(item.title) + '"><input data-field="price" data-order="' + esc(order.order_id) + '" data-prod="' + esc(item.product_id) + '" value="' + esc(item.unit_price_ron) + '"><input data-field="code" data-order="' + esc(order.order_id) + '" data-prod="' + esc(item.product_id) + '" value="' + esc(item.product_id) + '"><select data-field="furnizor" data-order="' + esc(order.order_id) + '" data-prod="' + esc(item.product_id) + '">' + supplierOpts + '</select><select data-field="disponibilitate" data-order="' + esc(order.order_id) + '" data-prod="' + esc(item.product_id) + '">' + colorOpts + '</select></div>').join('');
+      return '<h4>Comanda #' + esc(order.order_id) + ' — ' + esc(order.buyer_name) + '</h4>' + items + '<label class="pa-line"><input type="checkbox" class="pa-transport" data-order="' + esc(order.order_id) + '" checked> Transport Service — <input class="pa-transport-price" data-order="' + esc(order.order_id) + '" value="' + esc(order.shipping_cost_ron || 30) + '" style="width:80px"> RON</label>';
+    }).join('<hr>') + '<div class="caiet-actions"><button type="button" id="pa-next" class="lg-btn lg-btn-success">Mai departe: destinația</button></div>';
+    sheet('Selectează produsele', html, true);
+    document.getElementById('pa-next').onclick = () => {
+      const chosen = [...modal.querySelectorAll('.pa-prod:checked')];
+      if (!chosen.length) { alert('Alege cel puțin un produs.'); return; }
+      const read = (orderId, prodId, field) => {
+        const el = modal.querySelector('[data-field="' + field + '"][data-order="' + orderId + '"][data-prod="' + prodId + '"]');
+        return el ? el.value : '';
+      };
+      const orders = piesePicked.map(order => {
+        const selected = chosen.filter(box => String(box.dataset.order) === String(order.order_id)).map(box => String(box.dataset.prod));
+        const items = (order.items || []).filter(item => selected.includes(String(item.product_id))).map(item => Object.assign({}, item, {
+          title: read(order.order_id, item.product_id, 'title') || item.title,
+          unit_price_ron: read(order.order_id, item.product_id, 'price') || item.unit_price_ron,
+          product_id: read(order.order_id, item.product_id, 'code') || item.product_id,
+          furnizor: read(order.order_id, item.product_id, 'furnizor') || 'ET',
+          disponibilitate: read(order.order_id, item.product_id, 'disponibilitate') || '7CFC00'
+        }));
+        const transport = modal.querySelector('.pa-transport[data-order="' + order.order_id + '"]');
+        if (transport && transport.checked) {
+          const price = modal.querySelector('.pa-transport-price[data-order="' + order.order_id + '"]');
+          items.push({ product_id: 'transport_' + order.order_id, title: 'Transport Service', unit_price_ron: price ? price.value : 30, quantity: 1, furnizor: '__', disponibilitate: 'FFFFFF' });
+        }
+        return Object.assign({}, order, { items: items });
+      }).filter(order => (order.items || []).length);
+      sheet('Selectează destinația', '<p>Unde se adaugă comenzile selectate?</p><div class="caiet-actions"><button type="button" class="lg-btn lg-btn-success" data-dest="UTVIN">UTVIN</button><button type="button" class="lg-btn" data-dest="TM">TM</button><button type="button" class="lg-btn" data-dest="External">Externe</button></div>');
+      modal.querySelectorAll('[data-dest]').forEach(btn => btn.onclick = () => importPieseauto(btn.getAttribute('data-dest'), orders));
+    };
+  }
+  async function importPieseauto(destination, orders) {
+    const result = await api('pieseauto_import', { orders: orders, destination: destination });
+    closeModal();
+    const target = destination === 'UTVIN' ? '/admin/caiet-comenzi-utvin' : (destination === 'TM' ? '/admin/caiet-comenzi-tm' : '/admin/caiet-comenzi-ext');
+    alert('Importate: ' + (result.imported || 0));
+    window.location.href = target;
   }
 
   function colorName(hex) {
@@ -311,7 +380,7 @@ $caietCsrf = AdminCsrf::token();
   function loadComenzi() {
     head.innerHTML = '<tr class="info"><th>Data</th><th>Client</th><th>Marca</th><th>Total</th><th>Status</th><th>Notita</th><th>Actiune</th></tr>';
     const statusOpts = Object.entries(STATUS).map(([id, pair]) => '<option value="' + id + '">' + esc(pair[0]) + '</option>').join('');
-    toolbar.innerHTML = '<button type="button" id="prev">←</button><input id="day" type="date"><button type="button" id="next">→</button><button type="button" id="all">Toate zilele</button><select id="st"><option value="">Status</option>' + statusOpts + '</select><input id="q" type="search" placeholder="Nume, telefon, marca, adresa, cod"><button type="button" id="go">Cauta</button><button type="button" id="new" class="lg-btn lg-btn-success">+ Comanda noua</button>';
+    toolbar.innerHTML = '<button type="button" id="prev">←</button><input id="day" type="date"><button type="button" id="next">→</button><button type="button" id="all">Toate zilele</button><select id="st"><option value="">Status</option>' + statusOpts + '</select><input id="q" type="search" placeholder="Nume, telefon, marca, adresa, cod"><button type="button" id="go">Cauta</button><a class="lg-btn lg-btn-success" href="/admin/caiet-pieseauto">Import comenzi pieseauto.ro</a><button type="button" id="new" class="lg-btn lg-btn-success">+ Comanda noua</button>';
     const day = document.getElementById('day');
     day.value = '';
     document.getElementById('prev').onclick = () => shiftDay(-1);
