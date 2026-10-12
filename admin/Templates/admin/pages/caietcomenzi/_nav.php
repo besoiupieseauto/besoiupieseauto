@@ -16,15 +16,19 @@ $caietLinks = [
     'search' => ['Supplier Search', '/admin/caiet-search'],
     'api' => ['API', '/admin/caiet-api'],
 ];
-if (in_array($caietScreen, ['comenzi-tm', 'comenzi-utvin', 'comenzi-ext'], true)) {
-    $caietLinks = array_intersect_key($caietLinks, array_flip(['comenzi-tm', 'comenzi-utvin', 'comenzi-ext']));
+$caietOrderScreens = ['comenzi-tm', 'comenzi-utvin', 'comenzi-ext'];
+$caietShowTabs = in_array($caietScreen, $caietOrderScreens, true);
+if ($caietShowTabs) {
+    $caietLinks = array_intersect_key($caietLinks, array_flip($caietOrderScreens));
 }
 ?>
+<?php if ($caietShowTabs): ?>
 <nav class="besoiu-tabs caiet-nav" aria-label="Caiet comenzi">
     <?php foreach ($caietLinks as $key => [$label, $href]): ?>
         <a class="admin-tab besoiu-tabs__btn caiet-nav__link<?= $caietScreen === $key ? ' is-active admin-tab--active besoiu-tabs__btn--active' : '' ?>" href="<?= htmlspecialchars($href, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($label, ENT_QUOTES, 'UTF-8') ?></a>
     <?php endforeach; ?>
 </nav>
+<?php endif; ?>
 <style>
 .caiet-nav{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px;overflow:visible}
 .caiet-nav__link{border:1px solid rgba(15,118,110,.18);border-radius:10px;padding:8px 12px;font-size:.85rem;text-decoration:none;color:#0f766e;background:#fff;white-space:nowrap}

@@ -51,9 +51,15 @@ return [
         'sort_order' => 15,
         'items' => [
             ['item_key' => 'comenzi', 'label' => 'Comenzi', 'url' => '/admin/caiet-comenzi-tm', 'icon' => 'clipboard-list', 'sort_order' => 10],
-            ['item_key' => 'supplier-search', 'label' => 'Supplier Search', 'url' => '/admin/supplier-search', 'icon' => 'search-check', 'sort_order' => 50],
-            ['item_key' => 'supplier-cart', 'label' => 'Coș furnizori', 'url' => '/admin/supplier-cart', 'icon' => 'shopping-cart', 'sort_order' => 55],
-            ['item_key' => 'clienti', 'label' => 'Clienți', 'url' => '/admin/clienti', 'icon' => 'users', 'sort_order' => 80],
+            ['item_key' => 'caiet-produse', 'label' => 'Produse', 'url' => '/admin/caiet-produse', 'icon' => 'package', 'sort_order' => 20],
+            ['item_key' => 'clienti', 'label' => 'Clienți', 'url' => '/admin/caiet-clienti', 'icon' => 'users', 'sort_order' => 30],
+            ['item_key' => 'caiet-facturi', 'label' => 'Facturi', 'url' => '/admin/caiet-facturi', 'icon' => 'file-text', 'sort_order' => 40],
+            ['item_key' => 'caiet-incasari', 'label' => 'Încasări', 'url' => '/admin/caiet-incasari', 'icon' => 'wallet', 'sort_order' => 50],
+            ['item_key' => 'caiet-utilizatori', 'label' => 'Utilizatori', 'url' => '/admin/caiet-utilizatori', 'icon' => 'user-cog', 'sort_order' => 60],
+            ['item_key' => 'caiet-pieseauto', 'label' => 'Pieseauto', 'url' => '/admin/caiet-pieseauto', 'icon' => 'car', 'sort_order' => 70],
+            ['item_key' => 'supplier-search', 'label' => 'Supplier Search', 'url' => '/admin/caiet-search', 'icon' => 'search-check', 'sort_order' => 80],
+            ['item_key' => 'caiet-api', 'label' => 'API', 'url' => '/admin/caiet-api', 'icon' => 'key', 'sort_order' => 90],
+            ['item_key' => 'supplier-cart', 'label' => 'Coș furnizori', 'url' => '/admin/supplier-cart', 'icon' => 'shopping-cart', 'sort_order' => 100],
         ],
     ],
     [

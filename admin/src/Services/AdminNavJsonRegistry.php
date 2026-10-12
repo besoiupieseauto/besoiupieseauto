@@ -1009,6 +1009,15 @@ final class AdminNavJsonRegistry
     {
         $links = [
             'comenzi' => ['label' => 'Comenzi', 'url' => '/admin/caiet-comenzi-tm', 'icon' => 'clipboard-list', 'sort_order' => 10],
+            'caiet-produse' => ['label' => 'Produse', 'url' => '/admin/caiet-produse', 'icon' => 'package', 'sort_order' => 20],
+            'clienti' => ['label' => 'Clienți', 'url' => '/admin/caiet-clienti', 'icon' => 'users', 'sort_order' => 30],
+            'caiet-facturi' => ['label' => 'Facturi', 'url' => '/admin/caiet-facturi', 'icon' => 'file-text', 'sort_order' => 40],
+            'caiet-incasari' => ['label' => 'Încasări', 'url' => '/admin/caiet-incasari', 'icon' => 'wallet', 'sort_order' => 50],
+            'caiet-utilizatori' => ['label' => 'Utilizatori', 'url' => '/admin/caiet-utilizatori', 'icon' => 'user-cog', 'sort_order' => 60],
+            'caiet-pieseauto' => ['label' => 'Pieseauto', 'url' => '/admin/caiet-pieseauto', 'icon' => 'car', 'sort_order' => 70],
+            'supplier-search' => ['label' => 'Supplier Search', 'url' => '/admin/caiet-search', 'icon' => 'search-check', 'sort_order' => 80],
+            'caiet-api' => ['label' => 'API', 'url' => '/admin/caiet-api', 'icon' => 'key', 'sort_order' => 90],
+            'supplier-cart' => ['label' => 'Coș furnizori', 'url' => '/admin/supplier-cart', 'icon' => 'shopping-cart', 'sort_order' => 100],
         ];
         $hideKeys = ['comenzi-dashboard', 'comenzi-tm', 'comenzi-utvin', 'comenzi-ext'];
 
