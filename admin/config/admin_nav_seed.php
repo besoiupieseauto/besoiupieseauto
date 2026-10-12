@@ -50,9 +50,7 @@ return [
         'workspace' => 'orders',
         'sort_order' => 15,
         'items' => [
-            ['item_key' => 'comenzi-tm', 'label' => 'Comenzi TM', 'url' => '/admin/caiet-comenzi-tm', 'icon' => 'clipboard-list', 'sort_order' => 10],
-            ['item_key' => 'comenzi-utvin', 'label' => 'Comenzi UTVIN', 'url' => '/admin/caiet-comenzi-utvin', 'icon' => 'clipboard-list', 'sort_order' => 20],
-            ['item_key' => 'comenzi-ext', 'label' => 'Comenzi externe', 'url' => '/admin/caiet-comenzi-ext', 'icon' => 'clipboard-list', 'sort_order' => 30],
+            ['item_key' => 'comenzi', 'label' => 'Comenzi', 'url' => '/admin/caiet-comenzi-tm', 'icon' => 'clipboard-list', 'sort_order' => 10],
             ['item_key' => 'supplier-search', 'label' => 'Supplier Search', 'url' => '/admin/supplier-search', 'icon' => 'search-check', 'sort_order' => 50],
             ['item_key' => 'supplier-cart', 'label' => 'Coș furnizori', 'url' => '/admin/supplier-cart', 'icon' => 'shopping-cart', 'sort_order' => 55],
             ['item_key' => 'clienti', 'label' => 'Clienți', 'url' => '/admin/clienti', 'icon' => 'users', 'sort_order' => 80],

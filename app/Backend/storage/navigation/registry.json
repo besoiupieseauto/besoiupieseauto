@@ -1,6 +1,6 @@
 {
     "schema": "besoiu_nav_registry_v1",
-    "updated_at": "2026-10-12T08:58:05+00:00",
+    "updated_at": "2026-10-12T09:02:49+00:00",
     "sections": [
         {
             "section_key": "core_navigatie",
@@ -99,6 +99,22 @@
                     "is_global": false,
                     "open_new_tab": false,
                     "sort_order": 10,
+                    "is_active": false,
+                    "source": "core",
+                    "customized": false
+                },
+                {
+                    "item_key": "comenzi",
+                    "module_id": null,
+                    "item_type": "link",
+                    "label": "Comenzi",
+                    "url": "/admin/caiet-comenzi-tm",
+                    "icon": "clipboard-list",
+                    "badge_key": null,
+                    "alert_key": null,
+                    "is_global": false,
+                    "open_new_tab": false,
+                    "sort_order": 10,
                     "is_active": true,
                     "source": "core",
                     "customized": false
@@ -115,7 +131,7 @@
                     "is_global": false,
                     "open_new_tab": false,
                     "sort_order": 20,
-                    "is_active": true,
+                    "is_active": false,
                     "source": "core",
                     "customized": false
                 },
@@ -131,7 +147,7 @@
                     "is_global": false,
                     "open_new_tab": false,
                     "sort_order": 30,
-                    "is_active": true,
+                    "is_active": false,
                     "source": "core",
                     "customized": false
                 },

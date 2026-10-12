@@ -1002,16 +1002,15 @@ final class AdminNavJsonRegistry
     }
 
     /**
-     * Secțiunea Comenzi are exact trei intrări de comenzi: TM, UTVIN, externe.
-     * Nu mai păstrează un dashboard gol care deschidea încă o secțiune Comenzi.
+     * În sidebar există o singură intrare „Comenzi”.
+     * TM, UTVIN și externe sunt taburile din pagină, nu puncte separate de meniu.
      */
     private function ensureCaietOrderNav(): void
     {
         $links = [
-            'comenzi-tm' => ['label' => 'Comenzi TM', 'url' => '/admin/caiet-comenzi-tm', 'icon' => 'clipboard-list', 'sort_order' => 10],
-            'comenzi-utvin' => ['label' => 'Comenzi UTVIN', 'url' => '/admin/caiet-comenzi-utvin', 'icon' => 'clipboard-list', 'sort_order' => 20],
-            'comenzi-ext' => ['label' => 'Comenzi externe', 'url' => '/admin/caiet-comenzi-ext', 'icon' => 'clipboard-list', 'sort_order' => 30],
+            'comenzi' => ['label' => 'Comenzi', 'url' => '/admin/caiet-comenzi-tm', 'icon' => 'clipboard-list', 'sort_order' => 10],
         ];
+        $hideKeys = ['comenzi-dashboard', 'comenzi-tm', 'comenzi-utvin', 'comenzi-ext'];
 
         $data = $this->readRaw();
         $sections = is_array($data['sections'] ?? null) ? $data['sections'] : [];
@@ -1034,9 +1033,11 @@ final class AdminNavJsonRegistry
                 $byKey[$itemKey] = $item;
             }
 
-            if (isset($byKey['comenzi-dashboard']) && empty($byKey['comenzi-dashboard']['customized']) && $this->itemIsActive($byKey['comenzi-dashboard'])) {
-                $byKey['comenzi-dashboard']['is_active'] = false;
-                $changed = true;
+            foreach ($hideKeys as $hideKey) {
+                if (isset($byKey[$hideKey]) && empty($byKey[$hideKey]['customized']) && $this->itemIsActive($byKey[$hideKey])) {
+                    $byKey[$hideKey]['is_active'] = false;
+                    $changed = true;
+                }
             }
 
             foreach ($links as $key => $link) {

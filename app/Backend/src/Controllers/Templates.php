@@ -368,7 +368,7 @@ echo '
     <script defer src="/admin/Templates/admin/dist/js/components/base/page-loader.js"></script>
     <script defer src="/admin/Templates/admin/dist/js/components/base/tippy.js"></script>
     <script defer src="/admin/Templates/admin/dist/js/themes/rubick.js"></script>
-    <script defer src="' . AdminUrl::publicAsset('js/admin-side-nav.js') . '?v=20260612-nav-active1"></script>
+    <script defer src="' . AdminUrl::publicAsset('js/admin-side-nav.js') . '?v=20261012-comenzi-tab1"></script>
     <script defer src="' . AdminUrl::publicAsset('js/admin-sidebar-persist.js') . '?v=20260611-layout-stable"></script>
     <script defer src="' . AdminUrl::publicAsset('js/admin-account-menu.js') . '?v=20260610-account-v1"></script>
     <script defer src="/admin/Templates/admin/dist/js/utils/helper.js"></script>

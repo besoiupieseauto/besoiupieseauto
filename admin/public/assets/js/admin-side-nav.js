@@ -134,8 +134,11 @@
   }
 
   function pathMatches(linkPath, currentPath) {
-    return linkPath === currentPath
-      || (linkPath !== '/' && currentPath.indexOf(linkPath + '/') === 0);
+    if (linkPath === currentPath || (linkPath !== '/' && currentPath.indexOf(linkPath + '/') === 0)) {
+      return true;
+    }
+    var orderPaths = ['/admin/caiet-comenzi', '/admin/caiet-comenzi-tm', '/admin/caiet-comenzi-utvin', '/admin/caiet-comenzi-ext'];
+    return orderPaths.indexOf(linkPath) !== -1 && orderPaths.indexOf(currentPath) !== -1;
   }
 
   function queryParamsMatch(linkParams, currentParams) {
