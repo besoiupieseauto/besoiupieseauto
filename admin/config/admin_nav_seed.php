@@ -50,8 +50,9 @@ return [
         'workspace' => 'orders',
         'sort_order' => 15,
         'items' => [
-            ['item_key' => 'comenzi-dashboard', 'label' => 'Dashboard', 'url' => '/admin/dashboard?section=core_comenzi', 'icon' => 'layout-dashboard', 'sort_order' => 10],
-            // Comenzi/Facturi/Livrare — module neportate încă; nu expune linkuri 404 în sidebar.
+            ['item_key' => 'comenzi-tm', 'label' => 'Comenzi TM', 'url' => '/admin/caiet-comenzi-tm', 'icon' => 'clipboard-list', 'sort_order' => 10],
+            ['item_key' => 'comenzi-utvin', 'label' => 'Comenzi UTVIN', 'url' => '/admin/caiet-comenzi-utvin', 'icon' => 'clipboard-list', 'sort_order' => 20],
+            ['item_key' => 'comenzi-ext', 'label' => 'Comenzi externe', 'url' => '/admin/caiet-comenzi-ext', 'icon' => 'clipboard-list', 'sort_order' => 30],
             ['item_key' => 'supplier-search', 'label' => 'Supplier Search', 'url' => '/admin/supplier-search', 'icon' => 'search-check', 'sort_order' => 50],
             ['item_key' => 'supplier-cart', 'label' => 'Coș furnizori', 'url' => '/admin/supplier-cart', 'icon' => 'shopping-cart', 'sort_order' => 55],
             ['item_key' => 'clienti', 'label' => 'Clienți', 'url' => '/admin/clienti', 'icon' => 'users', 'sort_order' => 80],
@@ -77,6 +78,7 @@ return [
             ['item_key' => 'lista-produse', 'label' => 'Lista produse', 'url' => '/admin/product', 'icon' => 'package', 'sort_order' => 10],
             ['item_key' => 'vitrina', 'label' => 'Vitrină', 'url' => '/admin/vitrina', 'icon' => 'store', 'sort_order' => 20],
             ['item_key' => 'product-formation', 'label' => 'Formare carte', 'url' => '/admin/product-formation', 'icon' => 'layout-template', 'sort_order' => 30],
+            ['item_key' => 'gpsr', 'label' => 'GPSR BaseLinker', 'url' => '/admin/gpsr', 'icon' => 'shield-check', 'sort_order' => 35],
             ['item_key' => 'add-produs', 'label' => 'Adaugă produs', 'url' => '/admin/addproduse', 'icon' => 'plus-circle', 'sort_order' => 40],
             ['item_key' => 'categorii', 'label' => 'Categorii', 'url' => '/admin/categorii', 'icon' => 'folder-tree', 'sort_order' => 50],
             ['item_key' => 'adaos', 'label' => 'Adaos comercial', 'url' => '/admin/adaoscomercial', 'icon' => 'percent', 'sort_order' => 60],
@@ -91,6 +93,7 @@ return [
         'sort_order' => 36,
         'items' => [
             ['item_key' => 'import-pro', 'label' => 'Import & Matching Pro', 'url' => '/admin/import-pro', 'icon' => 'upload', 'sort_order' => 10],
+            ['item_key' => 'tecdoc-import', 'label' => 'Progres TecDoc Matc', 'url' => '/admin/tecdoc-import', 'icon' => 'activity', 'sort_order' => 12],
             ['item_key' => 'import-queue', 'label' => 'Coadă import', 'url' => '/admin/importreview', 'icon' => 'list-checks', 'sort_order' => 20],
         ],
     ],

@@ -40,6 +40,11 @@ final class AdminPermissionCatalog
                         'desc' => 'CRUD furnizori import',
                         'urls' => ['/admin/furnizori', '/admin/profilefurnizori', '/admin/addfurnizori'],
                     ],
+                    'furnizori.intercars' => [
+                        'label' => 'Intercars e-cat',
+                        'desc' => 'Disponibilitate stoc Intercars',
+                        'urls' => ['/admin/intercars', '/admin/public/intercars', '/admin/api/intercars_post_endpoint.php'],
+                    ],
                 ],
             ],
             'produse' => [
@@ -79,7 +84,14 @@ final class AdminPermissionCatalog
                     'produse.import' => [
                         'label' => 'Import CSV / Excel',
                         'desc' => 'Upload și procesare fișiere Base + furnizori',
-                        'urls' => ['/admin/import', '/admin/import-system', '/admin/importproduse'],
+                        'urls' => [
+                            '/admin/import',
+                            '/admin/import-system',
+                            '/admin/importproduse',
+                            '/admin/import-pro',
+                            '/admin/tecdoc-import',
+                            '/admin/import-pro/tecdoc-import-live.php',
+                        ],
                     ],
                     'produse.import_queue' => [
                         'label' => 'Coadă import',
@@ -120,10 +132,18 @@ final class AdminPermissionCatalog
                             '/admin/orders?legacy_tab=tm',
                             '/admin/orders?legacy_tab=utvin',
                             '/admin/orders?legacy_tab=ext',
+                            '/admin/caiet-comenzi',
+                            '/admin/caiet-comenzi-tm',
+                            '/admin/caiet-comenzi-utvin',
+                            '/admin/caiet-comenzi-ext',
                             '/admin/caiet-clienti',
                             '/admin/caiet-produse',
                             '/admin/caiet-facturi',
                             '/admin/caiet-incasari',
+                            '/admin/caiet-utilizatori',
+                            '/admin/caiet-pieseauto',
+                            '/admin/caiet-search',
+                            '/admin/caiet-api',
                         ],
                     ],
                     'comenzi.facturi' => [
@@ -176,7 +196,7 @@ final class AdminPermissionCatalog
                     'automatizare.marketplace' => [
                         'label' => 'Marketplace',
                         'desc' => 'PieseAuto.ro',
-                        'urls' => ['/admin/marketplace', '/admin/marketplace-system', '/admin/marketplace-pieseauto', '/admin/marketplace-baselinker'],
+                        'urls' => ['/admin/marketplace', '/admin/marketplace-system', '/admin/marketplace-pieseauto', '/admin/marketplace-baselinker', '/admin/gpsr', '/admin/marketplace-gpsr'],
                     ],
                     'automatizare.export' => [
                         'label' => 'Export catalog',

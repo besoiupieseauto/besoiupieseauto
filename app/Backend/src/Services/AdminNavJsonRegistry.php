@@ -54,12 +54,14 @@ final class AdminNavJsonRegistry
         if ($this->registryHasSections()) {
             $this->ensureCoreNavHub();
             $this->ensureAdminPanelSidebar();
+            $this->ensureCaietOrderNav();
         }
         if ($syncModules) {
             $this->syncAllModules();
             if ($this->registryHasSections()) {
                 $this->ensureCoreNavHub();
                 $this->ensureAdminPanelSidebar();
+                $this->ensureCaietOrderNav();
             }
         }
 
@@ -997,6 +999,89 @@ final class AdminNavJsonRegistry
         }
 
         return implode('|', $keys);
+    }
+
+    /**
+     * Secțiunea Comenzi are exact trei intrări de comenzi: TM, UTVIN, externe.
+     * Nu mai păstrează un dashboard gol care deschidea încă o secțiune Comenzi.
+     */
+    private function ensureCaietOrderNav(): void
+    {
+        $links = [
+            'comenzi-tm' => ['label' => 'Comenzi TM', 'url' => '/admin/caiet-comenzi-tm', 'icon' => 'clipboard-list', 'sort_order' => 10],
+            'comenzi-utvin' => ['label' => 'Comenzi UTVIN', 'url' => '/admin/caiet-comenzi-utvin', 'icon' => 'clipboard-list', 'sort_order' => 20],
+            'comenzi-ext' => ['label' => 'Comenzi externe', 'url' => '/admin/caiet-comenzi-ext', 'icon' => 'clipboard-list', 'sort_order' => 30],
+        ];
+
+        $data = $this->readRaw();
+        $sections = is_array($data['sections'] ?? null) ? $data['sections'] : [];
+        $changed = false;
+
+        foreach ($sections as $si => $section) {
+            if (!is_array($section) || (string) ($section['section_key'] ?? '') !== 'core_comenzi') {
+                continue;
+            }
+            $items = is_array($section['items'] ?? null) ? $section['items'] : [];
+            $byKey = [];
+            foreach ($items as $item) {
+                if (!is_array($item)) {
+                    continue;
+                }
+                $itemKey = (string) ($item['item_key'] ?? '');
+                if ($itemKey === '') {
+                    continue;
+                }
+                $byKey[$itemKey] = $item;
+            }
+
+            if (isset($byKey['comenzi-dashboard']) && empty($byKey['comenzi-dashboard']['customized']) && $this->itemIsActive($byKey['comenzi-dashboard'])) {
+                $byKey['comenzi-dashboard']['is_active'] = false;
+                $changed = true;
+            }
+
+            foreach ($links as $key => $link) {
+                $existing = $byKey[$key] ?? null;
+                if (is_array($existing) && !empty($existing['customized'])) {
+                    continue;
+                }
+                $same = is_array($existing)
+                    && (string) ($existing['label'] ?? '') === $link['label']
+                    && (string) ($existing['url'] ?? '') === $link['url']
+                    && (int) ($existing['sort_order'] ?? 0) === $link['sort_order']
+                    && $this->itemIsActive($existing);
+                if ($same) {
+                    continue;
+                }
+                $byKey[$key] = [
+                    'item_key' => $key,
+                    'module_id' => null,
+                    'item_type' => 'link',
+                    'label' => $link['label'],
+                    'url' => $link['url'],
+                    'icon' => $link['icon'],
+                    'badge_key' => null,
+                    'alert_key' => null,
+                    'is_global' => false,
+                    'open_new_tab' => false,
+                    'sort_order' => $link['sort_order'],
+                    'is_active' => true,
+                    'source' => 'core',
+                    'customized' => false,
+                ];
+                $changed = true;
+            }
+
+            $itemsOut = array_values($byKey);
+            usort($itemsOut, static fn ($a, $b) => ((int) ($a['sort_order'] ?? 0)) <=> ((int) ($b['sort_order'] ?? 0)));
+            $sections[$si]['items'] = $itemsOut;
+        }
+
+        if (!$changed) {
+            return;
+        }
+
+        $data['sections'] = $sections;
+        $this->writeRaw($data);
     }
 
     /** Aliniază grup sidebar ADMIN PANEL (Dashboard + Produse + Calculator). */

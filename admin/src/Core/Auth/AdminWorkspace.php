@@ -104,6 +104,8 @@ final class AdminWorkspace
             '/admin/settings',
             '/admin/alerts',
             '/admin/system-errors',
+            '/admin/tecdoc-import',
+            '/admin/import-pro/tecdoc-import-live.php',
         ];
 
         foreach ($exempt as $prefix) {
@@ -227,6 +229,22 @@ final class AdminWorkspace
         }
 
         $path = self::normalizePath($path);
+        if (self::isIntercarsToolPath($path) || self::isTecdocImportPath($path)) {
+            $allowedNow = self::allowedWorkspacesForSession();
+            if (in_array('suppliers', $allowedNow, true)) {
+                self::setCurrent('suppliers');
+            }
+            return;
+        }
+
+        if (self::isCaietPath($path)) {
+            $allowedNow = self::allowedWorkspacesForSession();
+            if (in_array('orders', $allowedNow, true)) {
+                self::setCurrent('orders');
+            }
+        }
+
+        $path = self::normalizePath($path);
         if (self::isExemptPath($path)) {
             return;
         }
@@ -305,6 +323,45 @@ final class AdminWorkspace
         exit;
     }
 
+    private static function isIntercarsToolPath(string $path): bool
+    {
+        $path = self::normalizePath($path);
+        if ($path === '/admin/intercars' || str_starts_with($path, '/admin/intercars/')) {
+            return true;
+        }
+        if ($path === '/admin/public/intercars' || str_starts_with($path, '/admin/public/intercars/')) {
+            return true;
+        }
+
+        return str_contains($path, 'intercars_post_endpoint.php');
+    }
+
+    private static function isCaietPath(string $path): bool
+    {
+        $path = self::normalizePath($path);
+
+        return $path === '/admin/caietcomenzi'
+            || str_starts_with($path, '/admin/caiet-')
+            || $path === '/admin/public/caietcomenzi'
+            || str_starts_with($path, '/admin/public/caiet-');
+    }
+
+    private static function isTecdocImportPath(string $path): bool
+    {
+        $path = self::normalizePath($path);
+        foreach ([
+            '/admin/tecdoc-import',
+            '/admin/public/tecdoc-import',
+            '/admin/import-pro/tecdoc-import-live.php',
+            '/admin/public/import-pro/tecdoc-import-live.php',
+        ] as $prefix) {
+            if ($path === $prefix || str_starts_with($path, $prefix . '/')) {
+                return true;
+            }
+        }
+
+        return str_contains($path, 'tecdoc-import-progress.php');
+    }
     private static function normalizePath(string $path): string
     {
         $path = parse_url($path, PHP_URL_PATH) ?: $path;

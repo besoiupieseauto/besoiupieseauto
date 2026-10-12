@@ -438,6 +438,27 @@ echo '
     protected function getBreadcrumbMeta(): array
     {
         $file = strtolower(str_replace('\\', '/', trim($this->contentFile)));
+        if (str_contains($file, 'caietcomenzi/')) {
+            $caietTitles = [
+                'caiet-comenzi-utvin' => 'Comenzi UTVIN',
+                'caiet-comenzi-ext' => 'Comenzi externe',
+                'caiet-comenzi-tm' => 'Comenzi TM',
+                'caiet-comenzi' => 'Comenzi TM',
+                'caiet-produse' => 'Produse',
+                'caiet-clienti' => 'Clienți',
+                'caiet-facturi' => 'Facturi',
+                'caiet-incasari' => 'Încasări',
+                'caiet-utilizatori' => 'Utilizatori',
+                'caiet-pieseauto' => 'Pieseauto',
+                'caiet-search' => 'Supplier Search',
+                'caiet-api' => 'API',
+            ];
+            foreach ($caietTitles as $needle => $title) {
+                if (str_contains($file, $needle)) {
+                    return ['section' => 'Comenzi', 'title' => $title];
+                }
+            }
+        }
         $map = [
             'homepages' => ['section' => 'Admin', 'title' => 'Dashboard'],
             'comenzi/comenzi' => ['section' => 'Comenzi', 'title' => 'Toate comenzile'],
@@ -447,6 +468,10 @@ echo '
             'produse/produse-vitrina' => ['section' => 'Produse', 'title' => 'Vitrina homepage'],
             'produse/produse-scanate' => ['section' => 'Produse', 'title' => 'Produse scanate'],
             'caietcomenzi/caiet-produse' => ['section' => 'Produse', 'title' => 'Caiet comenzi — produse ERP'],
+            'caietcomenzi/caiet-comenzi' => ['section' => 'Comenzi', 'title' => 'Caiet comenzi'],
+            'caietcomenzi/caiet-clienti' => ['section' => 'Comenzi', 'title' => 'Clienți caiet'],
+            'caietcomenzi/caiet-facturi' => ['section' => 'Comenzi', 'title' => 'Facturi caiet'],
+            'caietcomenzi/caiet-incasari' => ['section' => 'Comenzi', 'title' => 'Încasări caiet'],
             'produse/addproduse' => ['section' => 'Produse', 'title' => 'Adaugă produs'],
             'furnizori/furnizori' => ['section' => 'Furnizori', 'title' => 'Lista furnizori'],
             'clienti/clienti' => ['section' => 'Clienți', 'title' => 'Clienți'],
@@ -483,6 +508,7 @@ echo '
             'marketplace/marketplace' => ['section' => 'Automatizare', 'title' => 'Marketplace Besoiu'],
             'marketplace/pieseauto' => ['section' => 'Automatizare', 'title' => 'PieseAuto Robot'],
             'marketplace/baselinker' => ['section' => 'Automatizare', 'title' => 'BaseLinker Catalog'],
+            'gpsr/gpsr' => ['section' => 'Produse', 'title' => 'GPSR BaseLinker'],
             'scan/scan' => ['section' => 'Automatizare', 'title' => 'Scanare cereri'],
             'alerts/alerts' => ['section' => 'Sistem', 'title' => 'Alerte'],
             'system-errors/system-errors' => ['section' => 'Sistem', 'title' => 'Jurnal erori'],
