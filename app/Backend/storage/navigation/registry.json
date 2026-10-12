@@ -1,6 +1,6 @@
 {
     "schema": "besoiu_nav_registry_v1",
-    "updated_at": "2026-10-12T09:05:20+00:00",
+    "updated_at": "2026-10-12T09:08:29+00:00",
     "sections": [
         {
             "section_key": "core_navigatie",
@@ -147,7 +147,7 @@
                     "is_global": false,
                     "open_new_tab": false,
                     "sort_order": 20,
-                    "is_active": true,
+                    "is_active": false,
                     "source": "core",
                     "customized": false
                 },

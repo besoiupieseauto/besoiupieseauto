@@ -1009,7 +1009,6 @@ final class AdminNavJsonRegistry
     {
         $links = [
             'comenzi' => ['label' => 'Comenzi', 'url' => '/admin/caiet-comenzi-tm', 'icon' => 'clipboard-list', 'sort_order' => 10],
-            'caiet-produse' => ['label' => 'Produse', 'url' => '/admin/caiet-produse', 'icon' => 'package', 'sort_order' => 20],
             'clienti' => ['label' => 'Clienți', 'url' => '/admin/caiet-clienti', 'icon' => 'users', 'sort_order' => 30],
             'caiet-facturi' => ['label' => 'Facturi', 'url' => '/admin/caiet-facturi', 'icon' => 'file-text', 'sort_order' => 40],
             'caiet-incasari' => ['label' => 'Încasări', 'url' => '/admin/caiet-incasari', 'icon' => 'wallet', 'sort_order' => 50],
@@ -1019,7 +1018,7 @@ final class AdminNavJsonRegistry
             'caiet-api' => ['label' => 'API', 'url' => '/admin/caiet-api', 'icon' => 'key', 'sort_order' => 90],
             'supplier-cart' => ['label' => 'Coș furnizori', 'url' => '/admin/supplier-cart', 'icon' => 'shopping-cart', 'sort_order' => 100],
         ];
-        $hideKeys = ['comenzi-dashboard', 'comenzi-tm', 'comenzi-utvin', 'comenzi-ext'];
+        $hideKeys = ['comenzi-dashboard', 'comenzi-tm', 'comenzi-utvin', 'comenzi-ext', 'caiet-produse'];
 
         $data = $this->readRaw();
         $sections = is_array($data['sections'] ?? null) ? $data['sections'] : [];
