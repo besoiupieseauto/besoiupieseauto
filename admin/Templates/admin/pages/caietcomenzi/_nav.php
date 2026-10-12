@@ -16,6 +16,9 @@ $caietLinks = [
     'search' => ['Supplier Search', '/admin/caiet-search'],
     'api' => ['API', '/admin/caiet-api'],
 ];
+if (in_array($caietScreen, ['comenzi-tm', 'comenzi-utvin', 'comenzi-ext'], true)) {
+    $caietLinks = array_intersect_key($caietLinks, array_flip(['comenzi-tm', 'comenzi-utvin', 'comenzi-ext']));
+}
 ?>
 <nav class="besoiu-tabs caiet-nav" aria-label="Caiet comenzi">
     <?php foreach ($caietLinks as $key => [$label, $href]): ?>
