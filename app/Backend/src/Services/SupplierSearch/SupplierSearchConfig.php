@@ -97,6 +97,30 @@ final class SupplierSearchConfig
         return rtrim(trim((string) ($_ENV['AUTOTOTAL_AVAILABILITY_URL'] ?? 'https://atx.autototal.ro:15063')), '/');
     }
 
+    public static function szakalBaseUrl(): string
+    {
+        $config = self::all();
+
+        return rtrim(trim((string) ($_ENV['SZAKAL_API_BASE_URL'] ?? $config['szakal_base_url'] ?? 'https://webservice.szakalmetal.hu')), '/');
+    }
+
+    /** @return array{username:string,fallback_username:string,password:string} */
+    public static function szakalCredentials(): array
+    {
+        return [
+            'username' => trim((string) ($_ENV['SZAKAL_USERNAME'] ?? 'besoiu2003')),
+            'fallback_username' => trim((string) ($_ENV['SZAKAL_FALLBACK_USERNAME'] ?? 'besoiupieseauto')),
+            'password' => trim((string) ($_ENV['SZAKAL_PASSWORD'] ?? 'Ro31298897')),
+        ];
+    }
+
+    public static function szakalHasCredentials(): bool
+    {
+        $creds = self::szakalCredentials();
+
+        return $creds['username'] !== '' && $creds['password'] !== '';
+    }
+
     public static function cacheDir(): string
     {
         $dir = dirname(__DIR__, 3) . '/storage/cache';

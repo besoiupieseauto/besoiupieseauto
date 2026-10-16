@@ -11,7 +11,7 @@ use RuntimeException;
  */
 final class SupplierCartService
 {
-    private const ALLOWED_SUPPLIERS = ['materom', 'elit', 'autopartner', 'autonet', 'autototal', 'intercars', 'site_produse'];
+    private const ALLOWED_SUPPLIERS = ['materom', 'elit', 'autopartner', 'autonet', 'autototal', 'intercars', 'szakal', 'site_produse'];
 
     public function __construct(private readonly ?PDO $pdo)
     {
@@ -108,6 +108,8 @@ final class SupplierCartService
         }
         $departamentCode = trim((string) ($payload['departamentcode'] ?? $payload['departamentCode'] ?? ''));
         $autonetPartNo = trim((string) ($payload['autonet_partno'] ?? ''));
+        $szakalToken = trim((string) ($payload['szakal_token'] ?? ''));
+        $szakalGlid = trim((string) ($payload['szakal_glid'] ?? ''));
 
         $cart = $this->getCart($userId);
         $cartKey = $productCode . '-' . md5($variantCode);
@@ -126,6 +128,14 @@ final class SupplierCartService
             }
             if ($supplier === 'autonet' && $autonetPartNo !== '') {
                 $cart[$supplier][$cartKey]['autonet_partno'] = $autonetPartNo;
+            }
+            if ($supplier === 'szakal') {
+                if ($szakalToken !== '') {
+                    $cart[$supplier][$cartKey]['szakal_token'] = $szakalToken;
+                }
+                if ($szakalGlid !== '') {
+                    $cart[$supplier][$cartKey]['szakal_glid'] = $szakalGlid;
+                }
             }
             $cart[$supplier][$cartKey]['price'] = $price;
             if ($rawPrice !== null) {
@@ -155,6 +165,8 @@ final class SupplierCartService
                 'depozit' => $depozit,
                 'departamentCode' => $departamentCode,
                 'autonet_partno' => $supplier === 'autonet' ? $autonetPartNo : '',
+                'szakal_token' => $supplier === 'szakal' ? $szakalToken : '',
+                'szakal_glid' => $supplier === 'szakal' ? $szakalGlid : '',
                 'order_code' => $this->updateOrderCodeQuantity($variantCode, $qty),
             ];
         }

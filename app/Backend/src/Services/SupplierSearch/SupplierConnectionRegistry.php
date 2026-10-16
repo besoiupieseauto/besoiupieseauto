@@ -18,6 +18,8 @@ final class SupplierConnectionRegistry
         'MATEROM' => ['key' => 'materom', 'label' => 'Materom', 'short' => 'MA'],
         'ELIT' => ['key' => 'elit', 'label' => 'Elit', 'short' => 'EL'],
         'AUTOPARTNER' => ['key' => 'autopartner', 'label' => 'Auto Partner', 'short' => 'AP'],
+        'INTERCARS' => ['key' => 'intercars', 'label' => 'InterCars', 'short' => 'IC'],
+        'SZAKAL' => ['key' => 'szakal', 'label' => 'Szakal Metal', 'short' => 'SZ'],
     ];
 
     /** @return array<string, array{key:string, label:string, short:string, connected:bool, reason:string}> */
@@ -103,6 +105,9 @@ final class SupplierConnectionRegistry
             'autototal' => SupplierSearchConfig::autototalCredentials()['username'] !== ''
                 ? ['connected' => true, 'reason' => '']
                 : ['connected' => false, 'reason' => 'Credențiale Autototal lipsă (AUTOTOTAL_USERNAME/PASSWORD).'],
+            'szakal' => SupplierSearchConfig::szakalHasCredentials()
+                ? ['connected' => true, 'reason' => '']
+                : ['connected' => false, 'reason' => 'Credențiale Szakal Metal lipsă (SZAKAL_USERNAME/PASSWORD).'],
             default => ['connected' => false, 'reason' => 'Furnizor necunoscut.'],
         };
     }

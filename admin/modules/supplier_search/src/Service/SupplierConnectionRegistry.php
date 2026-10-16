@@ -18,6 +18,7 @@ final class SupplierConnectionRegistry
         'ELIT' => ['key' => 'elit', 'label' => 'Elit', 'short' => 'EL'],
         'AUTOPARTNER' => ['key' => 'autopartner', 'label' => 'Auto Partner', 'short' => 'AP'],
         'INTERCARS' => ['key' => 'intercars', 'label' => 'InterCars', 'short' => 'IC'],
+        'SZAKAL' => ['key' => 'szakal', 'label' => 'Szakal Metal', 'short' => 'SZ'],
     ];
 
     /** @return array<string, array{key:string, label:string, short:string, connected:bool, reason:string}> */
@@ -108,6 +109,9 @@ final class SupplierConnectionRegistry
                 && SupplierSearchConfig::autototalCredentials()['password'] !== ''
                 ? ['connected' => true, 'reason' => '']
                 : ['connected' => false, 'reason' => 'Autototal API — setează AUTOTOTAL_USERNAME și AUTOTOTAL_PASSWORD în .env.'],
+            'szakal' => SupplierSearchConfig::szakalHasCredentials()
+                ? ['connected' => true, 'reason' => '']
+                : ['connected' => false, 'reason' => 'Szakal Metal API — setează SZAKAL_USERNAME și SZAKAL_PASSWORD în .env sau în furnizori_connections.local.php.'],
             default => ['connected' => false, 'reason' => 'Furnizor necunoscut.'],
         };
     }

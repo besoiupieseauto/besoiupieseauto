@@ -1286,6 +1286,12 @@ function caiet_supplier_place(array $cart, string $orderFrom, int $userId, array
         } elseif ($name === 'autototal') {
             caiet_place_autototal($items, $orderFrom, $userId, $excludedKeys);
             $placed[] = 'autototal';
+        } elseif ($name === 'szakal') {
+            $warning = caiet_place_szakal($items, $orderFrom);
+            if ($warning !== '') {
+                $warnings[] = $warning;
+            }
+            $placed[] = 'szakal';
         }
     }
 
@@ -1470,6 +1476,76 @@ function caiet_place_autototal(array $items, string $orderFrom, int $userId, arr
         throw new InvalidArgumentException('AutoTotal a respins comanda.');
     }
     caiet_store_supplier_order('autototal', (string) ($response['json'][0]['STATUS'] ?? ('AT-' . time())), $response['json'] ?? []);
+}
+
+/**
+ * Plasare comandă Szakal Metal prin /order_by_token (cu fallback pe /order după GLID dacă tokenul a expirat).
+ *
+ * @param array<string, array<string, mixed>> $items
+ */
+function caiet_place_szakal(array $items, string $orderFrom): string
+{
+    if (!SupplierSearchConfig::szakalHasCredentials()) {
+        throw new InvalidArgumentException('Szakal Metal nu este configurat.');
+    }
+
+    $client = new \Besoiu\Modules\SupplierSearch\Service\Clients\SzakalClient();
+    $warnings = [];
+
+    foreach ($items as $item) {
+        $qty = max(1, (int) ($item['qty'] ?? 1));
+        $token = trim((string) ($item['szakal_token'] ?? ''));
+        $glid = trim((string) ($item['szakal_glid'] ?? ''));
+        if ($glid === '') {
+            $apiLookup = trim((string) ($item['api_lookup_code'] ?? ''));
+            if (preg_match('/^\d+-\d+$/', $apiLookup)) {
+                $glid = $apiLookup;
+            }
+        }
+        if ($glid === '') {
+            $vc = trim((string) ($item['variant_code'] ?? $item['order_code'] ?? ''));
+            if (str_starts_with($vc, 'SZ:')) {
+                $parts = explode(':', $vc);
+                $glid = trim((string) ($parts[1] ?? ''));
+            }
+        }
+
+        $productCode = trim((string) ($item['product_code'] ?? $glid));
+        $note = substr('WEB-' . $orderFrom . '-' . $productCode, 0, 50);
+
+        if ($token !== '') {
+            $res = $client->orderByToken($token, $qty, $note);
+            if (empty($res['success']) && (int) ($res['http_code'] ?? 0) === 404 && $glid !== '') {
+                $res = $client->orderByGlid($glid, $qty, 'fastest_first', $note);
+            }
+        } elseif ($glid !== '') {
+            $res = $client->orderByGlid($glid, $qty, 'fastest_first', $note);
+        } else {
+            throw new InvalidArgumentException('Lipsește tokenul / GLID-ul Szakal Metal pentru ' . (string) ($item['product_name'] ?? 'produs'));
+        }
+
+        if (empty($res['success'])) {
+            throw new InvalidArgumentException('Szakal Metal (' . $productCode . '): ' . (string) ($res['error'] ?? 'comandă respinsă'));
+        }
+
+        if ((int) ($res['http_code'] ?? 200) === 210) {
+            $warnings[] = 'Szakal Metal: livrare parțială pentru ' . $productCode;
+        }
+
+        $orders = $res['data']['orders'] ?? [];
+        $orderIds = [];
+        if (is_array($orders)) {
+            foreach ($orders as $ord) {
+                if (is_array($ord) && !empty($ord['order_id'])) {
+                    $orderIds[] = (string) $ord['order_id'];
+                }
+            }
+        }
+        $orderNumber = $orderIds !== [] ? implode(',', $orderIds) : ('SZ-' . time() . '-' . random_int(100, 999));
+        caiet_store_supplier_order('szakal', $orderNumber, is_array($res['data'] ?? null) ? $res['data'] : []);
+    }
+
+    return implode(' · ', $warnings);
 }
 
 /**

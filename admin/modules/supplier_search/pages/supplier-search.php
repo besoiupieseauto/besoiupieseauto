@@ -228,7 +228,8 @@
             autopartner: 'Auto Partner',
             autonet: 'Autonet',
             autototal: 'Autototal',
-            intercars: 'InterCars'
+            intercars: 'InterCars',
+            szakal: 'Szakal Metal'
         })[key] || key;
     }
 
@@ -301,7 +302,8 @@
                 { key: 'autopartner', label: 'Auto Partner', short: 'AP', connected: false },
                 { key: 'autonet', label: 'Autonet', short: 'AN', connected: false },
                 { key: 'autototal', label: 'Autototal', short: 'AT', connected: false },
-                { key: 'intercars', label: 'InterCars', short: 'IC', connected: false }
+                { key: 'intercars', label: 'InterCars', short: 'IC', connected: false },
+                { key: 'szakal', label: 'Szakal Metal', short: 'SZ', connected: false }
             ]);
         }
     }
@@ -338,7 +340,9 @@
             livrare: variant.livrare || '',
             depozit: variant.depozit || '',
             departamentcode: variant.departamentCode || variant.departamentcode || '',
-            autonet_partno: variant.autonet_partno || ''
+            autonet_partno: variant.autonet_partno || '',
+            szakal_token: variant.szakal_token || '',
+            szakal_glid: variant.szakal_glid || ''
         };
     }
 

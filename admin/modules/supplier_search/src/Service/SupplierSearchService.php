@@ -11,12 +11,14 @@ use Besoiu\Modules\SupplierSearch\Service\Builders\AutototalSearchBuilder;
 use Besoiu\Modules\SupplierSearch\Service\Clients\AutototalClient;
 use Besoiu\Modules\SupplierSearch\Service\Clients\ElitClient;
 use Besoiu\Modules\SupplierSearch\Service\Clients\IntercarsClient;
+use Besoiu\Modules\SupplierSearch\Service\Clients\SzakalClient;
 use Besoiu\Modules\SupplierSearch\Service\Parsers\AutonetParser;
 use Besoiu\Modules\SupplierSearch\Service\Parsers\AutopartnerParser;
 use Besoiu\Modules\SupplierSearch\Service\Parsers\AutototalParser;
 use Besoiu\Modules\SupplierSearch\Service\Parsers\ElitParser;
 use Besoiu\Modules\SupplierSearch\Service\Parsers\IntercarsParser;
 use Besoiu\Modules\SupplierSearch\Service\Parsers\MateromParser;
+use Besoiu\Modules\SupplierSearch\Service\Parsers\SzakalParser;
 
 /**
  * Orchestrator căutare paralelă furnizori (M2 Phase 1 + 2).
@@ -63,6 +65,7 @@ final class SupplierSearchService
         $catalogLookup = new PartsCatalogLookup($legacyPdo);
 
         $buildStart = microtime(true);
+        $autonetRows = null;
         $autonetItems = null;
         $autonetRowMap = [];
         $autototalRequests = null;
@@ -95,7 +98,7 @@ final class SupplierSearchService
         $timings['build_inputs'] = round(microtime(true) - $buildStart, 3);
 
         $poolStart = microtime(true);
-        $responses = $this->runPool($query, $suppliers, $catalogLookup, $autonetItems, $autototalRequests);
+        $responses = $this->runPool($query, $suppliers, $catalogLookup, $autonetItems, $autototalRequests, $autonetRows);
         $timings['pool'] = round(microtime(true) - $poolStart, 3);
 
         $parseStart = microtime(true);
@@ -146,6 +149,13 @@ final class SupplierSearchService
             }
         }
 
+        if (in_array('szakal', $suppliers, true)) {
+            $szakal = $responses['szakal'] ?? ['success' => false, 'data' => []];
+            if ($szakal['success']) {
+                $entries = array_merge($entries, (new SzakalParser())->parse($query, $szakal['data']));
+            }
+        }
+
         $productsMap = (new ProductAggregator())->merge($entries);
         $timings['parse_merge'] = round(microtime(true) - $parseStart, 3);
 
@@ -192,7 +202,8 @@ final class SupplierSearchService
         array $suppliers,
         PartsCatalogLookup $catalogLookup,
         ?array $autonetItems,
-        ?array $autototalRequests
+        ?array $autototalRequests,
+        ?array $autonetRows = null
     ): array {
         $responses = [];
         $handles = [];
@@ -403,6 +414,11 @@ final class SupplierSearchService
         if (in_array('elit', $suppliers, true)) {
             $elitClient = new ElitClient();
             $responses['elit'] = $elitClient->search($query, $timeout, $connectTimeout);
+        }
+
+        if (in_array('szakal', $suppliers, true)) {
+            $szakalClient = new SzakalClient();
+            $responses['szakal'] = $szakalClient->search($query, SupplierSearchConfig::legacyPdo(), $autonetRows, $timeout, $connectTimeout);
         }
 
         return $responses;

@@ -29,6 +29,7 @@ function import_supplier_priority_map_defaults(): array
         'AUTOPARTNER' => 4,
         'ELIT' => 5,
         'INTERCARS' => 6,
+        'SZAKAL' => 7,
     ];
 }
 
@@ -241,6 +242,13 @@ function import_supplier_definitions(): array
             'price_columns' => 'Purchase price',
             'connection_type' => 'api',
         ],
+        'SZAKAL' => [
+            'name' => 'Szakal Metal',
+            'priority' => $priorities['SZAKAL'] ?? 99,
+            'vat_rule' => 'net_plus_tva',
+            'price_columns' => 'unit price',
+            'connection_type' => 'api',
+        ],
     ];
 }
 
@@ -289,7 +297,7 @@ function import_furnizori_search_slug(string $code): string
 /** @return list<string> */
 function import_furnizori_search_supported_slugs(): array
 {
-    static $known = ['materom', 'elit', 'autopartner', 'autonet', 'autototal', 'intercars'];
+    static $known = ['materom', 'elit', 'autopartner', 'autonet', 'autototal', 'intercars', 'szakal'];
 
     return $known;
 }
@@ -453,6 +461,25 @@ function import_furnizori_catalog_seeds(): array
             'scan_interval_minutes' => 360,
             'api_base_url' => 'https://ecat-pct.intercars.eu/RO',
             'notes' => 'InterCars e-Cat API (cautare produse, preturi si disponibilitate).',
+        ],
+        'SZAKAL' => [
+            'name' => 'Szakal Metal',
+            'code' => 'SZAKAL',
+            'status' => 'active',
+            'price_markup_type' => 'percentage',
+            'price_markup_value' => 0,
+            'priority' => $priorities['SZAKAL'] ?? 99,
+            'vat_rule' => 'net_plus_tva',
+            'price_columns' => 'unit price',
+            'connection_type' => 'api',
+            'scan_interval_minutes' => 360,
+            'api_base_url' => 'https://webservice.szakalmetal.hu',
+            'conn_host' => 'store.szakalmetal.hu',
+            'conn_port' => 1221,
+            'conn_username' => 'U8J1ro',
+            'conn_passive' => 0,
+            'conn_remote_path' => '/down',
+            'notes' => 'Szakal Metal Webservice API (https://webservice.szakalmetal.hu) + SFTP liste preturi (store.szakalmetal.hu:1221).',
         ],
     ];
 }

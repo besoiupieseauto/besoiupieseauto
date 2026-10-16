@@ -27,7 +27,7 @@ final class OrderDeliveryColorMapper
         if ($supplier === 'autopartner') {
             return $this->autopartnerColor($item, $livrare);
         }
-        if ($supplier === 'autonet' || $supplier === 'autototal') {
+        if (in_array($supplier, ['autonet', 'autototal', 'szakal', 'intercars'], true)) {
             return $this->datedSupplierColor($delivery, $livrare);
         }
 
@@ -153,6 +153,8 @@ final class OrderDeliveryColorMapper
             'autototal' => 'AT',
             'autonet' => 'AN',
             'autopartner' => 'AP',
+            'intercars' => 'IC',
+            'szakal' => 'SZ',
             'elit', 'site_produse' => 'ET',
             default => 'MA',
         };

@@ -51,6 +51,9 @@ final class DeliveryFormatter
         } elseif ($supplier === 'intercars') {
             $result['livrare'] = $deliveryInfo !== '' ? $deliveryInfo : 'Verifica stoc';
             $result['depozit'] = (string) ($variant['depot'] ?? $plantName ?? 'IC');
+        } elseif ($supplier === 'szakal') {
+            $result['livrare'] = $deliveryInfo !== '' ? $deliveryInfo : 'Verifica stoc';
+            $result['depozit'] = (string) ($variant['depot'] ?? $plantName ?? 'Szakal');
         } elseif ($supplier === 'autopartner') {
             $processed = (string) $departamentCode;
             if ($processed === 'CN') {

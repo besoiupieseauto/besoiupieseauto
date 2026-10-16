@@ -48,6 +48,9 @@ final class DeliveryFormatter
             }
         } elseif ($supplier === 'elit') {
             $result['livrare'] = 'Verifica stoc';
+        } elseif ($supplier === 'szakal') {
+            $result['livrare'] = $deliveryInfo !== '' ? $deliveryInfo : 'Verifica stoc';
+            $result['depozit'] = (string) ($variant['depot'] ?? $plantName ?? 'Szakal');
         } elseif ($supplier === 'autopartner') {
             $processed = (string) $departamentCode;
             if ($processed === 'CN') {

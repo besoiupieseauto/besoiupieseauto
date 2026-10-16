@@ -5,7 +5,7 @@ namespace Besoiu\Modules\SupplierSearch\Service;
 
 final class ProductAggregator
 {
-    private const SUPPLIER_KEYS = ['autopartner', 'materom', 'autonet', 'autototal', 'elit', 'intercars'];
+    private const SUPPLIER_KEYS = ['autopartner', 'materom', 'autonet', 'autototal', 'elit', 'intercars', 'szakal'];
 
     private function isMissingValue(mixed $value): bool
     {

@@ -359,6 +359,57 @@ final class SupplierSearchConfig
         return !empty($decoded['cookies']);
     }
 
+    public static function szakalBaseUrl(): string
+    {
+        $secrets = self::secretsForCode('SZAKAL');
+        $config = self::all();
+
+        return rtrim(trim((string) (
+            self::envValue('SZAKAL_API_BASE_URL')
+            ?: self::envValue('SZAKAL_BASE_URL')
+            ?: ($secrets['api_base_url'] ?? '')
+            ?: ($config['szakal_base_url'] ?? 'https://webservice.szakalmetal.hu')
+        )), '/');
+    }
+
+    /** @return array{username:string,fallback_username:string,password:string} */
+    public static function szakalCredentials(): array
+    {
+        $secrets = self::secretsForCode('SZAKAL');
+        $username = self::envValue('SZAKAL_USERNAME')
+            ?: self::envValue('SZAKAL_USER')
+            ?: trim((string) ($secrets['search_username'] ?? ''));
+        $fallbackUsername = self::envValue('SZAKAL_FALLBACK_USERNAME')
+            ?: trim((string) ($secrets['search_fallback_username'] ?? 'besoiupieseauto'));
+        $password = self::envValue('SZAKAL_PASSWORD')
+            ?: self::envValue('SZAKAL_PASS')
+            ?: trim((string) ($secrets['search_password'] ?? ''));
+
+        if ($username === '' || $password === '') {
+            $scraperCfg = self::scraperConfig();
+            $szakalAcc = $scraperCfg['sites']['szakal'] ?? $scraperCfg['accounts']['szakal'] ?? $scraperCfg['szakal'] ?? [];
+            if ($username === '') {
+                $username = trim((string) ($szakalAcc['username'] ?? $szakalAcc['user'] ?? 'besoiu2003'));
+            }
+            if ($password === '') {
+                $password = trim((string) ($szakalAcc['password'] ?? $szakalAcc['pass'] ?? 'Ro31298897'));
+            }
+        }
+
+        return [
+            'username' => $username,
+            'fallback_username' => $fallbackUsername,
+            'password' => $password,
+        ];
+    }
+
+    public static function szakalHasCredentials(): bool
+    {
+        $creds = self::szakalCredentials();
+
+        return $creds['username'] !== '' && $creds['password'] !== '';
+    }
+
     /** @return array<string, mixed> */
     private static function scraperConfig(): array
     {
