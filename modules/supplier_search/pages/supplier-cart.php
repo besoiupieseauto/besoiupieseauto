@@ -366,7 +366,17 @@
     const dateInput = document.getElementById('place-date');
     if (dateInput) dateInput.value = new Date().toISOString().slice(0, 10);
 
-    loadClients();
-    BpaAsync.defer(loadCart);
+    function bootCart() {
+        loadClients();
+        loadCart().catch(function () {});
+    }
+
+    if (window.BpaAsync && typeof window.BpaAsync.defer === 'function') {
+        BpaAsync.defer(bootCart);
+    } else if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bootCart);
+    } else {
+        bootCart();
+    }
 })();
 </script>
