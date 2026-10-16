@@ -62,10 +62,20 @@ final class Database
         $this->connectionName = $connectionName;
 
         try {
-            // Construiește DSN-ul PDO pentru MySQL cu charset utf8mb4
+            // Construiește DSN-ul PDO pentru MySQL cu charset utf8mb4 (suportă și host:port)
+            $dsnHost = $host;
+            $dsnPort = '';
+            if (strpos($host, ':') !== false) {
+                [$parsedHost, $parsedPort] = explode(':', $host, 2);
+                $dsnHost = trim($parsedHost) !== '' ? trim($parsedHost) : '127.0.0.1';
+                if (ctype_digit(trim($parsedPort))) {
+                    $dsnPort = ';port=' . trim($parsedPort);
+                }
+            }
             $dataSourceName = sprintf(
-                'mysql:host=%s;dbname=%s;charset=utf8mb4',
-                $host,
+                'mysql:host=%s%s;dbname=%s;charset=utf8mb4',
+                $dsnHost,
+                $dsnPort,
                 $databaseName
             );
 
@@ -86,6 +96,10 @@ final class Database
             // Deschide conexiunea PDO cu credențialele primite
             $pdo = new PDO($dataSourceName, $username, $password, $driverOptions);
 
+            // Dacă instanța primară (ex. 3306/3309 cu innodb_force_recovery=6) este în mod read-only,
+            // comută automat pe instanța locală writable (port 3308) dacă deține aceeași bază de date.
+            $pdo = self::resolveWritableFallbackIfNeeded($pdo, $databaseName, $username, $password, $driverOptions);
+
             // Setează charset și collation pentru diacritice românești
             $pdo->exec('SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci');
 
@@ -98,6 +112,64 @@ final class Database
                 $exception->getMessage()
             );
         }
+    }
+
+    /**
+     * Dacă conexiunea curentă are innodb_read_only=1 sau read_only=1 (ex. recovery mode pe 3306/3309),
+     * încearcă instanța locală writable de pe portul 3308 dacă are aceeași bază de date populată.
+     *
+     * @param array<int, mixed> $driverOptions
+     */
+    private static function resolveWritableFallbackIfNeeded(
+        PDO $pdo,
+        string $databaseName,
+        string $username,
+        string $password,
+        array $driverOptions
+    ): PDO {
+        try {
+            $roStmt = $pdo->query('SELECT (@@innodb_read_only + @@read_only)');
+            $isReadOnly = $roStmt !== false && (int) $roStmt->fetchColumn() > 0;
+            if (!$isReadOnly) {
+                return $pdo;
+            }
+
+            $fallbackPort = (int) ($_ENV['WRITABLE_FALLBACK_DB_PORT'] ?? 3308);
+            if ($fallbackPort <= 0) {
+                return $pdo;
+            }
+
+            $fallbackDsn = sprintf(
+                'mysql:host=127.0.0.1;port=%d;dbname=%s;charset=utf8mb4',
+                $fallbackPort,
+                $databaseName
+            );
+
+            $candidates = [
+                [$username, $password],
+                ['root', ''],
+            ];
+
+            foreach ($candidates as [$fbUser, $fbPass]) {
+                try {
+                    $fbPdo = new PDO($fallbackDsn, (string) $fbUser, (string) $fbPass, $driverOptions);
+                    $fbRoStmt = $fbPdo->query('SELECT (@@innodb_read_only + @@read_only)');
+                    if ($fbRoStmt !== false && (int) $fbRoStmt->fetchColumn() === 0) {
+                        $tblStmt = $fbPdo->prepare('SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ?');
+                        $tblStmt->execute([$databaseName]);
+                        if ((int) $tblStmt->fetchColumn() > 0) {
+                            return $fbPdo;
+                        }
+                    }
+                } catch (\Throwable) {
+                    continue;
+                }
+            }
+        } catch (\Throwable) {
+            return $pdo;
+        }
+
+        return $pdo;
     }
 
     /**
@@ -199,14 +271,26 @@ final class Database
             '/admin/orders-utvin',
             '/admin/orders-externe',
             '/admin/caiet-produse',
+            '/admin/caiet-comenzi',
+            '/admin/caiet-comenzi-tm',
+            '/admin/caiet-comenzi-utvin',
+            '/admin/caiet-comenzi-ext',
+            '/admin/caiet-utilizatori',
+            '/admin/caiet-pieseauto',
+            '/admin/caiet-search',
+            '/admin/caiet-api',
             '/admin/caiet-clienti',
             '/admin/caiet-facturi',
             '/admin/caiet-incasari',
             '/admin/order-create',
             '/admin/order-edit',
+            '/admin/supplier-search',
+            '/admin/supplier-cart',
             '/admin/api/legacy_orders_endpoint.php',
             '/admin/api/caiet_comenzi_endpoint.php',
             '/admin/api/order_tmp_endpoint.php',
+            '/admin/api/supplier_cart_endpoint.php',
+            '/admin/api/supplier_search_endpoint.php',
         ];
     }
 

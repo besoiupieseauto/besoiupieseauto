@@ -396,22 +396,26 @@ final class CaietComenziModel
             $where[] = '(cl.nume LIKE :s_nume OR cl.telefon LIKE :s_tel OR cl.adresa LIKE :s_adr OR cl.companie LIKE :s_comp OR cl.cif LIKE :s_cif)';
         }
 
+        $whereSql = !empty($where) ? (' WHERE ' . implode(' AND ', $where)) : '';
+
         $sql = "SELECT cl.idclienti, cl.nume, cl.telefon, '' AS email, cl.adresa, cl.companie, cl.cif,
                        cl.marca, cl.sasiu, cl.nr_inmat,
                        cl.localitate_livrare, cl.adresa_livrare, cl.localitate_facturare, cl.adresa_facturare,
                        cl.created_at,
                        COUNT(DISTINCT c.idcmd) AS total_orders_internal,
                        COUNT(DISTINCT ce.idcmd) AS total_orders_external
-                FROM clienti cl
+                FROM (
+                    SELECT idclienti, nume, telefon, adresa, companie, cif, marca, sasiu, nr_inmat,
+                           localitate_livrare, adresa_livrare, localitate_facturare, adresa_facturare, created_at
+                    FROM clienti cl
+                    {$whereSql}
+                    ORDER BY cl.idclienti DESC
+                    LIMIT {$limit}
+                ) cl
                 LEFT JOIN comenzi c ON c.idclient = cl.idclienti
-                LEFT JOIN comenzi_ext ce ON ce.idclient = cl.idclienti";
-
-        if (!empty($where)) {
-            $sql .= ' WHERE ' . implode(' AND ', $where);
-        }
-
-        $sql .= ' GROUP BY cl.idclienti, cl.nume, cl.telefon, cl.adresa, cl.companie, cl.cif, cl.marca, cl.sasiu, cl.nr_inmat, cl.localitate_livrare, cl.adresa_livrare, cl.localitate_facturare, cl.adresa_facturare, cl.created_at
-                  ORDER BY cl.idclienti DESC LIMIT ' . $limit;
+                LEFT JOIN comenzi_ext ce ON ce.idclient = cl.idclienti
+                GROUP BY cl.idclienti, cl.nume, cl.telefon, cl.adresa, cl.companie, cl.cif, cl.marca, cl.sasiu, cl.nr_inmat, cl.localitate_livrare, cl.adresa_livrare, cl.localitate_facturare, cl.adresa_facturare, cl.created_at
+                ORDER BY cl.idclienti DESC";
 
         $stmt = $this->legacyDb->prepare($sql);
         $stmt->execute($params);

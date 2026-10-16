@@ -240,22 +240,25 @@ final class HttpApplication
         $permissionGuard->setPublicPaths($publicPaths);
         $permissionGuard->guard($requestMethod, $requestPath);
 
-        if (
-            $this->shouldReleaseSessionLock($requestMethod, $requestPath)
-            && session_status() === PHP_SESSION_ACTIVE
-        ) {
-            session_write_close();
-        }
-
         if (!ModuleGate::pathAllowed($requestPath)) {
             $this->renderModuleGateDenied($requestPath);
 
             return;
         }
 
-        // Dacă utilizatorul e autentificat, aplică restricțiile workspace-ului
+        // Dacă utilizatorul e autentificat, aplică restricțiile workspace-ului și inițializează CSRF înainte de închiderea sesiunii
         if (!empty($_SESSION['user_id'])) {
+            if (class_exists(\Besoiu\Core\Auth\AdminCsrf::class)) {
+                \Besoiu\Core\Auth\AdminCsrf::token();
+            }
             AdminWorkspace::enforce($requestPath, $requestMethod);
+        }
+
+        if (
+            $this->shouldReleaseSessionLock($requestMethod, $requestPath)
+            && session_status() === PHP_SESSION_ACTIVE
+        ) {
+            session_write_close();
         }
 
         // Expune rolul și guard-ul permisiuni în GLOBALS pentru template-uri

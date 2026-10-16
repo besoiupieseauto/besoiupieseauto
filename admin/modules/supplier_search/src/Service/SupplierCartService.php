@@ -3,17 +3,21 @@ declare(strict_types=1);
 
 namespace Besoiu\Modules\SupplierSearch\Service;
 
+use InvalidArgumentException;
 use PDO;
+use PDOException;
 use RuntimeException;
+use Throwable;
 
 /**
- * Coș furnizori B2B — persistență în BD legacy (tabel supplier_carts, compatibil Laravel).
+ * Coș furnizori B2B — persistență în BD legacy (tabel supplier_carts, compatibil Laravel)
+ * cu fallback automat pe instanța MySQL writable (port 3308) și oglindă locală JSON.
  */
 final class SupplierCartService
 {
     private const ALLOWED_SUPPLIERS = ['materom', 'elit', 'autopartner', 'autonet', 'autototal', 'intercars', 'szakal', 'site_produse'];
 
-    public function __construct(private readonly ?PDO $pdo)
+    public function __construct(private ?PDO $pdo)
     {
     }
 
@@ -35,20 +39,42 @@ final class SupplierCartService
     public function saveCart(int $userId, array $cart): void
     {
         $this->assertUserId($userId);
-        $this->assertPdo();
 
         $json = json_encode($cart, JSON_UNESCAPED_UNICODE);
         if ($json === false) {
             throw new RuntimeException('Nu s-a putut serializa coșul.');
         }
 
-        $existing = $this->fetchRow($userId);
-        if ($existing === null) {
-            $stmt = $this->pdo->prepare('INSERT INTO supplier_carts (user_id, cart, created_at, updated_at) VALUES (?, ?, NOW(), NOW())');
-            $stmt->execute([$userId, $json]);
-        } else {
-            $stmt = $this->pdo->prepare('UPDATE supplier_carts SET cart = ?, updated_at = NOW() WHERE user_id = ?');
-            $stmt->execute([$json, $userId]);
+        $dbSynced = false;
+        $lastDbException = null;
+
+        $pdoCandidates = [];
+        if ($this->pdo !== null) {
+            $pdoCandidates[] = $this->pdo;
+        }
+        $fallbackPdo = $this->resolveFallbackWritablePdo();
+        if ($fallbackPdo !== null && $fallbackPdo !== $this->pdo) {
+            $pdoCandidates[] = $fallbackPdo;
+        }
+
+        foreach ($pdoCandidates as $candidatePdo) {
+            try {
+                $this->upsertRowOnPdo($candidatePdo, $userId, $json);
+                $this->pdo = $candidatePdo;
+                $dbSynced = true;
+                break;
+            } catch (Throwable $e) {
+                $lastDbException = $e;
+            }
+        }
+
+        $localSaved = $this->saveLocalFileCart($userId, $json, $dbSynced);
+
+        if (!$dbSynced && !$localSaved) {
+            if ($lastDbException instanceof Throwable) {
+                throw new RuntimeException('Nu s-a putut salva coșul: ' . $lastDbException->getMessage(), 0, $lastDbException);
+            }
+            $this->assertPdo();
         }
     }
 
@@ -278,12 +304,170 @@ final class SupplierCartService
     /** @return array<string, mixed>|null */
     private function fetchRow(int $userId): ?array
     {
-        $this->assertPdo();
-        $stmt = $this->pdo->prepare('SELECT id, user_id, cart FROM supplier_carts WHERE user_id = ? LIMIT 1');
-        $stmt->execute([$userId]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $local = $this->readLocalFileCart($userId);
+        if (is_array($local) && ($local['db_synced'] ?? true) === false) {
+            return $local;
+        }
 
-        return is_array($row) ? $row : null;
+        $pdoCandidates = [];
+        $fallbackPdo = $this->resolveFallbackWritablePdo();
+        if ($fallbackPdo !== null) {
+            $pdoCandidates[] = $fallbackPdo;
+        }
+        if ($this->pdo !== null && $this->pdo !== $fallbackPdo) {
+            $pdoCandidates[] = $this->pdo;
+        }
+
+        foreach ($pdoCandidates as $candidatePdo) {
+            try {
+                $stmt = $candidatePdo->prepare('SELECT id, user_id, cart FROM supplier_carts WHERE user_id = ? LIMIT 1');
+                $stmt->execute([$userId]);
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                if (is_array($row)) {
+                    return $row;
+                }
+            } catch (Throwable) {
+                continue;
+            }
+        }
+
+        if (is_array($local)) {
+            return $local;
+        }
+
+        return null;
+    }
+
+    private function upsertRowOnPdo(PDO $pdo, int $userId, string $json): void
+    {
+        $stmt = $pdo->prepare('SELECT id FROM supplier_carts WHERE user_id = ? LIMIT 1');
+        $stmt->execute([$userId]);
+        $existingId = $stmt->fetchColumn();
+
+        if ($existingId === false || $existingId === null) {
+            $ins = $pdo->prepare('INSERT INTO supplier_carts (user_id, cart, created_at, updated_at) VALUES (?, ?, NOW(), NOW())');
+            $ins->execute([$userId, $json]);
+        } else {
+            $upd = $pdo->prepare('UPDATE supplier_carts SET cart = ?, updated_at = NOW() WHERE user_id = ?');
+            $upd->execute([$json, $userId]);
+        }
+    }
+
+    private function resolveFallbackWritablePdo(): ?PDO
+    {
+        static $cachedFallback = null;
+        static $attempted = false;
+
+        if ($this->pdo !== null) {
+            try {
+                $ro = $this->pdo->query('SELECT (@@innodb_read_only + @@read_only)');
+                if ($ro !== false && (int) $ro->fetchColumn() === 0) {
+                    return $this->pdo;
+                }
+            } catch (Throwable) {
+            }
+        }
+
+        if ($attempted) {
+            return $cachedFallback;
+        }
+        $attempted = true;
+
+        $port = (int) ($_ENV['WRITABLE_FALLBACK_DB_PORT'] ?? 3308);
+        $dbName = trim((string) ($_ENV['LEGACY_DB_NAME'] ?? 'caietcom_comenzilv'));
+        if ($dbName === '') {
+            $dbName = 'caietcom_comenzilv';
+        }
+        $dsn = sprintf('mysql:host=127.0.0.1;port=%d;dbname=%s;charset=utf8mb4', $port, $dbName);
+        $options = [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false,
+        ];
+        if (defined('PDO::MYSQL_ATTR_CONNECT_TIMEOUT')) {
+            $options[PDO::MYSQL_ATTR_CONNECT_TIMEOUT] = 3;
+        }
+
+        $creds = [
+            [(string) ($_ENV['LEGACY_DB_USER'] ?? $_ENV['DB_USER'] ?? 'root'), (string) ($_ENV['LEGACY_DB_PASS'] ?? $_ENV['DB_PASS'] ?? '')],
+            ['root', ''],
+        ];
+
+        foreach ($creds as [$u, $p]) {
+            try {
+                $fb = new PDO($dsn, $u, $p, $options);
+                $ro = $fb->query('SELECT (@@innodb_read_only + @@read_only)');
+                if ($ro !== false && (int) $ro->fetchColumn() === 0) {
+                    $fb->exec('SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci');
+                    $cachedFallback = $fb;
+                    return $cachedFallback;
+                }
+            } catch (Throwable) {
+                continue;
+            }
+        }
+
+        return null;
+    }
+
+    /** @return array<string, mixed>|null */
+    private function readLocalFileCart(int $userId): ?array
+    {
+        $path = $this->localCartFilePath($userId);
+        if ($path === null || !is_file($path)) {
+            return null;
+        }
+        $raw = @file_get_contents($path);
+        if (!is_string($raw) || trim($raw) === '') {
+            return null;
+        }
+        $decoded = json_decode($raw, true);
+        if (!is_array($decoded) || !isset($decoded['cart']) || !is_string($decoded['cart'])) {
+            return null;
+        }
+
+        return [
+            'id' => (int) ($decoded['id'] ?? $userId),
+            'user_id' => $userId,
+            'cart' => $decoded['cart'],
+            'db_synced' => (bool) ($decoded['db_synced'] ?? true),
+        ];
+    }
+
+    private function saveLocalFileCart(int $userId, string $cartJson, bool $dbSynced): bool
+    {
+        $path = $this->localCartFilePath($userId);
+        if ($path === null) {
+            return false;
+        }
+        $dir = dirname($path);
+        if (!is_dir($dir) && !@mkdir($dir, 0775, true) && !is_dir($dir)) {
+            return false;
+        }
+        $payload = json_encode([
+            'id' => $userId,
+            'user_id' => $userId,
+            'cart' => $cartJson,
+            'db_synced' => $dbSynced,
+            'updated_at' => date('Y-m-d H:i:s'),
+        ], JSON_UNESCAPED_UNICODE);
+        if ($payload === false) {
+            return false;
+        }
+
+        return @file_put_contents($path, $payload, LOCK_EX) !== false;
+    }
+
+    private function localCartFilePath(int $userId): ?string
+    {
+        for ($level = 3; $level <= 6; $level++) {
+            $root = dirname(__DIR__, $level);
+            if (is_dir($root . '/admin/storage')) {
+                return $root . '/admin/storage/cache/supplier_carts/user_' . $userId . '.json';
+            }
+        }
+
+        return null;
     }
 
     /** @param array<string, mixed> $cart @return array<string, array<string, array<string, mixed>>> */

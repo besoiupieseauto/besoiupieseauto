@@ -311,7 +311,7 @@
     async function refreshCartBadge() {
         try {
             const response = await fetch(CART_ENDPOINT + '?action=count');
-            const data = await response.json();
+            const data = await readJsonResponse(response);
             if (!response.ok || !data.success || !cartBadge) return;
             const count = Number(data.summary?.items || 0);
             cartBadge.textContent = String(count);
@@ -320,16 +320,17 @@
     }
 
     function buildAddPayload(product, supplierKey, variant) {
-        const variantCode = variant.order_code || variant.variant_code || product.mfrpn || '';
+        const variantCode = String(variant.order_code || variant.variant_code || variant.code || product.mfrpn || product.code || lastSearchQuery || '').trim();
+        const productCode = String(product.mfrpn || product.code || variant.variant_code || variantCode).trim();
         const calculatedPrice = priceOf(variant);
         return {
             supplier: supplierKey,
-            product_code: product.mfrpn || variantCode,
-            mfrpn: product.mfrpn || '',
+            product_code: productCode,
+            mfrpn: product.mfrpn || productCode,
             product_name: product.name || product.mfrpn || variantCode,
             manufacturer: typeof product.manufacturer === 'object' ? (product.manufacturer.name || '') : (product.manufacturer || ''),
-            variant_code: variantCode,
-            api_lookup_code: variant.api_lookup_code || variantCode,
+            variant_code: variantCode || productCode,
+            api_lookup_code: variant.api_lookup_code || variantCode || productCode,
             searched_code: lastSearchQuery,
             qty: 1,
             price: calculatedPrice,
@@ -441,7 +442,10 @@
             addModalTitle.textContent = [supplierLabel(payload.supplier), payload.product_code, payload.manufacturer, payload.product_name].filter(Boolean).join(' · ');
         }
         if (addQty) addQty.value = String(Math.max(1, parseInt(qty || '1', 10)));
-        if (addPrice) addPrice.value = String(Math.round(Number(payload.price || 0)));
+        if (addPrice) {
+            const rawPriceNum = Number(payload.price || 0);
+            addPrice.value = String(rawPriceNum > 0 ? Math.max(1, Math.round(rawPriceNum)) : 1);
+        }
         openModal(addModal);
     }
 
@@ -500,20 +504,23 @@
         const payload = Object.assign({}, pendingAddPayload);
         payload.qty = Math.max(1, parseInt(addQty?.value || '1', 10));
         payload.price = Math.max(1, parseFloat(addPrice?.value || '0'));
+        if (addConfirm) addConfirm.disabled = true;
         try {
             const response = await fetch(CART_ENDPOINT + '?action=add', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
-            const data = await response.json();
+            const data = await readJsonResponse(response);
             if (!response.ok || !data.success) throw new Error(data.message || 'Nu s-a putut adăuga în coș.');
             closeAddModal();
             closeModal(variantsModal);
             showToast('Produs adăugat în coș.');
             refreshCartBadge();
         } catch (error) {
-            showToast(error.message, true);
+            showToast(fetchErrorMessage(error), true);
+        } finally {
+            if (addConfirm) addConfirm.disabled = false;
         }
     }
 

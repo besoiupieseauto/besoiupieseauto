@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Besoiu\Services\Orders;
 
+use InvalidArgumentException;
 use PDO;
 use RuntimeException;
 

@@ -342,8 +342,10 @@ final class AdminWorkspace
 
         return $path === '/admin/caietcomenzi'
             || str_starts_with($path, '/admin/caiet-')
+            || str_starts_with($path, '/admin/supplier-')
             || $path === '/admin/public/caietcomenzi'
-            || str_starts_with($path, '/admin/public/caiet-');
+            || str_starts_with($path, '/admin/public/caiet-')
+            || str_starts_with($path, '/admin/public/supplier-');
     }
 
     private static function isTecdocImportPath(string $path): bool

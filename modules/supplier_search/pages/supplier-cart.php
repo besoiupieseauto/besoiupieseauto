@@ -94,7 +94,7 @@
     const ENDPOINT = '/admin/api/supplier_cart_endpoint.php';
     const TMP_ENDPOINT = '/admin/api/order_tmp_endpoint.php';
     const ORDER_ENDPOINT = '/admin/api/legacy_orders_endpoint.php';
-    const CLIENTS_ENDPOINT = '/admin/api/clienti_endpoint.php';
+    const CLIENTS_ENDPOINT = '/admin/api/caiet_comenzi_endpoint.php';
     const tbody = document.getElementById('supplier-cart-results');
     const summary = document.getElementById('supplier-cart-summary');
     const toast = document.getElementById('supplier-cart-toast');
@@ -219,25 +219,29 @@
     }
 
     async function loadClients() {
-        const response = await fetch(CLIENTS_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ type_product: 'list', page: 1, per_page: 200 })
-        });
-        const data = await response.json();
-        if (!response.ok || !data.success) return;
+        try {
+            const response = await fetch(CLIENTS_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type_product: 'clienti_list', limit: 200 })
+            });
+            const data = await response.json();
+            if (!response.ok || !data.success) return;
 
-        const datalist = document.getElementById('place-clients');
-        datalist.innerHTML = '';
-        clientsMap.clear();
-        const items = (data.data && data.data.items) ? data.data.items : (data.data || []);
-        items.forEach((client) => {
-            const label = [client.client_name || client.name, client.phone].filter(Boolean).join(' · ');
-            clientsMap.set(label, client);
-            const option = document.createElement('option');
-            option.value = label;
-            datalist.appendChild(option);
-        });
+            const datalist = document.getElementById('place-clients');
+            if (!datalist) return;
+            datalist.innerHTML = '';
+            clientsMap.clear();
+            const items = (data.data && data.data.items) ? data.data.items : (data.data || []);
+            items.forEach((client) => {
+                const label = [client.nume || client.client_name || client.name, client.telefon || client.phone].filter(Boolean).join(' · ');
+                if (!label) return;
+                clientsMap.set(label, client);
+                const option = document.createElement('option');
+                option.value = label;
+                datalist.appendChild(option);
+            });
+        } catch (_) {}
     }
 
     tbody?.addEventListener('click', async (event) => {
@@ -285,7 +289,7 @@
 
     document.getElementById('place-client-search')?.addEventListener('change', (event) => {
         const client = clientsMap.get(event.target.value);
-        document.getElementById('place-client-id').value = client ? String(client.id || client.randomn_id || '') : '';
+        document.getElementById('place-client-id').value = client ? String(client.idclienti || client.id || client.randomn_id || '') : '';
     });
 
     document.getElementById('place-submit')?.addEventListener('click', async () => {
