@@ -126,6 +126,7 @@
             autopartner: 'Auto Partner',
             autonet: 'Autonet',
             autototal: 'Autototal',
+            intercars: 'InterCars',
             site_produse: 'Site / ERP'
         })[key] || key;
     }

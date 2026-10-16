@@ -9,10 +9,13 @@ use Besoiu\Modules\SupplierSearch\Model\SupplierSearchRepository;
 use Besoiu\Modules\SupplierSearch\Service\Builders\AutonetSearchBuilder;
 use Besoiu\Modules\SupplierSearch\Service\Builders\AutototalSearchBuilder;
 use Besoiu\Modules\SupplierSearch\Service\Clients\AutototalClient;
+use Besoiu\Modules\SupplierSearch\Service\Clients\ElitClient;
+use Besoiu\Modules\SupplierSearch\Service\Clients\IntercarsClient;
 use Besoiu\Modules\SupplierSearch\Service\Parsers\AutonetParser;
 use Besoiu\Modules\SupplierSearch\Service\Parsers\AutopartnerParser;
 use Besoiu\Modules\SupplierSearch\Service\Parsers\AutototalParser;
 use Besoiu\Modules\SupplierSearch\Service\Parsers\ElitParser;
+use Besoiu\Modules\SupplierSearch\Service\Parsers\IntercarsParser;
 use Besoiu\Modules\SupplierSearch\Service\Parsers\MateromParser;
 
 /**
@@ -115,7 +118,16 @@ final class SupplierSearchService
         }
 
         if (in_array('elit', $suppliers, true)) {
-            $entries = array_merge($entries, (new ElitParser($legacyPdo))->parse($query));
+            $elit = $responses['elit'] ?? ['success' => false, 'data' => []];
+            $liveData = ($elit['success'] && is_array($elit['data'] ?? null)) ? $elit['data'] : null;
+            $entries = array_merge($entries, (new ElitParser($legacyPdo))->parse($query, $liveData));
+        }
+
+        if (in_array('intercars', $suppliers, true)) {
+            $intercars = $responses['intercars'] ?? ['success' => false, 'data' => []];
+            if ($intercars['success']) {
+                $entries = array_merge($entries, (new IntercarsParser())->parse($query, $intercars['data']));
+            }
         }
 
         if (in_array('autonet', $suppliers, true)) {
@@ -288,7 +300,7 @@ final class SupplierSearchService
             $atClient = new AutototalClient();
             $atToken = $atClient->getAvailabilityToken();
             if ($atToken === null) {
-                $responses['autototal'] = ['success' => false, 'data' => [], 'error' => 'Token Autototal indisponibil (AUTOTOTAL_USERNAME/PASSWORD).'];
+                $responses['autototal'] = ['success' => false, 'data' => [], 'error' => $atClient->lastError() !== '' ? $atClient->lastError() : 'Token Autototal indisponibil (AUTOTOTAL_USERNAME/PASSWORD).'];
             } elseif ($autototalRequests === null || $autototalRequests === []) {
                 $responses['autototal'] = ['success' => false, 'data' => [], 'error' => 'Niciun request Autototal de interogat.'];
             } else {
@@ -383,6 +395,16 @@ final class SupplierSearchService
             }
         }
 
+        if (in_array('intercars', $suppliers, true)) {
+            $icClient = new IntercarsClient();
+            $responses['intercars'] = $icClient->search($query, $timeout, $connectTimeout);
+        }
+
+        if (in_array('elit', $suppliers, true)) {
+            $elitClient = new ElitClient();
+            $responses['elit'] = $elitClient->search($query, $timeout, $connectTimeout);
+        }
+
         return $responses;
     }
 
@@ -433,8 +455,10 @@ final class SupplierSearchService
             }
         }
 
-        if (in_array('elit', $suppliers, true) && $legacyPdo === null) {
-            $errors['elit'] = 'Conexiune legacy indisponibilă (LEGACY_DB_*).';
+        if (in_array('elit', $suppliers, true) && empty($responses['elit']['success']) && $legacyPdo === null) {
+            $errors['elit'] = ($errors['elit'] ?? '') !== ''
+                ? $errors['elit']
+                : 'Conexiune Elit indisponibilă.';
         }
 
         if (in_array('autonet', $suppliers, true) && $legacyPdo === null) {

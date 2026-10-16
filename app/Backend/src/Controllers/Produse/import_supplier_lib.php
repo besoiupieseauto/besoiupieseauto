@@ -289,7 +289,7 @@ function import_furnizori_search_slug(string $code): string
 /** @return list<string> */
 function import_furnizori_search_supported_slugs(): array
 {
-    static $known = ['materom', 'elit', 'autopartner', 'autonet', 'autototal'];
+    static $known = ['materom', 'elit', 'autopartner', 'autonet', 'autototal', 'intercars'];
 
     return $known;
 }
@@ -369,7 +369,7 @@ function import_furnizori_catalog_seeds(): array
             'connection_type' => 'email',
             'scan_interval_minutes' => 1440,
             'conn_email_inbox' => 'autototal@besoiupieseauto.ro',
-            'notes' => 'Primeste fisierul pe email la 1-2 zile. Transmite furnizorului adresa inbox-ului dedicat unde doresti sa ajunga exportul.',
+            'notes' => 'Lista de preturi: SFTP de primire (furnizorul incarca in folderul local) sau email autototal@besoiupieseauto.ro.',
         ],
         'AUTONET' => [
             'name' => 'Autonet',
@@ -439,6 +439,20 @@ function import_furnizori_catalog_seeds(): array
             'conn_passive' => 1,
             'conn_remote_path' => '',
             'notes' => 'Auto Partner: API Customer (recomandat). Pentru CSV mare foloseste sync agent local.',
+        ],
+        'INTERCARS' => [
+            'name' => 'InterCars',
+            'code' => 'INTERCARS',
+            'status' => 'active',
+            'price_markup_type' => 'percentage',
+            'price_markup_value' => 0,
+            'priority' => $priorities['INTERCARS'] ?? 99,
+            'vat_rule' => 'net_plus_tva',
+            'price_columns' => 'Unit price',
+            'connection_type' => 'api',
+            'scan_interval_minutes' => 360,
+            'api_base_url' => 'https://ecat-pct.intercars.eu/RO',
+            'notes' => 'InterCars e-Cat API (cautare produse, preturi si disponibilitate).',
         ],
     ];
 }
@@ -662,6 +676,11 @@ function import_resolve_brand_canonical_name(string $brand, string $articleCode 
 
     $compact = preg_replace('/\s+/u', '', $brand) ?? $brand;
     if ($compact !== '' && preg_match('/[A-Z]/i', $compact) && !preg_match('/^\d{2,5}$/', $compact)) {
+        $family = import_supplier_price_brand_family_key($brand);
+        if ($family === 'ABAKUS') {
+            return 'ABAKUS';
+        }
+
         return import_normalize_supplier_brand($brand);
     }
 
@@ -700,16 +719,40 @@ function import_format_article_code_display(string $code, string $brand = ''): s
     if ($code === '') {
         return '';
     }
-
-    $digits = preg_replace('/\D+/', '', $code) ?? '';
-    $canonical = import_resolve_brand_canonical_name($brand, $code);
-    $looksBosch = $canonical === 'BOSCH' || preg_match('/^0\d{9}$/', $digits);
-
-    if ($looksBosch && strlen($digits) === 10) {
-        return $digits[0] . ' ' . substr($digits, 1, 3) . ' ' . substr($digits, 4, 3) . ' ' . substr($digits, 7, 3);
+    if (function_exists('import_base_compact_article_code')) {
+        return import_base_compact_article_code($code);
     }
+    return preg_replace('/\s+/u', '', $code) ?? $code;
+}
 
-    return $code;
+/**
+ * Familie de preț: ABAKUS ≡ DEPO ≡ LORO (același producător, nume diferite în feed-uri).
+ * Autonet/Autototal: DEPO, LORO; Materom: ABAKUS-DEPO; Autopartner: DEP, LOR, ABA.
+ */
+function import_supplier_price_brand_family_key(string $brand): string
+{
+    $key = strtoupper((string) preg_replace('/[^A-Z0-9]/', '', $brand));
+    static $family = [
+        'ABAKUS' => 'ABAKUS',
+        'DEPO' => 'ABAKUS',
+        'LORO' => 'ABAKUS',
+        'ABAKUSDEPO' => 'ABAKUS',
+        'LOROTUNING' => 'ABAKUS',
+        'DEPOTRUCKS' => 'ABAKUS',
+        'LOR' => 'ABAKUS',
+        'DEP' => 'ABAKUS',
+        'ABA' => 'ABAKUS',
+    ];
+
+    return $family[$key] ?? $key;
+}
+
+function import_supplier_price_brands_equivalent(string $productBrand, string $supplierBrand): bool
+{
+    $a = import_supplier_price_brand_family_key($productBrand);
+    $b = import_supplier_price_brand_family_key($supplierBrand);
+
+    return $a !== '' && $a === $b;
 }
 
 /** Verifică dacă brandul din index furnizor corespunde brandului piesei (ex. FAG). */
@@ -720,6 +763,10 @@ function import_supplier_price_match_product_brand(string $productBrand, string 
 
     if ($productBrand === '' || $supplierBrand === '') {
         return false;
+    }
+
+    if (import_supplier_price_brands_equivalent($productBrand, $supplierBrand)) {
+        return true;
     }
 
     $service = import_price_logic_service();

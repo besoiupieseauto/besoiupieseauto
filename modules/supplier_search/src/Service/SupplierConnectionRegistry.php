@@ -17,6 +17,7 @@ final class SupplierConnectionRegistry
         'MATEROM' => ['key' => 'materom', 'label' => 'Materom', 'short' => 'MA'],
         'ELIT' => ['key' => 'elit', 'label' => 'Elit', 'short' => 'EL'],
         'AUTOPARTNER' => ['key' => 'autopartner', 'label' => 'Auto Partner', 'short' => 'AP'],
+        'INTERCARS' => ['key' => 'intercars', 'label' => 'InterCars', 'short' => 'IC'],
     ];
 
     /** @return array<string, array{key:string, label:string, short:string, connected:bool, reason:string}> */
@@ -90,9 +91,13 @@ final class SupplierConnectionRegistry
             'materom' => SupplierSearchConfig::materomTokenFromEntry($resolved) !== ''
                 ? ['connected' => true, 'reason' => '']
                 : ['connected' => false, 'reason' => 'Token Materom lipsă — setează MATEROM_TOKEN_TIMISOARA în .env sau search_token în furnizori_connections.local.php.'],
-            'elit' => SupplierSearchConfig::legacyPdo() !== null
+            'elit' => (SupplierSearchConfig::elitCredentials()['username'] !== '' && SupplierSearchConfig::elitCredentials()['password'] !== '')
+                || SupplierSearchConfig::legacyPdo() !== null
                 ? ['connected' => true, 'reason' => '']
-                : ['connected' => false, 'reason' => 'BD legacy indisponibilă — setează LEGACY_DB_* în .env (caiet comenzi).'],
+                : ['connected' => false, 'reason' => 'Credențiale Elit indisponibile — setează ELIT_USERNAME/ELIT_PASSWORD sau LEGACY_DB_*.'],
+            'intercars' => SupplierSearchConfig::intercarsHasCredentials()
+                ? ['connected' => true, 'reason' => '']
+                : ['connected' => false, 'reason' => 'InterCars — lipsește sesiunea din ic_creds.json (autentifică InterCars în scraper).'],
             'autopartner' => self::autopartnerConnected($resolved)
                 ? ['connected' => true, 'reason' => '']
                 : ['connected' => false, 'reason' => 'Auto Partner — lipsește API/token în cartela furnizor.'],

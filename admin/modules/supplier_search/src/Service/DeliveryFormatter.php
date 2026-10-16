@@ -46,7 +46,11 @@ final class DeliveryFormatter
                 $result['livrare'] = $deliveryInfo !== '' ? $deliveryInfo : 'Verifica stoc';
             }
         } elseif ($supplier === 'elit') {
-            $result['livrare'] = 'Verifica stoc';
+            $result['livrare'] = $deliveryInfo !== '' ? $deliveryInfo : 'Verifica stoc';
+            $result['depozit'] = (string) ($plantName ?: ($variant['depot'] ?? 'ELIT'));
+        } elseif ($supplier === 'intercars') {
+            $result['livrare'] = $deliveryInfo !== '' ? $deliveryInfo : 'Verifica stoc';
+            $result['depozit'] = (string) ($variant['depot'] ?? $plantName ?? 'IC');
         } elseif ($supplier === 'autopartner') {
             $processed = (string) $departamentCode;
             if ($processed === 'CN') {

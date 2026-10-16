@@ -227,7 +227,8 @@
             elit: 'Elit',
             autopartner: 'Auto Partner',
             autonet: 'Autonet',
-            autototal: 'Autototal'
+            autototal: 'Autototal',
+            intercars: 'InterCars'
         })[key] || key;
     }
 
@@ -299,7 +300,8 @@
                 { key: 'elit', label: 'Elit', short: 'EL', connected: false },
                 { key: 'autopartner', label: 'Auto Partner', short: 'AP', connected: false },
                 { key: 'autonet', label: 'Autonet', short: 'AN', connected: false },
-                { key: 'autototal', label: 'Autototal', short: 'AT', connected: false }
+                { key: 'autototal', label: 'Autototal', short: 'AT', connected: false },
+                { key: 'intercars', label: 'InterCars', short: 'IC', connected: false }
             ]);
         }
     }

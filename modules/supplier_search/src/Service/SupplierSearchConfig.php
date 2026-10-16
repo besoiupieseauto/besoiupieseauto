@@ -249,6 +249,142 @@ final class SupplierSearchConfig
         return rtrim(trim((string) ($_ENV['AUTOTOTAL_AVAILABILITY_URL'] ?? 'https://atx.autototal.ro:15063')), '/');
     }
 
+    /** @return array{username:string,password:string} */
+    public static function elitCredentials(): array
+    {
+        $secrets = self::secretsForCode('ELIT');
+        $username = self::envValue('ELIT_USERNAME')
+            ?: self::envValue('ELIT_USER')
+            ?: trim((string) ($secrets['search_username'] ?? ''));
+        $password = self::envValue('ELIT_PASSWORD')
+            ?: self::envValue('ELIT_PASS')
+            ?: trim((string) ($secrets['search_password'] ?? ''));
+
+        if ($username === '' || $password === '') {
+            $scraperCfg = self::scraperConfig();
+            $elitAcc = $scraperCfg['sites']['elit'] ?? $scraperCfg['accounts']['elit'] ?? [];
+            if ($username === '') {
+                $username = trim((string) ($elitAcc['username'] ?? 'besoiutm2015'));
+            }
+            if ($password === '') {
+                $password = trim((string) ($elitAcc['password'] ?? 'Ro31298897'));
+            }
+        }
+
+        return [
+            'username' => $username,
+            'password' => $password,
+        ];
+    }
+
+    public static function elitBaseUrl(): string
+    {
+        return rtrim(trim((string) ($_ENV['ELIT_BASE_URL'] ?? 'https://www.elit.ro')), '/');
+    }
+
+    public static function elitStatePath(): string
+    {
+        $fromEnv = self::envValue('ELIT_STATE_PATH');
+        if ($fromEnv !== '' && is_file($fromEnv)) {
+            return $fromEnv;
+        }
+
+        $candidates = [
+            'D:\\laragon\\www\\scraper\\debug_probe\\elit_state.json',
+            dirname(self::backendRoot(), 3) . DIRECTORY_SEPARATOR . 'scraper' . DIRECTORY_SEPARATOR . 'debug_probe' . DIRECTORY_SEPARATOR . 'elit_state.json',
+        ];
+        foreach ($candidates as $path) {
+            if (is_file($path)) {
+                return $path;
+            }
+        }
+
+        return $candidates[0];
+    }
+
+    public static function intercarsBaseUrl(): string
+    {
+        return rtrim(trim((string) ($_ENV['INTERCARS_BASE_URL'] ?? 'https://ecat-pct.intercars.eu/RO')), '/');
+    }
+
+    public static function intercarsCustomerCode(): string
+    {
+        return trim((string) ($_ENV['INTERCARS_CUSTOMER_CODE'] ?? 'R39196'));
+    }
+
+    public static function intercarsBranch(): string
+    {
+        return trim((string) ($_ENV['INTERCARS_BRANCH'] ?? 'R86'));
+    }
+
+    public static function intercarsCredsPath(): string
+    {
+        $fromEnv = self::envValue('INTERCARS_CREDS_PATH');
+        if ($fromEnv !== '' && is_file($fromEnv)) {
+            return $fromEnv;
+        }
+
+        $candidates = [
+            'D:\\laragon\\www\\maparea\\intercars\\ic_creds.json',
+            dirname(self::backendRoot(), 3) . DIRECTORY_SEPARATOR . 'maparea' . DIRECTORY_SEPARATOR . 'intercars' . DIRECTORY_SEPARATOR . 'ic_creds.json',
+            self::cacheDir() . '/ic_creds.json',
+        ];
+
+        foreach ($candidates as $path) {
+            if (is_file($path)) {
+                return $path;
+            }
+        }
+
+        return $candidates[0];
+    }
+
+    public static function intercarsHasCredentials(): bool
+    {
+        $path = self::intercarsCredsPath();
+        if (!is_file($path)) {
+            return false;
+        }
+
+        $decoded = json_decode((string) file_get_contents($path), true);
+        if (!is_array($decoded)) {
+            return false;
+        }
+
+        $headers = $decoded['headers'] ?? [];
+        if (is_array($headers) && !empty($headers['Authorization'])) {
+            return true;
+        }
+
+        return !empty($decoded['cookies']);
+    }
+
+    /** @return array<string, mixed> */
+    private static function scraperConfig(): array
+    {
+        static $cfg = null;
+        if ($cfg !== null) {
+            return $cfg;
+        }
+
+        $cfg = [];
+        $candidates = [
+            'D:\\laragon\\www\\scraper\\config.json',
+            dirname(self::backendRoot(), 3) . DIRECTORY_SEPARATOR . 'scraper' . DIRECTORY_SEPARATOR . 'config.json',
+        ];
+        foreach ($candidates as $path) {
+            if (is_file($path)) {
+                $decoded = json_decode((string) file_get_contents($path), true);
+                if (is_array($decoded)) {
+                    $cfg = $decoded;
+                    break;
+                }
+            }
+        }
+
+        return $cfg;
+    }
+
     public static function configureCurl(\CurlHandle $handle): void
     {
         $ca = self::caBundle();

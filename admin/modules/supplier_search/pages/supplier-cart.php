@@ -126,6 +126,7 @@
             autopartner: 'Auto Partner',
             autonet: 'Autonet',
             autototal: 'Autototal',
+            intercars: 'InterCars',
             site_produse: 'Site / ERP'
         })[key] || key;
     }
@@ -154,7 +155,7 @@
 
                 rows.push(`
                     <tr class="border-b" data-supplier="${escapeHtml(supplier)}" data-key="${escapeHtml(key)}">
-                        <td class="px-3 py-2"><input type="checkbox" class="cart-select" checked></td>
+                        <td class="px-3 py-2"><input type="checkbox" class="cart-select" checked>${String(supplier).toLowerCase() === 'autototal' ? '<label class="text-xs"><input type="checkbox" class="cart-exclude"> exclus</label>' : ''}</td>
                         <td class="px-3 py-2">
                             <div class="font-medium">${escapeHtml(item.product_code || '')}</div>
                             <div class="text-xs opacity-60">${escapeHtml(title)}</div>
@@ -307,6 +308,7 @@
                     import_from: importFrom,
                     id_client: clientId,
                     order_item_keys: keys,
+                    autototal_excluded_keys: Array.from(document.querySelectorAll('.cart-exclude:checked')).map(box => box.closest('tr')?.dataset.key).filter(Boolean),
                     data: document.getElementById('place-date')?.value || '',
                     idstare: parseInt(document.getElementById('place-status')?.value || '1', 10),
                     observations: document.getElementById('place-observations')?.value || '',

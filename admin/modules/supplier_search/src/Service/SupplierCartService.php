@@ -11,7 +11,7 @@ use RuntimeException;
  */
 final class SupplierCartService
 {
-    private const ALLOWED_SUPPLIERS = ['materom', 'elit', 'autopartner', 'autonet', 'autototal', 'site_produse'];
+    private const ALLOWED_SUPPLIERS = ['materom', 'elit', 'autopartner', 'autonet', 'autototal', 'intercars', 'site_produse'];
 
     public function __construct(private readonly ?PDO $pdo)
     {

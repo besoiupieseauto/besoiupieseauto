@@ -9,6 +9,13 @@ final class AutototalClient
 {
     private const TOKEN_TTL = 86400;
 
+    private string $lastError = '';
+
+    public function lastError(): string
+    {
+        return $this->lastError;
+    }
+
     public function getAvailabilityToken(): ?string
     {
         $cacheFile = SupplierSearchConfig::cacheDir() . '/autototal_availability_token.json';
@@ -21,6 +28,7 @@ final class AutototalClient
 
         $creds = SupplierSearchConfig::autototalCredentials();
         if ($creds['username'] === '' || $creds['password'] === '') {
+            $this->lastError = 'Token Autototal indisponibil (AUTOTOTAL_USERNAME/PASSWORD).';
             return null;
         }
 
@@ -43,9 +51,11 @@ final class AutototalClient
 
         $body = curl_exec($ch);
         $status = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+        $curlError = trim((string) curl_error($ch));
         curl_close($ch);
 
         if ($body === false || $status < 200 || $status >= 300) {
+            $this->lastError = $curlError !== '' ? $curlError : 'Autototal login HTTP ' . $status;
             return null;
         }
 
