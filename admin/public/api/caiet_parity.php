@@ -1268,7 +1268,7 @@ function caiet_supplier_place(array $cart, string $orderFrom, int $userId, array
             continue;
         }
         $name = strtolower((string) $supplier);
-        if (in_array($name, ['site_produse', 'elit', 'intercars'], true)) {
+        if (in_array($name, ['site_produse', 'elit', 'intercars', 'bardi'], true)) {
             continue;
         }
         if ($name === 'autonet') {

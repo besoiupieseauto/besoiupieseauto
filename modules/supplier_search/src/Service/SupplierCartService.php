@@ -15,7 +15,7 @@ use Throwable;
  */
 final class SupplierCartService
 {
-    private const ALLOWED_SUPPLIERS = ['materom', 'elit', 'autopartner', 'autonet', 'autototal', 'intercars', 'szakal', 'site_produse'];
+    private const ALLOWED_SUPPLIERS = ['materom', 'elit', 'autopartner', 'autonet', 'autototal', 'intercars', 'szakal', 'bardi', 'site_produse'];
 
     public function __construct(private ?PDO $pdo)
     {

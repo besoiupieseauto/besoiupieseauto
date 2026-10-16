@@ -127,6 +127,7 @@
             autonet: 'Autonet',
             autototal: 'Autototal',
             intercars: 'InterCars',
+            bardi: 'Bardi Auto',
             szakal: 'Szakal Metal',
             site_produse: 'Site / ERP'
         })[key] || key;

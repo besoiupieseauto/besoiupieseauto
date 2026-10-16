@@ -9,12 +9,14 @@ use Besoiu\Modules\SupplierSearch\Model\SupplierSearchRepository;
 use Besoiu\Modules\SupplierSearch\Service\Builders\AutonetSearchBuilder;
 use Besoiu\Modules\SupplierSearch\Service\Builders\AutototalSearchBuilder;
 use Besoiu\Modules\SupplierSearch\Service\Clients\AutototalClient;
+use Besoiu\Modules\SupplierSearch\Service\Clients\BardiAutoClient;
 use Besoiu\Modules\SupplierSearch\Service\Clients\ElitClient;
 use Besoiu\Modules\SupplierSearch\Service\Clients\IntercarsClient;
 use Besoiu\Modules\SupplierSearch\Service\Clients\SzakalClient;
 use Besoiu\Modules\SupplierSearch\Service\Parsers\AutonetParser;
 use Besoiu\Modules\SupplierSearch\Service\Parsers\AutopartnerParser;
 use Besoiu\Modules\SupplierSearch\Service\Parsers\AutototalParser;
+use Besoiu\Modules\SupplierSearch\Service\Parsers\BardiAutoParser;
 use Besoiu\Modules\SupplierSearch\Service\Parsers\ElitParser;
 use Besoiu\Modules\SupplierSearch\Service\Parsers\IntercarsParser;
 use Besoiu\Modules\SupplierSearch\Service\Parsers\MateromParser;
@@ -130,6 +132,13 @@ final class SupplierSearchService
             $intercars = $responses['intercars'] ?? ['success' => false, 'data' => []];
             if ($intercars['success']) {
                 $entries = array_merge($entries, (new IntercarsParser())->parse($query, $intercars['data']));
+            }
+        }
+
+        if (in_array('bardi', $suppliers, true)) {
+            $bardi = $responses['bardi'] ?? ['success' => false, 'data' => []];
+            if ($bardi['success']) {
+                $entries = array_merge($entries, (new BardiAutoParser())->parse($query, $bardi['data']));
             }
         }
 
@@ -414,6 +423,11 @@ final class SupplierSearchService
         if (in_array('elit', $suppliers, true)) {
             $elitClient = new ElitClient();
             $responses['elit'] = $elitClient->search($query, $timeout, $connectTimeout);
+        }
+
+        if (in_array('bardi', $suppliers, true)) {
+            $bardiClient = new BardiAutoClient();
+            $responses['bardi'] = $bardiClient->search($query, $timeout, $connectTimeout);
         }
 
         if (in_array('szakal', $suppliers, true)) {

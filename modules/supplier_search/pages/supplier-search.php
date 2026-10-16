@@ -229,7 +229,8 @@
             autonet: 'Autonet',
             autototal: 'Autototal',
             intercars: 'InterCars',
-            szakal: 'Szakal Metal'
+            szakal: 'Szakal Metal',
+            bardi: 'Bardi Auto'
         })[key] || key;
     }
 
@@ -303,7 +304,8 @@
                 { key: 'autonet', label: 'Autonet', short: 'AN', connected: false },
                 { key: 'autototal', label: 'Autototal', short: 'AT', connected: false },
                 { key: 'intercars', label: 'InterCars', short: 'IC', connected: false },
-                { key: 'szakal', label: 'Szakal Metal', short: 'SZ', connected: false }
+                { key: 'szakal', label: 'Szakal Metal', short: 'SZ', connected: false },
+                { key: 'bardi', label: 'Bardi Auto', short: 'BA', connected: false }
             ]);
         }
     }

@@ -339,6 +339,35 @@ final class SupplierSearchConfig
         return $candidates[0];
     }
 
+    public static function bardiBaseUrl(): string
+    {
+        $fromEnv = self::envValue('BARDI_BASE_URL');
+
+        return rtrim($fromEnv !== '' ? $fromEnv : 'https://www.bardiauto.ro/webshop', '/');
+    }
+
+    /** @return array{username:string,password:string} */
+    public static function bardiCredentials(): array
+    {
+        $secrets = self::secretsForCode('BARDI');
+        $username = self::envValue('BARDI_USERNAME')
+            ?: trim((string) ($secrets['search_username'] ?? ''));
+        $password = self::envValue('BARDI_PASSWORD')
+            ?: trim((string) ($secrets['search_password'] ?? ''));
+
+        return [
+            'username' => $username,
+            'password' => $password,
+        ];
+    }
+
+    public static function bardiHasCredentials(): bool
+    {
+        $creds = self::bardiCredentials();
+
+        return $creds['username'] !== '' && $creds['password'] !== '';
+    }
+
     public static function intercarsHasCredentials(): bool
     {
         $path = self::intercarsCredsPath();

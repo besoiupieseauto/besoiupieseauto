@@ -30,6 +30,7 @@ function import_supplier_priority_map_defaults(): array
         'ELIT' => 5,
         'INTERCARS' => 6,
         'SZAKAL' => 7,
+        'BARDI' => 8,
     ];
 }
 
@@ -297,7 +298,7 @@ function import_furnizori_search_slug(string $code): string
 /** @return list<string> */
 function import_furnizori_search_supported_slugs(): array
 {
-    static $known = ['materom', 'elit', 'autopartner', 'autonet', 'autototal', 'intercars', 'szakal'];
+    static $known = ['materom', 'elit', 'autopartner', 'autonet', 'autototal', 'intercars', 'szakal', 'bardi'];
 
     return $known;
 }
@@ -480,6 +481,20 @@ function import_furnizori_catalog_seeds(): array
             'conn_passive' => 0,
             'conn_remote_path' => '/down',
             'notes' => 'Szakal Metal Webservice API (https://webservice.szakalmetal.hu) + SFTP liste preturi (store.szakalmetal.hu:1221).',
+        ],
+        'BARDI' => [
+            'name' => 'Bardi Auto',
+            'code' => 'BARDI',
+            'status' => 'active',
+            'price_markup_type' => 'percentage',
+            'price_markup_value' => 0,
+            'priority' => $priorities['BARDI'] ?? 99,
+            'vat_rule' => 'net_plus_tva',
+            'price_columns' => 'net billing',
+            'connection_type' => 'api',
+            'scan_interval_minutes' => 360,
+            'api_base_url' => 'https://www.bardiauto.ro/webshop',
+            'notes' => 'Bardi Auto webshop — căutare live după cod. Plasarea comenzii nu este legată.',
         ],
     ];
 }

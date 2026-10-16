@@ -33,4 +33,9 @@ return [
         'conn_username' => '',
         'conn_password' => '',
     ],
+    'BARDI' => [
+        'search_username' => '',
+        'search_password' => '',
+        'api_base_url' => 'https://www.bardiauto.ro/webshop',
+    ],
 ];

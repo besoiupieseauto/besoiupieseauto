@@ -19,6 +19,7 @@ final class SupplierConnectionRegistry
         'AUTOPARTNER' => ['key' => 'autopartner', 'label' => 'Auto Partner', 'short' => 'AP'],
         'INTERCARS' => ['key' => 'intercars', 'label' => 'InterCars', 'short' => 'IC'],
         'SZAKAL' => ['key' => 'szakal', 'label' => 'Szakal Metal', 'short' => 'SZ'],
+        'BARDI' => ['key' => 'bardi', 'label' => 'Bardi Auto', 'short' => 'BA'],
     ];
 
     /** @return array<string, array{key:string, label:string, short:string, connected:bool, reason:string}> */
@@ -99,6 +100,9 @@ final class SupplierConnectionRegistry
             'intercars' => SupplierSearchConfig::intercarsHasCredentials()
                 ? ['connected' => true, 'reason' => '']
                 : ['connected' => false, 'reason' => 'InterCars — lipsește sesiunea din ic_creds.json (autentifică InterCars în scraper).'],
+            'bardi' => SupplierSearchConfig::bardiHasCredentials()
+                ? ['connected' => true, 'reason' => '']
+                : ['connected' => false, 'reason' => 'Bardi Auto — setează BARDI_USERNAME și BARDI_PASSWORD în .env sau search_username/search_password în furnizori_connections.local.php.'],
             'autopartner' => self::autopartnerConnected($resolved)
                 ? ['connected' => true, 'reason' => '']
                 : ['connected' => false, 'reason' => 'Auto Partner — lipsește API/token în cartela furnizor.'],
