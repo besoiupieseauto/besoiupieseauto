@@ -97,9 +97,11 @@ final class SupplierConnectionRegistry
                 || SupplierSearchConfig::legacyPdo() !== null
                 ? ['connected' => true, 'reason' => '']
                 : ['connected' => false, 'reason' => 'Credențiale Elit indisponibile — setează ELIT_USERNAME/ELIT_PASSWORD sau LEGACY_DB_*.'],
-            'intercars' => SupplierSearchConfig::intercarsHasCredentials()
+            'intercars' => SupplierSearchConfig::intercarsSessionLive()
                 ? ['connected' => true, 'reason' => '']
-                : ['connected' => false, 'reason' => 'InterCars — lipsește sesiunea din ic_creds.json (autentifică InterCars în scraper).'],
+                : ['connected' => false, 'reason' => SupplierSearchConfig::intercarsHasCredentials()
+                    ? 'InterCars — sesiunea e-Cat a expirat (HTTP 401). Se reautentifică la căutare.'
+                    : 'InterCars — lipsește sesiunea din ic_creds.json (autentifică InterCars în scraper).'],
             'bardi' => SupplierSearchConfig::bardiHasCredentials()
                 ? ['connected' => true, 'reason' => '']
                 : ['connected' => false, 'reason' => 'Bardi Auto — setează BARDI_USERNAME și BARDI_PASSWORD în .env sau search_username/search_password în furnizori_connections.local.php.'],

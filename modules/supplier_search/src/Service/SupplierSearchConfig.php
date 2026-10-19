@@ -317,26 +317,86 @@ final class SupplierSearchConfig
         return trim((string) ($_ENV['INTERCARS_BRANCH'] ?? 'R86'));
     }
 
-    public static function intercarsCredsPath(): string
+    /** @return list<string> */
+    public static function intercarsCredsCandidates(): array
     {
+        $candidates = [];
         $fromEnv = self::envValue('INTERCARS_CREDS_PATH');
-        if ($fromEnv !== '' && is_file($fromEnv)) {
-            return $fromEnv;
+        if ($fromEnv !== '') {
+            $candidates[] = $fromEnv;
         }
 
-        $candidates = [
-            'D:\\laragon\\www\\maparea\\intercars\\ic_creds.json',
-            dirname(self::backendRoot(), 3) . DIRECTORY_SEPARATOR . 'maparea' . DIRECTORY_SEPARATOR . 'intercars' . DIRECTORY_SEPARATOR . 'ic_creds.json',
-            self::cacheDir() . '/ic_creds.json',
-        ];
+        $root = dirname(self::backendRoot(), 3);
+        $candidates[] = 'D:\\laragon\\www\\maparea\\intercars\\ic_creds.json';
+        $candidates[] = $root . DIRECTORY_SEPARATOR . 'maparea' . DIRECTORY_SEPARATOR . 'intercars' . DIRECTORY_SEPARATOR . 'ic_creds.json';
+        $candidates[] = 'D:\\laragon\\www\\scraper\\state\\ic_creds.json';
+        $candidates[] = $root . DIRECTORY_SEPARATOR . 'scraper' . DIRECTORY_SEPARATOR . 'state' . DIRECTORY_SEPARATOR . 'ic_creds.json';
+        $candidates[] = self::adminRoot() . DIRECTORY_SEPARATOR . 'scripts' . DIRECTORY_SEPARATOR . 'ic_creds.json';
+        $candidates[] = self::cacheDir() . '/ic_creds.json';
 
-        foreach ($candidates as $path) {
-            if (is_file($path)) {
-                return $path;
+        return array_values(array_unique($candidates));
+    }
+
+    public static function intercarsCredsPath(): string
+    {
+        $best = '';
+        $bestMtime = -1;
+        foreach (self::intercarsCredsCandidates() as $path) {
+            if (!is_file($path)) {
+                continue;
+            }
+            $decoded = json_decode((string) file_get_contents($path), true);
+            $headers = is_array($decoded['headers'] ?? null) ? $decoded['headers'] : [];
+            $auth = trim((string) ($headers['Authorization'] ?? $headers['authorization'] ?? ''));
+            if ($auth === '' && empty($decoded['cookies'])) {
+                continue;
+            }
+            $mtime = (int) filemtime($path);
+            if ($mtime >= $bestMtime) {
+                $best = $path;
+                $bestMtime = $mtime;
             }
         }
 
-        return $candidates[0];
+        return $best !== '' ? $best : self::intercarsCredsCandidates()[0];
+    }
+
+    public static function intercarsRememberSession(bool $ok): void
+    {
+        $path = self::intercarsCredsPath();
+        @file_put_contents(self::cacheDir() . '/ic_session_live.json', json_encode([
+            'ok' => $ok,
+            'ts' => time(),
+            'creds_mtime' => is_file($path) ? (int) filemtime($path) : 0,
+        ], JSON_UNESCAPED_UNICODE));
+    }
+
+    public static function intercarsSessionLive(bool $force = false): bool
+    {
+        if (!self::intercarsHasCredentials()) {
+            return false;
+        }
+
+        $credsPath = self::intercarsCredsPath();
+        $credsMtime = is_file($credsPath) ? (int) filemtime($credsPath) : 0;
+        $cacheFile = self::cacheDir() . '/ic_session_live.json';
+        if (!$force && is_file($cacheFile)) {
+            $cache = json_decode((string) file_get_contents($cacheFile), true);
+            if (is_array($cache) && (int) ($cache['creds_mtime'] ?? 0) === $credsMtime) {
+                $age = time() - (int) ($cache['ts'] ?? 0);
+                if (!empty($cache['ok']) && $age < 60) {
+                    return true;
+                }
+                if (empty($cache['ok']) && $age < 15) {
+                    return false;
+                }
+            }
+        }
+
+        $live = (new Clients\IntercarsClient())->pingSession();
+        self::intercarsRememberSession($live);
+
+        return $live;
     }
 
     public static function bardiBaseUrl(): string
@@ -380,8 +440,9 @@ final class SupplierSearchConfig
             return false;
         }
 
-        $headers = $decoded['headers'] ?? [];
-        if (is_array($headers) && !empty($headers['Authorization'])) {
+        $headers = is_array($decoded['headers'] ?? null) ? $decoded['headers'] : [];
+        $auth = trim((string) ($headers['Authorization'] ?? $headers['authorization'] ?? ''));
+        if ($auth !== '') {
             return true;
         }
 
