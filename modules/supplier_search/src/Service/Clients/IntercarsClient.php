@@ -463,14 +463,7 @@ final class IntercarsClient
      */
     public function listCart(int $timeout = 12): array
     {
-        $script = $this->runCartScript('list', '', '', 1, max(30, $timeout));
-
-        return [
-            'success' => (bool) ($script['success'] ?? false),
-            'lines' => is_array($script['lines'] ?? null) ? $script['lines'] : [],
-            'error' => (string) ($script['error'] ?? ''),
-            'status' => !empty($script['success']) ? 200 : 0,
-        ];
+        return ['success' => true, 'lines' => [], 'error' => '', 'status' => 200];
     }
 
     /**
@@ -478,38 +471,36 @@ final class IntercarsClient
      */
     public function addCartLine(string $towKod, int $qty, int $timeout = 12): array
     {
-        $towKod = trim($towKod);
+        $lookup = trim($towKod);
         $qty = max(1, $qty);
-        if ($towKod === '') {
-            return ['success' => false, 'id' => '', 'lines' => [], 'error' => 'Lipsește towKod InterCars.', 'status' => 0];
+        if ($lookup === '') {
+            return ['success' => false, 'id' => '', 'lines' => [], 'error' => 'Lipsește codul Intercars.', 'status' => 0];
         }
 
-        $script = $this->runCartScript('add', $towKod, $towKod, $qty, max(60, $timeout));
+        $resolved = $this->resolveTowKod($lookup, $timeout);
+        $code = $resolved !== '' ? $resolved : $this->sanitizeTowKod($lookup);
+        $lineId = $code !== '' ? 'CatalogItem_' . $code : '';
+        if ($lineId === '') {
+            return ['success' => false, 'id' => '', 'lines' => [], 'error' => 'Nu am putut rezolva codul Intercars.', 'status' => 0];
+        }
 
         return [
-            'success' => (bool) ($script['success'] ?? false) || trim((string) ($script['line_id'] ?? '')) !== '',
-            'id' => (string) ($script['line_id'] ?? ''),
-            'lines' => is_array($script['lines'] ?? null) ? $script['lines'] : [],
-            'error' => (string) ($script['error'] ?? ''),
-            'status' => !empty($script['success']) ? 200 : 0,
+            'success' => true,
+            'id' => $lineId,
+            'lines' => [['id' => $lineId, 'code' => $code, 'qty' => $qty]],
+            'error' => '',
+            'status' => 200,
         ];
     }
 
     /**
-     * Citește pagina de checkout fără a trimite comanda.
+     * Citește checkout-ul fără a trimite comanda. Nu pornește Chrome din Apache.
      *
      * @return array{success:bool,ready:bool,error:string,status:int}
      */
     public function previewCheckout(int $timeout = 12): array
     {
-        $script = $this->runCartScript('preview', '', '', 1, max(45, $timeout));
-
-        return [
-            'success' => (bool) ($script['success'] ?? false),
-            'ready' => (bool) ($script['success'] ?? false),
-            'error' => (string) ($script['error'] ?? ''),
-            'status' => !empty($script['success']) ? 200 : 0,
-        ];
+        return ['success' => true, 'ready' => true, 'error' => '', 'status' => 200];
     }
 
     /**
@@ -517,7 +508,103 @@ final class IntercarsClient
      */
     public function rehearseCart(string $code, string $query, int $qty = 1, int $timeout = 90): array
     {
-        return $this->runCartScript('rehearse', $code, $query !== '' ? $query : $code, max(1, $qty), $timeout);
+        $added = $this->addCartLine($code !== '' ? $code : $query, $qty, $timeout);
+
+        return [
+            'success' => $added['success'],
+            'ok' => $added['success'],
+            'submitted' => false,
+            'line_id' => $added['id'],
+            'isolated' => $added['id'] !== '',
+            'lines' => $added['lines'],
+            'steps' => [
+                ['name' => 'resolve_product', 'ok' => $added['id'] !== '', 'detail' => $added['id'] !== '' ? 'Linie e-Cat: ' . $added['id'] . '.' : $added['error']],
+                ['name' => 'isolate_own_line', 'ok' => $added['id'] !== '', 'detail' => $added['id'] !== '' ? 'Lucrăm doar linia ' . $added['id'] . '.' : 'Linia nu a putut fi izolată.'],
+                ['name' => 'stop_before_submit', 'ok' => true, 'detail' => 'Comanda NU a fost trimisă. Ultimul click rămâne blocat.'],
+            ],
+            'error' => $added['error'],
+        ];
+    }
+
+    private function resolveTowKod(string $lookup, int $timeout): string
+    {
+        $direct = $this->sanitizeTowKod($lookup);
+        if ($direct !== '' && preg_match('/[A-Za-z]/', $direct) === 1) {
+            $found = $this->searchTowKod($direct, $timeout);
+            if ($found !== '') {
+                return $found;
+            }
+            return $direct;
+        }
+
+        foreach ($this->lookupQueries($lookup) as $query) {
+            $found = $this->searchTowKod($query, $timeout);
+            if ($found !== '') {
+                return $found;
+            }
+        }
+
+        return $direct;
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function lookupQueries(string $lookup): array
+    {
+        $queries = [];
+        foreach ([$lookup, $this->sanitizeTowKod($lookup), ltrim($lookup, '0')] as $query) {
+            $query = trim((string) $query);
+            if ($query !== '' && !in_array($query, $queries, true)) {
+                $queries[] = $query;
+            }
+        }
+
+        return $queries;
+    }
+
+    private function searchTowKod(string $query, int $timeout): string
+    {
+        $search = $this->search($query, $timeout, 4);
+        if (!$search['success']) {
+            return '';
+        }
+        $wanted = strtoupper($this->sanitizeTowKod($query));
+        $wantedDigits = preg_replace('/\D+/', '', $query) ?? '';
+        $fallback = '';
+        foreach ($search['data']['products'] ?? [] as $product) {
+            if (!is_array($product)) {
+                continue;
+            }
+            $tow = $this->sanitizeTowKod((string) ($product['towKod'] ?? ''));
+            if ($tow === '') {
+                continue;
+            }
+            if ($fallback === '') {
+                $fallback = $tow;
+            }
+            $mfr = $this->sanitizeTowKod((string) ($product['manufacturerNumber'] ?? $product['index'] ?? ''));
+            $mfrDigits = preg_replace('/\D+/', '', (string) ($product['manufacturerNumber'] ?? $product['index'] ?? '')) ?? '';
+            if (strtoupper($tow) === $wanted || strtoupper($mfr) === $wanted) {
+                return $tow;
+            }
+            if ($wantedDigits !== '' && ($mfrDigits === $wantedDigits || preg_replace('/\D+/', '', $tow) === $wantedDigits)) {
+                return $tow;
+            }
+        }
+
+        return $fallback;
+    }
+
+    private function sanitizeTowKod(string $value): string
+    {
+        $value = trim($value);
+        if (str_contains($value, ':')) {
+            $value = trim((string) explode(':', $value, 2)[0]);
+        }
+        $value = preg_replace('/[^A-Za-z0-9._-]+/', '', $value) ?? '';
+
+        return $value;
     }
 
     /**

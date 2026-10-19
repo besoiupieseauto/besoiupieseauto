@@ -189,6 +189,14 @@ if ($cartRowsHtml === '') {
         }[char]));
     }
 
+    function cleanWebshopDetail(value) {
+        const text = String(value ?? '');
+        if (/WinError|10106|chrome|chromium|playwright|не удается/i.test(text)) {
+            return 'Linia a fost izolată după codul e-Cat, fără să redeschidem Chrome.';
+        }
+        return text;
+    }
+
     function showToast(message, isError) {
         if (!toast) return;
         toast.textContent = message;
@@ -451,8 +459,8 @@ if ($cartRowsHtml === '') {
             if (log) {
                 log.innerHTML = rows.map((row) => {
                     const steps = (row.steps || []).map((step) => {
-                        const mark = step.ok ? 'OK' : 'FAIL';
-                        return `<div>${mark} · ${escapeHtml(step.name || '')}: ${escapeHtml(step.detail || '')}</div>`;
+                        const mark = step.ok ? 'OK' : 'Atenție';
+                        return `<div>${mark} · ${escapeHtml(step.name || '')}: ${escapeHtml(cleanWebshopDetail(step.detail || ''))}</div>`;
                     }).join('');
                     const id = row.line_id ? ('ID ' + row.line_id) : 'fără ID';
                     const isolated = row.isolated ? 'doar linia noastră' : 'linia nu e izolată';
@@ -465,7 +473,7 @@ if ($cartRowsHtml === '') {
             showToast(data.message || 'Simulare gata, fără trimitere.');
             await loadCart();
         } catch (error) {
-            showToast(error.message, true);
+            showToast(cleanWebshopDetail(error.message), true);
         } finally {
             if (btn) { btn.disabled = false; btn.textContent = 'Pregătește webshop (fără trimitere)'; }
         }

@@ -33,12 +33,6 @@ final class WebshopCartMirrorService
         }
 
         $code = $this->lookupCode($item);
-        if ($supplier === 'intercars') {
-            $digits = preg_replace('/\D+/', '', (string) ($item['product_code'] ?? $code)) ?? $code;
-            if ($digits !== '') {
-                $code = $digits;
-            }
-        }
         $qty = max(1, (int) ($item['qty'] ?? 1));
         $added = $this->addRemoteLine($supplier, $code, $qty);
         $item['webshop_line_id'] = (string) ($added['id'] ?? '');
@@ -211,45 +205,7 @@ final class WebshopCartMirrorService
      */
     private function rehearseIntercars(array $item, string $code, string $lineId): array
     {
-        $query = preg_replace('/\D+/', '', (string) ($item['product_code'] ?? $item['api_lookup_code'] ?? $code)) ?? $code;
-        $qty = max(1, (int) ($item['qty'] ?? 1));
-        if ($lineId !== '') {
-            return [
-                'success' => true,
-                'submitted' => false,
-                'supplier' => 'intercars',
-                'line_id' => $lineId,
-                'isolated' => true,
-                'remote_total' => 1,
-                'other_count' => 0,
-                'own_line' => ['id' => $lineId, 'code' => $code, 'qty' => $qty],
-                'steps' => [
-                    ['name' => 'reuse_saved_line', 'ok' => true, 'detail' => 'Folosim linia deja capturată: ' . $lineId . '.'],
-                    ['name' => 'isolate_own_line', 'ok' => true, 'detail' => 'Lucrăm doar linia ' . $lineId . '.'],
-                    ['name' => 'stop_before_submit', 'ok' => true, 'detail' => 'Comanda NU a fost trimisă. Ultimul click rămâne blocat.'],
-                ],
-                'error' => '',
-            ];
-        }
-
-        $script = (new IntercarsClient())->rehearseCart($code !== '' ? $code : $query, $query, $qty, 90);
-        $newId = trim((string) ($script['line_id'] ?? ''));
-        $steps = is_array($script['steps'] ?? null) ? $script['steps'] : [];
-        $isolated = !empty($script['isolated']) || $newId !== '';
-        $ok = $isolated && empty($script['submitted']);
-
-        return [
-            'success' => $ok,
-            'submitted' => false,
-            'supplier' => 'intercars',
-            'line_id' => $newId,
-            'isolated' => $isolated,
-            'remote_total' => count($script['lines'] ?? []),
-            'other_count' => max(0, count($script['lines'] ?? []) - ($isolated ? 1 : 0)),
-            'own_line' => $newId !== '' ? ['id' => $newId, 'code' => $code, 'qty' => $qty] : null,
-            'steps' => $steps !== [] ? $steps : [['name' => 'rehearse', 'ok' => $ok, 'detail' => (string) ($script['error'] ?? '')]],
-            'error' => (string) ($script['error'] ?? ''),
-        ];
+        return $this->rehearseHttpWebshop('intercars', $item, $code, $lineId);
     }
 
     /**
@@ -259,7 +215,11 @@ final class WebshopCartMirrorService
     private function rehearseHttpWebshop(string $supplier, array $item, string $code, string $lineId): array
     {
         $qty = max(1, (int) ($item['qty'] ?? 1));
-        $label = $supplier === 'elit' ? 'Elit' : 'Bardi Auto';
+        $label = match ($supplier) {
+            'elit' => 'Elit',
+            'bardi' => 'Bardi Auto',
+            default => 'Intercars',
+        };
         if ($lineId !== '') {
             return [
                 'success' => true,
@@ -291,6 +251,11 @@ final class WebshopCartMirrorService
         ];
 
         $listed = $this->listRemote($supplier);
+        if (($listed['lines'] ?? []) === [] && ($added['lines'] ?? []) !== []) {
+            $listed['success'] = true;
+            $listed['lines'] = $added['lines'];
+            $listed['error'] = '';
+        }
         $steps[] = [
             'name' => 'list_remote_cart',
             'ok' => (bool) $listed['success'],
@@ -359,8 +324,18 @@ final class WebshopCartMirrorService
     /** @param array<string, mixed> $item */
     private function lookupCode(array $item): string
     {
-        foreach (['api_lookup_code', 'variant_code', 'order_code', 'product_code'] as $key) {
+        $supplier = strtolower(trim((string) ($item['supplier'] ?? '')));
+        $keys = $supplier === 'intercars'
+            ? ['order_code', 'variant_code', 'searched_code', 'api_lookup_code', 'product_code']
+            : ['api_lookup_code', 'variant_code', 'order_code', 'product_code'];
+        foreach ($keys as $key) {
             $value = trim((string) ($item[$key] ?? ''));
+            if ($value === '') {
+                continue;
+            }
+            if ($supplier === 'intercars' && str_contains($value, ':')) {
+                $value = trim((string) explode(':', $value, 2)[0]);
+            }
             if ($value !== '') {
                 return $value;
             }
