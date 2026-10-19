@@ -81,6 +81,47 @@ if ($cartRowsHtml === '') {
         . '</td></tr>';
 }
 ?>
+<style>
+.caiet-modal{position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:200000;display:flex;align-items:flex-start;justify-content:center;padding:28px 16px;overflow:auto}
+.caiet-modal.hidden{display:none !important}
+.caiet-sheet{background:#fff;border:1px solid #bce8f1;width:min(980px,100%);max-height:calc(100vh - 56px);overflow:auto;border-radius:6px;box-shadow:0 18px 50px rgba(15,23,42,.28);box-sizing:border-box}
+.caiet-sheet__head{background:#d9edf7;color:#31708f;border-bottom:1px solid #bce8f1;padding:10px 15px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:2}
+.caiet-sheet__head h3{margin:0;font-size:18px;font-weight:500}
+.caiet-sheet__body{padding:16px;background:#fff}
+.caiet-sheet__close{border:0;background:transparent;font-size:22px;line-height:1;cursor:pointer;color:#31708f}
+.order-form{display:flex;flex-direction:column;gap:12px}
+.order-line{display:grid;grid-template-columns:104px minmax(260px,1.7fr) 108px minmax(140px,1fr) 64px minmax(140px,.9fr);gap:8px 10px;align-items:center}
+.order-line > label,.order-k{text-align:right;font-size:13px;color:#333;line-height:1.25}
+.order-ctrl{min-width:0}
+.order-ctrl input,.order-ctrl select,.order-ctrl textarea{width:100%;height:34px;border:1px solid #ccc;border-radius:4px;padding:4px 8px;box-sizing:border-box;background:#fff;color:#111}
+.order-ctrl textarea{height:78px;resize:vertical;padding-top:6px}
+.order-when{display:flex;gap:8px}
+.order-when input[type="date"]{flex:1 1 160px;width:auto;min-width:148px}
+.order-when input[type="text"]{width:92px;flex:0 0 92px}
+.order-split{display:grid;grid-template-columns:minmax(220px,280px) minmax(0,1fr);gap:20px;align-items:start}
+.order-block{display:grid;grid-template-columns:112px minmax(0,1fr);gap:8px 10px;align-items:start}
+.order-k,.order-block > label{padding-top:6px;text-align:right;font-size:13px;color:#333;line-height:1.25}
+.order-radios{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding-top:4px}
+.order-radios label{display:inline-flex;flex-direction:row;align-items:center;gap:8px;font-size:13px;color:#333;white-space:nowrap;width:auto}
+.order-radios input{width:16px;height:16px;margin:0;flex:0 0 16px;accent-color:#31708f}
+.order-actions{display:flex;justify-content:flex-end;gap:8px}
+.caiet-input-plus{display:flex}
+.caiet-input-plus input{flex:1}
+.caiet-input-plus button,.lg-btn{height:34px;border:1px solid #ccc;background:#fff;cursor:pointer;padding:0 10px}
+#supplier-cart-place-modal .lg-btn{height:34px;border:1px solid #ccc;background:#fff;cursor:pointer;padding:0 10px;border-radius:4px;color:#333}
+#supplier-cart-place-modal .lg-btn-success{background:#5cb85c;border-color:#4cae4c;color:#fff}
+#supplier-cart-place-modal .lg-btn-default{background:#fff;color:#333}
+.caiet-suggest{position:relative}
+.caiet-suggest ul{position:absolute;z-index:5;left:0;right:0;top:100%;margin:0;padding:0;list-style:none;background:#fff;border:1px solid #ccc;max-height:220px;overflow:auto}
+.caiet-suggest li{padding:6px 8px;cursor:pointer}
+.caiet-suggest li:hover{background:#d9edf7}
+.caiet-lines{width:100%;border-collapse:collapse;margin-top:12px}
+.caiet-lines th,.caiet-lines td{border:1px solid #ddd;padding:6px 8px;text-align:center}
+.caiet-lines thead tr{background:#fcf8e3}
+@media (max-width:900px){
+  .order-line,.order-split,.order-block{grid-template-columns:100px minmax(0,1fr)}
+}
+</style>
 <div>
     <div id="supplier-cart-toast" class="hidden fixed right-5 top-5 z-50 rounded-md border bg-background px-4 py-3 text-sm shadow"></div>
 
@@ -123,48 +164,81 @@ if ($cartRowsHtml === '') {
         </table>
     </div>
 
-    <div id="supplier-cart-place-modal" class="hidden fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 p-4">
-        <div class="box w-full max-w-lg rounded-lg bg-background p-5 shadow-xl">
-            <h3 class="mb-4 font-medium">Place order — comandă directă</h3>
-            <div class="space-y-3">
-                <div>
-                    <label class="mb-1 block text-sm">Client ERP</label>
-                    <input id="place-client-search" list="place-clients" class="box h-10 w-full rounded-md border px-3" placeholder="Caută client...">
-                    <datalist id="place-clients"></datalist>
-                    <input type="hidden" id="place-client-id">
-                </div>
-                <div>
-                    <label class="mb-1 block text-sm">Import în</label>
-                    <select id="place-import-from" class="box h-10 w-full rounded-md border px-3">
-                        <option value="TIMISOARA">Timișoara (internă)</option>
-                        <option value="UTVIN">Utvin (internă)</option>
-                        <option value="EXTERNE">Comandă externă</option>
-                        <option value="NUIMPORTA">Nu importa (doar elimină din coș)</option>
-                    </select>
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="mb-1 block text-sm">Data</label>
-                        <input type="date" id="place-date" class="box h-10 w-full rounded-md border px-3">
-                    </div>
-                    <div>
-                        <label class="mb-1 block text-sm">Stare</label>
-                        <select id="place-status" class="box h-10 w-full rounded-md border px-3">
-                            <option value="1">Comandat</option>
-                            <option value="2">Sosit</option>
-                            <option value="3">Expediat</option>
-                            <option value="4">Achitat</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="mb-1 block text-sm">Observații</label>
-                    <textarea id="place-observations" class="box min-h-[60px] w-full rounded-md border px-3 py-2"></textarea>
-                </div>
+    <div id="supplier-cart-place-modal" class="caiet-modal hidden">
+        <div class="caiet-sheet">
+            <div class="caiet-sheet__head">
+                <h3>Comanda noua</h3>
+                <button type="button" class="caiet-sheet__close" id="place-close" aria-label="Închide">&times;</button>
             </div>
-            <div class="mt-5 flex justify-end gap-2">
-                <button type="button" id="place-cancel" class="box h-10 rounded-md border px-4 text-sm">Anulează</button>
-                <button type="button" id="place-submit" class="box h-10 rounded-md border bg-primary px-4 text-sm text-white">Confirmă place order</button>
+            <div class="caiet-sheet__body">
+                <div class="order-form">
+                    <div class="order-line">
+                        <label for="place-client-search">Client</label>
+                        <div class="order-ctrl caiet-suggest">
+                            <div class="caiet-input-plus">
+                                <input id="place-client-search" placeholder="Cauta si click pe client din lista" autocomplete="off">
+                                <button type="button" id="place-add-client" title="Client nou">+</button>
+                            </div>
+                            <ul id="place-client-list" hidden></ul>
+                            <input type="hidden" id="place-client-id">
+                        </div>
+                        <label for="place-phone">Telefon</label>
+                        <div class="order-ctrl"><input id="place-phone" readonly></div>
+                        <label for="place-address">Adresa</label>
+                        <div class="order-ctrl"><input id="place-address" readonly></div>
+                    </div>
+                    <div class="order-line">
+                        <label for="place-date">Data</label>
+                        <div class="order-ctrl order-when">
+                            <input id="place-date" type="date">
+                            <input id="place-time" type="text" readonly>
+                        </div>
+                        <label for="place-marca">Marca masina</label>
+                        <div class="order-ctrl"><input id="place-marca"></div>
+                        <label for="place-status">Stare</label>
+                        <div class="order-ctrl">
+                            <select id="place-status">
+                                <option value="1">Comandat</option>
+                                <option value="2">Sosit</option>
+                                <option value="3">Expediat</option>
+                                <option value="4">Achitat</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="order-split">
+                        <div class="order-block">
+                            <span class="order-k">Magazin</span>
+                            <div class="order-radios">
+                                <label><input type="radio" name="place-import-from" value="TIMISOARA" checked> Timisoara</label>
+                                <label><input type="radio" name="place-import-from" value="UTVIN"> Utvin</label>
+                                <label><input type="radio" name="place-import-from" value="EXTERNE"> Externe</label>
+                            </div>
+                        </div>
+                        <div class="order-block">
+                            <label for="place-observations">Observații comandă</label>
+                            <div class="order-ctrl">
+                                <textarea id="place-observations" placeholder="Adăugați observații sau comentarii despre comandă..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-actions">
+                        <button type="button" id="place-cancel" class="lg-btn lg-btn-default">Anulează</button>
+                        <button type="button" id="place-submit" class="lg-btn lg-btn-success">Salvare</button>
+                    </div>
+                </div>
+                <table class="caiet-lines">
+                    <thead>
+                    <tr>
+                        <th>Nr. Crt.</th>
+                        <th>PRODUS</th>
+                        <th>COD PRODUS</th>
+                        <th>CANT.</th>
+                        <th>PRET</th>
+                        <th>VALOARE.</th>
+                    </tr>
+                    </thead>
+                    <tbody id="place-draft-lines"></tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -182,6 +256,7 @@ if ($cartRowsHtml === '') {
     const summary = document.getElementById('supplier-cart-summary');
     const toast = document.getElementById('supplier-cart-toast');
     const clientsMap = new Map();
+    let lastCartData = { cart: {} };
 
     function escapeHtml(value) {
         return String(value ?? '').replace(/[&<>"']/g, (char) => ({
@@ -236,6 +311,7 @@ if ($cartRowsHtml === '') {
     }
 
     function renderCart(data) {
+        lastCartData = data || { cart: {} };
         const cart = data.cart || {};
         const rows = [];
 
@@ -311,30 +387,93 @@ if ($cartRowsHtml === '') {
         return data;
     }
 
-    async function loadClients() {
+    async function searchPlaceClients(query) {
+        const list = document.getElementById('place-client-list');
+        if (!list) return;
+        if (String(query || '').trim().length < 1) {
+            list.hidden = true;
+            list.innerHTML = '';
+            return;
+        }
         try {
             const response = await fetch(CLIENTS_ENDPOINT, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ type_product: 'clienti_list', limit: 200 })
+                body: JSON.stringify({ type_product: 'clienti_list', search: query, limit: 8 })
             });
             const data = await response.json();
-            if (!response.ok || !data.success) return;
-
-            const datalist = document.getElementById('place-clients');
-            if (!datalist) return;
-            datalist.innerHTML = '';
-            clientsMap.clear();
             const items = (data.data && data.data.items) ? data.data.items : (data.data || []);
-            items.forEach((client) => {
-                const label = [client.nume || client.client_name || client.name, client.telefon || client.phone].filter(Boolean).join(' · ');
-                if (!label) return;
-                clientsMap.set(label, client);
-                const option = document.createElement('option');
-                option.value = label;
-                datalist.appendChild(option);
+            const found = Array.isArray(items) ? items : [];
+            list.innerHTML = found.map((client, index) => (
+                '<li data-i="' + index + '">' + escapeHtml(client.nume || client.client_name || '') + ' · ' + escapeHtml(client.telefon || client.phone || '') + '</li>'
+            )).join('');
+            list.hidden = !found.length;
+            list.querySelectorAll('li').forEach((item) => {
+                item.onclick = () => {
+                    const client = found[Number(item.dataset.i)];
+                    if (!client) return;
+                    document.getElementById('place-client-id').value = String(client.idclienti || client.id || '');
+                    document.getElementById('place-client-search').value = client.nume || client.client_name || '';
+                    document.getElementById('place-phone').value = client.telefon || client.phone || '';
+                    document.getElementById('place-address').value = client.adresa || client.address || '';
+                    document.getElementById('place-marca').value = client.marca || document.getElementById('place-marca').value;
+                    list.hidden = true;
+                };
             });
-        } catch (_) {}
+        } catch (_) {
+            list.hidden = true;
+        }
+    }
+
+    function paintPlaceLines() {
+        const target = document.getElementById('place-draft-lines');
+        if (!target) return;
+        const selected = new Set(selectedItemKeys());
+        const rows = [];
+        let total = 0;
+        let index = 0;
+        Object.entries(lastCartData.cart || {}).forEach(([supplier, items]) => {
+            Object.entries(items || {}).forEach(([key, item]) => {
+                if (!selected.has(supplier + '|' + key)) return;
+                const qty = Number(item.qty || 1);
+                const price = Number(item.price || 0);
+                const value = qty * price;
+                total += value;
+                index += 1;
+                rows.push(
+                    '<tr><td>' + index + '</td><td>' + escapeHtml([item.manufacturer, item.product_name].filter(Boolean).join(' ') || item.product_code || '') + '</td><td>' + escapeHtml(item.product_code || item.order_code || '') + '</td><td>' + qty + '</td><td>' + Number(price).toFixed(2) + '</td><td>' + value.toFixed(2) + '</td></tr>'
+                );
+            });
+        });
+        target.innerHTML = (rows.join('') || '<tr><td colspan="6">Nicio linie selectată.</td></tr>')
+            + '<tr><td colspan="5" style="text-align:right"><strong>TOTAL</strong></td><td>' + total.toFixed(2) + '</td></tr>';
+    }
+
+    function openPlaceModal() {
+        const modal = document.getElementById('supplier-cart-place-modal');
+        if (!modal) return;
+        if (modal.parentElement !== document.body) {
+            document.body.appendChild(modal);
+        }
+        const now = new Date();
+        const date = document.getElementById('place-date');
+        const time = document.getElementById('place-time');
+        if (date && !date.value) {
+            date.value = now.toISOString().slice(0, 10);
+        }
+        if (time) {
+            time.value = now.toLocaleTimeString('ro-RO', { hour: '2-digit', minute: '2-digit' });
+        }
+        paintPlaceLines();
+        modal.classList.remove('hidden');
+    }
+
+    function closePlaceModal() {
+        document.getElementById('supplier-cart-place-modal')?.classList.add('hidden');
+    }
+
+    function selectedImportFrom() {
+        return document.querySelector('input[name="place-import-from"]:checked')?.value || 'TIMISOARA';
     }
 
     tbody?.addEventListener('click', async (event) => {
@@ -369,28 +508,34 @@ if ($cartRowsHtml === '') {
         tbody.querySelectorAll('.cart-select').forEach((cb) => { cb.checked = checked; });
     });
 
-    const placeModal = document.getElementById('supplier-cart-place-modal');
     document.getElementById('supplier-cart-place-order')?.addEventListener('click', () => {
         const keys = selectedItemKeys();
         if (!keys.length) {
             showToast('Selectează cel puțin un articol.', true);
             return;
         }
-        placeModal?.classList.remove('hidden');
+        openPlaceModal();
     });
-    document.getElementById('place-cancel')?.addEventListener('click', () => placeModal?.classList.add('hidden'));
+    document.getElementById('place-cancel')?.addEventListener('click', closePlaceModal);
+    document.getElementById('place-close')?.addEventListener('click', closePlaceModal);
+    document.getElementById('place-add-client')?.addEventListener('click', () => {
+        window.location.href = '/admin/caiet-clienti';
+    });
 
-    document.getElementById('place-client-search')?.addEventListener('change', (event) => {
-        const client = clientsMap.get(event.target.value);
-        document.getElementById('place-client-id').value = client ? String(client.idclienti || client.id || client.randomn_id || '') : '';
+    const placeClientSearch = document.getElementById('place-client-search');
+    let placeClientTimer = 0;
+    placeClientSearch?.addEventListener('input', () => {
+        document.getElementById('place-client-id').value = '';
+        clearTimeout(placeClientTimer);
+        placeClientTimer = setTimeout(() => searchPlaceClients(placeClientSearch.value), 200);
     });
 
     document.getElementById('place-submit')?.addEventListener('click', async () => {
-        const importFrom = document.getElementById('place-import-from')?.value || 'TIMISOARA';
+        const importFrom = selectedImportFrom();
         const clientId = parseInt(document.getElementById('place-client-id')?.value || '0', 10);
         const keys = selectedItemKeys();
 
-        if (importFrom !== 'NUIMPORTA' && !clientId) {
+        if (!clientId) {
             showToast('Selectează clientul.', true);
             return;
         }
@@ -410,6 +555,7 @@ if ($cartRowsHtml === '') {
                     data: document.getElementById('place-date')?.value || '',
                     idstare: parseInt(document.getElementById('place-status')?.value || '1', 10),
                     observations: document.getElementById('place-observations')?.value || '',
+                    marca: document.getElementById('place-marca')?.value || '',
                     cont_awb: 'Utvin',
                 })
             });
@@ -418,7 +564,7 @@ if ($cartRowsHtml === '') {
                 throw new Error(data.message || 'Place order eșuat.');
             }
 
-            placeModal?.classList.add('hidden');
+            closePlaceModal();
             if (data.mode === 'order_created' && data.order) {
                 showToast(`Comandă #${data.order.idcomanda} creată (${formatMoney(data.order.total || 0)}).`);
                 setTimeout(() => {
@@ -431,7 +577,7 @@ if ($cartRowsHtml === '') {
         } catch (error) {
             showToast(error.message, true);
         } finally {
-            if (btn) { btn.disabled = false; btn.textContent = 'Confirmă place order'; }
+            if (btn) { btn.disabled = false; btn.textContent = 'Salvare'; }
         }
     });
 
@@ -499,11 +645,7 @@ if ($cartRowsHtml === '') {
         }
     });
 
-    const dateInput = document.getElementById('place-date');
-    if (dateInput) dateInput.value = new Date().toISOString().slice(0, 10);
-
     function bootCart() {
-        loadClients();
         loadCart().catch(function () {});
     }
 
