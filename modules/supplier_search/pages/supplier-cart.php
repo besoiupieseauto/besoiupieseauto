@@ -1,3 +1,81 @@
+<?php
+
+declare(strict_types=1);
+
+$cartUserId = (int) ($_SESSION['user_id'] ?? 0);
+$cartInitial = ['cart' => [], 'summary' => ['lines' => 0, 'items' => 0, 'total' => 0.0]];
+$cartInitialError = '';
+try {
+    if ($cartUserId > 0) {
+        $cartInitial = (new \Besoiu\Modules\SupplierSearch\Service\SupplierCartService(
+            \Besoiu\Modules\SupplierSearch\Service\SupplierSearchConfig::legacyPdo()
+        ))->show($cartUserId);
+    }
+} catch (\Throwable $cartBootError) {
+    $cartInitialError = $cartBootError->getMessage();
+}
+
+$cartEsc = static function (mixed $value): string {
+    return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+};
+$cartMoney = static function (mixed $value): string {
+    return number_format((float) $value, 2, ',', '.') . ' RON';
+};
+$cartSupplierLabel = static function (string $key): string {
+    return [
+        'materom' => 'Materom',
+        'elit' => 'Elit',
+        'autopartner' => 'Auto Partner',
+        'autonet' => 'Autonet',
+        'autototal' => 'Autototal',
+        'intercars' => 'InterCars',
+        'szakal' => 'Szakal Metal',
+        'site_produse' => 'Site / ERP',
+    ][$key] ?? $key;
+};
+$cartSummary = is_array($cartInitial['summary'] ?? null) ? $cartInitial['summary'] : [];
+$cartSummaryText = $cartInitialError !== ''
+    ? $cartInitialError
+    : ((int) ($cartSummary['lines'] ?? 0) . ' linii · ' . (int) ($cartSummary['items'] ?? 0) . ' bucăți · total ' . $cartMoney($cartSummary['total'] ?? 0));
+$cartRowsHtml = '';
+foreach (is_array($cartInitial['cart'] ?? null) ? $cartInitial['cart'] : [] as $cartSupplier => $cartItems) {
+    if (!is_string($cartSupplier) || !is_array($cartItems)) {
+        continue;
+    }
+    foreach ($cartItems as $cartKey => $cartItem) {
+        if (!is_array($cartItem)) {
+            continue;
+        }
+        $qty = (int) ($cartItem['qty'] ?? 1);
+        $price = (float) ($cartItem['price'] ?? 0);
+        $title = implode(' · ', array_filter([
+            (string) ($cartItem['manufacturer'] ?? ''),
+            (string) ($cartItem['product_name'] ?? ''),
+            (string) ($cartItem['product_code'] ?? ''),
+        ], static fn (string $part): bool => $part !== ''));
+        $exclude = strtolower($cartSupplier) === 'autototal'
+            ? '<label class="text-xs"><input type="checkbox" class="cart-exclude"> exclus</label>'
+            : '';
+        $cartRowsHtml .= '<tr class="border-b" data-supplier="' . $cartEsc($cartSupplier) . '" data-key="' . $cartEsc((string) $cartKey) . '">'
+            . '<td class="px-3 py-2"><input type="checkbox" class="cart-select" checked>' . $exclude . '</td>'
+            . '<td class="px-3 py-2"><div class="font-medium">' . $cartEsc($cartItem['product_code'] ?? '') . '</div>'
+            . '<div class="text-xs opacity-60">' . $cartEsc($title) . '</div>'
+            . '<div class="text-xs opacity-50">' . $cartEsc($cartItem['order_code'] ?? $cartItem['variant_code'] ?? '') . '</div></td>'
+            . '<td class="px-3 py-2">' . $cartEsc($cartSupplierLabel($cartSupplier)) . '</td>'
+            . '<td class="px-3 py-2 text-center"><input type="number" min="1" class="cart-qty box h-8 w-16 rounded border px-2 text-center" value="' . $cartEsc($qty) . '"></td>'
+            . '<td class="px-3 py-2 text-right">' . $cartEsc($cartMoney($price)) . '</td>'
+            . '<td class="px-3 py-2 text-right font-medium">' . $cartEsc($cartMoney($qty * $price)) . '</td>'
+            . '<td class="px-3 py-2">' . $cartEsc(($cartItem['livrare'] ?? '') !== '' && ($cartItem['livrare'] ?? '') !== '-' ? $cartItem['livrare'] : ($cartItem['depozit'] ?? '—')) . '</td>'
+            . '<td class="px-3 py-2 text-right"><button type="button" class="cart-save box rounded border px-2 py-1 text-xs">Salvează</button> '
+            . '<button type="button" class="cart-remove box rounded border px-2 py-1 text-xs text-danger">Șterge</button></td></tr>';
+    }
+}
+if ($cartRowsHtml === '') {
+    $cartRowsHtml = '<tr><td colspan="8" class="px-3 py-6 text-center opacity-70">'
+        . ($cartInitialError !== '' ? $cartEsc($cartInitialError) : 'Coșul este gol. Adaugă produse din <a class="underline" href="/admin/supplier-search">căutarea furnizorilor</a>.')
+        . '</td></tr>';
+}
+?>
 <div>
     <div id="supplier-cart-toast" class="hidden fixed right-5 top-5 z-50 rounded-md border bg-background px-4 py-3 text-sm shadow"></div>
 
@@ -15,7 +93,7 @@
     </div>
 
     <div class="mt-5 box p-5">
-        <div id="supplier-cart-summary" class="text-sm opacity-80">Se încarcă coșul...</div>
+        <div id="supplier-cart-summary" class="text-sm opacity-80"><?= $cartSummaryText ?></div>
     </div>
 
     <div class="mt-5 overflow-auto">
@@ -33,9 +111,7 @@
             </tr>
             </thead>
             <tbody id="supplier-cart-results">
-            <tr>
-                <td colspan="8" class="px-3 py-6 text-center opacity-70">Se încarcă...</td>
-            </tr>
+            <?= $cartRowsHtml ?>
             </tbody>
         </table>
     </div>
@@ -371,12 +447,6 @@
         loadCart().catch(function () {});
     }
 
-    if (window.BpaAsync && typeof window.BpaAsync.defer === 'function') {
-        BpaAsync.defer(bootCart);
-    } else if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', bootCart);
-    } else {
-        bootCart();
-    }
+    bootCart();
 })();
 </script>
