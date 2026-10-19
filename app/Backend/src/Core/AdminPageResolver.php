@@ -42,11 +42,13 @@ final class AdminPageResolver
         'supplier-search' => '/admin/Templates/admin/pages/supplier-search/supplier-search.php',
         'supplier-cart' => '/admin/Templates/admin/pages/supplier-search/supplier-cart.php',
         'searching' => '/admin/Templates/admin/pages/supplier-search/searching.php',
+        'order-create' => '/admin/Templates/admin/pages/caietcomenzi/caiet-comenzi.php',
         'scraper' => '/admin/Templates/admin/pages/scraper/scraper.php',
         'scraper-web' => '/admin/Templates/admin/pages/scraper-web/scraper-web.php',
     
         // BEGIN module_gen: import_pro
         'import-pro' => '/admin/Templates/admin/pages/import-pro/import-pro.php',
+        'tecdoc-import' => '/admin/Templates/admin/pages/tecdoc-import/tecdoc-import.php',
         // END module_gen: import_pro
 
         // BEGIN module_gen: import
@@ -86,8 +88,23 @@ final class AdminPageResolver
         'produse-formare' => '/admin/Templates/admin/pages/product-formation/product-formation.php',
         // END module_gen: product_formation
 
+        'gpsr' => '/admin/Templates/admin/pages/gpsr/gpsr.php',
+        'marketplace-gpsr' => '/admin/Templates/admin/pages/gpsr/gpsr.php',
+
         'caiet-produse' => '/admin/Templates/admin/pages/caietcomenzi/caiet-produse.php',
         'caietcomenzi' => '/admin/Templates/admin/pages/caietcomenzi/caiet-produse.php',
+        'caiet-comenzi' => '/admin/Templates/admin/pages/caietcomenzi/caiet-comenzi.php',
+        'caiet-comenzi-tm' => '/admin/Templates/admin/pages/caietcomenzi/caiet-comenzi-tm.php',
+        'caiet-comenzi-utvin' => '/admin/Templates/admin/pages/caietcomenzi/caiet-comenzi-utvin.php',
+        'caiet-comenzi-ext' => '/admin/Templates/admin/pages/caietcomenzi/caiet-comenzi-ext.php',
+        'caiet-utilizatori' => '/admin/Templates/admin/pages/caietcomenzi/caiet-utilizatori.php',
+        'caiet-pieseauto' => '/admin/Templates/admin/pages/caietcomenzi/caiet-pieseauto.php',
+        'caiet-search' => '/admin/Templates/admin/pages/caietcomenzi/caiet-search.php',
+        'caiet-api' => '/admin/Templates/admin/pages/caietcomenzi/caiet-api.php',
+        'caiet-clienti' => '/admin/Templates/admin/pages/caietcomenzi/caiet-clienti.php',
+        'caiet-facturi' => '/admin/Templates/admin/pages/caietcomenzi/caiet-facturi.php',
+        'caiet-incasari' => '/admin/Templates/admin/pages/caietcomenzi/caiet-incasari.php',
+            'intercars' => '/admin/Templates/admin/pages/intercars/intercars.php',
     ];
 
     /** slug URL → director template (bootstrap rute — doar module + CORE). */
@@ -103,10 +120,13 @@ final class AdminPageResolver
         'login' => '/admin/Templates/admin/pages/login/',
         'alerts' => '/admin/Templates/admin/pages/alerts/',
         'system-errors' => '/admin/Templates/admin/pages/system-errors/',
+        'gpsr' => '/admin/Templates/admin/pages/gpsr/',
+        'marketplace-gpsr' => '/admin/Templates/admin/pages/gpsr/',
         'workspace' => '/admin/Templates/admin/pages/workspace/',
         'supplier-search' => '/admin/Templates/admin/pages/supplier-search/',
         'supplier-cart' => '/admin/Templates/admin/pages/supplier-search/',
         'searching' => '/admin/Templates/admin/pages/supplier-search/',
+        'order-create' => '/admin/Templates/admin/pages/caietcomenzi/',
         'suppliers' => '/admin/Templates/admin/pages/furnizori/',
         'supplier' => '/admin/Templates/admin/pages/furnizori/',
         'furnizori' => '/admin/Templates/admin/pages/furnizori/',
@@ -122,6 +142,18 @@ final class AdminPageResolver
         'nav' => '/admin/Templates/admin/pages/nav/',
         'caiet-produse' => '/admin/Templates/admin/pages/caietcomenzi/',
         'caietcomenzi' => '/admin/Templates/admin/pages/caietcomenzi/',
+        'caiet-comenzi' => '/admin/Templates/admin/pages/caietcomenzi/',
+        'caiet-comenzi-tm' => '/admin/Templates/admin/pages/caietcomenzi/',
+        'caiet-comenzi-utvin' => '/admin/Templates/admin/pages/caietcomenzi/',
+        'caiet-comenzi-ext' => '/admin/Templates/admin/pages/caietcomenzi/',
+        'caiet-utilizatori' => '/admin/Templates/admin/pages/caietcomenzi/',
+        'caiet-pieseauto' => '/admin/Templates/admin/pages/caietcomenzi/',
+        'caiet-search' => '/admin/Templates/admin/pages/caietcomenzi/',
+        'caiet-api' => '/admin/Templates/admin/pages/caietcomenzi/',
+        'caiet-clienti' => '/admin/Templates/admin/pages/caietcomenzi/',
+        'caiet-facturi' => '/admin/Templates/admin/pages/caietcomenzi/',
+        'caiet-incasari' => '/admin/Templates/admin/pages/caietcomenzi/',
+            'intercars' => '/admin/Templates/admin/pages/intercars/',
     ];
 
     public static function resolveTemplate(string $urlSlug, ?string $pageDirectory = null): ?string

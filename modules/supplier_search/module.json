@@ -59,7 +59,9 @@
 
             "searching",
 
-            "supplier_search"
+            "supplier_search",
+
+            "order-create"
 
         ],
 
@@ -79,7 +81,13 @@
 
             "/admin/public/api/supplier_search_endpoint.php",
 
-            "/admin/public/api/supplier_cart_endpoint.php"
+            "/admin/public/api/supplier_cart_endpoint.php",
+
+            "/admin/public/api/order_tmp_endpoint.php",
+
+            "/admin/public/api/legacy_orders_endpoint.php",
+
+            "/admin/order-create"
 
         ],
 
@@ -89,7 +97,11 @@
 
             "supplier_search_endpoint.php",
 
-            "supplier_cart_endpoint.php"
+            "supplier_cart_endpoint.php",
+
+            "order_tmp_endpoint.php",
+
+            "legacy_orders_endpoint.php"
 
         ],
 

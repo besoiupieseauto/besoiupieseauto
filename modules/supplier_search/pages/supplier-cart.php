@@ -134,7 +134,7 @@ if ($cartRowsHtml === '') {
             <button type="button" id="supplier-cart-rehearse" class="box h-10 rounded-md border px-4 text-sm">Pregătește webshop (fără trimitere)</button>
             <button type="button" id="supplier-cart-place-order" class="box h-10 rounded-md border bg-primary px-4 text-sm text-white">Place order →</button>
             <button type="button" id="supplier-cart-import-tmp" class="box h-10 rounded-md border px-4 text-sm">Import în tmp (manual)</button>
-            <a href="/admin/order-create" class="box inline-flex h-10 items-center rounded-md border px-4 text-sm">Comandă internă</a>
+            <button type="button" id="supplier-cart-internal-order" class="box h-10 rounded-md border px-4 text-sm">Comandă internă</button>
             <a href="/admin/supplier-search" class="box inline-flex h-10 items-center rounded-md border px-4 text-sm">← Căutare</a>
         </div>
     </div>
@@ -297,6 +297,39 @@ if ($cartRowsHtml === '') {
             szakal: 'Szakal Metal',
             site_produse: 'Site / ERP'
         })[key] || key;
+    }
+
+    function adminCsrf() {
+        return (document.querySelector('meta[name="csrf-token"]') || {}).content || '';
+    }
+
+    async function fetchJson(url, options) {
+        const headers = Object.assign({ 'Content-Type': 'application/json' }, (options && options.headers) || {});
+        const csrf = adminCsrf();
+        if (csrf) {
+            headers['X-Admin-CSRF'] = csrf;
+        }
+        const response = await fetch(url, Object.assign({}, options || {}, { headers }));
+        const text = await response.text();
+        let data = {};
+        try {
+            data = text ? JSON.parse(text) : {};
+        } catch (_) {
+            throw new Error(response.ok ? 'Răspuns invalid de la server.' : ('Eroare ' + response.status));
+        }
+        if (!response.ok || data.success === false) {
+            throw new Error(data.message || 'Operația a eșuat.');
+        }
+        return data;
+    }
+
+    function requireSelectedKeys() {
+        const keys = selectedItemKeys();
+        if (!keys.length) {
+            showToast('Selectează cel puțin un articol.', true);
+            return null;
+        }
+        return keys;
     }
 
     function selectedItemKeys() {
@@ -509,11 +542,11 @@ if ($cartRowsHtml === '') {
     });
 
     document.getElementById('supplier-cart-place-order')?.addEventListener('click', () => {
-        const keys = selectedItemKeys();
-        if (!keys.length) {
-            showToast('Selectează cel puțin un articol.', true);
-            return;
-        }
+        if (!requireSelectedKeys()) return;
+        openPlaceModal();
+    });
+    document.getElementById('supplier-cart-internal-order')?.addEventListener('click', () => {
+        if (!requireSelectedKeys()) return;
         openPlaceModal();
     });
     document.getElementById('place-cancel')?.addEventListener('click', closePlaceModal);
@@ -544,9 +577,8 @@ if ($cartRowsHtml === '') {
         if (btn) { btn.disabled = true; btn.textContent = 'Se procesează...'; }
 
         try {
-            const response = await fetch(ORDER_ENDPOINT + '?action=place_from_supplier_cart', {
+            const data = await fetchJson(ORDER_ENDPOINT + '?action=place_from_supplier_cart', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     import_from: importFrom,
                     id_client: clientId,
@@ -559,10 +591,6 @@ if ($cartRowsHtml === '') {
                     cont_awb: 'Utvin',
                 })
             });
-            const data = await response.json();
-            if (!response.ok || !data.success) {
-                throw new Error(data.message || 'Place order eșuat.');
-            }
 
             closePlaceModal();
             if (data.mode === 'order_created' && data.order) {
@@ -626,22 +654,21 @@ if ($cartRowsHtml === '') {
     });
 
     document.getElementById('supplier-cart-import-tmp')?.addEventListener('click', async () => {
+        const keys = requireSelectedKeys();
+        if (!keys) return;
+        const btn = document.getElementById('supplier-cart-import-tmp');
+        if (btn) { btn.disabled = true; btn.textContent = 'Import...'; }
         try {
-            const response = await fetch(TMP_ENDPOINT + '?action=import_supplier_cart', {
+            const data = await fetchJson(TMP_ENDPOINT + '?action=import_supplier_cart', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ clear_first: true })
+                body: JSON.stringify({ clear_first: true, order_item_keys: keys })
             });
-            const data = await response.json();
-            if (!response.ok || !data.success) {
-                throw new Error(data.message || 'Import eșuat.');
-            }
-            showToast(`Import tmp: ${data.imported || 0} produse.`);
-            if ((data.products?.length || 0) > 0 && confirm('Deschizi formularul de comandă?')) {
-                window.location.href = '/admin/order-create';
-            }
+            showToast('Import tmp: ' + (data.imported || 0) + ' produse. Completează comanda.');
+            openPlaceModal();
         } catch (error) {
             showToast(error.message, true);
+        } finally {
+            if (btn) { btn.disabled = false; btn.textContent = 'Import în tmp (manual)'; }
         }
     });
 

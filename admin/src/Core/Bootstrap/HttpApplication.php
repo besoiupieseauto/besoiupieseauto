@@ -381,7 +381,7 @@ final class HttpApplication
         // Module neportate încă — redirect la dashboard în loc de 404 gol.
         $slug = strtolower(trim((string) basename(parse_url($requestPath, PHP_URL_PATH) ?: ''), '/'));
         $retired = [
-            'orders', 'order-create', 'abandoned-carts', 'facturi', 'livrare',
+            'orders', 'abandoned-carts', 'facturi', 'livrare',
             'bots', 'blog', 'marketplace', 'messages', 'comunicare', 'cron',
             'searchlogs', 'export', 'planner', 'ai-tokens',
             'caietcomenzi', 'comenzi-tm', 'comenzi-utvin', 'comenzi-externe',

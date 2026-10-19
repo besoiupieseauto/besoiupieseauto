@@ -15,11 +15,12 @@ return [
     'product_card_formation_endpoint.php' => 'module.product_formation',
     'supplier_sync_endpoint.php' => 'module.import',
     'furnizori_endpoint.php' => 'furnizori.list',
+    'intercars_post_endpoint.php' => 'furnizori.intercars',
     'categorii_endpoint.php' => 'module.categorii',
     'tecdoc_endpoint.php' => 'produse.list',
     'pieseauto_scanned_endpoint.php' => 'produse.scanned',
 
-    'order_tmp_endpoint.php' => 'comenzi.create',
+    'order_tmp_endpoint.php' => 'comenzi.supplier_search',
     'internal_order_endpoint.php' => 'comenzi.caiet',
     'caiet_comenzi_endpoint.php' => 'comenzi.caiet',
     'legacy_orders_endpoint.php' => 'comenzi.caiet',
@@ -44,6 +45,7 @@ return [
     'ai_tokens_endpoint.php' => 'sistem.ai_tokens',
 
     'marketplace_endpoint.php' => 'automatizare.marketplace',
+    'gpsr_catalog.php' => 'automatizare.marketplace',
 
     'comunicare_endpoint.php' => 'comunicare.hub',
     'messages_endpoint.php' => 'comunicare.messages',
