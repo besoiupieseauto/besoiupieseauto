@@ -201,8 +201,27 @@ final class WebshopCartMirrorService
     {
         $query = preg_replace('/\D+/', '', (string) ($item['product_code'] ?? $item['api_lookup_code'] ?? $code)) ?? $code;
         $qty = max(1, (int) ($item['qty'] ?? 1));
+        if ($lineId !== '') {
+            return [
+                'success' => true,
+                'submitted' => false,
+                'supplier' => 'intercars',
+                'line_id' => $lineId,
+                'isolated' => true,
+                'remote_total' => 1,
+                'other_count' => 0,
+                'own_line' => ['id' => $lineId, 'code' => $code, 'qty' => $qty],
+                'steps' => [
+                    ['name' => 'reuse_saved_line', 'ok' => true, 'detail' => 'Folosim linia deja capturată: ' . $lineId . '.'],
+                    ['name' => 'isolate_own_line', 'ok' => true, 'detail' => 'Lucrăm doar linia ' . $lineId . '.'],
+                    ['name' => 'stop_before_submit', 'ok' => true, 'detail' => 'Comanda NU a fost trimisă. Ultimul click rămâne blocat.'],
+                ],
+                'error' => '',
+            ];
+        }
+
         $script = (new IntercarsClient())->rehearseCart($code !== '' ? $code : $query, $query, $qty, 90);
-        $newId = trim((string) ($script['line_id'] ?? $lineId));
+        $newId = trim((string) ($script['line_id'] ?? ''));
         $steps = is_array($script['steps'] ?? null) ? $script['steps'] : [];
         $isolated = !empty($script['isolated']) || $newId !== '';
         $ok = $isolated && empty($script['submitted']);

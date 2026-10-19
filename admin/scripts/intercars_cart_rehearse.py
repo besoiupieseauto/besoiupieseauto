@@ -339,6 +339,35 @@ def search_on_page(page, query: str) -> bool:
         return False
 
 
+def kill_profile_chrome(prof: Path) -> None:
+    try:
+        import subprocess
+        subprocess.run(
+            [
+                "powershell",
+                "-NoProfile",
+                "-Command",
+                (
+                    "Get-CimInstance Win32_Process | Where-Object { "
+                    "$_.Name -match 'chrome|chromium' -and $_.CommandLine -and "
+                    "($_.CommandLine -like '*ic_profile*') "
+                    "} | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }"
+                ),
+            ],
+            capture_output=True,
+            timeout=8,
+        )
+    except Exception:
+        pass
+    for name in ("SingletonLock", "SingletonCookie", "SingletonSocket", "DevToolsActivePort"):
+        lock = prof / name
+        try:
+            if lock.exists() or lock.is_symlink():
+                lock.unlink()
+        except OSError:
+            pass
+
+
 def run(mode: str, code: str, query: str, qty: int) -> dict:
     ic = load_ic()
     query = (query or code or "").strip()
@@ -350,9 +379,19 @@ def run(mode: str, code: str, query: str, qty: int) -> dict:
     def note(name: str, ok: bool, detail: str) -> None:
         steps.append({"name": name, "ok": ok, "detail": detail})
 
+    kill_profile_chrome(PROFILE)
     sync_playwright = ic.load_playwright()
-    with sync_playwright() as pw:
+    try:
+        pw_cm = sync_playwright()
+        pw = pw_cm.__enter__()
         ctx = ic.open_browser(pw, headless=False, profile=PROFILE)
+    except Exception as exc:
+        return result_payload(False, "", False, [
+            {"name": "open_ecat", "ok": False, "detail": "Chrome e-Cat nu a pornit: " + compact(str(exc), 180)},
+            {"name": "stop_before_submit", "ok": True, "detail": "Comanda NU a fost trimisă."},
+        ], [], [])
+
+    try:
         page = ctx.pages[0] if ctx.pages else ctx.new_page()
 
         def on_response(resp):
@@ -511,7 +550,19 @@ def run(mode: str, code: str, query: str, qty: int) -> dict:
                 ctx.remove_listener("response", on_response)
             except Exception:
                 pass
-            ctx.close()
+            try:
+                ctx.close()
+            except Exception:
+                pass
+            try:
+                pw_cm.__exit__(None, None, None)
+            except Exception:
+                pass
+    except Exception as exc:
+        return result_payload(False, "", False, [
+            {"name": "crash", "ok": False, "detail": compact(str(exc), 240)},
+            {"name": "stop_before_submit", "ok": True, "detail": "Comanda NU a fost trimisă."},
+        ], [], [])
 
 
 def result_payload(ok: bool, line_id: str, isolated: bool, steps: list, lines: list, urls: list) -> dict:
