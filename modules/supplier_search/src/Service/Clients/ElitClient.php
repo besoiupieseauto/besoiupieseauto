@@ -457,7 +457,7 @@ final class ElitClient
             return ['success' => false, 'lines' => [], 'error' => $this->lastError, 'status' => 0];
         }
 
-        return $this->cartJson('GET', '/Cart/Data', null, $cookie, $timeout);
+        return $this->fetchCurrentCart($cookie, $timeout);
     }
 
     /**
@@ -465,9 +465,9 @@ final class ElitClient
      */
     public function addCartLine(string $productId, int $qty, int $timeout = 12): array
     {
-        $productId = trim($productId);
+        $lookup = trim($productId);
         $qty = max(1, $qty);
-        if ($productId === '') {
+        if ($lookup === '') {
             return ['success' => false, 'id' => '', 'lines' => [], 'error' => 'Lipsește ID-ul produsului Elit.', 'status' => 0];
         }
         $cookie = $this->getOrCreateSessionCookie($timeout, 4);
@@ -475,22 +475,43 @@ final class ElitClient
             return ['success' => false, 'id' => '', 'lines' => [], 'error' => $this->lastError, 'status' => 0];
         }
 
-        $before = $this->cartJson('GET', '/Cart/Data', null, $cookie, $timeout);
-        $added = $this->cartJson('POST', '/Cart/Add', [
-            'productId' => $productId,
-            'ProductId' => $productId,
-            'quantity' => $qty,
-            'Quantity' => $qty,
-        ], $cookie, $timeout);
-        $after = $added['success'] ? $added : $this->cartJson('GET', '/Cart/Data', null, $cookie, $timeout);
-        $newId = $this->diffNewLineId($before['lines'] ?? [], $after['lines'] ?? [], $productId);
+        $resolved = $this->resolveProduct($lookup, $cookie, $timeout);
+        $before = $this->fetchCurrentCart($cookie, $timeout);
+        $added = ['success' => false, 'id' => '', 'error' => 'Nu s-a putut adăuga linia Elit.', 'status' => 0, 'raw' => []];
+
+        if ($resolved['id'] !== '') {
+            $added = $this->cartJson('POST', '/Cart/AddProduct', [
+                'productId' => $resolved['id'],
+                'amount' => $qty,
+                'isExpressOrder' => false,
+                'oeDeliveryId' => '',
+                'note' => '',
+                'ta2Location' => '',
+                'ta2AvailableFrom' => '',
+                'ta2CashAndCarry' => false,
+                'bigRequired' => false,
+            ], $cookie, $timeout);
+        }
+
+        $after = $this->fetchCurrentCart($cookie, $timeout);
+        $newId = $this->resolveAddedLineId($added, $before['lines'] ?? [], $after['lines'] ?? [], $resolved, $lookup);
+        if ($newId === '') {
+            $added = $this->cartJson('POST', '/Cart/AddCode', [
+                'code' => $resolved['code'] !== '' ? $resolved['code'] : $lookup,
+                'amount' => $qty,
+                'note' => '',
+                'noteInvoice' => '',
+            ], $cookie, $timeout);
+            $after = $this->fetchCurrentCart($cookie, $timeout);
+            $newId = $this->resolveAddedLineId($added, $before['lines'] ?? [], $after['lines'] ?? [], $resolved, $lookup);
+        }
 
         return [
-            'success' => $newId !== '' || $added['success'],
+            'success' => $newId !== '',
             'id' => $newId,
             'lines' => $after['lines'] ?? [],
             'error' => $newId === '' ? (string) ($added['error'] ?? $after['error'] ?? 'Nu s-a putut identifica linia Elit.') : '',
-            'status' => (int) ($added['status'] ?? 0),
+            'status' => (int) ($added['status'] ?? $after['status'] ?? 0),
         ];
     }
 
@@ -501,36 +522,96 @@ final class ElitClient
         if ($cookie === '') {
             return ['success' => false, 'ready' => false, 'error' => $this->lastError, 'status' => 0];
         }
-        $result = $this->cartJson('GET', '/Cart/Checkout', null, $cookie, $timeout);
+
+        $current = $this->fetchCurrentCart($cookie, $timeout);
+        if (!$current['success']) {
+            return ['success' => false, 'ready' => false, 'error' => $current['error'], 'status' => $current['status']];
+        }
+
+        $preview = $this->cartJson('POST', '/Cart/RecapitulationData', [], $cookie, $timeout);
 
         return [
-            'success' => $result['success'],
-            'ready' => $result['success'],
-            'error' => $result['error'],
-            'status' => $result['status'],
+            'success' => true,
+            'ready' => true,
+            'error' => '',
+            'status' => (int) ($preview['status'] ?? $current['status']),
         ];
     }
 
     /**
-     * @param array<string, mixed>|null $payload
      * @return array{success:bool,lines:list<array{id:string,code:string,qty:int}>,error:string,status:int}
+     */
+    private function fetchCurrentCart(string $cookie, int $timeout): array
+    {
+        return $this->cartJson('POST', '/Cart/Current', [], $cookie, $timeout);
+    }
+
+    /**
+     * @return array{id:string,code:string}
+     */
+    private function resolveProduct(string $lookup, string $cookie, int $timeout): array
+    {
+        $search = $this->searchProducts($lookup, $cookie, $timeout, 4);
+        if (!$search['success']) {
+            $fresh = $this->performHttpLogin($timeout, 4);
+            if ($fresh !== '') {
+                $cookie = $fresh;
+                $search = $this->searchProducts($lookup, $cookie, $timeout, 4);
+            }
+        }
+
+        $wanted = strtoupper(preg_replace('/[^A-Z0-9]/', '', $lookup) ?? $lookup);
+        $fallback = ['id' => '', 'code' => $lookup];
+        foreach ($search['products'] ?? [] as $product) {
+            if (!is_array($product)) {
+                continue;
+            }
+            $id = trim((string) ($product['Id'] ?? ''));
+            $code = trim((string) ($product['Code'] ?? ''));
+            $ref = trim((string) ($product['ReferenceCode'] ?? ''));
+            if ($id === '') {
+                continue;
+            }
+            if ($id === $lookup) {
+                return ['id' => $id, 'code' => $code !== '' ? $code : $lookup];
+            }
+            if ($fallback['id'] === '') {
+                $fallback = ['id' => $id, 'code' => $code !== '' ? $code : $lookup];
+            }
+            foreach ([$code, $ref] as $candidate) {
+                $norm = strtoupper(preg_replace('/[^A-Z0-9]/', '', $candidate) ?? '');
+                if ($wanted !== '' && $norm === $wanted) {
+                    return ['id' => $id, 'code' => $code !== '' ? $code : $lookup];
+                }
+            }
+        }
+
+        return $fallback;
+    }
+
+    /**
+     * @param array<string, mixed>|null $payload
+     * @return array{success:bool,id:string,lines:list<array{id:string,code:string,qty:int}>,error:string,status:int,raw?:array<string,mixed>}
      */
     private function cartJson(string $method, string $path, ?array $payload, string $cookie, int $timeout): array
     {
         $base = SupplierSearchConfig::elitBaseUrl();
         $ch = curl_init($base . $path);
         SupplierSearchConfig::configureCurl($ch);
+        $headers = [
+            'Content-Type: application/json',
+            'Accept: application/json, text/plain, */*',
+            'Origin: ' . $base,
+            'Referer: ' . $base . '/Cart',
+            'X-Requested-With: XMLHttpRequest',
+            'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+        ];
         $opts = [
             CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_COOKIE => $cookie,
-            CURLOPT_HTTPHEADER => [
-                'Content-Type: application/json',
-                'Accept: application/json, text/plain, */*',
-                'Origin: ' . $base,
-                'Referer: ' . $base . '/HomePage/Car',
-                'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
-            ],
+            CURLOPT_HTTPHEADER => $headers,
             CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => false,
             CURLOPT_TIMEOUT => $timeout,
             CURLOPT_CONNECTTIMEOUT => 4,
         ];
@@ -543,19 +624,78 @@ final class ElitClient
         $error = trim((string) curl_error($ch));
         curl_close($ch);
         if ($body === false || $error !== '') {
-            return ['success' => false, 'lines' => [], 'error' => $error !== '' ? $error : 'Eroare rețea Elit.', 'status' => $status];
+            return ['success' => false, 'id' => '', 'lines' => [], 'error' => $error !== '' ? $error : 'Eroare rețea Elit.', 'status' => $status];
         }
         if ($status < 200 || $status >= 300) {
-            return ['success' => false, 'lines' => [], 'error' => 'Elit HTTP ' . $status, 'status' => $status];
+            return ['success' => false, 'id' => '', 'lines' => [], 'error' => 'Elit HTTP ' . $status, 'status' => $status];
         }
+
         $decoded = json_decode((string) $body, true);
+        if (!is_array($decoded)) {
+            $ok = trim((string) $body) === '' || trim((string) $body) === '""';
+
+            return [
+                'success' => $ok,
+                'id' => '',
+                'lines' => [],
+                'error' => $ok ? '' : 'Răspuns invalid de la Elit.',
+                'status' => $status,
+            ];
+        }
+
+        $lineId = trim((string) ($decoded['CartItemId'] ?? $decoded['cartItemId'] ?? ''));
 
         return [
             'success' => true,
-            'lines' => WebshopCartMirrorService::extractLines(is_array($decoded) ? $decoded : ['raw' => (string) $body]),
-            'error' => '',
+            'id' => $lineId,
+            'lines' => $this->extractElitLines($decoded),
+            'error' => trim((string) ($decoded['Message'] ?? $decoded['message'] ?? '')),
             'status' => $status,
+            'raw' => $decoded,
         ];
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     * @return list<array{id:string,code:string,qty:int}>
+     */
+    private function extractElitLines(array $payload): array
+    {
+        $selected = is_array($payload['SelectedCart'] ?? null) ? $payload['SelectedCart'] : [];
+        $items = $selected['Items'] ?? $payload['Items'] ?? $payload['items'] ?? [];
+        if (!is_array($items) || $items === []) {
+            return WebshopCartMirrorService::extractLines($payload);
+        }
+
+        return WebshopCartMirrorService::extractLines(['items' => $items]);
+    }
+
+    /**
+     * @param array{id?:string} $added
+     * @param list<array{id:string,code:string,qty:int}> $before
+     * @param list<array{id:string,code:string,qty:int}> $after
+     * @param array{id:string,code:string} $resolved
+     */
+    private function resolveAddedLineId(array $added, array $before, array $after, array $resolved, string $lookup): string
+    {
+        $newId = trim((string) ($added['id'] ?? ''));
+        if ($newId !== '') {
+            return $newId;
+        }
+        $newId = $this->diffNewLineId($before, $after, $resolved['code'] !== '' ? $resolved['code'] : $lookup);
+        if ($newId !== '') {
+            return $newId;
+        }
+        if ($resolved['id'] === '') {
+            return '';
+        }
+        foreach ($after as $line) {
+            if ((string) ($line['code'] ?? '') === $resolved['id'] || (string) ($line['id'] ?? '') === $resolved['id']) {
+                return (string) ($line['id'] ?? $resolved['id']);
+            }
+        }
+
+        return '';
     }
 
     /**

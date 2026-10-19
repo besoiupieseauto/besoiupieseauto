@@ -426,29 +426,26 @@ final class BardiAutoClient
     }
 
     /**
-     * @return array{success:bool,lines:list<array{id:string,code:string,qty:int}>,error:string,status:int}
+     * @return array{success:bool,lines:list<array{id:string,code:string,qty:int}>,error:string,status:int,cart_id?:string}
      */
     public function listCart(int $timeout = 12): array
     {
-        $cookieFile = $this->cookieFile();
-        $response = $this->request(SupplierSearchConfig::bardiBaseUrl() . '/kosar', $cookieFile, $timeout, 4, false, null, [
-            'Accept: application/json, text/html',
-        ]);
-        if ($response['error'] !== '' || $response['status'] < 200 || $response['status'] >= 300) {
+        $response = $this->cartJson('/cart', null, $timeout);
+        if (!$response['success']) {
             return [
                 'success' => false,
                 'lines' => [],
-                'error' => $response['error'] !== '' ? $response['error'] : 'Bardi HTTP ' . $response['status'],
+                'error' => $response['error'],
                 'status' => $response['status'],
             ];
         }
-        $decoded = json_decode($response['body'], true);
 
         return [
             'success' => true,
-            'lines' => WebshopCartMirrorService::extractLines(is_array($decoded) ? $decoded : $this->parseBardiCartHtml($response['body'])),
+            'lines' => $response['lines'],
             'error' => '',
             'status' => $response['status'],
+            'cart_id' => $response['cart_id'],
         ];
     }
 
@@ -462,31 +459,53 @@ final class BardiAutoClient
         if ($partNumber === '') {
             return ['success' => false, 'id' => '', 'lines' => [], 'error' => 'Lipsește codul Bardi.', 'status' => 0];
         }
-        $cookieFile = $this->cookieFile();
-        $before = $this->listCart($timeout);
-        $added = $this->request(SupplierSearchConfig::bardiBaseUrl() . '/kosar/hozzaad', $cookieFile, $timeout, 4, true, [
-            'cikk' => $partNumber,
-            'mennyiseg' => (string) $qty,
-        ]);
-        $after = $this->listCart($timeout);
-        $newId = '';
-        $beforeIds = [];
-        foreach ($before['lines'] ?? [] as $line) {
-            $beforeIds[(string) ($line['id'] ?? '')] = true;
+
+        $resolved = $this->resolveAddTarget($partNumber, $timeout);
+        if ($resolved['id'] === '') {
+            return [
+                'success' => false,
+                'id' => '',
+                'lines' => [],
+                'error' => $resolved['error'] !== '' ? $resolved['error'] : 'Nu s-a găsit productId Bardi pentru ' . $partNumber . '.',
+                'status' => 0,
+            ];
         }
-        foreach ($after['lines'] ?? [] as $line) {
-            $id = trim((string) ($line['id'] ?? ''));
-            if ($id !== '' && !isset($beforeIds[$id])) {
-                $newId = $id;
-                break;
+
+        $before = $this->listCart($timeout);
+        $added = $this->cartJson('/cart/add_item_to_cart', [
+            'id' => $resolved['id'],
+            'url' => $resolved['url'],
+            'quantity' => (string) $qty,
+            'sum_quantity' => '0',
+            'part_number' => $resolved['id'],
+            'added_by_key' => '0',
+            'category' => '',
+            'cart_id' => (string) ($before['cart_id'] ?? '0'),
+            'car_data' => '0',
+            'akodid' => '',
+            'akod' => '',
+            'bkod' => '',
+        ], $timeout);
+        $after = $this->listCart($timeout);
+        $wanted = $resolved['pn'] !== '' ? $resolved['pn'] : $partNumber;
+        $newId = $this->diffNewLineId($before['lines'] ?? [], $after['lines'] ?? [], $wanted);
+        if ($newId === '') {
+            $newId = $this->lineIdFromAddResponse($added, $resolved['id'], $wanted);
+        }
+        if ($newId === '') {
+            foreach ($after['lines'] as $line) {
+                if (strcasecmp((string) ($line['code'] ?? ''), $wanted) === 0 || strcasecmp((string) ($line['id'] ?? ''), $wanted) === 0) {
+                    $newId = (string) ($line['id'] ?? $wanted);
+                    break;
+                }
             }
         }
 
         return [
-            'success' => $newId !== '' || ($added['status'] >= 200 && $added['status'] < 400 && $added['error'] === ''),
+            'success' => $newId !== '' && $added['success'],
             'id' => $newId,
-            'lines' => $after['lines'] ?? [],
-            'error' => $newId === '' ? ($added['error'] !== '' ? $added['error'] : 'Nu s-a putut identifica linia Bardi.') : '',
+            'lines' => $after['lines'] !== [] ? $after['lines'] : $added['lines'],
+            'error' => $newId === '' ? (string) ($added['error'] !== '' ? $added['error'] : 'Nu s-a putut identifica linia Bardi.') : '',
             'status' => $added['status'],
         ];
     }
@@ -494,27 +513,206 @@ final class BardiAutoClient
     /** @return array{success:bool,ready:bool,error:string,status:int} */
     public function previewCheckout(int $timeout = 12): array
     {
-        $response = $this->request(SupplierSearchConfig::bardiBaseUrl() . '/kosar/rendeles', $this->cookieFile(), $timeout, 4, false);
-        $ok = $response['error'] === '' && $response['status'] >= 200 && $response['status'] < 400;
+        $listed = $this->listCart($timeout);
 
         return [
-            'success' => $ok,
-            'ready' => $ok,
-            'error' => $ok ? '' : ($response['error'] !== '' ? $response['error'] : 'Bardi HTTP ' . $response['status']),
-            'status' => $response['status'],
+            'success' => $listed['success'],
+            'ready' => $listed['success'],
+            'error' => $listed['success'] ? '' : $listed['error'],
+            'status' => $listed['status'],
         ];
     }
 
-    /** @return array<string, mixed> */
-    private function parseBardiCartHtml(string $html): array
+    /**
+     * @return array{id:string,url:string,pn:string,error:string}
+     */
+    private function resolveAddTarget(string $partNumber, int $timeout): array
     {
-        $lines = [];
-        if (preg_match_all('/data-cart-id="([^"]+)"[^>]*data-cikk="([^"]+)"[^>]*data-qty="(\d+)"/i', $html, $matches, PREG_SET_ORDER)) {
-            foreach ($matches as $row) {
-                $lines[] = ['id' => $row[1], 'code' => $row[2], 'qty' => (int) $row[3]];
+        if (strlen($partNumber) >= 20 && preg_match('/^[A-F0-9]+$/i', $partNumber) === 1) {
+            return [
+                'id' => $partNumber,
+                'url' => '/webshop/cikkszam/kereso',
+                'pn' => $partNumber,
+                'error' => '',
+            ];
+        }
+
+        $search = $this->search($partNumber, $timeout, 4);
+        if (!$search['success']) {
+            return ['id' => '', 'url' => '', 'pn' => $partNumber, 'error' => (string) ($search['error'] ?? 'Căutarea Bardi a eșuat.')];
+        }
+
+        $wanted = BardiAutoParser::normalizeCode($partNumber);
+        foreach ($search['data']['products'] ?? [] as $product) {
+            if (!is_array($product)) {
+                continue;
+            }
+            $pn = BardiAutoParser::normalizeCode((string) ($product['pn'] ?? ''));
+            $button = is_array($product['buttons']['addToCart'] ?? null) ? $product['buttons']['addToCart'] : [];
+            $productId = trim((string) ($button['productId'] ?? $product['id'] ?? ''));
+            $url = trim((string) ($button['currentUrl'] ?? ''));
+            if ($productId === '') {
+                continue;
+            }
+            if ($wanted === '' || $pn === $wanted || $pn === '') {
+                return [
+                    'id' => $productId,
+                    'url' => $url !== '' ? $url : '/webshop/cikkszam/kereso',
+                    'pn' => $pn !== '' ? $pn : $partNumber,
+                    'error' => '',
+                ];
             }
         }
 
-        return ['items' => $lines];
+        return ['id' => '', 'url' => '', 'pn' => $partNumber, 'error' => 'Produsul Bardi nu are buton de coș.'];
+    }
+
+    /**
+     * @param array<string, string>|null $post
+     * @return array{success:bool,lines:list<array{id:string,code:string,qty:int}>,error:string,status:int,cart_id:string,raw?:array<string,mixed>}
+     */
+    private function cartJson(string $path, ?array $post, int $timeout): array
+    {
+        $base = SupplierSearchConfig::bardiBaseUrl();
+        $response = $this->request($base . $path, $this->cookieFile(), $timeout, 4, $post !== null, $post, [
+            'Accept: application/json, text/javascript, */*; q=0.01',
+            'X-Requested-With: XMLHttpRequest',
+            'Referer: ' . $base . '/kosar',
+        ]);
+        if ($response['error'] !== '' || $response['status'] < 200 || $response['status'] >= 300) {
+            return [
+                'success' => false,
+                'lines' => [],
+                'error' => $response['error'] !== '' ? $response['error'] : 'Bardi HTTP ' . $response['status'],
+                'status' => $response['status'],
+                'cart_id' => '',
+            ];
+        }
+
+        $decoded = json_decode($response['body'], true);
+        if (!is_array($decoded)) {
+            return [
+                'success' => false,
+                'lines' => [],
+                'error' => 'Răspuns invalid de la Bardi.',
+                'status' => $response['status'],
+                'cart_id' => '',
+            ];
+        }
+
+        $html = (string) ($decoded['content'] ?? '');
+        $lines = $this->parseBardiCartHtml($html);
+        if ($lines === []) {
+            $lines = WebshopCartMirrorService::extractLines($decoded);
+        }
+
+        $header = is_array($decoded['cartHeaderInfo'] ?? null) ? $decoded['cartHeaderInfo'] : [];
+        $headerCount = (int) ($header['items_count']['total'] ?? $header['items_count'] ?? 0);
+
+        return [
+            'success' => (int) ($decoded['result_code'] ?? 0) === 0,
+            'lines' => $lines,
+            'error' => trim((string) ($decoded['message'] ?? '')),
+            'status' => $response['status'],
+            'cart_id' => $this->extractBardiCartId($html, $decoded),
+            'raw' => $decoded,
+            'header_count' => $headerCount,
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $decoded
+     */
+    private function extractBardiCartId(string $html, array $decoded): string
+    {
+        if (preg_match('/sessionCartId\s*=\s*[\'"](\d+)[\'"]/', $html, $m)) {
+            return $m[1];
+        }
+        if (preg_match('/data-cart_id="(\d+)"/', $html, $m)) {
+            return $m[1];
+        }
+        $header = is_array($decoded['cartHeaderInfo'] ?? null) ? $decoded['cartHeaderInfo'] : [];
+
+        return trim((string) ($header['cart_id'] ?? $header['id'] ?? ''));
+    }
+
+    /**
+     * @param array{raw?:array<string,mixed>} $added
+     */
+    private function lineIdFromAddResponse(array $added, string $productId, string $partNumber): string
+    {
+        $raw = is_array($added['raw'] ?? null) ? $added['raw'] : [];
+        $html = (string) ($raw['content'] ?? '');
+        foreach ($this->parseBardiCartHtml($html) as $line) {
+            $id = trim((string) ($line['id'] ?? ''));
+            if ($id !== '') {
+                return $id;
+            }
+        }
+        if ($productId !== '') {
+            return $productId;
+        }
+
+        return $partNumber;
+    }
+
+    /**
+     * @param list<array{id:string,code:string,qty:int}> $before
+     * @param list<array{id:string,code:string,qty:int}> $after
+     */
+    private function diffNewLineId(array $before, array $after, string $code): string
+    {
+        $seen = [];
+        foreach ($before as $line) {
+            $seen[(string) ($line['id'] ?? '')] = true;
+        }
+        foreach ($after as $line) {
+            $id = trim((string) ($line['id'] ?? ''));
+            if ($id !== '' && !isset($seen[$id])) {
+                return $id;
+            }
+        }
+        foreach ($after as $line) {
+            if (strcasecmp((string) ($line['code'] ?? ''), $code) === 0 && trim((string) ($line['id'] ?? '')) !== '') {
+                return (string) $line['id'];
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * @return list<array{id:string,code:string,qty:int}>
+     */
+    private function parseBardiCartHtml(string $html): array
+    {
+        $lines = [];
+        if (preg_match_all('/<tr\b[^>]*class="[^"]*cart-content-row[^"]*"[^>]*>/i', $html, $rows)) {
+            foreach ($rows[0] as $row) {
+                if (!preg_match('/data-id="([^"]+)"/i', $row, $idMatch)) {
+                    continue;
+                }
+                $id = trim($idMatch[1]);
+                if ($id === '' || isset($lines[$id])) {
+                    continue;
+                }
+                $qty = 1;
+                if (preg_match('/data-quantity="(\d+)"/i', $row, $qtyMatch)) {
+                    $qty = max(1, (int) $qtyMatch[1]);
+                }
+                $lines[$id] = ['id' => $id, 'code' => $id, 'qty' => $qty];
+            }
+        }
+        if ($lines === [] && preg_match_all('/<tr\b[^>]*data-id="([^"]+)"[^>]*data-quantity="(\d+)"/i', $html, $matches, PREG_SET_ORDER)) {
+            foreach ($matches as $row) {
+                $id = trim((string) $row[1]);
+                if ($id === '' || isset($lines[$id])) {
+                    continue;
+                }
+                $lines[$id] = ['id' => $id, 'code' => $id, 'qty' => max(1, (int) $row[2])];
+            }
+        }
+
+        return array_values($lines);
     }
 }

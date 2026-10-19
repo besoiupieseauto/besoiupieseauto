@@ -74,6 +74,9 @@ final class WebshopCartMirrorService
         if ($supplier === 'intercars') {
             return $this->rehearseIntercars($item, $code, $lineId);
         }
+        if ($supplier === 'elit' || $supplier === 'bardi') {
+            return $this->rehearseHttpWebshop($supplier, $item, $code, $lineId);
+        }
 
         $listed = $this->listRemote($supplier);
         $steps[] = [
@@ -146,8 +149,12 @@ final class WebshopCartMirrorService
     public static function extractLines(array $payload): array
     {
         $candidates = [];
-        foreach (['items', 'lines', 'cartItems', 'cart_items', 'products', 'Positions', 'data'] as $key) {
-            if (isset($payload[$key]) && is_array($payload[$key])) {
+        $selected = is_array($payload['SelectedCart'] ?? null) ? $payload['SelectedCart'] : [];
+        if (is_array($selected['Items'] ?? null)) {
+            $candidates = $selected['Items'];
+        }
+        foreach (['items', 'lines', 'cartItems', 'cart_items', 'products', 'Positions', 'Items', 'data'] as $key) {
+            if ($candidates === [] && isset($payload[$key]) && is_array($payload[$key])) {
                 $candidates = $payload[$key];
                 break;
             }
@@ -166,6 +173,7 @@ final class WebshopCartMirrorService
                 ?? $row['Id']
                 ?? $row['itemId']
                 ?? $row['cartItemId']
+                ?? $row['CartItemId']
                 ?? $row['lineId']
                 ?? $row['positionId']
                 ?? $row['uid']
@@ -173,11 +181,15 @@ final class WebshopCartMirrorService
             ));
             $code = trim((string) (
                 $row['code']
+                ?? $row['Code']
                 ?? $row['towKod']
                 ?? $row['productCode']
                 ?? $row['ProductId']
+                ?? $row['CatalogueNumber']
                 ?? $row['cikk']
                 ?? $row['partNumber']
+                ?? $row['pn']
+                ?? $row['part_number']
                 ?? ''
             ));
             if ($id === '' && $code === '') {
@@ -186,7 +198,7 @@ final class WebshopCartMirrorService
             $lines[] = [
                 'id' => $id !== '' ? $id : $code,
                 'code' => $code,
-                'qty' => max(1, (int) ($row['qty'] ?? $row['quantity'] ?? $row['Quantity'] ?? 1)),
+                'qty' => max(1, (int) ($row['qty'] ?? $row['quantity'] ?? $row['Quantity'] ?? $row['Amount'] ?? $row['amount'] ?? 1)),
             ];
         }
 
@@ -237,6 +249,110 @@ final class WebshopCartMirrorService
             'own_line' => $newId !== '' ? ['id' => $newId, 'code' => $code, 'qty' => $qty] : null,
             'steps' => $steps !== [] ? $steps : [['name' => 'rehearse', 'ok' => $ok, 'detail' => (string) ($script['error'] ?? '')]],
             'error' => (string) ($script['error'] ?? ''),
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $item
+     * @return array<string, mixed>
+     */
+    private function rehearseHttpWebshop(string $supplier, array $item, string $code, string $lineId): array
+    {
+        $qty = max(1, (int) ($item['qty'] ?? 1));
+        $label = $supplier === 'elit' ? 'Elit' : 'Bardi Auto';
+        if ($lineId !== '') {
+            return [
+                'success' => true,
+                'submitted' => false,
+                'supplier' => $supplier,
+                'line_id' => $lineId,
+                'isolated' => true,
+                'remote_total' => 1,
+                'other_count' => 0,
+                'own_line' => ['id' => $lineId, 'code' => $code, 'qty' => $qty],
+                'steps' => [
+                    ['name' => 'reuse_saved_line', 'ok' => true, 'detail' => 'Folosim linia deja capturată: ' . $lineId . '.'],
+                    ['name' => 'isolate_own_line', 'ok' => true, 'detail' => 'Lucrăm doar linia ' . $lineId . '.'],
+                    ['name' => 'stop_before_submit', 'ok' => true, 'detail' => 'Comanda NU a fost trimisă. Ultimul click rămâne blocat.'],
+                ],
+                'error' => '',
+            ];
+        }
+
+        $steps = [];
+        $added = $this->addRemoteLine($supplier, $code, $qty);
+        $lineId = trim((string) ($added['id'] ?? ''));
+        $steps[] = [
+            'name' => 'add_remote_line',
+            'ok' => $lineId !== '',
+            'detail' => $lineId !== ''
+                ? ($label . ': linie adăugată ' . $lineId . '.')
+                : (string) ($added['error'] ?? ('Nu s-a putut adăuga linia ' . $label . '.')),
+        ];
+
+        $listed = $this->listRemote($supplier);
+        $steps[] = [
+            'name' => 'list_remote_cart',
+            'ok' => (bool) $listed['success'],
+            'detail' => $listed['success']
+                ? ('Coș remote: ' . count($listed['lines']) . ' linii.')
+                : (string) ($listed['error'] ?? 'Citirea coșului remote a eșuat.'),
+        ];
+
+        if ($lineId === '' && $listed['success']) {
+            foreach ($listed['lines'] as $line) {
+                if (strcasecmp((string) ($line['code'] ?? ''), $code) === 0 && trim((string) ($line['id'] ?? '')) !== '') {
+                    $lineId = (string) $line['id'];
+                    break;
+                }
+            }
+        }
+
+        $match = null;
+        foreach ($listed['lines'] as $line) {
+            if ((string) ($line['id'] ?? '') === $lineId) {
+                $match = $line;
+                break;
+            }
+        }
+        if ($match === null && $lineId !== '') {
+            $match = ['id' => $lineId, 'code' => $code, 'qty' => $qty];
+        }
+        $isolated = is_array($match) && $lineId !== '';
+        $otherCount = max(0, count($listed['lines']) - ($isolated ? 1 : 0));
+        $steps[] = [
+            'name' => 'isolate_own_line',
+            'ok' => $isolated,
+            'detail' => $isolated
+                ? ('Lucrăm doar linia ' . $lineId . '. Restul în coșul furnizorului: ' . $otherCount . '.')
+                : 'Linia noastră nu a fost găsită în coșul furnizorului.',
+        ];
+
+        $preview = $this->previewRemote($supplier);
+        $steps[] = [
+            'name' => 'preview_checkout',
+            'ok' => (bool) $preview['success'],
+            'detail' => $preview['success']
+                ? 'Checkout pregătit, fără trimitere.'
+                : (string) ($preview['error'] ?? 'Checkout-ul nu a putut fi citit.'),
+        ];
+        $steps[] = [
+            'name' => 'stop_before_submit',
+            'ok' => true,
+            'detail' => 'Comanda NU a fost trimisă. Ultimul click rămâne blocat.',
+        ];
+
+        return [
+            'success' => $isolated && empty($preview['submitted']),
+            'submitted' => false,
+            'supplier' => $supplier,
+            'line_id' => $lineId,
+            'isolated' => $isolated,
+            'remote_total' => count($listed['lines']),
+            'other_count' => $otherCount,
+            'own_line' => $match,
+            'steps' => $steps,
+            'error' => $isolated ? '' : (string) ($added['error'] ?? $listed['error'] ?? 'Linia webshop nu a fost izolată.'),
         ];
     }
 
