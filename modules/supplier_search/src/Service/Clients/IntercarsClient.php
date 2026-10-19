@@ -5,6 +5,7 @@ namespace Besoiu\Modules\SupplierSearch\Service\Clients;
 
 use Besoiu\Core\Http\CurlMultiPool;
 use Besoiu\Modules\SupplierSearch\Service\SupplierSearchConfig;
+use Besoiu\Modules\SupplierSearch\Service\WebshopCartMirrorService;
 
 /**
  * Client API InterCars e-Cat (ecat-pct.intercars.eu).
@@ -361,5 +362,147 @@ final class IntercarsClient
         }
 
         return false;
+    }
+
+    /**
+     * @return array{success:bool,lines:list<array{id:string,code:string,qty:int}>,error:string,status:int}
+     */
+    public function listCart(int $timeout = 12): array
+    {
+        return $this->cartRequest('GET', '/cart', null, $timeout);
+    }
+
+    /**
+     * @return array{success:bool,id:string,lines:list<array{id:string,code:string,qty:int}>,error:string,status:int}
+     */
+    public function addCartLine(string $towKod, int $qty, int $timeout = 12): array
+    {
+        $towKod = trim($towKod);
+        $qty = max(1, $qty);
+        if ($towKod === '') {
+            return ['success' => false, 'id' => '', 'lines' => [], 'error' => 'Lipsește towKod InterCars.', 'status' => 0];
+        }
+
+        $before = $this->listCart($timeout);
+        $added = $this->cartRequest('POST', '/cart', [
+            'customerCode' => SupplierSearchConfig::intercarsCustomerCode(),
+            'customerBusinessUnitCode' => SupplierSearchConfig::intercarsBranch(),
+            'items' => [['towKod' => $towKod, 'productCode' => $towKod, 'quantity' => $qty]],
+        ], $timeout);
+        $after = $added['success'] ? $added : $this->listCart($timeout);
+        $newId = $this->diffNewLineId($before['lines'] ?? [], $after['lines'] ?? [], $towKod);
+
+        return [
+            'success' => $newId !== '' || $added['success'],
+            'id' => $newId,
+            'lines' => $after['lines'] ?? [],
+            'error' => $newId === '' ? (string) ($added['error'] ?? $after['error'] ?? 'Nu s-a putut identifica linia adăugată.') : '',
+            'status' => (int) ($added['status'] ?? $after['status'] ?? 0),
+        ];
+    }
+
+    /**
+     * Citește pagina de checkout fără a trimite comanda.
+     *
+     * @return array{success:bool,ready:bool,error:string,status:int}
+     */
+    public function previewCheckout(int $timeout = 12): array
+    {
+        $result = $this->cartRequest('GET', '/cart/checkout', null, $timeout);
+        if (!$result['success']) {
+            $result = $this->cartRequest('GET', '/checkout', null, $timeout);
+        }
+
+        return [
+            'success' => $result['success'],
+            'ready' => $result['success'],
+            'error' => $result['error'],
+            'status' => $result['status'],
+        ];
+    }
+
+    /**
+     * @param array<string, mixed>|null $payload
+     * @return array{success:bool,lines:list<array{id:string,code:string,qty:int}>,error:string,status:int}
+     */
+    private function cartRequest(string $method, string $path, ?array $payload, int $timeout): array
+    {
+        $creds = $this->loadCredentials();
+        if ($creds === null) {
+            return ['success' => false, 'lines' => [], 'error' => $this->lastError, 'status' => 0];
+        }
+
+        $cust = SupplierSearchConfig::intercarsCustomerCode();
+        $branch = SupplierSearchConfig::intercarsBranch();
+        $url = SupplierSearchConfig::intercarsBaseUrl() . $path;
+        $url .= (str_contains($url, '?') ? '&' : '?') . http_build_query([
+            'customerCode' => $cust,
+            'customerBusinessUnitCode' => $branch,
+        ]);
+
+        $headers = $creds['headers'];
+        $headers[] = 'x-source: cart-microfrontend';
+
+        $ch = curl_init($url);
+        SupplierSearchConfig::configureCurl($ch);
+        $opts = [
+            CURLOPT_HTTPHEADER => $headers,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => $timeout,
+            CURLOPT_CONNECTTIMEOUT => 4,
+            CURLOPT_CUSTOMREQUEST => $method,
+        ];
+        if ($creds['cookie'] !== '') {
+            $opts[CURLOPT_COOKIE] = $creds['cookie'];
+        }
+        if ($payload !== null) {
+            $opts[CURLOPT_POSTFIELDS] = json_encode($payload, JSON_UNESCAPED_UNICODE);
+        }
+        curl_setopt_array($ch, $opts);
+        $body = curl_exec($ch);
+        $status = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+        $error = trim((string) curl_error($ch));
+        curl_close($ch);
+
+        if ($body === false || $error !== '') {
+            return ['success' => false, 'lines' => [], 'error' => $error !== '' ? $error : 'Eroare rețea InterCars.', 'status' => $status];
+        }
+        if ($status < 200 || $status >= 300) {
+            return ['success' => false, 'lines' => [], 'error' => 'InterCars HTTP ' . $status, 'status' => $status];
+        }
+
+        $decoded = json_decode((string) $body, true);
+
+        return [
+            'success' => true,
+            'lines' => WebshopCartMirrorService::extractLines(is_array($decoded) ? $decoded : ['raw' => (string) $body]),
+            'error' => '',
+            'status' => $status,
+        ];
+    }
+
+    /**
+     * @param list<array{id:string,code:string,qty:int}> $before
+     * @param list<array{id:string,code:string,qty:int}> $after
+     */
+    private function diffNewLineId(array $before, array $after, string $code): string
+    {
+        $beforeIds = [];
+        foreach ($before as $line) {
+            $beforeIds[(string) ($line['id'] ?? '')] = true;
+        }
+        foreach ($after as $line) {
+            $id = trim((string) ($line['id'] ?? ''));
+            if ($id !== '' && !isset($beforeIds[$id])) {
+                return $id;
+            }
+        }
+        foreach ($after as $line) {
+            if (strcasecmp((string) ($line['code'] ?? ''), $code) === 0 && trim((string) ($line['id'] ?? '')) !== '') {
+                return (string) $line['id'];
+            }
+        }
+
+        return '';
     }
 }

@@ -18,7 +18,7 @@ final class SupplierCartApiHandler
 
         try {
             ApiBootstrap::requireAuthenticatedSession();
-            ApiBootstrap::beginBoundedJsonWork(30);
+            ApiBootstrap::beginBoundedJsonWork(45);
             self::ensureLegacyDb($config);
 
             $userId = (int) ($_SESSION['user_id'] ?? 0);
@@ -69,6 +69,10 @@ final class SupplierCartApiHandler
                         (string) ($payload['supplier'] ?? ''),
                         (string) ($payload['key'] ?? '')
                     );
+                    ApiBootstrap::json(['success' => true] + $result);
+                case 'rehearse_webshop':
+                    $keys = is_array($payload['order_item_keys'] ?? null) ? $payload['order_item_keys'] : [];
+                    $result = $service->rehearseWebshop($userId, $keys);
                     ApiBootstrap::json(['success' => true] + $result);
                 default:
                     throw new InvalidArgumentException('Acțiune necunoscută: ' . $action);

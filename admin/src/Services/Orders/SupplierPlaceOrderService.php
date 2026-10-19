@@ -63,6 +63,21 @@ final class SupplierPlaceOrderService
                 break;
             }
         }
+        $webshopRehearsal = [];
+        if (class_exists(\Besoiu\Modules\SupplierSearch\Service\WebshopCartMirrorService::class)) {
+            $mirror = new \Besoiu\Modules\SupplierSearch\Service\WebshopCartMirrorService();
+            foreach ($filteredCart as $supplier => $items) {
+                if (!is_array($items) || !\Besoiu\Modules\SupplierSearch\Service\WebshopCartMirrorService::isWebshopSupplier((string) $supplier)) {
+                    continue;
+                }
+                foreach ($items as $item) {
+                    if (is_array($item)) {
+                        $webshopRehearsal[] = $mirror->rehearse($item);
+                    }
+                }
+            }
+        }
+
         if (function_exists('caiet_supplier_place')) {
             $placed = caiet_supplier_place(
                 $filteredCart,
@@ -100,6 +115,7 @@ final class SupplierPlaceOrderService
             'message' => 'Comandă creată direct din coș furnizori.' . ($supplierNote !== '' ? ' ' . $supplierNote : ''),
             'imported' => $importResult['imported'],
             'order' => $order,
+            'webshop_rehearsal' => $webshopRehearsal,
         ];
     }
 

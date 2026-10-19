@@ -30,6 +30,7 @@ $cartSupplierLabel = static function (string $key): string {
         'autototal' => 'Autototal',
         'intercars' => 'InterCars',
         'szakal' => 'Szakal Metal',
+        'bardi' => 'Bardi Auto',
         'site_produse' => 'Site / ERP',
     ][$key] ?? $key;
 };
@@ -60,7 +61,11 @@ foreach (is_array($cartInitial['cart'] ?? null) ? $cartInitial['cart'] : [] as $
             . '<td class="px-3 py-2"><input type="checkbox" class="cart-select" checked>' . $exclude . '</td>'
             . '<td class="px-3 py-2"><div class="font-medium">' . $cartEsc($cartItem['product_code'] ?? '') . '</div>'
             . '<div class="text-xs opacity-60">' . $cartEsc($title) . '</div>'
-            . '<div class="text-xs opacity-50">' . $cartEsc($cartItem['order_code'] ?? $cartItem['variant_code'] ?? '') . '</div></td>'
+            . '<div class="text-xs opacity-50">' . $cartEsc($cartItem['order_code'] ?? $cartItem['variant_code'] ?? '') . '</div>'
+            . ($cartEsc($cartItem['webshop_line_id'] ?? '') !== ''
+                ? '<div class="text-xs">ID webshop: ' . $cartEsc($cartItem['webshop_line_id'] ?? '') . '</div>'
+                : '')
+            . '</td>'
             . '<td class="px-3 py-2">' . $cartEsc($cartSupplierLabel($cartSupplier)) . '</td>'
             . '<td class="px-3 py-2 text-center"><input type="number" min="1" class="cart-qty box h-8 w-16 rounded border px-2 text-center" value="' . $cartEsc($qty) . '"></td>'
             . '<td class="px-3 py-2 text-right">' . $cartEsc($cartMoney($price)) . '</td>'
@@ -82,9 +87,10 @@ if ($cartRowsHtml === '') {
     <div class="mt-10 flex flex-wrap items-center justify-between gap-3">
         <div>
             <h2 class="text-lg font-medium">Coș furnizori B2B</h2>
-            <p class="mt-1 text-sm opacity-70">Place order direct: import tmp + comandă ERP într-un singur pas (M1g).</p>
+            <p class="mt-1 text-sm opacity-70">Coș intern propriu. La Intercars, Elit și Bardi lucrăm doar linia adăugată acum, fără click-ul final de comandă.</p>
         </div>
         <div class="flex flex-wrap gap-2">
+            <button type="button" id="supplier-cart-rehearse" class="box h-10 rounded-md border px-4 text-sm">Pregătește webshop (fără trimitere)</button>
             <button type="button" id="supplier-cart-place-order" class="box h-10 rounded-md border bg-primary px-4 text-sm text-white">Place order →</button>
             <button type="button" id="supplier-cart-import-tmp" class="box h-10 rounded-md border px-4 text-sm">Import în tmp (manual)</button>
             <a href="/admin/order-create" class="box inline-flex h-10 items-center rounded-md border px-4 text-sm">Comandă internă</a>
@@ -238,6 +244,7 @@ if ($cartRowsHtml === '') {
                             <div class="font-medium">${escapeHtml(item.product_code || '')}</div>
                             <div class="text-xs opacity-60">${escapeHtml(title)}</div>
                             <div class="text-xs opacity-50">${escapeHtml(item.order_code || item.variant_code || '')}</div>
+                            ${item.webshop_line_id ? `<div class="text-xs">ID webshop: ${escapeHtml(item.webshop_line_id)}</div>` : ''}
                         </td>
                         <td class="px-3 py-2">${escapeHtml(supplierLabel(supplier))}</td>
                         <td class="px-3 py-2 text-center">
@@ -416,6 +423,33 @@ if ($cartRowsHtml === '') {
             showToast(error.message, true);
         } finally {
             if (btn) { btn.disabled = false; btn.textContent = 'Confirmă place order'; }
+        }
+    });
+
+    document.getElementById('supplier-cart-rehearse')?.addEventListener('click', async () => {
+        const keys = selectedItemKeys();
+        if (!keys.length) {
+            showToast('Selectează cel puțin un articol.', true);
+            return;
+        }
+        try {
+            const response = await fetch(ENDPOINT + '?action=rehearse_webshop', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ order_item_keys: keys })
+            });
+            const data = await response.json();
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || 'Pregătirea webshop a eșuat.');
+            }
+            const parts = (data.results || []).map((row) => {
+                const id = row.line_id ? ('ID ' + row.line_id) : 'fără ID';
+                const isolated = row.isolated ? 'doar linia noastră' : 'linia nu e izolată';
+                return (row.supplier || '?') + ': ' + id + ', ' + isolated + ', fără trimitere';
+            });
+            showToast(parts.join(' · ') || 'Pregătire webshop finalizată, fără trimitere.');
+        } catch (error) {
+            showToast(error.message, true);
         }
     });
 

@@ -194,15 +194,70 @@ final class SupplierCartService
                 'szakal_token' => $supplier === 'szakal' ? $szakalToken : '',
                 'szakal_glid' => $supplier === 'szakal' ? $szakalGlid : '',
                 'order_code' => $this->updateOrderCodeQuantity($variantCode, $qty),
+                'webshop_line_id' => '',
+                'webshop_status' => '',
             ];
+        }
+
+        if (WebshopCartMirrorService::isWebshopSupplier($supplier)) {
+            $cart[$supplier][$cartKey] = (new WebshopCartMirrorService())->attachOnAdd($cart[$supplier][$cartKey]);
         }
 
         $this->saveCart($userId, $cart);
 
+        $message = 'Produs adăugat în coș.';
+        if (WebshopCartMirrorService::isWebshopSupplier($supplier)) {
+            $lineId = trim((string) ($cart[$supplier][$cartKey]['webshop_line_id'] ?? ''));
+            $message = $lineId !== ''
+                ? 'Produs adăugat în coșul intern. Linie webshop: ' . $lineId . '.'
+                : 'Produs adăugat în coșul intern. Oglindirea webshop nu a putut captura ID-ul liniei.';
+        }
+
         return [
-            'message' => 'Produs adăugat în coș.',
+            'message' => $message,
             'cart' => $cart,
             'summary' => $this->summarizeCart($cart),
+            'webshop' => [
+                'line_id' => (string) ($cart[$supplier][$cartKey]['webshop_line_id'] ?? ''),
+                'status' => (string) ($cart[$supplier][$cartKey]['webshop_status'] ?? ''),
+                'error' => (string) ($cart[$supplier][$cartKey]['webshop_error'] ?? ''),
+            ],
+        ];
+    }
+
+    /**
+     * @param list<array{supplier?:string,key?:string}|string> $keys
+     * @return array{success:bool,submitted:false,results:list<array<string,mixed>>}
+     */
+    public function rehearseWebshop(int $userId, array $keys): array
+    {
+        $cart = $this->getCart($userId);
+        $mirror = new WebshopCartMirrorService();
+        $results = [];
+
+        foreach ($keys as $entry) {
+            $supplier = '';
+            $key = '';
+            if (is_string($entry) && str_contains($entry, '|')) {
+                [$supplier, $key] = explode('|', $entry, 2);
+            } elseif (is_array($entry)) {
+                $supplier = (string) ($entry['supplier'] ?? '');
+                $key = (string) ($entry['key'] ?? '');
+            }
+            $supplier = strtolower(trim($supplier));
+            $key = trim($key);
+            if ($supplier === '' || $key === '' || !isset($cart[$supplier][$key]) || !is_array($cart[$supplier][$key])) {
+                continue;
+            }
+            $results[] = $mirror->rehearse($cart[$supplier][$key]) + [
+                'cart_key' => $key,
+            ];
+        }
+
+        return [
+            'success' => $results !== [],
+            'submitted' => false,
+            'results' => $results,
         ];
     }
 

@@ -5,6 +5,7 @@ namespace Besoiu\Modules\SupplierSearch\Service\Clients;
 
 use Besoiu\Core\Http\CurlMultiPool;
 use Besoiu\Modules\SupplierSearch\Service\SupplierSearchConfig;
+use Besoiu\Modules\SupplierSearch\Service\WebshopCartMirrorService;
 
 /**
  * Client live pentru Elit România (www.elit.ro).
@@ -444,5 +445,141 @@ final class ElitClient
             'prices' => $pricesById,
             'disponibility' => $dispById,
         ];
+    }
+
+    /**
+     * @return array{success:bool,lines:list<array{id:string,code:string,qty:int}>,error:string,status:int}
+     */
+    public function listCart(int $timeout = 12): array
+    {
+        $cookie = $this->getOrCreateSessionCookie($timeout, 4);
+        if ($cookie === '') {
+            return ['success' => false, 'lines' => [], 'error' => $this->lastError, 'status' => 0];
+        }
+
+        return $this->cartJson('GET', '/Cart/Data', null, $cookie, $timeout);
+    }
+
+    /**
+     * @return array{success:bool,id:string,lines:list<array{id:string,code:string,qty:int}>,error:string,status:int}
+     */
+    public function addCartLine(string $productId, int $qty, int $timeout = 12): array
+    {
+        $productId = trim($productId);
+        $qty = max(1, $qty);
+        if ($productId === '') {
+            return ['success' => false, 'id' => '', 'lines' => [], 'error' => 'Lipsește ID-ul produsului Elit.', 'status' => 0];
+        }
+        $cookie = $this->getOrCreateSessionCookie($timeout, 4);
+        if ($cookie === '') {
+            return ['success' => false, 'id' => '', 'lines' => [], 'error' => $this->lastError, 'status' => 0];
+        }
+
+        $before = $this->cartJson('GET', '/Cart/Data', null, $cookie, $timeout);
+        $added = $this->cartJson('POST', '/Cart/Add', [
+            'productId' => $productId,
+            'ProductId' => $productId,
+            'quantity' => $qty,
+            'Quantity' => $qty,
+        ], $cookie, $timeout);
+        $after = $added['success'] ? $added : $this->cartJson('GET', '/Cart/Data', null, $cookie, $timeout);
+        $newId = $this->diffNewLineId($before['lines'] ?? [], $after['lines'] ?? [], $productId);
+
+        return [
+            'success' => $newId !== '' || $added['success'],
+            'id' => $newId,
+            'lines' => $after['lines'] ?? [],
+            'error' => $newId === '' ? (string) ($added['error'] ?? $after['error'] ?? 'Nu s-a putut identifica linia Elit.') : '',
+            'status' => (int) ($added['status'] ?? 0),
+        ];
+    }
+
+    /** @return array{success:bool,ready:bool,error:string,status:int} */
+    public function previewCheckout(int $timeout = 12): array
+    {
+        $cookie = $this->getOrCreateSessionCookie($timeout, 4);
+        if ($cookie === '') {
+            return ['success' => false, 'ready' => false, 'error' => $this->lastError, 'status' => 0];
+        }
+        $result = $this->cartJson('GET', '/Cart/Checkout', null, $cookie, $timeout);
+
+        return [
+            'success' => $result['success'],
+            'ready' => $result['success'],
+            'error' => $result['error'],
+            'status' => $result['status'],
+        ];
+    }
+
+    /**
+     * @param array<string, mixed>|null $payload
+     * @return array{success:bool,lines:list<array{id:string,code:string,qty:int}>,error:string,status:int}
+     */
+    private function cartJson(string $method, string $path, ?array $payload, string $cookie, int $timeout): array
+    {
+        $base = SupplierSearchConfig::elitBaseUrl();
+        $ch = curl_init($base . $path);
+        SupplierSearchConfig::configureCurl($ch);
+        $opts = [
+            CURLOPT_CUSTOMREQUEST => $method,
+            CURLOPT_COOKIE => $cookie,
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'Accept: application/json, text/plain, */*',
+                'Origin: ' . $base,
+                'Referer: ' . $base . '/HomePage/Car',
+                'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+            ],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => $timeout,
+            CURLOPT_CONNECTTIMEOUT => 4,
+        ];
+        if ($payload !== null) {
+            $opts[CURLOPT_POSTFIELDS] = json_encode($payload, JSON_UNESCAPED_UNICODE);
+        }
+        curl_setopt_array($ch, $opts);
+        $body = curl_exec($ch);
+        $status = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+        $error = trim((string) curl_error($ch));
+        curl_close($ch);
+        if ($body === false || $error !== '') {
+            return ['success' => false, 'lines' => [], 'error' => $error !== '' ? $error : 'Eroare rețea Elit.', 'status' => $status];
+        }
+        if ($status < 200 || $status >= 300) {
+            return ['success' => false, 'lines' => [], 'error' => 'Elit HTTP ' . $status, 'status' => $status];
+        }
+        $decoded = json_decode((string) $body, true);
+
+        return [
+            'success' => true,
+            'lines' => WebshopCartMirrorService::extractLines(is_array($decoded) ? $decoded : ['raw' => (string) $body]),
+            'error' => '',
+            'status' => $status,
+        ];
+    }
+
+    /**
+     * @param list<array{id:string,code:string,qty:int}> $before
+     * @param list<array{id:string,code:string,qty:int}> $after
+     */
+    private function diffNewLineId(array $before, array $after, string $code): string
+    {
+        $seen = [];
+        foreach ($before as $line) {
+            $seen[(string) ($line['id'] ?? '')] = true;
+        }
+        foreach ($after as $line) {
+            $id = trim((string) ($line['id'] ?? ''));
+            if ($id !== '' && !isset($seen[$id])) {
+                return $id;
+            }
+        }
+        foreach ($after as $line) {
+            if (strcasecmp((string) ($line['code'] ?? ''), $code) === 0 && trim((string) ($line['id'] ?? '')) !== '') {
+                return (string) $line['id'];
+            }
+        }
+
+        return '';
     }
 }
