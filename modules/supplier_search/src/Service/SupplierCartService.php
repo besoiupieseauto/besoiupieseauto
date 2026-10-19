@@ -249,15 +249,36 @@ final class SupplierCartService
             if ($supplier === '' || $key === '' || !isset($cart[$supplier][$key]) || !is_array($cart[$supplier][$key])) {
                 continue;
             }
-            $results[] = $mirror->rehearse($cart[$supplier][$key]) + [
+            $rehearsed = $mirror->rehearse($cart[$supplier][$key]) + [
                 'cart_key' => $key,
             ];
+            $lineId = trim((string) ($rehearsed['line_id'] ?? ''));
+            if ($lineId !== '') {
+                $cart[$supplier][$key]['webshop_line_id'] = $lineId;
+                $cart[$supplier][$key]['webshop_status'] = !empty($rehearsed['isolated']) ? 'mirrored' : 'rehearsed';
+                $cart[$supplier][$key]['webshop_error'] = '';
+            } else {
+                $cart[$supplier][$key]['webshop_status'] = 'mirror_failed';
+                $cart[$supplier][$key]['webshop_error'] = (string) ($rehearsed['error'] ?? 'Linia webshop nu a fost izolată.');
+            }
+            $results[] = $rehearsed;
         }
 
+        if ($results !== []) {
+            $this->saveCart($userId, $cart);
+        }
+
+        $allOk = $results !== [] && !in_array(false, array_map(static fn (array $row): bool => !empty($row['success']), $results), true);
+
         return [
-            'success' => $results !== [],
+            'success' => $allOk,
             'submitted' => false,
+            'message' => $allOk
+                ? 'Simulare webshop gata, fără trimiterea comenzii.'
+                : 'Simularea webshop nu a izolat linia. Comanda NU a fost trimisă.',
             'results' => $results,
+            'cart' => $cart,
+            'summary' => $this->summarizeCart($cart),
         ];
     }
 

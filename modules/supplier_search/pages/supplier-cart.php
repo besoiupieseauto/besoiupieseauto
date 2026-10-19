@@ -100,6 +100,7 @@ if ($cartRowsHtml === '') {
 
     <div class="mt-5 box p-5">
         <div id="supplier-cart-summary" class="text-sm opacity-80"><?= $cartSummaryText ?></div>
+        <div id="supplier-cart-rehearse-log" class="mt-3 hidden text-sm"></div>
     </div>
 
     <div class="mt-5 overflow-auto">
@@ -432,6 +433,13 @@ if ($cartRowsHtml === '') {
             showToast('Selectează cel puțin un articol.', true);
             return;
         }
+        const log = document.getElementById('supplier-cart-rehearse-log');
+        const btn = document.getElementById('supplier-cart-rehearse');
+        if (btn) { btn.disabled = true; btn.textContent = 'Simulez webshop...'; }
+        if (log) {
+            log.classList.remove('hidden');
+            log.innerHTML = 'Se deschide e-Cat. Comanda NU se trimite.';
+        }
         try {
             const response = await fetch(ENDPOINT + '?action=rehearse_webshop', {
                 method: 'POST',
@@ -439,17 +447,27 @@ if ($cartRowsHtml === '') {
                 body: JSON.stringify({ order_item_keys: keys })
             });
             const data = await response.json();
-            if (!response.ok || !data.success) {
-                throw new Error(data.message || 'Pregătirea webshop a eșuat.');
+            const rows = data.results || [];
+            if (log) {
+                log.innerHTML = rows.map((row) => {
+                    const steps = (row.steps || []).map((step) => {
+                        const mark = step.ok ? 'OK' : 'FAIL';
+                        return `<div>${mark} · ${escapeHtml(step.name || '')}: ${escapeHtml(step.detail || '')}</div>`;
+                    }).join('');
+                    const id = row.line_id ? ('ID ' + row.line_id) : 'fără ID';
+                    const isolated = row.isolated ? 'doar linia noastră' : 'linia nu e izolată';
+                    return `<div class="mb-2"><strong>${escapeHtml(row.supplier || '?')}</strong> · ${escapeHtml(id)} · ${isolated} · fără trimitere${steps}</div>`;
+                }).join('') || escapeHtml(data.message || 'Fără rezultat.');
             }
-            const parts = (data.results || []).map((row) => {
-                const id = row.line_id ? ('ID ' + row.line_id) : 'fără ID';
-                const isolated = row.isolated ? 'doar linia noastră' : 'linia nu e izolată';
-                return (row.supplier || '?') + ': ' + id + ', ' + isolated + ', fără trimitere';
-            });
-            showToast(parts.join(' · ') || 'Pregătire webshop finalizată, fără trimitere.');
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || 'Simularea webshop a eșuat. Comanda NU a fost trimisă.');
+            }
+            showToast(data.message || 'Simulare gata, fără trimitere.');
+            await loadCart();
         } catch (error) {
             showToast(error.message, true);
+        } finally {
+            if (btn) { btn.disabled = false; btn.textContent = 'Pregătește webshop (fără trimitere)'; }
         }
     });
 

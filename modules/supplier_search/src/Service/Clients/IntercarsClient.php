@@ -5,7 +5,6 @@ namespace Besoiu\Modules\SupplierSearch\Service\Clients;
 
 use Besoiu\Core\Http\CurlMultiPool;
 use Besoiu\Modules\SupplierSearch\Service\SupplierSearchConfig;
-use Besoiu\Modules\SupplierSearch\Service\WebshopCartMirrorService;
 
 /**
  * Client API InterCars e-Cat (ecat-pct.intercars.eu).
@@ -464,7 +463,14 @@ final class IntercarsClient
      */
     public function listCart(int $timeout = 12): array
     {
-        return $this->cartRequest('GET', '/cart', null, $timeout);
+        $script = $this->runCartScript('list', '', '', 1, max(30, $timeout));
+
+        return [
+            'success' => (bool) ($script['success'] ?? false),
+            'lines' => is_array($script['lines'] ?? null) ? $script['lines'] : [],
+            'error' => (string) ($script['error'] ?? ''),
+            'status' => !empty($script['success']) ? 200 : 0,
+        ];
     }
 
     /**
@@ -478,21 +484,14 @@ final class IntercarsClient
             return ['success' => false, 'id' => '', 'lines' => [], 'error' => 'Lipsește towKod InterCars.', 'status' => 0];
         }
 
-        $before = $this->listCart($timeout);
-        $added = $this->cartRequest('POST', '/cart', [
-            'customerCode' => SupplierSearchConfig::intercarsCustomerCode(),
-            'customerBusinessUnitCode' => SupplierSearchConfig::intercarsBranch(),
-            'items' => [['towKod' => $towKod, 'productCode' => $towKod, 'quantity' => $qty]],
-        ], $timeout);
-        $after = $added['success'] ? $added : $this->listCart($timeout);
-        $newId = $this->diffNewLineId($before['lines'] ?? [], $after['lines'] ?? [], $towKod);
+        $script = $this->runCartScript('add', $towKod, $towKod, $qty, max(60, $timeout));
 
         return [
-            'success' => $newId !== '' || $added['success'],
-            'id' => $newId,
-            'lines' => $after['lines'] ?? [],
-            'error' => $newId === '' ? (string) ($added['error'] ?? $after['error'] ?? 'Nu s-a putut identifica linia adăugată.') : '',
-            'status' => (int) ($added['status'] ?? $after['status'] ?? 0),
+            'success' => (bool) ($script['success'] ?? false) || trim((string) ($script['line_id'] ?? '')) !== '',
+            'id' => (string) ($script['line_id'] ?? ''),
+            'lines' => is_array($script['lines'] ?? null) ? $script['lines'] : [],
+            'error' => (string) ($script['error'] ?? ''),
+            'status' => !empty($script['success']) ? 200 : 0,
         ];
     }
 
@@ -503,101 +502,103 @@ final class IntercarsClient
      */
     public function previewCheckout(int $timeout = 12): array
     {
-        $result = $this->cartRequest('GET', '/cart/checkout', null, $timeout);
-        if (!$result['success']) {
-            $result = $this->cartRequest('GET', '/checkout', null, $timeout);
-        }
+        $script = $this->runCartScript('preview', '', '', 1, max(45, $timeout));
 
         return [
-            'success' => $result['success'],
-            'ready' => $result['success'],
-            'error' => $result['error'],
-            'status' => $result['status'],
+            'success' => (bool) ($script['success'] ?? false),
+            'ready' => (bool) ($script['success'] ?? false),
+            'error' => (string) ($script['error'] ?? ''),
+            'status' => !empty($script['success']) ? 200 : 0,
         ];
     }
 
     /**
-     * @param array<string, mixed>|null $payload
-     * @return array{success:bool,lines:list<array{id:string,code:string,qty:int}>,error:string,status:int}
+     * @return array<string, mixed>
      */
-    private function cartRequest(string $method, string $path, ?array $payload, int $timeout): array
+    public function rehearseCart(string $code, string $query, int $qty = 1, int $timeout = 90): array
     {
-        $creds = $this->loadCredentials();
-        if ($creds === null) {
-            return ['success' => false, 'lines' => [], 'error' => $this->lastError, 'status' => 0];
-        }
-
-        $cust = SupplierSearchConfig::intercarsCustomerCode();
-        $branch = SupplierSearchConfig::intercarsBranch();
-        $url = SupplierSearchConfig::intercarsBaseUrl() . $path;
-        $url .= (str_contains($url, '?') ? '&' : '?') . http_build_query([
-            'customerCode' => $cust,
-            'customerBusinessUnitCode' => $branch,
-        ]);
-
-        $headers = $creds['headers'];
-        $headers[] = 'x-source: cart-microfrontend';
-
-        $ch = curl_init($url);
-        SupplierSearchConfig::configureCurl($ch);
-        $opts = [
-            CURLOPT_HTTPHEADER => $headers,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => $timeout,
-            CURLOPT_CONNECTTIMEOUT => 4,
-            CURLOPT_CUSTOMREQUEST => $method,
-        ];
-        if ($creds['cookie'] !== '') {
-            $opts[CURLOPT_COOKIE] = $creds['cookie'];
-        }
-        if ($payload !== null) {
-            $opts[CURLOPT_POSTFIELDS] = json_encode($payload, JSON_UNESCAPED_UNICODE);
-        }
-        curl_setopt_array($ch, $opts);
-        $body = curl_exec($ch);
-        $status = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
-        $error = trim((string) curl_error($ch));
-        curl_close($ch);
-
-        if ($body === false || $error !== '') {
-            return ['success' => false, 'lines' => [], 'error' => $error !== '' ? $error : 'Eroare rețea InterCars.', 'status' => $status];
-        }
-        if ($status < 200 || $status >= 300) {
-            return ['success' => false, 'lines' => [], 'error' => 'InterCars HTTP ' . $status, 'status' => $status];
-        }
-
-        $decoded = json_decode((string) $body, true);
-
-        return [
-            'success' => true,
-            'lines' => WebshopCartMirrorService::extractLines(is_array($decoded) ? $decoded : ['raw' => (string) $body]),
-            'error' => '',
-            'status' => $status,
-        ];
+        return $this->runCartScript('rehearse', $code, $query !== '' ? $query : $code, max(1, $qty), $timeout);
     }
 
     /**
-     * @param list<array{id:string,code:string,qty:int}> $before
-     * @param list<array{id:string,code:string,qty:int}> $after
+     * @return array<string, mixed>
      */
-    private function diffNewLineId(array $before, array $after, string $code): string
+    private function runCartScript(string $mode, string $code, string $query, int $qty, int $timeout): array
     {
-        $beforeIds = [];
-        foreach ($before as $line) {
-            $beforeIds[(string) ($line['id'] ?? '')] = true;
+        $script = dirname(__DIR__, 5) . '/admin/scripts/intercars_cart_rehearse.py';
+        if (!is_file($script)) {
+            $script = (defined('BESOIU_ADMIN') ? (string) BESOIU_ADMIN : dirname(__DIR__, 5) . '/admin') . '/scripts/intercars_cart_rehearse.py';
         }
-        foreach ($after as $line) {
-            $id = trim((string) ($line['id'] ?? ''));
-            if ($id !== '' && !isset($beforeIds[$id])) {
-                return $id;
-            }
-        }
-        foreach ($after as $line) {
-            if (strcasecmp((string) ($line['code'] ?? ''), $code) === 0 && trim((string) ($line['id'] ?? '')) !== '') {
-                return (string) $line['id'];
-            }
+        if (!is_file($script)) {
+            return ['success' => false, 'ok' => false, 'line_id' => '', 'lines' => [], 'steps' => [], 'error' => 'Lipsește intercars_cart_rehearse.py'];
         }
 
-        return '';
+        $cmd = [
+            $this->pythonBin(),
+            $script,
+            '--mode',
+            $mode,
+            '--code',
+            $code,
+            '--query',
+            $query !== '' ? $query : $code,
+            '--qty',
+            (string) max(1, $qty),
+        ];
+        $spec = [
+            0 => ['pipe', 'r'],
+            1 => ['pipe', 'w'],
+            2 => ['pipe', 'w'],
+        ];
+        $proc = @proc_open($cmd, $spec, $pipes, dirname($script), ['IC_HEADED' => '1']);
+        if (!is_resource($proc)) {
+            return ['success' => false, 'ok' => false, 'line_id' => '', 'lines' => [], 'steps' => [], 'error' => 'Nu am putut porni simularea Intercars.'];
+        }
+
+        fclose($pipes[0]);
+        stream_set_blocking($pipes[1], false);
+        stream_set_blocking($pipes[2], false);
+        $stdout = '';
+        $stderr = '';
+        $deadline = microtime(true) + max(30, $timeout);
+        while (microtime(true) < $deadline) {
+            $stdout .= (string) stream_get_contents($pipes[1]);
+            $stderr .= (string) stream_get_contents($pipes[2]);
+            $status = proc_get_status($proc);
+            if (empty($status['running'])) {
+                $stdout .= (string) stream_get_contents($pipes[1]);
+                $stderr .= (string) stream_get_contents($pipes[2]);
+                break;
+            }
+            usleep(200000);
+        }
+        fclose($pipes[1]);
+        fclose($pipes[2]);
+        $running = proc_get_status($proc)['running'] ?? false;
+        if ($running) {
+            proc_terminate($proc);
+        }
+        proc_close($proc);
+
+        $decoded = json_decode(trim($stdout), true);
+        if (!is_array($decoded)) {
+            $hint = trim($stderr);
+            if ($hint === '') {
+                $hint = trim($stdout);
+            }
+
+            return [
+                'success' => false,
+                'ok' => false,
+                'line_id' => '',
+                'lines' => [],
+                'steps' => [],
+                'error' => 'Simularea Intercars nu a întors JSON valid.' . ($hint !== '' ? ' ' . substr($hint, 0, 220) : ''),
+            ];
+        }
+        $decoded['success'] = !empty($decoded['success']) || !empty($decoded['ok']);
+        $decoded['submitted'] = false;
+
+        return $decoded;
     }
 }

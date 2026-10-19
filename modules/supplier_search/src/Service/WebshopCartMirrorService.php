@@ -33,6 +33,12 @@ final class WebshopCartMirrorService
         }
 
         $code = $this->lookupCode($item);
+        if ($supplier === 'intercars') {
+            $digits = preg_replace('/\D+/', '', (string) ($item['product_code'] ?? $code)) ?? $code;
+            if ($digits !== '') {
+                $code = $digits;
+            }
+        }
         $qty = max(1, (int) ($item['qty'] ?? 1));
         $added = $this->addRemoteLine($supplier, $code, $qty);
         $item['webshop_line_id'] = (string) ($added['id'] ?? '');
@@ -63,6 +69,10 @@ final class WebshopCartMirrorService
                 'isolated' => false,
                 'steps' => [['name' => 'skip', 'ok' => true, 'detail' => 'Furnizorul are API propriu, nu folosește oglindă webshop.']],
             ];
+        }
+
+        if ($supplier === 'intercars') {
+            return $this->rehearseIntercars($item, $code, $lineId);
         }
 
         $listed = $this->listRemote($supplier);
@@ -181,6 +191,34 @@ final class WebshopCartMirrorService
         }
 
         return $lines;
+    }
+
+    /**
+     * @param array<string, mixed> $item
+     * @return array<string, mixed>
+     */
+    private function rehearseIntercars(array $item, string $code, string $lineId): array
+    {
+        $query = preg_replace('/\D+/', '', (string) ($item['product_code'] ?? $item['api_lookup_code'] ?? $code)) ?? $code;
+        $qty = max(1, (int) ($item['qty'] ?? 1));
+        $script = (new IntercarsClient())->rehearseCart($code !== '' ? $code : $query, $query, $qty, 90);
+        $newId = trim((string) ($script['line_id'] ?? $lineId));
+        $steps = is_array($script['steps'] ?? null) ? $script['steps'] : [];
+        $isolated = !empty($script['isolated']) || $newId !== '';
+        $ok = $isolated && empty($script['submitted']);
+
+        return [
+            'success' => $ok,
+            'submitted' => false,
+            'supplier' => 'intercars',
+            'line_id' => $newId,
+            'isolated' => $isolated,
+            'remote_total' => count($script['lines'] ?? []),
+            'other_count' => max(0, count($script['lines'] ?? []) - ($isolated ? 1 : 0)),
+            'own_line' => $newId !== '' ? ['id' => $newId, 'code' => $code, 'qty' => $qty] : null,
+            'steps' => $steps !== [] ? $steps : [['name' => 'rehearse', 'ok' => $ok, 'detail' => (string) ($script['error'] ?? '')]],
+            'error' => (string) ($script['error'] ?? ''),
+        ];
     }
 
     /** @param array<string, mixed> $item */

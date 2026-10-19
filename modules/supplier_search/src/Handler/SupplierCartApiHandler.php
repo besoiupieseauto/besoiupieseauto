@@ -18,7 +18,7 @@ final class SupplierCartApiHandler
 
         try {
             ApiBootstrap::requireAuthenticatedSession();
-            ApiBootstrap::beginBoundedJsonWork(45);
+            ApiBootstrap::beginBoundedJsonWork(120);
             self::ensureLegacyDb($config);
 
             $userId = (int) ($_SESSION['user_id'] ?? 0);
