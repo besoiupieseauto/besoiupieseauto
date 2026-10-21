@@ -1,0 +1,31 @@
+---
+description: Scanare POLCAR pe Intercars — scoate sufixul PL de la finalul codului
+alwaysApply: true
+---
+
+# POLCAR pe Intercars — sufix PL
+
+La scanarea brandului **POLCAR** pe **Intercars**, sufixul `PL` de la finalul codului nu face parte din codul de catalog. Se scoate doar la căutare.
+
+## Regulă
+
+1. Brandul scanat este POLCAR și site-ul este Intercars.
+2. Dacă codul de căutare se termină cu `PL`, taie acel sufix și caută restul.
+3. Codul salvat pe disc rămâne cel original, cu `PL`.
+4. Un `PL` din mijlocul codului rămâne.
+5. Codurile care nu se termină cu `PL` se caută neschimbate.
+6. Materom, Elit și WebCat caută codul original.
+
+## Exemple
+
+| Cod intrare | Căutare Intercars | Fișier |
+|---|---|---|
+| `132701PL` | `132701` | `POLCAR_-_132701PL` |
+| `1330345XPL` | `1330345X` | `POLCAR_-_1330345XPL` |
+| `13D10721` | `13D10721` | `POLCAR_-_13D10721` |
+
+## Puncte de legătură
+
+`brand_is_polcar()`, `polcar_search_code()`, `scan_item_on_site()` în `D:\laragon\www\scraper\scanner_engine.py`.
+
+Nu elimina această regulă fără înlocuitor.
