@@ -58,15 +58,26 @@ final class ImportCardStaging
     public static function cardRejectReason(array $card): string
     {
         $name = trim((string) ($card['title'] ?? $card['matchedName'] ?? $card['name'] ?? ''));
-        $code = trim((string) ($card['supplierSku'] ?? $card['sku'] ?? $card['matchedTecdocSku'] ?? ''));
+        $code = self::resolveTecdocProductCode($card);
         if ($name === '' && $code === '') {
-            return 'Lipsește titlu și cod SKU';
+            return 'Lipsește titlu și cod TecDoc';
         }
         if ($name === '') {
             return 'Lipsește titlul produsului';
         }
+        if ($code === '') {
+            return 'Lipsește codul TecDoc (tecdocSku/ART_CODE_1)';
+        }
+        foreach (['imageDisplayUrl', 'scrapedImageUrl', 'imageUrl'] as $key) {
+            if (trim((string) ($card[$key] ?? '')) !== '') {
+                return 'Card invalid pentru staging';
+            }
+        }
+        if (!empty($card['hasImage']) && !empty($card['imagePath'])) {
+            return 'Card invalid pentru staging';
+        }
 
-        return 'Lipsește codul SKU (supplierSku/sku)';
+        return 'Fără imagine (Poze/Autopartner) — nu se trimite în coadă';
     }
 
     /**
@@ -77,7 +88,11 @@ final class ImportCardStaging
     public static function cardToProduct(array $card, string $importLane = 'standard', array $options = []): ?array
     {
         $name = trim((string) ($card['title'] ?? $card['matchedName'] ?? $card['name'] ?? ''));
-        $code = trim((string) ($card['supplierSku'] ?? $card['sku'] ?? $card['artNr'] ?? $card['matchedTecdocSku'] ?? ''));
+        // Provizoriu: acceptă și SKU ca să nu respingem cardul înainte de lookup TecDoc.
+        $code = self::resolveTecdocProductCode($card);
+        if ($code === '') {
+            $code = trim((string) ($card['supplierSku'] ?? $card['sku'] ?? ''));
+        }
         if ($name === '' || $code === '') {
             return null;
         }
@@ -100,6 +115,45 @@ final class ImportCardStaging
         $supplier = strtoupper(trim((string) ($card['sourceSupplier'] ?? $card['supplier'] ?? '')));
         $brand = trim((string) ($card['forceBrand'] ?? $card['brand'] ?? ''));
         $images = self::resolveImages($card);
+        // Imaginea obligatorie se cere explicit (require_image / reject_no_image).
+        // `matching_pro_fast` înseamnă doar staging rapid (fără Ollama / scrape) — nu politică
+        // de conținut: produsele fără imagine intră în coadă pe banda no_image (țintă vitrină)
+        // și sunt oprite la publicare, nu pierdute la scanare.
+        // Regula de bază: încearcă mereu biblioteca Poze/AP (+ art_cross) înainte de a rămâne fără imagine.
+        if ($images === []) {
+            try {
+                if (function_exists('import_apply_base_scan_image_policy')) {
+                    $attached = import_apply_base_scan_image_policy($card);
+                    if (is_array($attached)) {
+                        $card = $attached;
+                        $images = self::resolveImages($card);
+                    }
+                } elseif (function_exists('import_attach_local_image_to_card')) {
+                    $attached = import_attach_local_image_to_card($card);
+                    if (is_array($attached)) {
+                        $card = $attached;
+                        $images = self::resolveImages($card);
+                    }
+                }
+            } catch (\Throwable) {
+                // Lipsa bibliotecii de imagini nu trebuie să blocheze coada; produsul intră pe fluxul fără imagine.
+            }
+        }
+        $requireImageHard = !empty($options['require_image'])
+            || !empty($options['reject_no_image']);
+        if ($requireImageHard && $images === []) {
+            return null; // require_image_hard_gate — deja încercat attach mai sus
+        }
+        if ($requireImageHard && $images !== []) {
+            $src = strtolower(trim((string) ($card['imageSource'] ?? '')));
+            $images = array_values(array_filter(
+                $images,
+                static fn ($u): bool => is_string($u) && self::stagingImageIsTrusted($u, $src)
+            ));
+        }
+        if ($requireImageHard && $images === []) {
+            return null; // require_image_hard_gate
+        }
         $purchaseNet = self::resolvePurchaseNet($card);
 
         $nameHay = $name;
@@ -180,9 +234,7 @@ final class ImportCardStaging
             ? import_extract_vehicle_from_title($name)
             : self::extractVehicleFromTitle($name);
         $compatText = trim((string) ($card['compatText'] ?? ''));
-        if (mb_strlen($compatText) > 8000) {
-            $compatText = mb_substr($compatText, 0, 8000) . '…';
-        }
+        // REGULA COMPAT FULL: nu tăia lista — toate fitment-urile rămân în coadă.
         if ($compatText === '' && $descriptionMarketplace !== '') {
             $compatText = function_exists('import_compat_text_from_description_html')
                 ? import_compat_text_from_description_html($descriptionMarketplace)
@@ -214,12 +266,45 @@ final class ImportCardStaging
             $motorizare = import_sanitize_motorizare_value($motorizare);
         }
 
+        // Fallback solid: primul entry TecDoc cu CAR_BRAND/CAR_MODEL/CAR_TYP.
+
+        if ($vehicle['marca'] === '' || $vehicle['model'] === '' || trim((string) $motorizare) === '') {
+
+            $fromRows = self::vehicleFromSourceRows($sourceRows);
+
+            if ($vehicle['marca'] === '' && $fromRows['marca'] !== '') {
+
+                $vehicle['marca'] = $fromRows['marca'];
+
+            }
+
+            if ($vehicle['model'] === '' && $fromRows['model'] !== '') {
+
+                $vehicle['model'] = $fromRows['model'];
+
+            }
+
+            if (trim((string) $motorizare) === '' && $fromRows['motorizare'] !== '') {
+
+                $motorizare = $fromRows['motorizare'];
+
+            }
+
+        }
+
         // Layout coadă: un singur vehicul principal (nu dump multi-marcă / motorizări).
         $vehicle = self::normalizePrimaryVehicle($vehicle, $motorizare);
         $motorizare = $vehicle['motorizare'];
 
         // Denumire de bază = ART_NAME TecDoc; titlurile pe canal se formează după template.
         $displayName = $rawArtName !== '' ? $rawArtName : $name;
+
+        // Cod canonic = TecDoc (ART_CODE_1), nu SKU Autonet tip 0.1954.1.
+        $tecdocCode = self::resolveTecdocProductCode($card, $sourceRows);
+        if ($tecdocCode !== '') {
+            $code = $tecdocCode;
+        }
+        $supplierSku = trim((string) ($card['supplierSku'] ?? $card['sku'] ?? ''));
 
         $raw = [
             'schema' => 'product_import_v2',
@@ -240,12 +325,15 @@ final class ImportCardStaging
             ],
             // Rânduri TecDoc pentru regenerare generateDescription() Base.html
             'source_rows' => $sourceRows,
+            /* MATCHED_PRODUCT_ID_RAW */
+            'matched_product_id' => (int) ($card['productId'] ?? $card['matched_product_id'] ?? $card['matchedProductId'] ?? 0),
+            'product_id' => (int) ($card['productId'] ?? $card['matched_product_id'] ?? $card['matchedProductId'] ?? 0),
             'match_status' => (string) ($card['matchStatus'] ?? ''),
             'match_method' => (string) ($card['matchMethod'] ?? ''),
             'category_match' => $categoryMatch,
             'source_file' => (string) ($card['sourceFile'] ?? ''),
-            'source_supplier_sku' => trim((string) ($card['supplierSku'] ?? $code)),
-            'tecdoc_sku' => trim((string) ($card['tecdocSku'] ?? $card['matchedTecdocSku'] ?? '')),
+            'source_supplier_sku' => $supplierSku !== '' ? $supplierSku : trim((string) ($card['supplierSku'] ?? '')),
+            'tecdoc_sku' => trim((string) ($card['tecdocSku'] ?? $card['matchedTecdocSku'] ?? $code)),
             'tecdoc_brand' => trim((string) ($card['tecdocBrand'] ?? $card['matchedTecdocBrand'] ?? '')),
             'force_brand' => trim((string) ($card['forceBrand'] ?? '')),
             'art_nr' => trim((string) ($card['artNr'] ?? '')),
@@ -286,14 +374,17 @@ final class ImportCardStaging
             $raw['source_supplier'] = $supplier;
         }
 
+        $nameMarketplace = trim((string) ($card['titleMarketplace'] ?? $card['title_pieseauto'] ?? ''));
+
         return [
             'pName' => $displayName,
+            'pNameMarketplace' => $nameMarketplace !== '' ? $nameMarketplace : $displayName,
             'pCode' => $code,
             'pBrand' => $brand,
             'pMarca' => $vehicle['marca'],
             'pModel' => $vehicle['model'],
             'pMotorizare' => $motorizare,
-            'pOem' => $oemCode !== '' ? $oemCode : $code,
+            'pOem' => (($oeFromCross = self::oemCodesFromArtCross($sourceRows)) !== [] ? implode(', ', $oeFromCross) : ($oemCode !== '' ? $oemCode : $code)),
             'pBasePrice' => $purchaseNet !== null ? (string) round($purchaseNet, 2) : '',
             // Preț final doar după Adaos comercial (manual, în coadă) — nu din achiziție+TVA.
             'pPrice' => '',
@@ -331,7 +422,7 @@ final class ImportCardStaging
                 }
             }
             if ($rows !== []) {
-                return array_slice($rows, 0, 250);
+                return $rows; // full — fără plafon 250
             }
         }
 
@@ -400,14 +491,14 @@ final class ImportCardStaging
             return $description;
         }
 
-        $sourceRows = array_slice($entries, 0, 250);
+        $sourceRows = $entries; // full — fără plafon 250
         $html = trim(ImportTecdocMysqlCardBuilder::descriptionFromEntries($entries));
 
         return $html !== '' ? $html : $description;
     }
 
     /**
-     * Descriere Website: antet + specificații (nu formatul nested Base pentru marketplace).
+     * Descriere Website = același HTML Base.html (specs + compat + OE).
      *
      * @param array<string, mixed> $card
      * @param list<array<string, mixed>> $sourceRows
@@ -419,28 +510,18 @@ final class ImportCardStaging
     ): string {
         self::ensureImportBaseLib();
 
-        if ($sourceRows !== [] && function_exists('import_base_generate_description_website')) {
-            $html = trim((string) import_base_generate_description_website($sourceRows));
+        if ($sourceRows !== [] && function_exists('import_base_generate_description')) {
+            $html = trim((string) import_base_generate_description($sourceRows));
             if ($html !== '') {
                 return $html;
             }
         }
 
-        if ($marketplaceHtml !== '' && function_exists('import_base_description_website_from_marketplace')) {
-            $fromMp = trim((string) import_base_description_website_from_marketplace($marketplaceHtml));
-            if ($fromMp !== '') {
-                return $fromMp;
-            }
+        if ($marketplaceHtml !== '') {
+            return $marketplaceHtml;
         }
 
-        $existing = trim((string) ($card['descriptionWebsite'] ?? $card['description_website'] ?? ''));
-        if ($existing !== '' && !self::isBaseDescriptionFormat($existing)) {
-            return $existing;
-        }
-
-        return $marketplaceHtml !== '' && function_exists('import_base_description_website_from_marketplace')
-            ? trim((string) import_base_description_website_from_marketplace($marketplaceHtml))
-            : '';
+        return trim((string) ($card['descriptionWebsite'] ?? $card['description_website'] ?? ''));
     }
 
     private static function ensureImportBaseLib(): void
@@ -529,6 +610,37 @@ final class ImportCardStaging
      *
      * @return array{marca:string,model:string,motorizare:string}
      */
+
+    /**
+     * @param list<array<string, mixed>> $sourceRows
+     * @return array{marca:string,model:string,motorizare:string}
+     */
+    private static function vehicleFromSourceRows(array $sourceRows): array
+    {
+        foreach ($sourceRows as $entry) {
+            if (!is_array($entry)) {
+                continue;
+            }
+            $brand = trim((string) ($entry['CAR_BRAND'] ?? ''));
+            $model = trim((string) ($entry['CAR_MODEL'] ?? ''));
+            $typ = trim((string) ($entry['CAR_TYP'] ?? ''));
+            if ($brand === '') {
+                continue;
+            }
+            $model = trim((string) preg_replace('/\([^)]*\)/u', '', $model));
+            $model = trim((string) preg_replace('/\s+/u', ' ', $model));
+            $typ = trim((string) preg_replace('/\([^)]*\)/u', '', $typ));
+            $typ = trim((string) preg_replace('/\s+/u', ' ', $typ));
+
+            return [
+                'marca' => $brand,
+                'model' => $model,
+                'motorizare' => $typ,
+            ];
+        }
+
+        return ['marca' => '', 'model' => '', 'motorizare' => ''];
+    }
     private static function extractVehicleFromCompatLines(string $compatText): array
     {
         $empty = ['marca' => '', 'model' => '', 'motorizare' => ''];
@@ -542,6 +654,7 @@ final class ImportCardStaging
             : [];
         $marci = [];
         $modele = [];
+        $motorizari = [];
 
         foreach (preg_split('/\r?\n|;/u', $compatText) ?: [] as $line) {
             $line = trim(html_entity_decode($line, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
@@ -551,54 +664,151 @@ final class ImportCardStaging
                 continue;
             }
 
-            // Format tip „RENAULT: MEGANE III cupe …” sau „RENAULT MEGANE III …”.
+            // Format tip „LAND ROVER: FREELANDER …” / „ALFA ROMEO: …” / „RENAULT: MEGANE III …”.
             $brandToken = '';
             $rest = $line;
-            if (preg_match('/^([A-Za-zÀ-ÿ0-9\-]+)\s*:\s*(.+)$/u', $line, $m)) {
-                $brandToken = (string) $m[1];
+            $resolvedBrand = '';
+            $multiBrandCandidates = [];
+            if (preg_match('/^(.+?)\s*:\s*(.+)$/u', $line, $m)) {
+                $left = trim((string) $m[1]);
                 $rest = trim((string) $m[2]);
+                $leftTokens = preg_split('/\s+/u', $left) ?: [];
+                for ($n = min(3, count($leftTokens)); $n >= 1; $n--) {
+                    $multiBrandCandidates[] = trim(implode(' ', array_slice($leftTokens, 0, $n)));
+                }
             } else {
                 $tokens = preg_split('/\s+/u', $line) ?: [];
-                $brandToken = (string) ($tokens[0] ?? '');
-                $rest = trim(implode(' ', array_slice($tokens, 1)));
-            }
-
-            $brandKey = function_exists('mb_strtoupper')
-                ? mb_strtoupper($brandToken, 'UTF-8')
-                : strtoupper($brandToken);
-            $brandKey = rtrim($brandKey, ':');
-            if ($allowed !== [] && !isset($allowed[$brandKey])) {
-                if ($brandKey === 'VOLKSWAGEN' && isset($allowed['VW'])) {
-                    $brandKey = 'VW';
-                } elseif ($brandKey === 'MERCEDES' && isset($allowed['MERCEDES-BENZ'])) {
-                    $brandKey = 'MERCEDES-BENZ';
-                } else {
-                    continue;
+                for ($n = min(3, count($tokens)); $n >= 1; $n--) {
+                    $cand = trim(implode(' ', array_slice($tokens, 0, $n)));
+                    if ($cand !== '') {
+                        $multiBrandCandidates[] = $cand;
+                    }
                 }
             }
+            foreach ($multiBrandCandidates as $cand) {
+                $candKey = function_exists('mb_strtoupper')
+                    ? mb_strtoupper($cand, 'UTF-8')
+                    : strtoupper($cand);
+                $candKey = rtrim($candKey, ':');
+                if ($candKey === 'VOLKSWAGEN' && isset($allowed['VW'])) {
+                    $candKey = 'VW';
+                } elseif ($candKey === 'MERCEDES' && isset($allowed['MERCEDES-BENZ'])) {
+                    $candKey = 'MERCEDES-BENZ';
+                }
+                if ($allowed === [] || isset($allowed[$candKey])) {
+                    $resolvedBrand = $candKey;
+                    if (preg_match('/^(.+?)\s*:\s*(.+)$/u', $line, $mm)) {
+                        $left = trim((string) $mm[1]);
+                        $rest = trim((string) $mm[2]);
+                        $leftTokens = preg_split('/\s+/u', $left) ?: [];
+                        $brandParts = preg_split('/\s+/u', $cand) ?: [];
+                        $extraLeft = array_slice($leftTokens, count($brandParts));
+                        if ($extraLeft !== []) {
+                            $rest = trim(implode(' ', $extraLeft) . ' ' . $rest);
+                        }
+                    } else {
+                        $tokens = preg_split('/\s+/u', $line) ?: [];
+                        $brandParts = preg_split('/\s+/u', $cand) ?: [];
+                        $rest = trim(implode(' ', array_slice($tokens, count($brandParts))));
+                    }
+                    break;
+                }
+            }
+            if ($resolvedBrand === '') {
+                continue;
+            }
+            $brandKey = $resolvedBrand;
             $marci[$brandKey] = true;
 
-            // Model = primul token (+ generație II/III dacă urmează).
+            // Model = token(i) (+ generație); restul = motorizare.
+            // Dacă restul e doar listă de mărci (AUDI FIAT FORD…), nu seta model.
             if ($rest !== '') {
-                $restTokens = preg_split('/\s+/u', $rest) ?: [];
-                $model = trim((string) ($restTokens[0] ?? ''));
-                if ($model !== '' && !preg_match('/^\d/', $model)) {
-                    if (isset($restTokens[1]) && preg_match('/^(I{1,3}|IV|V|VI|VII|VIII|IX|X|\d+)$/u', (string) $restTokens[1])) {
-                        $model .= ' ' . trim((string) $restTokens[1]);
+                $restTokens = array_values(array_filter(array_map('trim', preg_split('/\s+/u', $rest) ?: [])));
+                $restOnlyBrands = $restTokens !== [];
+                if ($restOnlyBrands && $allowed !== []) {
+                    $i = 0;
+                    $nTok = count($restTokens);
+                    while ($i < $nTok) {
+                        $joined = null;
+                        for ($w = min(3, $nTok - $i); $w >= 1; $w--) {
+                            $cand = trim(implode(' ', array_slice($restTokens, $i, $w)));
+                            $ck = function_exists('mb_strtoupper') ? mb_strtoupper($cand, 'UTF-8') : strtoupper($cand);
+                            if ($ck === 'VOLKSWAGEN') {
+                                $ck = 'VW';
+                            } elseif ($ck === 'MERCEDES') {
+                                $ck = 'MERCEDES-BENZ';
+                            }
+                            if (isset($allowed[$ck])) {
+                                $joined = $ck;
+                                $i += $w;
+                                break;
+                            }
+                        }
+                        if ($joined === null) {
+                            $restOnlyBrands = false;
+                            break;
+                        }
                     }
-                    $modele[$model] = true;
+                } else {
+                    $restOnlyBrands = false;
+                }
+
+                if (!$restOnlyBrands) {
+                    $model = trim((string) ($restTokens[0] ?? ''));
+                    $consumed = 0;
+                    if ($model !== '' && !preg_match('/^\d/', $model)) {
+                        $consumed = 1;
+                        // Cuvinte alpha suplimentare (SANTA FE, NEW BEETLE, RANGE ROVER SPORT)
+                        while (
+                            isset($restTokens[$consumed])
+                            && preg_match('/^[A-Za-z][A-Za-z\'\-]*$/u', (string) $restTokens[$consumed])
+                            && !preg_match('/^(I{1,3}|IV|V|VI|VII|VIII|IX|X)$/u', (string) $restTokens[$consumed])
+                            && !preg_match('/^(TDI|TSI|CDI|HDI|MPI|LPG|CRDI|TD4|SD4|ED4|GTS|CVVT|VVT|TFSI|BLUEHDI|XDRIVE|SDRIVE|4MOTION|4MATIC|QUATTRO)$/iu', (string) $restTokens[$consumed])
+                            && !preg_match('/^(CAROSERIE|LIMUZINA|HATCHBACK|COMBI|BUS|VAN|BREAK|COUPE|CABRIO|CABRIOLET|SPORTBACK|TOURING|SW)$/iu', (string) $restTokens[$consumed])
+                        ) {
+                            $next = (string) $restTokens[$consumed];
+                            $after = $restTokens[$consumed + 1] ?? null;
+                            $afterIsGenOrEngine = $after !== null && (
+                                preg_match('/^(I{1,3}|IV|V|VI|VII|VIII|IX|X|[A-G]|[1-9])$/u', (string) $after)
+                                || preg_match('/^\d+\.\d+/u', (string) $after)
+                                || preg_match('/^(TDI|TSI|CDI|HDI|MPI|LPG|CRDI)/iu', (string) $after)
+                            );
+                            $looksCompound = preg_match('/^(FE|ROVER|BEETLE|CHEROKEE|SPORT|CLASS|CROSSER|TEPEE)$/iu', $next);
+                            if ($afterIsGenOrEngine || $looksCompound) {
+                                $model .= ' ' . $next;
+                                $consumed++;
+                                if ($consumed >= 3) {
+                                    break;
+                                }
+                                continue;
+                            }
+                            break;
+                        }
+                        // Generație: romane, literă A-G (Insignia A), sau cifră 1-9 — nu „28”/„150”.
+                        if (isset($restTokens[$consumed]) && preg_match('/^(I{1,3}|IV|V|VI|VII|VIII|IX|X|[A-G]|[1-9]|B[4-9]|MK?[1-9]|C[1-9]|T[4-7])$/iu', (string) $restTokens[$consumed])) {
+                            $model .= ' ' . trim((string) $restTokens[$consumed]);
+                            $consumed++;
+                        }
+                        $modele[$model] = true;
+                        $motorRest = trim(implode(' ', array_slice($restTokens, $consumed)));
+                        if ($motorRest !== '' && !isset($motorizari[$model])) {
+                            $motorizari[$model] = $motorRest;
+                        }
+                    }
                 }
             }
         }
 
         $brandList = array_keys($marci);
         $modelList = array_keys($modele);
+        $primaryModel = (string) ($modelList[0] ?? '');
+        $primaryMotor = $primaryModel !== '' ? (string) ($motorizari[$primaryModel] ?? '') : '';
 
         // Un singur vehicul principal pentru coloanele pMarca/pModel (nu listă multi-marcă).
         return [
             'marca' => (string) ($brandList[0] ?? ''),
-            'model' => (string) ($modelList[0] ?? ''),
-            'motorizare' => '',
+            'model' => $primaryModel,
+            'motorizare' => $primaryMotor,
         ];
     }
 
@@ -631,6 +841,23 @@ final class ImportCardStaging
             && stripos($model, (string) $m[1]) !== 0
         ) {
             $model = trim((string) preg_replace('/,+\s*' . preg_quote((string) $m[1], '/') . '.*$/iu', '', $model));
+        }
+        // Fragmente din branduri multi-cuvânt greșit luate ca model: ROVER (din LAND ROVER), ROMEO, BENZ.
+        $modelFold = function_exists('mb_strtoupper') ? mb_strtoupper($model, 'UTF-8') : strtoupper($model);
+        if (in_array($modelFold, ['ROVER', 'ROMEO', 'BENZ', 'LAND', 'ALFA', 'RANGE'], true)) {
+            $model = '';
+        }
+        // Dacă motorizarea începe cu modelul (C4 II 2.0…), completează modelul din motor.
+        if ($model === '' && $motor !== '' && preg_match('/^([A-Za-z0-9][A-Za-z0-9\-]*(?:\s+(?:I{1,3}|IV|V|VI|VII|VIII|IX|X|\d+))?)/u', $motor, $mm)) {
+            $maybe = trim((string) $mm[1]);
+            if ($maybe !== '' && !preg_match('/^\d/', $maybe)) {
+                $model = $maybe;
+            }
+        }
+        // Evită dublura model în motor: „C4 II” + „C4 II 2.0 HDi” → motor fără prefix model.
+        if ($model !== '' && $motor !== '') {
+            $prefix = preg_quote($model, '/');
+            $motor = trim((string) preg_replace('/^' . $prefix . '\s+/iu', '', $motor));
         }
 
         if ($motor !== '') {
@@ -667,30 +894,207 @@ final class ImportCardStaging
         ];
     }
 
+    /** Imagine acceptată în coadă doar dacă e utilă (fișier local / URL trusted). */
+    private static function stagingImageIsTrusted(string $url, string $source = ''): bool
+    {
+        $url = trim($url);
+        if ($url === '') {
+            return false;
+        }
+        $validate = dirname(__DIR__, 4) . '/Legacy/import-image-validate.php';
+        if (is_file($validate)) {
+            require_once $validate;
+        }
+        if (function_exists('besoiu_import_image_url_is_trusted')) {
+            return besoiu_import_image_url_is_trusted($url, $source);
+        }
+        if (function_exists('besoiu_import_proxy_url_has_local_file')
+            && function_exists('besoiu_import_image_is_admin_proxy_url')
+            && besoiu_import_image_is_admin_proxy_url($url)
+        ) {
+            return besoiu_import_proxy_url_has_local_file($url);
+        }
+
+        return !str_contains(strtolower($url), 'preview-12') && !str_contains(strtolower($url), 'fakers/');
+    }
     /** @param array<string, mixed> $card @return list<string> */
+    /**
+     * OE originale (doar mărci auto) din ART_CROSS — toate, fără AM.
+     *
+     * @param list<array<string, mixed>> $sourceRows
+     * @return list<string>
+     */
+    private static function oemCodesFromArtCross(array $sourceRows): array
+    {
+        if (!function_exists('import_base_oem_li_from_art_cross')) {
+            $lib = dirname(__DIR__, 4) . '/Backend/src/Controllers/Produse/import_base_lib.php';
+            if (is_file($lib)) {
+                require_once $lib;
+            }
+        }
+        if (!function_exists('import_base_oem_li_from_art_cross')) {
+            return [];
+        }
+
+        $blob = '';
+        foreach ($sourceRows as $row) {
+            if (!is_array($row)) {
+                continue;
+            }
+            $cross = trim((string) ($row['ART_CROSS'] ?? ''));
+            if ($cross !== '') {
+                $blob .= ($blob !== '' ? ' | ' : '') . $cross;
+            }
+        }
+        if ($blob === '') {
+            return [];
+        }
+
+        $out = [];
+        $seen = [];
+        foreach (import_base_oem_li_from_art_cross($blob) as $li) {
+            $text = trim(html_entity_decode(strip_tags((string) $li), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+            if ($text === '') {
+                continue;
+            }
+            $fold = function_exists('mb_strtolower') ? mb_strtolower($text, 'UTF-8') : strtolower($text);
+            if (isset($seen[$fold])) {
+                continue;
+            }
+            $seen[$fold] = true;
+            $out[] = $text;
+        }
+
+        return $out;
+    }
+    /**
+     * Cod produs = TecDoc normalizat (ART_CODE_1 / tecdocSku), NU SKU furnizor (ex. 0.1954.1).
+     *
+     * @param array<string, mixed> $card
+     * @param list<array<string, mixed>> $sourceRows
+     */
+    private static function resolveTecdocProductCode(array $card, array $sourceRows = []): string
+    {
+        $candidates = [
+            trim((string) ($card['tecdocSku'] ?? '')),
+            trim((string) ($card['matchedTecdocSku'] ?? '')),
+            trim((string) ($card['artNr'] ?? '')),
+        ];
+        foreach ($sourceRows as $row) {
+            if (!is_array($row)) {
+                continue;
+            }
+            $candidates[] = trim((string) ($row['ART_CODE_1'] ?? ''));
+            $candidates[] = trim((string) ($row['ART_CODE_2'] ?? ''));
+        }
+        foreach ($candidates as $code) {
+            if ($code !== '') {
+                return $code;
+            }
+        }
+
+        // Ultimul fallback: SKU furnizor doar dacă TecDoc lipsește cu totul.
+        return trim((string) ($card['supplierSku'] ?? $card['sku'] ?? ''));
+    }
     private static function resolveImages(array $card): array
     {
+        $isBad = static function (string $url): bool {
+            $url = trim($url);
+            if ($url === '') {
+                return true;
+            }
+            if (function_exists('besoiu_import_image_is_placeholder') && besoiu_import_image_is_placeholder($url)) {
+                return true;
+            }
+            $lower = strtolower($url);
+
+            return str_contains($lower, 'product-1.jpg')
+                || str_contains($lower, 'placeholder')
+                || str_contains($lower, 'no-image')
+                || str_contains($lower, 'noimage');
+        };
+
+        // Preferă URL-uri care conțin SKU/cod produs (reflectă titlul/codul).
+        $identity = [];
+        foreach (['tecdocSku', 'matchedTecdocSku', 'artNr', 'supplierSku', 'sku', 'productOem'] as $key) {
+            $v = strtoupper(preg_replace('/[^A-Z0-9]+/', '', (string) ($card[$key] ?? '')) ?? '');
+            if ($v !== '' && strlen($v) >= 4) {
+                $identity[$v] = true;
+            }
+        }
+        $identityKeys = array_keys($identity);
+
+        $rank = static function (string $url) use ($identityKeys): int {
+            $score = 0;
+            $hay = strtoupper(preg_replace('/[^A-Z0-9]+/', '', $url) ?? '');
+            foreach ($identityKeys as $code) {
+                if ($code !== '' && str_contains($hay, $code)) {
+                    $score += 100;
+                    break;
+                }
+            }
+            if (preg_match('/[?&]code=([^&]+)/i', $url, $m)) {
+                $pc = strtoupper(preg_replace('/[^A-Z0-9]+/', '', rawurldecode($m[1])) ?? '');
+                $matchedProxy = false;
+                foreach ($identityKeys as $code) {
+                    if ($pc !== '' && ($pc === $code || str_contains($pc, $code) || str_contains($code, $pc))) {
+                        $score += 120;
+                        $matchedProxy = true;
+                        break;
+                    }
+                }
+                // cod= din proxy diferit de SKU card → penalizare puternică
+                if ($pc !== '' && $identityKeys !== [] && !$matchedProxy) {
+                    $score -= 200;
+                }
+            }
+            $lower = strtolower($url);
+            if (str_contains($lower, 'tecdoc') || str_contains($lower, 'poze') || str_contains($lower, 'tecalliance')) {
+                $score += 20;
+            }
+
+            return $score;
+        };
+
+        $picked = [];
         foreach (['imageDisplayUrl', 'scrapedImageUrl', 'imageUrl'] as $key) {
             $url = trim((string) ($card[$key] ?? ''));
-            if ($url !== '') {
-                return [$url];
+            if ($url === '' || $isBad($url)) {
+                continue;
             }
+            $picked[] = $url;
         }
 
         $relative = trim((string) ($card['scrapedImagePath'] ?? ''));
         if ($relative !== '' && !str_contains($relative, '..')) {
             if (function_exists('import_motor_proxy_url')) {
-                return [import_motor_proxy_url('scraped-image.php') . '?path=' . rawurlencode($relative)];
+                $proxy = import_motor_proxy_url('scraped-image.php') . '?path=' . rawurlencode($relative);
+                if (!$isBad($proxy)) {
+                    $picked[] = $proxy;
+                }
+            } elseif (!$isBad($relative)) {
+                $picked[] = $relative;
             }
-
-            return [$relative];
         }
 
         if (!empty($card['hasImage']) && !empty($card['imagePath'])) {
-            return [(string) $card['imagePath']];
+            $path = trim((string) $card['imagePath']);
+            if (!$isBad($path)) {
+                $picked[] = $path;
+            }
         }
 
-        return [];
+        $picked = array_values(array_unique($picked));
+        if ($picked === []) {
+            return [];
+        }
+
+        usort($picked, static function (string $a, string $b) use ($rank): int {
+            return $rank($b) <=> $rank($a);
+        });
+
+        // Un singur URL — cel mai relevant față de cod/titlu; evită mapare greșită.
+        return [$picked[0]];
     }
 
     /** @param array<string, mixed> $card @param list<string> $images */

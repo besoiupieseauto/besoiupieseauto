@@ -1,4 +1,7 @@
 <?php
+require __DIR__ . '/simple-index.php';
+return;
+
 $importEmbedInline = defined('BESOIU_IMPORT_EMBED_INLINE') && BESOIU_IMPORT_EMBED_INLINE;
 
 if (!function_exists('ip_svg')) {
