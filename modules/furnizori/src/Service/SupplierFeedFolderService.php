@@ -13,8 +13,18 @@ class SupplierFeedFolderService
     public function baseDir(): string
     {
         $dir = (defined('BESOIU_ADMIN') ? BESOIU_ADMIN : dirname(__DIR__, 5) . '/admin') . '/storage/' . self::SUBDIR;
+        // Symlink rupt (țintă lipsă): is_dir=false dar path „există” ca link → mkdir dă File exists.
+        if (is_link($dir) && !is_dir($dir)) {
+            @unlink($dir);
+        }
         if (!is_dir($dir)) {
-            mkdir($dir, 0775, true);
+            if (!@mkdir($dir, 0775, true) && !is_dir($dir)) {
+                // Fallback pe storage Backend dacă admin/storage e indisponibil.
+                $fallback = dirname(__DIR__, 5) . '/app/Backend/storage/' . self::SUBDIR;
+                if (is_dir($fallback)) {
+                    return $fallback;
+                }
+            }
         }
 
         return $dir;
@@ -77,6 +87,8 @@ class SupplierFeedFolderService
             return [];
         }
 
+        $this->expandZipFeeds((string) $info['path']);
+
         $entries = [];
         foreach (scandir($info['path']) ?: [] as $name) {
             if ($name === '.' || $name === '..') {
@@ -96,7 +108,16 @@ class SupplierFeedFolderService
             ];
         }
 
-        usort($entries, static fn (array $a, array $b): int => ((int) ($b['mtime'] ?? 0)) <=> ((int) ($a['mtime'] ?? 0)));
+        usort($entries, static function (array $a, array $b): int {
+            $byTime = ((int) ($b['mtime'] ?? 0)) <=> ((int) ($a['mtime'] ?? 0));
+            if ($byTime !== 0) {
+                return $byTime;
+            }
+            $aZip = str_ends_with(strtolower((string) ($a['name'] ?? '')), '.zip') ? 1 : 0;
+            $bZip = str_ends_with(strtolower((string) ($b['name'] ?? '')), '.zip') ? 1 : 0;
+
+            return $aZip <=> $bZip;
+        });
 
         return $entries;
     }
@@ -225,6 +246,9 @@ class SupplierFeedFolderService
         }
 
         @touch($dest, filemtime($sourcePath) ?: time());
+        if (str_ends_with(strtolower($safeName), '.zip')) {
+            $this->expandZipFeeds((string) ($folder['path'] ?? ''));
+        }
 
         return [
             'saved' => true,
@@ -323,6 +347,70 @@ class SupplierFeedFolderService
             'skipped' => $skipped,
             'inbox' => (string) ($inbox['relative'] ?? ''),
         ];
+    }
+
+    /**
+     * Arhiva încărcată de furnizor (ex. Autonet ARCHIVED_OFFER.zip) nu e vizibilă la scanare.
+     * Extrage CSV/XLSX lângă zip, cu data arhivei, ca lista de scanare să fie fișierul real.
+     */
+    public function expandZipFeeds(string $dir): int
+    {
+        if ($dir === '' || !is_dir($dir) || !class_exists(\ZipArchive::class)) {
+            return 0;
+        }
+
+        $expanded = 0;
+        foreach (scandir($dir) ?: [] as $name) {
+            if (!str_ends_with(strtolower($name), '.zip')) {
+                continue;
+            }
+            $zipPath = $dir . DIRECTORY_SEPARATOR . $name;
+            if (!is_file($zipPath)) {
+                continue;
+            }
+            $zipMtime = (int) (filemtime($zipPath) ?: time());
+            $zip = new \ZipArchive();
+            if ($zip->open($zipPath) !== true) {
+                continue;
+            }
+            for ($i = 0; $i < $zip->numFiles; $i++) {
+                $entry = $zip->getNameIndex($i);
+                if (!is_string($entry) || str_contains($entry, '..') || str_ends_with($entry, '/')) {
+                    continue;
+                }
+                $base = $this->safeFeedFilename(basename(str_replace('\\', '/', $entry)));
+                $lower = strtolower($base);
+                if (!self::isFeedFilename($base) || str_ends_with($lower, '.zip')) {
+                    continue;
+                }
+                $stat = $zip->statIndex($i);
+                $size = (int) ($stat['size'] ?? 0);
+                if ($size <= 0 || $size > 250 * 1024 * 1024) {
+                    continue;
+                }
+                $dest = $dir . DIRECTORY_SEPARATOR . $base;
+                if (is_file($dest) && (int) (filesize($dest) ?: 0) === $size) {
+                    continue;
+                }
+                $stream = $zip->getStream($entry);
+                if ($stream === false) {
+                    continue;
+                }
+                $out = fopen($dest, 'wb');
+                if ($out === false) {
+                    fclose($stream);
+                    continue;
+                }
+                stream_copy_to_stream($stream, $out);
+                fclose($out);
+                fclose($stream);
+                @touch($dest, $zipMtime);
+                $expanded++;
+            }
+            $zip->close();
+        }
+
+        return $expanded;
     }
 
     /** @return array<int, array<string, mixed>> */
