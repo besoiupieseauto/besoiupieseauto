@@ -442,6 +442,50 @@ if ($fpProCss !== '') {
               <p id="furnizor-feed-folder-hint" class="fp-import-field__hint" style="margin-top:0.35rem">CSV din Import produse → Copiază în folder local sau Deschide lista (mai jos).</p>
             </div>
 
+            <div id="furnizor-inbound-sftp-box" class="fp-sftp-inbox hidden" data-inbound-sftp="1">
+              <div class="fp-sftp-inbox__head">
+                <strong>SFTP de primire</strong>
+                <span>Datele pe care le trimiți furnizorului ca să încarce lista de prețuri la noi.</span>
+              </div>
+              <div class="fp-sftp-inbox__grid">
+                <label class="fp-import-field">
+                  <span class="fp-import-field__label">Host birou (LAN)</span>
+                  <input class="box h-10 rounded-md border px-3" type="text" id="fp-sftp-inbox-host-lan" readonly>
+                </label>
+                <label class="fp-import-field">
+                  <span class="fp-import-field__label">Host public</span>
+                  <input class="box h-10 rounded-md border px-3" type="text" id="fp-sftp-inbox-host" readonly>
+                </label>
+                <label class="fp-import-field">
+                  <span class="fp-import-field__label">Port</span>
+                  <input class="box h-10 rounded-md border px-3" type="text" id="fp-sftp-inbox-port" readonly>
+                </label>
+                <label class="fp-import-field">
+                  <span class="fp-import-field__label">Utilizator</span>
+                  <input class="box h-10 rounded-md border px-3" type="text" id="fp-sftp-inbox-user" readonly>
+                </label>
+                <label class="fp-import-field">
+                  <span class="fp-import-field__label">Parolă</span>
+                  <div class="fp-sftp-inbox__secret">
+                    <input class="box h-10 rounded-md border px-3" type="password" id="fp-sftp-inbox-password" readonly>
+                    <button type="button" class="box rounded-md border bg-white" id="fp-sftp-inbox-toggle" aria-label="Arată parola">Arată</button>
+                  </div>
+                </label>
+                <label class="fp-import-field fp-import-field--full">
+                  <span class="fp-import-field__label">Upload online (browser)</span>
+                  <input class="box h-10 rounded-md border px-3" type="text" id="fp-sftp-inbox-https" readonly>
+                </label>
+                <label class="fp-import-field fp-import-field--full">
+                  <span class="fp-import-field__label">Folder remote (în FileZilla)</span>
+                  <input class="box h-10 rounded-md border px-3" type="text" id="fp-sftp-inbox-path" readonly>
+                </label>
+              </div>
+              <pre id="fp-sftp-inbox-message" class="fp-sftp-inbox__message"></pre>
+              <div class="fp-sftp-inbox__actions">
+                <button type="button" class="box rounded-lg border bg-white" id="fp-sftp-inbox-copy">Copiază textul pentru furnizor</button>
+              </div>
+            </div>
+
             <div id="furnizor-panel-api" class="conn-panel mt-4" data-connection-panel="api">
               <span class="fp-import-field__label" style="display:block;margin-bottom:0.65rem">Setări API B2B</span>
               <div class="fp-import-form-grid">
@@ -558,7 +602,7 @@ if ($fpProCss !== '') {
                   <button type="button" data-furnizor-test="1" class="fp-test-cta" style="display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 22px;border:none;border-radius:10px;background:#14b8a6;color:#fff;font-size:14px;font-weight:800;cursor:pointer">TESTEAZĂ CONEXIUNEA</button>
                 </div>
               </div>
-              <pre id="furnizor-browse-preview" class="mt-3 hidden max-h-64 overflow-auto rounded-md border bg-slate-900 p-3 text-xs text-slate-100 whitespace-pre-wrap"></pre>
+              <div id="furnizor-browse-preview" class="mt-3 hidden"></div>
             </div>
           </div>
         </section>
@@ -1255,6 +1299,7 @@ function fillForm(data){
     const abs=data.feed_folder_path||'';
     feedPath.textContent=rel?(rel+(abs?('  ('+abs+')'):'')):'Folderul se creeaza la salvare (dupa cod furnizor).';
   }
+  renderInboundSftp(data.inbound_sftp||null);
   const apiLogin=document.getElementById('furnizor-api-login');
   const apiLoginSaved=document.getElementById('furnizor-api-login-saved');
   if(apiLogin) apiLogin.value=data.api_login_hint||'';
@@ -1509,7 +1554,7 @@ function renderBrowseResults(data){
           const fullPath=joinRemotePath(data.path||'/',entry.name);
           const action=entry.type==='dir'
             ? `<button type="button" class="text-primary" data-browse-path="${escapeHtml(fullPath)}">Deschide</button>`
-            : `<button type="button" class="text-primary" data-preview-path="${escapeHtml(fullPath)}">Preview</button>`;
+            : `<button type="button" class="text-primary" data-preview-path="${escapeHtml(fullPath)}">Vezi tabel</button>`;
           return `<tr class="border-b"><td class="p-2 font-medium">${escapeHtml(entry.name)}</td><td class="p-2 text-xs opacity-80">${escapeHtml(browseSourceLabel(entry))}</td><td class="p-2">${entry.type==='dir'?'Folder':'Fisier'}</td><td class="p-2">${size}</td><td class="p-2">${action}</td></tr>`;
         }).join('')+'</tbody></table>';
     }
@@ -1517,12 +1562,78 @@ function renderBrowseResults(data){
     tableWrap.querySelectorAll('[data-browse-path]').forEach(btn=>btn.addEventListener('click',()=>browseRemote(btn.getAttribute('data-browse-path')||'/',{includeRemote:shouldIncludeRemote()})));
     tableWrap.querySelectorAll('[data-preview-path]').forEach(btn=>btn.addEventListener('click',()=>browseRemote(btn.getAttribute('data-preview-path')||'')));
   }
-  if(data.preview&&preview){
-    preview.textContent=(data.preview.path?('Fisier: '+data.preview.path+' ('+data.preview.bytes+' bytes)\n\n'):'')+(data.preview.content||'');
-    preview.classList.remove('hidden');
-  }else{
-    preview?.classList.add('hidden');
+  renderFeedTable(preview, data.preview||null);
+}
+
+function csvRowsFromText(text){
+  const sample=String(text||'').slice(0,4000);
+  const counts={';':(sample.match(/;/g)||[]).length,',':(sample.match(/,/g)||[]).length,'\t':(sample.match(/\t/g)||[]).length};
+  let delim=';';
+  if(counts[',']>counts[delim]&&counts[',']>=counts['\t']) delim=',';
+  else if(counts['\t']>counts[delim]) delim='\t';
+  const rows=[];
+  let row=[],cell='',quoted=false;
+  const src=String(text||'').replace(/^\uFEFF/,'');
+  for(let i=0;i<src.length;i++){
+    const ch=src[i];
+    if(quoted){
+      if(ch==='"'){
+        if(src[i+1]==='"'){cell+='"';i++;}
+        else quoted=false;
+      }else cell+=ch;
+    }else if(ch==='"'){
+      quoted=true;
+    }else if(ch===delim){
+      row.push(cell.trim());cell='';
+    }else if(ch==='\n'){
+      row.push(cell.trim());
+      if(row.some(v=>v!=='')) rows.push(row);
+      if(rows.length>=40) return rows;
+      row=[];cell='';
+    }else if(ch!=='\r'){
+      cell+=ch;
+    }
   }
+  row.push(cell.trim());
+  if(row.some(v=>v!=='')) rows.push(row);
+  return rows.slice(0,40);
+}
+
+function renderFeedTable(el, preview){
+  if(!el) return;
+  const rows=Array.isArray(preview?.rows)&&preview.rows.length?preview.rows:csvRowsFromText(preview?.content||'');
+  if(!rows.length){
+    el.classList.add('hidden');
+    el.innerHTML='';
+    return;
+  }
+  const header=rows[0];
+  const body=rows.slice(1);
+  const dataRows=body.length?body:rows;
+  const head=body.length?header:header.map((_,i)=>'Col '+(i+1));
+  const shown=dataRows.length;
+  const note=preview?.truncated?'Primele '+shown+' rânduri din fișier. Restul rămâne în fișierul încărcat.':shown+' rânduri';
+  const thStyle='position:sticky;top:0;background:#0f5c45;color:#fff;text-align:left;padding:8px 10px;font-weight:700;white-space:nowrap';
+  const tdStyle='padding:6px 10px;border-bottom:1px solid #e6eeea;white-space:nowrap';
+  const headHtml='<tr>'+head.map(cell=>'<th style="'+thStyle+'">'+escapeHtml(cell)+'</th>').join('')+'</tr>';
+  const bodyHtml=dataRows.map((row,idx)=>'<tr data-feed-row="'+idx+'">'+head.map((_,i)=>'<td style="'+tdStyle+'">'+escapeHtml(row[i]||'')+'</td>').join('')+'</tr>').join('');
+  el.innerHTML='<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:8px">'
+    +'<strong style="font-size:13px;color:#134e4a">Tabel fișier</strong>'
+    +'<span style="font-size:12px;color:#64748b">'+escapeHtml(note)+'</span>'
+    +'<input id="furnizor-feed-filter" type="search" placeholder="Caută în rândurile afișate" style="margin-left:auto;height:34px;min-width:14rem;border:1px solid #cbd5e1;border-radius:8px;padding:0 10px">'
+    +'</div>'
+    +'<div style="max-height:440px;overflow:auto;border:1px solid #d7e3dc;border-radius:10px;background:#fff">'
+    +'<table style="width:max-content;min-width:100%;border-collapse:collapse;font-size:12px">'
+    +'<thead style="position:sticky;top:0;background:#0f5c45;color:#fff">'+headHtml+'</thead>'
+    +'<tbody>'+bodyHtml+'</tbody></table></div>';
+  el.classList.remove('hidden');
+  const filter=document.getElementById('furnizor-feed-filter');
+  filter?.addEventListener('input',()=>{
+    const q=String(filter.value||'').trim().toLowerCase();
+    el.querySelectorAll('[data-feed-row]').forEach(tr=>{
+      tr.style.display=!q||tr.textContent.toLowerCase().includes(q)?'':'none';
+    });
+  });
 }
 
 async function browseRemote(path,options){
@@ -1544,6 +1655,76 @@ async function browseRemote(path,options){
     showToast(err.message,true);
   }
 }
+
+function inboundSftpMessage(inbox){
+  const host=String(inbox.host||'').trim();
+  const port=String(inbox.port||2222).trim();
+  const user=String(inbox.username||'').trim();
+  const password=String(inbox.password||'').trim();
+  const path=String(inbox.remote_path||'/upload').trim();
+  const httpsUrl=String(inbox.public_upload_url||'https://besoiupieseauto.ro/furnizor-upload').trim();
+  return [
+    'Acces incarcare lista de preturi '+(form.elements.namedItem('name')?.value||'furnizor')+' / BesoiuPieseAuto',
+    '',
+    '1) Upload online (recomandat, functioneaza din internet):',
+    httpsUrl,
+    'Utilizator: '+user,
+    'Parola: '+password,
+    '',
+    '2) SFTP / FileZilla din birou (aceeasi retea cu serverul):',
+    'Protocol: SFTP',
+    'Host: '+(inbox.host_internal||'192.168.1.51'),
+    'Port: '+port,
+    'Utilizator: '+user,
+    'Parola: '+password,
+    'Folder: '+path,
+    '',
+    '3) SFTP de pe internet (dupa port-forward 2222 pe router):',
+    'Host: '+host,
+    'Port: '+port,
+    '',
+    'Incarcati fisierul CSV. Scanarea automata preia lista din folderul local.'
+  ].join('\n');
+}
+
+function renderInboundSftp(inbox){
+  const box=document.getElementById('furnizor-inbound-sftp-box');
+  if(!box)return;
+  const enabled=!!(inbox&&inbox.enabled&&inbox.host&&inbox.username);
+  box.classList.toggle('hidden',!enabled);
+  if(!enabled)return;
+  const setVal=(id,value)=>{const el=document.getElementById(id);if(el)el.value=value||'';};
+  setVal('fp-sftp-inbox-host-lan',inbox.host_internal||'192.168.1.51');
+  setVal('fp-sftp-inbox-host',inbox.host||'');
+  setVal('fp-sftp-inbox-port',String(inbox.port||2222));
+  setVal('fp-sftp-inbox-user',inbox.username||'');
+  setVal('fp-sftp-inbox-password',inbox.password||'');
+  setVal('fp-sftp-inbox-https',inbox.public_upload_url||'https://besoiupieseauto.ro/furnizor-upload');
+  setVal('fp-sftp-inbox-path',inbox.remote_path||'/upload');
+  const msg=document.getElementById('fp-sftp-inbox-message');
+  if(msg)msg.textContent=inboundSftpMessage(inbox);
+}
+
+document.getElementById('fp-sftp-inbox-toggle')?.addEventListener('click',()=>{
+  const input=document.getElementById('fp-sftp-inbox-password');
+  const btn=document.getElementById('fp-sftp-inbox-toggle');
+  if(!input||!btn)return;
+  const hidden=input.type==='password';
+  input.type=hidden?'text':'password';
+  btn.textContent=hidden?'Ascunde':'Arată';
+});
+
+document.getElementById('fp-sftp-inbox-copy')?.addEventListener('click',async()=>{
+  const msg=document.getElementById('fp-sftp-inbox-message');
+  const text=msg?String(msg.textContent||'').trim():'';
+  if(!text)return;
+  try{
+    await navigator.clipboard.writeText(text);
+    showToast('Textul pentru furnizor a fost copiat.',false);
+  }catch(_err){
+    showToast('Nu am putut copia automat. Selecteaza textul de mai jos.',true);
+  }
+});
 
 switchTab(initialTab);
 if(initialTab==='conexiune')browseRemote('/',{includeRemote:shouldIncludeRemote()}).catch(err=>showToast(err.message,true));

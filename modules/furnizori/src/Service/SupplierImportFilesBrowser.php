@@ -249,13 +249,58 @@ class SupplierImportFilesBrowser
             return null;
         }
 
-        $content = file_get_contents($path, false, null, 0, 4096);
+        $size = (int) (filesize($path) ?: 0);
+        $parsed = $this->readCsvPreviewRows($path, 40);
 
         return [
             'path' => (string) ($entry['name'] ?? ''),
-            'bytes' => filesize($path) ?: 0,
-            'content' => is_string($content) ? $content : '',
+            'bytes' => $size,
+            'rows' => $parsed['rows'],
+            'truncated' => $size > 0 && $parsed['truncated'],
             'mime' => 'text/csv',
         ];
+    }
+
+    /** @return array{rows:array<int,array<int,string>>,truncated:bool} */
+    private function readCsvPreviewRows(string $path, int $limit): array
+    {
+        $handle = fopen($path, 'rb');
+        if ($handle === false) {
+            return ['rows' => [], 'truncated' => false];
+        }
+
+        $first = fgets($handle);
+        if (!is_string($first) || $first === '') {
+            fclose($handle);
+
+            return ['rows' => [], 'truncated' => false];
+        }
+
+        $delimiter = $this->csvDelimiter($first);
+        rewind($handle);
+        $rows = [];
+        while (count($rows) < $limit && ($row = fgetcsv($handle, 0, $delimiter, '"', '\\')) !== false) {
+            if ($row === [null]) {
+                continue;
+            }
+            $rows[] = array_map(static fn ($cell): string => trim((string) $cell), $row);
+        }
+        $truncated = !feof($handle);
+        fclose($handle);
+
+        return ['rows' => $rows, 'truncated' => $truncated];
+    }
+
+    private function csvDelimiter(string $line): string
+    {
+        $counts = [
+            ';' => substr_count($line, ';'),
+            ',' => substr_count($line, ','),
+            "\t" => substr_count($line, "\t"),
+        ];
+        arsort($counts);
+        $best = (string) array_key_first($counts);
+
+        return ($counts[$best] ?? 0) > 0 ? $best : ';';
     }
 }
