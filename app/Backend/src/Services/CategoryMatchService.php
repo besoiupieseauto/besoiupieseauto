@@ -767,11 +767,30 @@ final class CategoryMatchService
             if ($artNorm === '' || mb_strlen($artNorm) < 4) {
                 continue;
             }
-            if (!str_contains($normHay, $artNorm)) {
-                continue;
+            $score = 0;
+            if (str_contains($normHay, $artNorm)) {
+                $score = mb_strlen($artNorm);
+            } else {
+                $tokens = array_values(array_filter(
+                    explode(' ', $artNorm),
+                    static fn (string $token): bool => mb_strlen($token) >= 4
+                ));
+                if (count($tokens) < 2) {
+                    continue;
+                }
+                $words = array_flip(explode(' ', $normHay));
+                $allPresent = true;
+                foreach ($tokens as $token) {
+                    if (!isset($words[$token])) {
+                        $allPresent = false;
+                        break;
+                    }
+                }
+                if (!$allPresent) {
+                    continue;
+                }
+                $score = mb_strlen($artNorm) - 1;
             }
-
-            $score = mb_strlen($artNorm);
             if ($score <= $bestScore) {
                 continue;
             }
