@@ -877,6 +877,10 @@ function import_list_supplier_files(): array
             if (!is_dir($dir)) {
                 continue;
             }
+            $feedFolder = import_motor_feed_folder_service();
+            if ($feedFolder !== null && method_exists($feedFolder, 'expandZipFeeds')) {
+                $feedFolder->expandZipFeeds($dir);
+            }
             foreach (scandir($dir) ?: [] as $entry) {
                 if ($entry === '.' || $entry === '..') {
                     continue;
