@@ -250,7 +250,7 @@ class SupplierImportFilesBrowser
         }
 
         $size = (int) (filesize($path) ?: 0);
-        $parsed = $this->readCsvPreviewRows($path, 40);
+        $parsed = $this->readCsvPreviewRows($path, 200);
 
         return [
             'path' => (string) ($entry['name'] ?? ''),
