@@ -48,7 +48,6 @@ final class AdminPageResolver
     
         // BEGIN module_gen: import_pro
         'import-pro' => '/admin/Templates/admin/pages/import-pro/import-pro.php',
-        'tecdoc-import' => '/admin/Templates/admin/pages/tecdoc-import/tecdoc-import.php',
         // END module_gen: import_pro
 
         // BEGIN module_gen: import

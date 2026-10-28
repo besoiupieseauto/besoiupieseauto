@@ -89,8 +89,6 @@ final class AdminPermissionCatalog
                             '/admin/import-system',
                             '/admin/importproduse',
                             '/admin/import-pro',
-                            '/admin/tecdoc-import',
-                            '/admin/import-pro/tecdoc-import-live.php',
                         ],
                     ],
                     'produse.import_queue' => [

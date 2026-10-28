@@ -104,8 +104,6 @@ final class AdminWorkspace
             '/admin/settings',
             '/admin/alerts',
             '/admin/system-errors',
-            '/admin/tecdoc-import',
-            '/admin/import-pro/tecdoc-import-live.php',
         ];
 
         foreach ($exempt as $prefix) {
@@ -351,17 +349,6 @@ final class AdminWorkspace
     private static function isTecdocImportPath(string $path): bool
     {
         $path = self::normalizePath($path);
-        foreach ([
-            '/admin/tecdoc-import',
-            '/admin/public/tecdoc-import',
-            '/admin/import-pro/tecdoc-import-live.php',
-            '/admin/public/import-pro/tecdoc-import-live.php',
-        ] as $prefix) {
-            if ($path === $prefix || str_starts_with($path, $prefix . '/')) {
-                return true;
-            }
-        }
-
         return str_contains($path, 'tecdoc-import-progress.php');
     }
     private static function normalizePath(string $path): string

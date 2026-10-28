@@ -96,7 +96,6 @@ return [
         'sort_order' => 36,
         'items' => [
             ['item_key' => 'import-pro', 'label' => 'Import & Matching Pro', 'url' => '/admin/import-pro', 'icon' => 'upload', 'sort_order' => 10],
-            ['item_key' => 'tecdoc-import', 'label' => 'Progres TecDoc Matc', 'url' => '/admin/tecdoc-import', 'icon' => 'activity', 'sort_order' => 12],
             ['item_key' => 'import-queue', 'label' => 'Coadă import', 'url' => '/admin/importreview', 'icon' => 'list-checks', 'sort_order' => 20],
         ],
     ],

@@ -9,6 +9,11 @@ DirectoryIndex index.php index.html
 RewriteEngine On
 RewriteBase /admin/
 
+# MatchingPro — doar API + proxy imagini (UI /admin/import-pro trece prin shell admin)
+RewriteRule ^import-pro/api/(.*)$ public/import-pro/api/$1 [END,QSA]
+RewriteRule ^import-pro/_proxy/(.*)$ public/import-pro/_proxy/$1 [END,QSA]
+
+
 RewriteRule ^favicon\.ico$ public/assets/favicon.svg [L]
 
 # /admin/ sau /admin/index.php → front controller (prioritate — evită 403 pe director fizic)

@@ -19,4 +19,6 @@ return [
     'addusers',
     'reset-password',
     'help',
+    'gpsr',
+    'marketplace-gpsr',
 ];

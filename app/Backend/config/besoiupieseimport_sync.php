@@ -44,7 +44,8 @@ return [
      * Catalog TecDoc în aceeași bază cu magazinul (recomandat).
      * true = citește din DB_NAME (.env) — aceeași conexiune ca produse/comenzi.
      */
-    'tecdoc_unified_db' => true,
+    'tecdoc_unified_db' => false,
+    'tecdoc_merge_disabled' => true,
 
     /**
      * Enrichment import din indexul tecdoc_*; dezactivează pentru rollback la scanarea CSV.
@@ -52,11 +53,12 @@ return [
      */
     'tecdoc_import_db_lookup' => true,
 
-    /** Baza veche separată (doar pentru migrare date). */
-    'tecdoc_legacy_db_name' => 'besoiu_tecdoc_base',
+    /** Catalog TecDoc filtrat (pve1:3307). Snapshot 20260826 = doar backup pe disc. */
+    'tecdoc_legacy_db_name' => 'tecdoc_rebuild_1998_20261010',
     'tecdoc_legacy_db_host' => '127.0.0.1',
-    'tecdoc_legacy_db_user' => 'root',
-    'tecdoc_legacy_db_pass' => '',
+    'tecdoc_legacy_db_port' => 3308,
+    'tecdoc_legacy_db_user' => null,
+    'tecdoc_legacy_db_pass' => null,
 
     /** User cu drepturi read legacy + write shop (Laragon: root). */
     'tecdoc_merge_db_host' => null,
@@ -64,8 +66,9 @@ return [
     'tecdoc_merge_db_pass' => '',
 
     /** Folosit doar dacă tecdoc_unified_db = false */
-    'tecdoc_db_name' => 'besoiu_tecdoc_base',
-    'tecdoc_db_host' => null,
+    'tecdoc_db_name' => 'tecdoc_rebuild_1998_20261010',
+    'tecdoc_db_host' => '127.0.0.1',
+    'tecdoc_db_port' => 3308,
     'tecdoc_db_user' => null,
     'tecdoc_db_pass' => null,
 

@@ -55,6 +55,8 @@ return [
     'adaoscomercial',
     'adaos-comercial',
     'categorii',
-
+    'gpsr',
+    'marketplace-gpsr',
+    'intercars',
 ];
 
