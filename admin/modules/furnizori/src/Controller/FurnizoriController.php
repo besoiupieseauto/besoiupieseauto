@@ -110,6 +110,12 @@ class FurnizoriController
         return $this->furnizoriService->mirrorFeedFilesFromImport($this->requireRandomId($rawInput));
     }
 
+    /** @param array<string, mixed> $rawInput @return array<string, mixed> */
+    public function formFeedCards(array $rawInput): array
+    {
+        return $this->furnizoriService->formFeedCards($this->requireRandomId($rawInput), $rawInput);
+    }
+
     /** @param array<string, mixed> $rawInput @return array<int, array<string, mixed>>|array{items:array<int,array<string,mixed>>,total:int,page:int,per_page:int,total_pages:int} */
     public function list(array $rawInput = []): array
     {

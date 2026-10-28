@@ -142,6 +142,8 @@ final class CrudfurnizoriHandler
 
             'mirror_feed_files', 'mirrorfeedfiles' => self::mirrorResponse($controller, $payload),
 
+            'form_feed_cards', 'formfeedcards' => ['success' => true, 'message' => 'Cartela formata.', 'data' => $controller->formFeedCards($payload)],
+
             'add' => ['success' => true, 'message' => 'Furnizor adaugat.', 'data' => $controller->add($payload)],
 
             'edit' => ['success' => true, 'message' => 'Furnizor actualizat.', 'data' => $controller->update($payload)],

@@ -585,6 +585,7 @@ if ($fpProCss !== '') {
                 <div class="fp-browse-actions">
                   <button type="button" id="furnizor-test-btn-mini" data-furnizor-test="1" class="fp-test-cta fp-test-cta--compact" style="display:inline-flex;align-items:center;justify-content:center;height:36px;padding:0 14px;border:none;border-radius:10px;background:#14b8a6;color:#fff;font-size:12px;font-weight:800;cursor:pointer">Testează</button>
                   <button id="furnizor-mirror-feed" type="button" class="box rounded-lg border bg-white">Copiază local</button>
+                  <button id="furnizor-form-cards" type="button" class="box rounded-lg border bg-white" style="background:#0f5c45;color:#fff;font-weight:700">Formează cartele</button>
                   <button id="furnizor-browse-root" type="button" class="box rounded-lg border bg-white">Deschide lista</button>
                   <button id="furnizor-browse-path" type="button" class="box rounded-lg border bg-white">Reîncarcă</button>
                 </div>
@@ -1396,6 +1397,11 @@ document.getElementById('furnizor-profile-delete')?.addEventListener('click',asy
 });
 
 document.getElementById('furnizor-browse-root')?.addEventListener('click',()=>browseRemote('/',{includeRemote:shouldIncludeRemote()}));
+document.getElementById('furnizor-form-cards')?.addEventListener('click',()=>{
+  const files=Array.isArray(window.__furnizorFeedFiles)?window.__furnizorFeedFiles:[];
+  if(!files.length){showToast('Deschide lista, apoi formează cartelele.',true);return}
+  startFeedCards(String(files[0].name||''));
+});
 document.getElementById('furnizor-browse-path')?.addEventListener('click',()=>browseRemote(String(form.elements.namedItem('conn_remote_path')?.value||'').trim()||'/',{includeRemote:shouldIncludeRemote()}));
 document.getElementById('furnizor-profile-form')?.addEventListener('click',(e)=>{
   if(e.target.closest('[data-furnizor-test]')){
@@ -1552,17 +1558,88 @@ function renderBrowseResults(data){
         entries.map(entry=>{
           const size=entry.size!=null?formatBytes(Number(entry.size)):'—';
           const fullPath=joinRemotePath(data.path||'/',entry.name);
+          const formable=entry.type!=='dir'&&/\.(csv|txt|tsv)$/i.test(String(entry.name||''));
           const action=entry.type==='dir'
             ? `<button type="button" class="text-primary" data-browse-path="${escapeHtml(fullPath)}">Deschide</button>`
-            : `<button type="button" class="text-primary" data-preview-path="${escapeHtml(fullPath)}">Vezi tabel</button>`;
+            : `<button type="button" class="text-primary" data-preview-path="${escapeHtml(fullPath)}">Vezi tabel</button>`+(formable?` <button type="button" class="text-primary" data-form-cards="${escapeHtml(entry.name)}">Formează cartele</button>`:'');
           return `<tr class="border-b"><td class="p-2 font-medium">${escapeHtml(entry.name)}</td><td class="p-2 text-xs opacity-80">${escapeHtml(browseSourceLabel(entry))}</td><td class="p-2">${entry.type==='dir'?'Folder':'Fisier'}</td><td class="p-2">${size}</td><td class="p-2">${action}</td></tr>`;
         }).join('')+'</tbody></table>';
     }
     tableWrap.classList.remove('hidden');
     tableWrap.querySelectorAll('[data-browse-path]').forEach(btn=>btn.addEventListener('click',()=>browseRemote(btn.getAttribute('data-browse-path')||'/',{includeRemote:shouldIncludeRemote()})));
     tableWrap.querySelectorAll('[data-preview-path]').forEach(btn=>btn.addEventListener('click',()=>browseRemote(btn.getAttribute('data-preview-path')||'')));
+    tableWrap.querySelectorAll('[data-form-cards]').forEach(btn=>btn.addEventListener('click',()=>startFeedCards(btn.getAttribute('data-form-cards')||'')));
+    window.__furnizorFeedFiles=entries.filter(entry=>entry.type!=='dir'&&/\.(csv|txt|tsv)$/i.test(String(entry.name||'')));
   }
   renderFeedTable(preview, data.preview||null);
+}
+
+let feedCardRun=null;
+function closeFeedCards(){
+  if(feedCardRun) feedCardRun.stop=true;
+  const modal=document.getElementById('furnizor-card-modal');
+  if(modal) modal.remove();
+  document.body.style.overflow='';
+}
+function feedCardStatusLabel(status){
+  if(status==='formed') return 'Formată';
+  if(status==='indexing') return 'Catalog în indexare';
+  if(status==='no_catalog') return 'Fără catalog';
+  return 'Cod negăsit';
+}
+async function startFeedCards(filename){
+  filename=String(filename||'').trim();
+  if(!filename){showToast('Alege un fișier CSV.',true);return}
+  closeFeedCards();
+  const run={stop:false,filename,offset:0,totals:{scanned:0,formed:0,missing_code:0,no_catalog:0,indexing:0},rows:[]};
+  feedCardRun=run;
+  const modal=document.createElement('div');
+  modal.id='furnizor-card-modal';
+  modal.style.cssText='position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:2147483000;display:flex;background:#fff';
+  modal.innerHTML='<div style="display:flex;flex-direction:column;width:100vw;height:100vh">'
+    +'<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #d8e2dc;background:#f4faf7">'
+    +'<strong>Formare cartele</strong><span id="furnizor-card-file" style="color:#334155"></span>'
+    +'<span id="furnizor-card-stats" style="margin-left:auto;font-size:14px;color:#134e4a"></span>'
+    +'<button type="button" id="furnizor-card-stop" style="height:40px;padding:0 16px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;font-weight:700;cursor:pointer">Oprește</button>'
+    +'<button type="button" id="furnizor-card-close" style="height:40px;padding:0 16px;border:none;border-radius:8px;background:#0f5c45;color:#fff;font-weight:700;cursor:pointer">Închide</button>'
+    +'</div>'
+    +'<div style="flex:1;min-height:0;overflow:auto"><table style="width:max-content;min-width:100%;border-collapse:collapse">'
+    +'<thead><tr>'
+    +['Brand fișier','Cod fișier','Preț','Denumire fișier','Stare','Brand cartelă','Cod cartelă','Denumire cartelă','EAN','Mașină'].map(label=>'<th style="position:sticky;top:0;z-index:2;background:#0f5c45;color:#fff;text-align:left;white-space:nowrap;font-size:14px;padding:12px 16px">'+label+'</th>').join('')
+    +'</tr></thead><tbody id="furnizor-card-body"></tbody></table></div></div>';
+  document.body.appendChild(modal);
+  document.body.style.overflow='hidden';
+  document.getElementById('furnizor-card-file').textContent=filename;
+  document.getElementById('furnizor-card-close').addEventListener('click',closeFeedCards);
+  document.getElementById('furnizor-card-stop').addEventListener('click',()=>{run.stop=true});
+  const paint=()=>{
+    const stats=document.getElementById('furnizor-card-stats');
+    if(stats) stats.textContent='Scanate '+run.totals.scanned+' · formatate '+run.totals.formed+' · fără catalog '+run.totals.no_catalog+' · cod negăsit '+run.totals.missing_code+' · indexare '+run.totals.indexing;
+    const body=document.getElementById('furnizor-card-body');
+    if(!body) return;
+    const shown=run.rows.slice(-80);
+    body.innerHTML=shown.map(card=>'<tr>'+[card.file_brand,card.file_code,card.price,card.file_name,feedCardStatusLabel(card.status),card.card_brand,card.card_code,card.card_name,card.ean,card.vehicle].map(value=>'<td style="white-space:nowrap;font-size:15px;padding:12px 16px;border-bottom:1px solid #e2e8f0">'+escapeHtml(String(value||''))+'</td>').join('')+'</tr>').join('');
+  };
+  paint();
+  while(!run.stop){
+    let data;
+    try{
+      data=await apiCall('form_feed_cards',{randomn_id:randomId,filename,offset:run.offset,limit:12});
+    }catch(err){
+      showToast(err.message||'Formarea a eșuat.',true);
+      break;
+    }
+    if(feedCardRun!==run) return;
+    run.offset=Number(data.next_offset||run.offset);
+    const stats=data.stats||{};
+    ['scanned','formed','missing_code','no_catalog','indexing'].forEach(key=>{run.totals[key]+=Number(stats[key]||0)});
+    (Array.isArray(data.cards)?data.cards:[]).forEach(card=>{
+      run.rows.push(card);
+      if(run.rows.length>400) run.rows.shift();
+    });
+    paint();
+    if(data.done) break;
+  }
 }
 
 function csvRowsFromText(text){

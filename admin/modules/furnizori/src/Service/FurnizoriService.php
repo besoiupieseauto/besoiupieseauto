@@ -178,6 +178,19 @@ class FurnizoriService
         );
     }
 
+    /** @param array<string, mixed> $rawInput @return array<string, mixed> */
+    public function formFeedCards(int $randomId, array $rawInput): array
+    {
+        $furnizor = $this->requireFurnizorRow($randomId);
+
+        return (new SupplierFeedCardFormationService())->formBatch(
+            $furnizor,
+            (string) ($rawInput['filename'] ?? ''),
+            (int) ($rawInput['offset'] ?? 0),
+            (int) ($rawInput['limit'] ?? 12)
+        );
+    }
+
     /** @param array<string, mixed> $options @return array<string, string|null> */
     public function testConnection(int $randomId, array $options = []): array
     {
