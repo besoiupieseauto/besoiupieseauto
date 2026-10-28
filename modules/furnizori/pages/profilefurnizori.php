@@ -1599,12 +1599,19 @@ function csvRowsFromText(text){
   return rows.slice(0,40);
 }
 
+function closeFeedTable(){
+  const modal=document.getElementById('furnizor-feed-modal');
+  if(modal) modal.remove();
+  document.body.style.overflow='';
+}
+
 function renderFeedTable(el, preview){
   if(!el) return;
   const rows=Array.isArray(preview?.rows)&&preview.rows.length?preview.rows:csvRowsFromText(preview?.content||'');
+  el.classList.add('hidden');
+  el.innerHTML='';
   if(!rows.length){
-    el.classList.add('hidden');
-    el.innerHTML='';
+    closeFeedTable();
     return;
   }
   const header=rows[0];
@@ -1613,27 +1620,40 @@ function renderFeedTable(el, preview){
   const head=body.length?header:header.map((_,i)=>'Col '+(i+1));
   const shown=dataRows.length;
   const note=preview?.truncated?'Primele '+shown+' rânduri din fișier. Restul rămâne în fișierul încărcat.':shown+' rânduri';
-  const thStyle='position:sticky;top:0;background:#0f5c45;color:#fff;text-align:left;padding:8px 10px;font-weight:700;white-space:nowrap';
-  const tdStyle='padding:6px 10px;border-bottom:1px solid #e6eeea;white-space:nowrap';
+  const thStyle='position:sticky;top:0;z-index:1;background:#0f5c45;color:#fff;text-align:left;padding:12px 14px;font-weight:700;font-size:13px;white-space:nowrap';
+  const tdStyle='padding:11px 14px;border-bottom:1px solid #e6eeea;font-size:14px;line-height:1.35;vertical-align:top';
   const headHtml='<tr>'+head.map(cell=>'<th style="'+thStyle+'">'+escapeHtml(cell)+'</th>').join('')+'</tr>';
   const bodyHtml=dataRows.map((row,idx)=>'<tr data-feed-row="'+idx+'">'+head.map((_,i)=>'<td style="'+tdStyle+'">'+escapeHtml(row[i]||'')+'</td>').join('')+'</tr>').join('');
-  el.innerHTML='<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:8px">'
-    +'<strong style="font-size:13px;color:#134e4a">Tabel fișier</strong>'
-    +'<span style="font-size:12px;color:#64748b">'+escapeHtml(note)+'</span>'
-    +'<input id="furnizor-feed-filter" type="search" placeholder="Caută în rândurile afișate" style="margin-left:auto;height:34px;min-width:14rem;border:1px solid #cbd5e1;border-radius:8px;padding:0 10px">'
+  closeFeedTable();
+  const modal=document.createElement('div');
+  modal.id='furnizor-feed-modal';
+  modal.setAttribute('role','dialog');
+  modal.style.cssText='position:fixed;inset:0;z-index:40000;display:flex;align-items:stretch;justify-content:center;padding:18px;background:rgba(15,23,42,.45)';
+  modal.innerHTML='<div style="display:flex;flex-direction:column;width:min(1600px,100%);height:100%;background:#fff;border-radius:14px;box-shadow:0 24px 60px rgba(0,0,0,.28);overflow:hidden">'
+    +'<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #e2e8f0">'
+    +'<strong style="font-size:18px;color:#134e4a">Tabel fișier</strong>'
+    +'<span style="font-size:14px;color:#64748b">'+escapeHtml(note)+'</span>'
+    +'<input id="furnizor-feed-filter" type="search" placeholder="Caută în rândurile afișate" style="margin-left:auto;height:40px;min-width:18rem;border:1px solid #cbd5e1;border-radius:8px;padding:0 12px;font-size:14px">'
+    +'<button type="button" id="furnizor-feed-close" style="height:40px;padding:0 16px;border:none;border-radius:8px;background:#0f5c45;color:#fff;font-weight:700;cursor:pointer">Închide</button>'
     +'</div>'
-    +'<div style="max-height:440px;overflow:auto;border:1px solid #d7e3dc;border-radius:10px;background:#fff">'
-    +'<table style="width:max-content;min-width:100%;border-collapse:collapse;font-size:12px">'
-    +'<thead style="position:sticky;top:0;background:#0f5c45;color:#fff">'+headHtml+'</thead>'
-    +'<tbody>'+bodyHtml+'</tbody></table></div>';
-  el.classList.remove('hidden');
+    +'<div style="flex:1;overflow:auto;background:#fff">'
+    +'<table style="width:100%;border-collapse:collapse">'
+    +'<thead>'+headHtml+'</thead>'
+    +'<tbody>'+bodyHtml+'</tbody></table></div></div>';
+  document.body.appendChild(modal);
+  document.body.style.overflow='hidden';
+  document.getElementById('furnizor-feed-close')?.addEventListener('click',closeFeedTable);
+  modal.addEventListener('click',event=>{ if(event.target===modal) closeFeedTable(); });
+  const onKey=event=>{ if(event.key==='Escape'){ closeFeedTable(); document.removeEventListener('keydown',onKey); } };
+  document.addEventListener('keydown',onKey);
   const filter=document.getElementById('furnizor-feed-filter');
   filter?.addEventListener('input',()=>{
     const q=String(filter.value||'').trim().toLowerCase();
-    el.querySelectorAll('[data-feed-row]').forEach(tr=>{
+    modal.querySelectorAll('[data-feed-row]').forEach(tr=>{
       tr.style.display=!q||tr.textContent.toLowerCase().includes(q)?'':'none';
     });
   });
+  filter?.focus();
 }
 
 async function browseRemote(path,options){
